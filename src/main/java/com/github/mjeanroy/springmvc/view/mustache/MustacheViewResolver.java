@@ -28,6 +28,9 @@ import static com.samskivert.mustache.Mustache.Compiler;
 import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
@@ -69,6 +72,12 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	private volatile String layoutKey;
 
 	/**
+	 * Layout mappings that can be used to map different layout for different views.
+	 * If mapping is not found and a default layout is defined, default layout will be used.
+	 */
+	private final Map<String, String> layoutMappings;
+
+	/**
 	 * Build new mustache resolver using compiler
 	 *
 	 * @param compiler Mustache compiler.
@@ -82,6 +91,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		this.compiler = compiler;
 		this.templateLoader = templateLoader;
 		this.layoutKey = DEFAULT_LAYOUT_KEY;
+		this.layoutMappings = new HashMap<String, String>();
 	}
 
 	/**
@@ -98,6 +108,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		this.compiler = compiler;
 		this.templateLoader = new JMustacheTemplateLoader(resourceLoader);
 		this.layoutKey = DEFAULT_LAYOUT_KEY;
+		this.layoutMappings = new HashMap<String, String>();
 	}
 
 	@Override
@@ -137,10 +148,37 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		this.layoutKey = layoutKey;
 	}
 
+	/**
+	 * Replace current layout mappings by new mappings.
+	 *
+	 * @param layoutMappings New mappings.
+	 */
+	public void setLayoutMappings(Map<String, String> layoutMappings) {
+		notNull(layoutMappings);
+		this.layoutMappings.clear();
+		for (Map.Entry<String, String> entry : layoutMappings.entrySet()) {
+			addLayoutMapping(entry.getKey(), entry.getValue());
+		}
+	}
+
+	/**
+	 * Replace current layout mappings by new mappings.
+	 *
+	 * @param viewName View name to map.
+	 * @param layoutName Layout name to use for given view.
+	 */
+	public void addLayoutMapping(String viewName, String layoutName) {
+		notNull(viewName);
+		notNull(layoutName);
+		this.layoutMappings.put(viewName, layoutName);
+	}
+
 	@Override
 	protected MustacheView buildView(String viewName) throws Exception {
-		final boolean useLayout = defaultLayout != null && layoutKey != null;
-		final String name = useLayout ? defaultLayout : viewName;
+		final String mapping = layoutMappings.get(viewName);
+		final String layout = mapping != null ? mapping : defaultLayout;
+		final boolean useLayout = layout != null && layoutKey != null;
+		final String name = useLayout ? layout : viewName;
 
 		final MustacheView view = (MustacheView) super.buildView(name);
 		view.setCompiler(compiler);
