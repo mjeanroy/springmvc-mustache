@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache;
 
 import static com.samskivert.mustache.Mustache.Compiler;
+import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notNull;
 
 import org.springframework.core.io.ResourceLoader;
@@ -37,11 +38,35 @@ import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLo
  */
 public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
+	public static final String DEFAULT_LAYOUT_KEY = "content";
+
 	/** Mustache compiler. */
 	private final Compiler compiler;
 
 	/** Template Loader. */
 	private final JMustacheTemplateLoader templateLoader;
+
+	/**
+	 * Main layout that can be used to define view layouts.
+	 * This layout will be used by default for each views if it has been set.
+	 */
+	// Volatile because it can be accessed from more than one thread
+	private volatile String defaultLayout;
+
+	/**
+	 * Key to use to define layout content.
+	 * For example, with a layout template defined as (using a key equal to 'content'):
+	 *
+	 * <div>
+	 *   Mon Header
+	 *   {{> content}}
+	 *   Mon Footer
+	 * </div>
+	 *
+	 * Each view will be replace 'content' partials.
+	 */
+	// Volatile because it can be accessed from more than one thread
+	private volatile String layoutKey;
 
 	/**
 	 * Build new mustache resolver using compiler
@@ -56,6 +81,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		setViewClass(requiredViewClass());
 		this.compiler = compiler;
 		this.templateLoader = templateLoader;
+		this.layoutKey = DEFAULT_LAYOUT_KEY;
 	}
 
 	/**
@@ -71,6 +97,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		setViewClass(requiredViewClass());
 		this.compiler = compiler;
 		this.templateLoader = new JMustacheTemplateLoader(resourceLoader);
+		this.layoutKey = DEFAULT_LAYOUT_KEY;
 	}
 
 	@Override
@@ -90,11 +117,40 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		templateLoader.setSuffix(suffix);
 	}
 
+	/**
+	 * Update default layout view.
+	 *
+	 * @param defaultLayout Default layout.
+	 */
+	public void setDefaultLayout(String defaultLayout) {
+		hasText(defaultLayout);
+		this.defaultLayout = defaultLayout;
+	}
+
+	/**
+	 * Update view layout key.
+	 *
+	 * @param layoutKey New view layout key.
+	 */
+	public void setLayoutKey(String layoutKey) {
+		hasText(layoutKey);
+		this.layoutKey = layoutKey;
+	}
+
 	@Override
 	protected MustacheView buildView(String viewName) throws Exception {
-		MustacheView view = (MustacheView) super.buildView(viewName);
+		final boolean useLayout = defaultLayout != null && layoutKey != null;
+		final String name = useLayout ? defaultLayout : viewName;
+
+		final MustacheView view = (MustacheView) super.buildView(name);
 		view.setCompiler(compiler);
 		view.setTemplateLoader(templateLoader);
+
+		if (useLayout) {
+			// Add alias to map main content to real view
+			view.addAlias(layoutKey, viewName);
+		}
+
 		return view;
 	}
 }

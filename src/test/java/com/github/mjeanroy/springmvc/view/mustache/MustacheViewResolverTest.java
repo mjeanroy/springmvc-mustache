@@ -29,12 +29,15 @@ import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ResourceLoader;
 
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader;
 
+@SuppressWarnings("unchecked")
 public class MustacheViewResolverTest {
 
 	private Compiler compiler;
@@ -52,9 +55,7 @@ public class MustacheViewResolverTest {
 
 	@Test
 	public void it_should_have_required_view_class() {
-		assertThat(mustacheViewResolver.requiredViewClass())
-				.isNotNull()
-				.isEqualTo(MustacheView.class);
+		assertThat(mustacheViewResolver.requiredViewClass()).isNotNull().isEqualTo(MustacheView.class);
 	}
 
 	@Test
@@ -68,22 +69,15 @@ public class MustacheViewResolverTest {
 		JMustacheTemplateLoader t = (JMustacheTemplateLoader) readField(mustacheViewResolver, "templateLoader", true);
 		String prefix = (String) readField(mustacheViewResolver, "prefix", true);
 		String suffix = (String) readField(mustacheViewResolver, "suffix", true);
+		String defaultLayout = (String) readField(mustacheViewResolver, "defaultLayout", true);
+		String layoutKey = (String) readField(mustacheViewResolver, "layoutKey", true);
 
-		assertThat(c)
-				.isNotNull()
-				.isSameAs(compiler);
-
-		assertThat(t)
-				.isNotNull()
-				.isSameAs(templateLoader);
-
-		assertThat(prefix)
-				.isNotNull()
-				.isEmpty();
-
-		assertThat(suffix)
-				.isNotNull()
-				.isEmpty();
+		assertThat(c).isNotNull().isSameAs(compiler);
+		assertThat(t).isNotNull().isSameAs(templateLoader);
+		assertThat(prefix).isNotNull().isEmpty();
+		assertThat(suffix).isNotNull().isEmpty();
+		assertThat(defaultLayout).isNull();
+		assertThat(layoutKey).isNotNull().isEqualTo(MustacheViewResolver.DEFAULT_LAYOUT_KEY);
 	}
 
 	@Test
@@ -97,25 +91,18 @@ public class MustacheViewResolverTest {
 		JMustacheTemplateLoader t = (JMustacheTemplateLoader) readField(mustacheViewResolver, "templateLoader", true);
 		String prefix = (String) readField(mustacheViewResolver, "prefix", true);
 		String suffix = (String) readField(mustacheViewResolver, "suffix", true);
+		String defaultLayout = (String) readField(mustacheViewResolver, "defaultLayout", true);
+		String layoutKey = (String) readField(mustacheViewResolver, "layoutKey", true);
 
-		assertThat(c)
-				.isNotNull()
-				.isSameAs(compiler);
-
+		assertThat(c).isNotNull().isSameAs(compiler);
 		assertThat(t).isNotNull();
-
-		assertThat(prefix)
-				.isNotNull()
-				.isEmpty();
-
-		assertThat(suffix)
-				.isNotNull()
-				.isEmpty();
+		assertThat(prefix).isNotNull().isEmpty();
+		assertThat(suffix).isNotNull().isEmpty();
+		assertThat(defaultLayout).isNull();
+		assertThat(layoutKey).isNotNull().isEqualTo(MustacheViewResolver.DEFAULT_LAYOUT_KEY);
 
 		ResourceLoader r = (ResourceLoader) readField(t, "resourceLoader", true);
-		assertThat(r)
-				.isNotNull()
-				.isSameAs(resourceLoader);
+		assertThat(r).isNotNull().isSameAs(resourceLoader);
 	}
 
 	@Test
@@ -125,9 +112,7 @@ public class MustacheViewResolverTest {
 		mustacheViewResolver.setPrefix(prefix);
 
 		String p = (String) readField(mustacheViewResolver, "prefix", true);
-		assertThat(p)
-				.isNotNull()
-				.isEqualTo(prefix);
+		assertThat(p).isNotNull().isEqualTo(prefix);
 
 		verify(templateLoader).setPrefix(prefix);
 	}
@@ -139,11 +124,29 @@ public class MustacheViewResolverTest {
 		mustacheViewResolver.setSuffix(suffix);
 
 		String p = (String) readField(mustacheViewResolver, "suffix", true);
-		assertThat(p)
-				.isNotNull()
-				.isEqualTo(suffix);
+		assertThat(p).isNotNull().isEqualTo(suffix);
 
 		verify(templateLoader).setSuffix(suffix);
+	}
+
+	@Test
+	public void it_should_default_layout() throws Exception {
+		String defaultLayout = "foo";
+
+		mustacheViewResolver.setDefaultLayout(defaultLayout);
+
+		String dl = (String) readField(mustacheViewResolver, "defaultLayout", true);
+		assertThat(dl).isNotNull().isEqualTo(defaultLayout);
+	}
+
+	@Test
+	public void it_should_layout_key() throws Exception {
+		String layoutKey = "foo";
+
+		mustacheViewResolver.setLayoutKey(layoutKey);
+
+		String lk = (String) readField(mustacheViewResolver, "layoutKey", true);
+		assertThat(lk).isNotNull().isEqualTo(layoutKey);
 	}
 
 	@Test
@@ -155,5 +158,27 @@ public class MustacheViewResolverTest {
 		assertThat(mustacheView).isNotNull();
 		assertThat(mustacheView.getCompiler()).isNotNull().isSameAs(compiler);
 		assertThat(mustacheView.getTemplateLoader()).isNotNull().isSameAs(templateLoader);
+		assertThat(mustacheView.getUrl()).isNotNull().isEqualTo(viewName);
+	}
+
+	@Test
+	public void it_should_build_view_using_layout() throws Exception {
+		String layout = "index";
+		mustacheViewResolver.setDefaultLayout(layout);
+
+		String viewName = "foo";
+
+		MustacheView mustacheView = mustacheViewResolver.buildView(viewName);
+
+		assertThat(mustacheView).isNotNull();
+		assertThat(mustacheView.getCompiler()).isNotNull().isSameAs(compiler);
+		assertThat(mustacheView.getTemplateLoader()).isNotNull().isSameAs(templateLoader);
+		assertThat(mustacheView.getUrl()).isNotNull().isEqualTo(layout);
+
+		// Check partials mapping
+		Map<String, String> partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
+		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(1).contains(
+				entry(MustacheViewResolver.DEFAULT_LAYOUT_KEY, viewName)
+		);
 	}
 }

@@ -121,19 +121,14 @@ public class MustacheViewTest {
 		String value = "bar";
 
 		Map<String, String> partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isEmpty();
+		assertThat(partialsAliases).isNotNull().isEmpty();
 
 		mustacheView.addAlias(key, value);
 
 		partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
-		assertThat(partialsAliases)
-				.isNotNull()
-				.hasSize(1)
-				.contains(
-						entry(key, value)
-				);
+		assertThat(partialsAliases).isNotNull().hasSize(1).contains(
+				entry(key, value)
+		);
 	}
 
 	@Test
@@ -149,10 +144,7 @@ public class MustacheViewTest {
 				"<div>Hello foo</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	@Test
@@ -171,10 +163,7 @@ public class MustacheViewTest {
 				"</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	@Test
@@ -193,10 +182,7 @@ public class MustacheViewTest {
 				"</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	@Test
@@ -214,10 +200,7 @@ public class MustacheViewTest {
 				"</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	@Test
@@ -237,10 +220,7 @@ public class MustacheViewTest {
 				"</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	@Test
@@ -260,10 +240,7 @@ public class MustacheViewTest {
 				"</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	@Test
@@ -282,9 +259,6 @@ public class MustacheViewTest {
 				"</div>";
 
 		String result = joinLines(html.getAllValues());
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(expected);
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 }

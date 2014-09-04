@@ -82,15 +82,10 @@ public class JMustacheTemplateLoaderTest {
 		String suffix = (String) readField(loader, "suffix", true);
 		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
 
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultResourceLoader.class);
-
+		assertThat(resourceLoader).isNotNull().isExactlyInstanceOf(DefaultResourceLoader.class);
 		assertThat(prefix).isNull();
 		assertThat(suffix).isNull();
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isEmpty();
+		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 
 	@Test
@@ -102,15 +97,10 @@ public class JMustacheTemplateLoaderTest {
 		String suffix = (String) readField(loader, "suffix", true);
 		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
 
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isSameAs(this.resourceLoader);
-
+		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
 		assertThat(prefix).isNull();
 		assertThat(suffix).isNull();
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isEmpty();
+		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 
 	@Test
@@ -122,20 +112,10 @@ public class JMustacheTemplateLoaderTest {
 		String suffix = (String) readField(loader, "suffix", true);
 		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
 
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isSameAs(resourceLoader);
-
-		assertThat(prefix)
-				.isNotNull()
-				.isEqualTo(this.prefix);
-
-		assertThat(suffix)
-				.isNotNull()
-				.isEqualTo(this.suffix);
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isEmpty();
+		assertThat(resourceLoader).isNotNull().isSameAs(resourceLoader);
+		assertThat(prefix).isNotNull().isEqualTo(this.prefix);
+		assertThat(suffix).isNotNull().isEqualTo(this.suffix);
+		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 
 	@Test
@@ -153,15 +133,10 @@ public class JMustacheTemplateLoaderTest {
 		loader.addPartialAliases(aliases);
 
 		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
-
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(aliases.size())
-				.containsOnly(
-						entry(k1, v1),
-						entry(k2, v2)
-				);
+		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(aliases.size()).containsOnly(
+				entry(k1, v1),
+				entry(k2, v2)
+		);
 	}
 
 	@Test
@@ -184,22 +159,10 @@ public class JMustacheTemplateLoaderTest {
 		String suffix = (String) readField(clone, "suffix", true);
 		Map<String, String> partialsAliases = (Map<String, String>) readField(clone, "partialAliases", true);
 
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isSameAs(this.resourceLoader);
-
-		assertThat(prefix)
-				.isNotNull()
-				.isEqualTo(this.prefix);
-
-		assertThat(suffix)
-				.isNotNull()
-				.isEqualTo(this.suffix);
-
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isNotSameAs(originalPartialsAliases)
-				.isEqualTo(originalPartialsAliases);
+		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
+		assertThat(prefix).isNotNull().isEqualTo(this.prefix);
+		assertThat(suffix).isNotNull().isEqualTo(this.suffix);
+		assertThat(partialsAliases).isNotNull().isNotSameAs(originalPartialsAliases).isEqualTo(originalPartialsAliases);
 	}
 
 	@Test
@@ -214,16 +177,10 @@ public class JMustacheTemplateLoaderTest {
 		String suffix = (String) readField(clone, "suffix", true);
 		Map<String, String> partialsAliases = (Map<String, String>) readField(clone, "partialAliases", true);
 
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isSameAs(this.resourceLoader);
-
+		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
 		assertThat(prefix).isNull();
 		assertThat(suffix).isNull();
-
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isEmpty();
+		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 
 	@Test
@@ -249,8 +206,7 @@ public class JMustacheTemplateLoaderTest {
 
 		Reader reader = mustacheTemplateLoader.getTemplate(name);
 
-		assertThat(reader)
-				.isNotNull();
+		assertThat(reader).isNotNull();
 	}
 
 	@Test
@@ -270,9 +226,7 @@ public class JMustacheTemplateLoaderTest {
 
 		Reader reader = mustacheTemplateLoader.getTemplate(name);
 
-		assertThat(reader)
-				.isNotNull();
-
+		assertThat(reader).isNotNull();
 		verify(resourceLoader).getResource(templateName);
 		verify(resourceLoader, never()).getResource(name);
 	}
