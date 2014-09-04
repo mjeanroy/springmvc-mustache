@@ -61,12 +61,12 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * For example, with a layout template defined as (using a key equal to 'content'):
 	 *
 	 * <div>
-	 *   Mon Header
+	 *   Header
 	 *   {{> content}}
-	 *   Mon Footer
+	 *   Footer
 	 * </div>
 	 *
-	 * Each view will be replace 'content' partials.
+	 * Each view will replace 'content' partials.
 	 */
 	// Volatile because it can be accessed from more than one thread
 	private volatile String layoutKey;

@@ -72,13 +72,13 @@ public class JMustacheTemplateLoader implements TemplateLoader, Cloneable {
 	/**
 	 * Prefix to prepend to resource before retrieving template name.
 	 */
-	// Volatile because it can be accessed by more thread
+	// Volatile because it can be accessed by more than one thread
 	private volatile String prefix;
 
 	/**
 	 * Suffix to append to resource before retrieving template name.
 	 */
-	// Volatile because it can be accessed by more thread
+	// Volatile because it can be accessed by more than one thread
 	private volatile String suffix;
 
 	/**
