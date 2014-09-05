@@ -29,15 +29,15 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader;
 import com.samskivert.mustache.Mustache;
 
@@ -47,8 +47,6 @@ import com.samskivert.mustache.Mustache;
 		ignoreResourceNotFound = true
 )
 public class MustacheConfiguration {
-
-	private static final Logger log = LoggerFactory.getLogger(MustacheConfiguration.class);
 
 	public static final String PREFIX = "/templates/";
 
@@ -63,8 +61,7 @@ public class MustacheConfiguration {
 
 	@Bean
 	public MustacheViewResolver mustacheViewResolver() {
-		Compiler compiler = compiler();
-		JMustacheTemplateLoader templateLoader = templateLoader();
+		MustacheCompiler compiler = mustacheCompiler();
 
 		// Get resolver properties
 		String prefix = getPrefix();
@@ -72,13 +69,7 @@ public class MustacheConfiguration {
 		int order = getOrder();
 		boolean cache = getCache();
 
-		log.info("Build Mustache View Resolver");
-		log.debug("- Prefix: {}", prefix);
-		log.debug("- Suffix: {}", suffix);
-		log.debug("- Order: {}", order);
-		log.debug("- Cache: {}", cache);
-
-		MustacheViewResolver resolver = new MustacheViewResolver(compiler, templateLoader);
+		MustacheViewResolver resolver = new MustacheViewResolver(compiler);
 		resolver.setCache(cache);
 		resolver.setPrefix(prefix);
 		resolver.setSuffix(suffix);
@@ -92,15 +83,17 @@ public class MustacheConfiguration {
 	}
 
 	@Bean
-	public Compiler compiler() {
+	public MustacheCompiler mustacheCompiler() {
 		JMustacheTemplateLoader templateLoader = templateLoader();
-		return Mustache.compiler()
+		Compiler jmustacheCompiler = Mustache.compiler()
 				.nullValue("")
 				.defaultValue("")
 				.emptyStringIsFalse(true)
 				.zeroIsFalse(true)
 				.escapeHTML(true)
 				.withLoader(templateLoader);
+
+		return new JMustacheCompiler(jmustacheCompiler, templateLoader);
 	}
 
 	@Bean

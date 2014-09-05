@@ -33,8 +33,6 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -60,8 +58,6 @@ import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNo
  * This class can be considered as thread safe if internal state is not modified (if prefix and suffix are not modified, or if aliases are not added).
  */
 public class JMustacheTemplateLoader implements TemplateLoader, Cloneable {
-
-	private static final Logger log = LoggerFactory.getLogger(JMustacheTemplateLoader.class);
 
 	/**
 	 * Resource loader that will be used to retrieve mustache template
@@ -167,8 +163,6 @@ public class JMustacheTemplateLoader implements TemplateLoader, Cloneable {
 	}
 
 	public Reader getTemplate(String name, Map<String, String> partialsAliases) throws Exception {
-		log.debug("Get template {}", name);
-
 		String realName = name;
 		if (partialsAliases.containsKey(name)) {
 			realName = partialsAliases.get(name);
@@ -178,7 +172,6 @@ public class JMustacheTemplateLoader implements TemplateLoader, Cloneable {
 		Resource resource = resourceLoader.getResource(templateName);
 
 		if (!resource.exists()) {
-			log.error("Template {} cannot be found using {}", templateName, resourceLoader.getClass().getName());
 			throw new MustacheTemplateNotFoundException(templateName);
 		}
 
@@ -188,11 +181,8 @@ public class JMustacheTemplateLoader implements TemplateLoader, Cloneable {
 
 	private String formatName(String name) {
 		if (prefix == null && suffix == null) {
-			log.debug("Prefix and suffix are null, do not format name");
 			return name;
 		}
-
-		log.debug("Format template name using prefix '{}' and suffix '{}'", prefix, suffix);
 
 		String result = name;
 

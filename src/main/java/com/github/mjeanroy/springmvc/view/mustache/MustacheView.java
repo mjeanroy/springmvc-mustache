@@ -24,22 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static com.samskivert.mustache.Mustache.Compiler;
-import static com.samskivert.mustache.Mustache.TemplateLoader;
 import static org.springframework.util.Assert.notNull;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.servlet.view.AbstractTemplateView;
-
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader;
-import com.samskivert.mustache.Template;
 
 /**
  * Implementation of mustache view.
@@ -48,10 +41,7 @@ import com.samskivert.mustache.Template;
 public class MustacheView extends AbstractTemplateView {
 
 	/** Mustache compiler. */
-	private Compiler compiler;
-
-	/** Mustache template loader. */
-	private JMustacheTemplateLoader templateLoader;
+	private MustacheCompiler compiler;
 
 	/** List of aliases that map alias name to partial path. */
 	private final Map<String, String> aliases;
@@ -64,22 +54,23 @@ public class MustacheView extends AbstractTemplateView {
 		this.aliases = new HashMap<String, String>();
 	}
 
-	public Compiler getCompiler() {
-		return compiler;
-	}
-
-	public JMustacheTemplateLoader getTemplateLoader() {
-		return templateLoader;
-	}
-
-	public void setCompiler(Compiler compiler) {
+	/**
+	 * Set new mustache compiler that can be used to compile view.
+	 *
+	 * @param compiler Mustache compiler.
+	 */
+	public void setCompiler(MustacheCompiler compiler) {
 		notNull(compiler);
 		this.compiler = compiler;
 	}
 
-	public void setTemplateLoader(JMustacheTemplateLoader templateLoader) {
-		notNull(templateLoader);
-		this.templateLoader = templateLoader;
+	/**
+	 * Get compiler that will be used to compile view.
+	 *
+	 * @return Mustache compiler.
+	 */
+	public MustacheCompiler getCompiler() {
+		return compiler;
 	}
 
 	/**
@@ -109,32 +100,14 @@ public class MustacheView extends AbstractTemplateView {
 	@Override
 	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		notNull(compiler);
-		notNull(templateLoader);
 
 		response.setContentType(getContentType());
 		renderTemplate(model, response.getWriter());
 	}
 
 	private void renderTemplate(Map<String, Object> model, Writer writer) {
-		JMustacheTemplateLoader templateLoader = this.templateLoader.clone();
-		templateLoader.addPartialAliases(aliases);
-
-		Template template = getTemplate(templateLoader);
+		MustacheTemplate template = compiler.compile(viewLayoutName(), aliases);
 		template.execute(model, writer);
-	}
-
-	private Template getTemplate(TemplateLoader templateLoader) {
-		try {
-			String name = viewLayoutName();
-			Reader template = templateLoader.getTemplate(name);
-			return compiler
-					.withLoader(templateLoader)
-					.compile(template);
-		}
-		catch (Exception ex) {
-			logger.trace(ex.getMessage());
-			throw new MustacheTemplateNotFoundException(ex);
-		}
 	}
 
 	private String viewLayoutName() {

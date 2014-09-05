@@ -24,17 +24,13 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static com.samskivert.mustache.Mustache.Compiler;
 import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
-
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader;
 
 /**
  * Mustache View Resolver.
@@ -44,10 +40,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	public static final String DEFAULT_LAYOUT_KEY = "content";
 
 	/** Mustache compiler. */
-	private final Compiler compiler;
-
-	/** Template Loader. */
-	private final JMustacheTemplateLoader templateLoader;
+	private final MustacheCompiler compiler;
 
 	/**
 	 * Main layout that can be used to define view layouts.
@@ -81,32 +74,12 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * Build new mustache resolver using compiler
 	 *
 	 * @param compiler Mustache compiler.
-	 * @param templateLoader Mustache template loader.
 	 */
-	public MustacheViewResolver(Compiler compiler, JMustacheTemplateLoader templateLoader) {
+	public MustacheViewResolver(MustacheCompiler compiler) {
 		notNull(compiler);
-		notNull(templateLoader);
 
 		setViewClass(requiredViewClass());
 		this.compiler = compiler;
-		this.templateLoader = templateLoader;
-		this.layoutKey = DEFAULT_LAYOUT_KEY;
-		this.layoutMappings = new HashMap<String, String>();
-	}
-
-	/**
-	 * Build new mustache resolver using compiler
-	 *
-	 * @param compiler Mustache compiler.
-	 * @param resourceLoader Spring resource loader.
-	 */
-	public MustacheViewResolver(Compiler compiler, ResourceLoader resourceLoader) {
-		notNull(compiler);
-		notNull(resourceLoader);
-
-		setViewClass(requiredViewClass());
-		this.compiler = compiler;
-		this.templateLoader = new JMustacheTemplateLoader(resourceLoader);
 		this.layoutKey = DEFAULT_LAYOUT_KEY;
 		this.layoutMappings = new HashMap<String, String>();
 	}
@@ -119,13 +92,13 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	@Override
 	public void setPrefix(String prefix) {
 		super.setPrefix(prefix);
-		templateLoader.setPrefix(prefix);
+		compiler.setPrefix(prefix);
 	}
 
 	@Override
 	public void setSuffix(String suffix) {
 		super.setSuffix(suffix);
-		templateLoader.setSuffix(suffix);
+		compiler.setSuffix(suffix);
 	}
 
 	/**
@@ -182,7 +155,6 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 		final MustacheView view = (MustacheView) super.buildView(name);
 		view.setCompiler(compiler);
-		view.setTemplateLoader(templateLoader);
 
 		if (useLayout) {
 			// Add alias to map main content to real view
