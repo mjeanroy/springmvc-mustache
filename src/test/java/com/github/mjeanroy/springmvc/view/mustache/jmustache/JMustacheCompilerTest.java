@@ -24,25 +24,23 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.joinLines;
-import static com.samskivert.mustache.Mustache.Compiler;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.samskivert.mustache.Mustache;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.samskivert.mustache.Mustache.Compiler;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -50,8 +48,7 @@ public class JMustacheCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
 
-	@Mock
-	private Writer writer;
+	private StringWriter writer;
 
 	@Captor
 	private ArgumentCaptor<String> html;
@@ -68,6 +65,8 @@ public class JMustacheCompilerTest {
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
 		this.model.put("emptyString", "");
+
+		writer = new StringWriter();
 
 		templateLoader = new JMustacheTemplateLoader();
 		Compiler compiler = Mustache.compiler()
@@ -86,11 +85,10 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>Hello foo</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -103,14 +101,13 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>" + SEPARATOR +
 				"	" + SEPARATOR +
 				"	Zero should be falsy." + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -123,14 +120,13 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>" + SEPARATOR +
 				"	" + SEPARATOR +
 				"	An empty string should be falsy." + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -143,13 +139,12 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>" + SEPARATOR +
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -164,13 +159,12 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>" + SEPARATOR +
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -185,13 +179,12 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>" + SEPARATOR +
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -206,13 +199,12 @@ public class JMustacheCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		verify(writer, atLeast(1)).write(html.capture());
 		String expected = "" +
 				"<div>" + SEPARATOR +
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 }

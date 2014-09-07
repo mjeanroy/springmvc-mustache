@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.joinLines;
 import static com.samskivert.mustache.Mustache.Compiler;
 import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.*;
@@ -33,6 +32,7 @@ import static org.mockito.Mockito.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,8 +59,7 @@ public class MustacheViewTest {
 	@Mock
 	private HttpServletResponse response;
 
-	@Mock
-	private PrintWriter writer;
+	private StringWriter writer;
 
 	private Map<String, Object> model;
 
@@ -75,7 +74,8 @@ public class MustacheViewTest {
 		this.model.put("zero", 0);
 		this.model.put("emptyString", "");
 
-		when(response.getWriter()).thenReturn(writer);
+		writer = new StringWriter();
+		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
 		templateLoader = new JMustacheTemplateLoader();
 		Compiler compiler = Mustache.compiler()
@@ -137,14 +137,12 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/foo.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>Hello foo</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -153,8 +151,6 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/zero.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
@@ -163,7 +159,7 @@ public class MustacheViewTest {
 				"	Zero should be falsy." + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -172,8 +168,6 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/empty-string.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
@@ -182,7 +176,7 @@ public class MustacheViewTest {
 				"	An empty string should be falsy." + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -191,8 +185,6 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/composite.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
@@ -200,7 +192,7 @@ public class MustacheViewTest {
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -211,8 +203,6 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/composite-aliases.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
@@ -220,7 +210,7 @@ public class MustacheViewTest {
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -231,8 +221,6 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/composite.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
@@ -240,7 +228,7 @@ public class MustacheViewTest {
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -250,8 +238,6 @@ public class MustacheViewTest {
 		mustacheView.setUrl("/templates/composite-aliases.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		ArgumentCaptor<String> html = ArgumentCaptor.forClass(String.class);
-		verify(writer, atLeast(1)).write(html.capture());
 		verify(response).getWriter();
 
 		String expected = "" +
@@ -259,7 +245,7 @@ public class MustacheViewTest {
 				"	<div>Hello foo</div>" + SEPARATOR +
 				"</div>";
 
-		String result = joinLines(html.getAllValues());
+		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 }
