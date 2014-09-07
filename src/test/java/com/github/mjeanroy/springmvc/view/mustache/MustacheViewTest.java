@@ -36,15 +36,14 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader;
 import com.samskivert.mustache.Mustache;
 
 @SuppressWarnings("unchecked")
@@ -63,7 +62,7 @@ public class MustacheViewTest {
 
 	private Map<String, Object> model;
 
-	private JMustacheTemplateLoader templateLoader;
+	private MustacheTemplateLoader templateLoader;
 
 	private MustacheView mustacheView;
 
@@ -77,7 +76,7 @@ public class MustacheViewTest {
 		writer = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
-		templateLoader = new JMustacheTemplateLoader();
+		templateLoader = new DefaultMustacheTemplateLoader();
 		Compiler compiler = Mustache.compiler()
 				.zeroIsFalse(true)
 				.emptyStringIsFalse(true);

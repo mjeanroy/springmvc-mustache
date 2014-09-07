@@ -24,189 +24,36 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
-import static com.samskivert.mustache.Mustache.TemplateLoader;
-import static org.springframework.util.Assert.notNull;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import static com.samskivert.mustache.Mustache.TemplateLoader;
 
 /**
- * Mustache template loader.
- *
- * Resource are retrieved using {@link DefaultResourceLoader} by default unless a
- * specific resource loader is used during construction.
- *
- * Prefix and Suffix can be set, these will be used to retrieve template by its name (if given
- * does not already starts with prefix and does not already ends with suffix).
- *
- * For example:
- * - If prefix and suffix are null:
- *   getTemplate("foo"); // Call internally resourceLoader.getResource("foo");
- *
- * - If prefix or suffix are not null:
- *   getTemplate("foo"); // Call internally resourceLoader.getResource({prefix} + "foo" + {suffix});
- *
- * This class can be considered as thread safe if internal state is not modified (if prefix and suffix are not modified, or if aliases are not added).
+ * Implementation of jmustache template loader.
+ * Template resolution is delegated to {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader}
+ * implementation.
  */
-public class JMustacheTemplateLoader implements TemplateLoader, Cloneable {
+public class JMustacheTemplateLoader implements TemplateLoader {
 
 	/**
-	 * Resource loader that will be used to retrieve mustache template
-	 * from template name.
+	 * Template loader implementation.
+	 * Template resolution will be delegated to this implementation.
 	 */
-	private final ResourceLoader resourceLoader;
-
-	/**
-	 * Prefix to prepend to resource before retrieving template name.
-	 */
-	// Volatile because it can be accessed by more than one thread
-	private volatile String prefix;
-
-	/**
-	 * Suffix to append to resource before retrieving template name.
-	 */
-	// Volatile because it can be accessed by more than one thread
-	private volatile String suffix;
-
-	/**
-	 * Partial aliases.
-	 */
-	private final Map<String, String> partialAliases;
-
-	/**
-	 * Build new template loader.
-	 * Use {@link DefaultResourceLoader} as resource loader implementation.
-	 */
-	public JMustacheTemplateLoader() {
-		this.partialAliases = defaultPartialAliases();
-		this.resourceLoader = new DefaultResourceLoader();
-		this.prefix = null;
-		this.suffix = null;
-	}
+	private final MustacheTemplateLoader loader;
 
 	/**
 	 * Build new template loader.
 	 *
-	 * @param resourceLoader Resource loader implementation to use.
+	 * @param loader Loader.
 	 */
-	public JMustacheTemplateLoader(ResourceLoader resourceLoader) {
-		notNull(resourceLoader);
-
-		this.partialAliases = defaultPartialAliases();
-		this.resourceLoader = resourceLoader;
-		this.prefix = null;
-		this.suffix = null;
-	}
-
-	/**
-	 * Build new template loader.
-	 *
-	 * @param resourceLoader Resource loader implementation to use.
-	 * @param prefix Prefix to prepend to template name before loading it using resource loader.
-	 * @param suffix Suffix to append to template before loading it using resource loader.
-	 */
-	public JMustacheTemplateLoader(ResourceLoader resourceLoader, String prefix, String suffix) {
-		notNull(resourceLoader);
-		notNull(prefix);
-		notNull(suffix);
-
-		this.partialAliases = defaultPartialAliases();
-		this.resourceLoader = resourceLoader;
-		this.prefix = prefix;
-		this.suffix = suffix;
-	}
-
-	private Map<String, String> defaultPartialAliases() {
-		return new HashMap<String, String>();
-	}
-
-	/**
-	 * Set prefix on template names.
-	 *
-	 * @param prefix New prefix.
-	 */
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
-	/**
-	 * Set suffix on template names.
-	 *
-	 * @param suffix New suffix.
-	 */
-	public void setSuffix(String suffix) {
-		this.suffix = suffix;
-	}
-
-	/**
-	 * Add partials mapping.
-	 *
-	 * @param partialAliases Partials aliases.
-	 */
-	public void addPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases);
-		this.partialAliases.putAll(partialAliases);
+	public JMustacheTemplateLoader(MustacheTemplateLoader loader) {
+		this.loader = loader;
 	}
 
 	@Override
 	public Reader getTemplate(String name) throws Exception {
-		return getTemplate(name, partialAliases);
-	}
-
-	public Reader getTemplate(String name, Map<String, String> partialsAliases) throws Exception {
-		String realName = name;
-		if (partialsAliases.containsKey(name)) {
-			realName = partialsAliases.get(name);
-		}
-
-		String templateName = formatName(realName);
-		Resource resource = resourceLoader.getResource(templateName);
-
-		if (!resource.exists()) {
-			throw new MustacheTemplateNotFoundException(templateName);
-		}
-
-		InputStream inputStream = resource.getInputStream();
-		return new InputStreamReader(inputStream);
-	}
-
-	private String formatName(String name) {
-		if (prefix == null && suffix == null) {
-			return name;
-		}
-
-		String result = name;
-
-		if (prefix != null && !name.startsWith(prefix)) {
-			result = prefix + result;
-		}
-
-		if (suffix != null && !name.endsWith(suffix)) {
-			result = result + suffix;
-		}
-
-		return result;
-	}
-
-	@Override
-	public JMustacheTemplateLoader clone() {
-		JMustacheTemplateLoader templateLoader = new JMustacheTemplateLoader(resourceLoader);
-		if (prefix != null) {
-			templateLoader.setPrefix(prefix);
-		}
-		if (suffix != null) {
-			templateLoader.setSuffix(suffix);
-		}
-		templateLoader.addPartialAliases(partialAliases);
-		return templateLoader;
+		return loader.getTemplate(name);
 	}
 }

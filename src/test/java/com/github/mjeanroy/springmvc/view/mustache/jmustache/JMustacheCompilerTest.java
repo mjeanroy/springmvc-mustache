@@ -25,6 +25,8 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +41,6 @@ import java.util.Map;
 
 import static com.samskivert.mustache.Mustache.Compiler;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -55,7 +55,7 @@ public class JMustacheCompilerTest {
 
 	private Map<String, Object> model;
 
-	private JMustacheTemplateLoader templateLoader;
+	private MustacheTemplateLoader templateLoader;
 
 	private JMustacheCompiler mustacheCompiler;
 
@@ -68,7 +68,7 @@ public class JMustacheCompilerTest {
 
 		writer = new StringWriter();
 
-		templateLoader = new JMustacheTemplateLoader();
+		templateLoader = new DefaultMustacheTemplateLoader();
 		Compiler compiler = Mustache.compiler()
 				.zeroIsFalse(true)
 				.emptyStringIsFalse(true);

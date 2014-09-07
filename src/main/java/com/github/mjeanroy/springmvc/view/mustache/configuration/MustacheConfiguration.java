@@ -29,6 +29,8 @@ import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +40,6 @@ import org.springframework.core.env.Environment;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader;
 import com.samskivert.mustache.Mustache;
 
 @Configuration
@@ -84,21 +85,20 @@ public class MustacheConfiguration {
 
 	@Bean
 	public MustacheCompiler mustacheCompiler() {
-		JMustacheTemplateLoader templateLoader = templateLoader();
+		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		Compiler jmustacheCompiler = Mustache.compiler()
 				.nullValue("")
 				.defaultValue("")
 				.emptyStringIsFalse(true)
 				.zeroIsFalse(true)
-				.escapeHTML(true)
-				.withLoader(templateLoader);
+				.escapeHTML(true);
 
 		return new JMustacheCompiler(jmustacheCompiler, templateLoader);
 	}
 
 	@Bean
-	public JMustacheTemplateLoader templateLoader() {
-		return new JMustacheTemplateLoader();
+	public MustacheTemplateLoader mustacheTemplateLoader() {
+		return new DefaultMustacheTemplateLoader();
 	}
 
 	protected String getPrefix() {

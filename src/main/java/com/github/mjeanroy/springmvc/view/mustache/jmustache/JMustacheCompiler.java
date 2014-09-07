@@ -1,3 +1,27 @@
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import static com.samskivert.mustache.Mustache.Compiler;
@@ -8,6 +32,7 @@ import java.util.Map;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 import com.samskivert.mustache.Template;
 
@@ -24,7 +49,7 @@ public class JMustacheCompiler implements MustacheCompiler {
 	/**
 	 * Original JMustache template loader.
 	 */
-	private final JMustacheTemplateLoader templateLoader;
+	private final MustacheTemplateLoader templateLoader;
 
 	/**
 	 * Build new mustache compiler using JMustache API.
@@ -34,7 +59,7 @@ public class JMustacheCompiler implements MustacheCompiler {
 	 * @param compiler JMustache Compiler.
 	 * @param templateLoader Template Loader.
 	 */
-	public JMustacheCompiler(Compiler compiler, JMustacheTemplateLoader templateLoader) {
+	public JMustacheCompiler(Compiler compiler, MustacheTemplateLoader templateLoader) {
 		this.compiler = compiler;
 		this.templateLoader = templateLoader;
 	}
@@ -57,7 +82,7 @@ public class JMustacheCompiler implements MustacheCompiler {
 
 	@Override
 	public MustacheTemplate compile(String name, Map<String, String> aliases) {
-		final JMustacheTemplateLoader templateLoader;
+		final MustacheTemplateLoader templateLoader;
 
 		// If aliases is not empty, we should use a template loader that define
 		// these aliases only for this compilation.
@@ -78,9 +103,9 @@ public class JMustacheCompiler implements MustacheCompiler {
 		}
 	}
 
-	private Template getTemplate(Reader template, JMustacheTemplateLoader templateLoader) {
+	private Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
 		return compiler
-				.withLoader(templateLoader)
+				.withLoader(new JMustacheTemplateLoader(templateLoader))
 				.compile(template);
 	}
 }
