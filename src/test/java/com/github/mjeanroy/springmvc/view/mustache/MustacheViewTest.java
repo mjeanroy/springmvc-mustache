@@ -24,10 +24,14 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static com.samskivert.mustache.Mustache.Compiler;
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import com.samskivert.mustache.Mustache;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,15 +40,12 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
-import com.samskivert.mustache.Mustache;
+import static com.samskivert.mustache.Mustache.Compiler;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -98,7 +99,7 @@ public class MustacheViewTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		Map<String, String> partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
+		Map<String, String> partialsAliases = mustacheView.getAliases();
 		assertThat(partialsAliases)
 				.isNotNull()
 				.isEmpty();
@@ -120,7 +121,7 @@ public class MustacheViewTest {
 		String key = "foo";
 		String value = "bar";
 
-		Map<String, String> partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
+		Map<String, String> partialsAliases = mustacheView.getAliases();
 		assertThat(partialsAliases).isNotNull().isEmpty();
 
 		mustacheView.addAlias(key, value);

@@ -24,20 +24,18 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static org.springframework.util.Assert.hasText;
-import static org.springframework.util.Assert.notNull;
+import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
+import static org.springframework.util.Assert.hasText;
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Mustache View Resolver.
  */
 public class MustacheViewResolver extends AbstractTemplateViewResolver {
-
-	public static final String DEFAULT_LAYOUT_KEY = "content";
 
 	/** Mustache compiler. */
 	private final MustacheCompiler compiler;
@@ -80,7 +78,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 		setViewClass(requiredViewClass());
 		this.compiler = compiler;
-		this.layoutKey = DEFAULT_LAYOUT_KEY;
+		this.layoutKey = MustacheSettings.DEFAULT_LAYOUT_KEY;
 		this.layoutMappings = new HashMap<String, String>();
 	}
 

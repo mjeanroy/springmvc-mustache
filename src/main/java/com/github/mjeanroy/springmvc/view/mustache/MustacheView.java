@@ -24,7 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static org.springframework.util.Assert.notNull;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
+import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +33,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.web.servlet.view.AbstractTemplateView;
+import static java.util.Collections.unmodifiableMap;
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Implementation of mustache view.
@@ -97,6 +99,15 @@ public class MustacheView extends AbstractTemplateView {
 		this.aliases.put(key, value);
 	}
 
+	/**
+	 * Get list of aliases that map alias name to partial path.
+	 *
+	 * @return Aliases.
+	 */
+	public Map<String, String> getAliases() {
+		return unmodifiableMap(aliases);
+	}
+
 	@Override
 	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		notNull(compiler);
@@ -106,7 +117,16 @@ public class MustacheView extends AbstractTemplateView {
 	}
 
 	private void renderTemplate(Map<String, Object> model, Writer writer) {
-		MustacheTemplate template = compiler.compile(viewLayoutName(), aliases);
+		final Map<String, String> viewPartials = new HashMap<String, String>(aliases);
+		final Object object = model.get(MustacheSettings.PARTIALS_KEY);
+		if (object != null) {
+			if (!(object instanceof Map)) {
+				throw new MustachePartialsMappingException();
+			}
+			viewPartials.putAll((Map<String, String>) object);
+		}
+
+		final MustacheTemplate template = compiler.compile(viewLayoutName(), viewPartials);
 		template.execute(model, writer);
 	}
 

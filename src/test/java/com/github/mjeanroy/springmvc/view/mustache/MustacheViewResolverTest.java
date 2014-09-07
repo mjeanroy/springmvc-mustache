@@ -24,15 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("unchecked")
 public class MustacheViewResolverTest {
@@ -69,7 +71,7 @@ public class MustacheViewResolverTest {
 		assertThat(prefix).isNotNull().isEmpty();
 		assertThat(suffix).isNotNull().isEmpty();
 		assertThat(defaultLayout).isNull();
-		assertThat(layoutKey).isNotNull().isEqualTo(MustacheViewResolver.DEFAULT_LAYOUT_KEY);
+		assertThat(layoutKey).isNotNull().isEqualTo(MustacheSettings.DEFAULT_LAYOUT_KEY);
 		assertThat(mappings).isNotNull().isEmpty();
 	}
 
@@ -185,7 +187,7 @@ public class MustacheViewResolverTest {
 		// Check partials mapping
 		Map<String, String> partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
 		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(1).contains(
-				entry(MustacheViewResolver.DEFAULT_LAYOUT_KEY, viewName)
+				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName)
 		);
 	}
 
@@ -209,7 +211,7 @@ public class MustacheViewResolverTest {
 		assertThat(mustacheView1.getUrl()).isNotNull().isEqualTo(layout1);
 		Map<String, String> partialsAliases1 = (Map<String, String>) readField(mustacheView1, "aliases", true);
 		assertThat(partialsAliases1).isNotNull().isNotEmpty().hasSize(1).contains(
-				entry(MustacheViewResolver.DEFAULT_LAYOUT_KEY, viewName1)
+				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName1)
 		);
 
 		// Check second view
@@ -218,7 +220,7 @@ public class MustacheViewResolverTest {
 		assertThat(mustacheView2.getUrl()).isNotNull().isEqualTo(layout2);
 		Map<String, String> partialsAliases2 = (Map<String, String>) readField(mustacheView2, "aliases", true);
 		assertThat(partialsAliases2).isNotNull().isNotEmpty().hasSize(1).contains(
-				entry(MustacheViewResolver.DEFAULT_LAYOUT_KEY, viewName2)
+				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName2)
 		);
 	}
 }
