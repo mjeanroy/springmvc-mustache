@@ -24,22 +24,23 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
-import com.samskivert.mustache.Mustache;
+import static com.samskivert.mustache.Mustache.Compiler;
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Integer.parseInt;
+import static java.lang.String.valueOf;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import static com.samskivert.mustache.Mustache.Compiler;
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
-import static java.lang.String.valueOf;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import com.samskivert.mustache.Mustache;
 
 @Configuration
 @PropertySource(
@@ -82,7 +83,7 @@ public class MustacheConfiguration {
 	 * This settings set the view names (or name patterns) that can be handled by
 	 * {@link com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver}
 	 */
-	public static final String VIEW_NAMES = "*.template.html,*.mustache";
+	public static final String VIEW_NAMES = "*";
 
 	@Autowired
 	private Environment environment;
