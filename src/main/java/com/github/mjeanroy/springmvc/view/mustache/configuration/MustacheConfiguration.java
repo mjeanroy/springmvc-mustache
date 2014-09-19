@@ -28,6 +28,11 @@ import static com.samskivert.mustache.Mustache.Compiler;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -85,6 +90,25 @@ public class MustacheConfiguration {
 	 */
 	public static final String VIEW_NAMES = "*";
 
+	/**
+	 * Default layout value
+	 * on {@link MustacheViewResolver#setDefaultLayout(String)}.
+	 * By default, this feature is disabled.
+	 */
+	public static final String DEFAULT_LAYOUT = "";
+
+	/**
+	 * Default key that can be used to map view to partials in default layout.
+	 * This property is set on {@link MustacheViewResolver#setLayoutKey(String)}.
+	 */
+	public static final String LAYOUT_KEY = "content";
+
+	/**
+	 * Default key that can be used to define layout mappings.
+	 * This property is set on {@link MustacheViewResolver#setLayoutMappings(java.util.Map)} (String)}.
+	 */
+	public static final String LAYOUT_MAPPINGS = "";
+
 	@Autowired
 	private Environment environment;
 
@@ -105,6 +129,9 @@ public class MustacheConfiguration {
 		int order = getOrder();
 		boolean cache = getCache();
 		String[] viewNames = getViewNames();
+		String defaultLayout = getDefaultLayout();
+		String layoutKey = getLayoutKey();
+		Map<String, String> mappings = getLayoutMappings();
 
 		MustacheViewResolver resolver = new MustacheViewResolver(compiler);
 		resolver.setCache(cache);
@@ -112,6 +139,16 @@ public class MustacheConfiguration {
 		resolver.setSuffix(suffix);
 		resolver.setOrder(order);
 		resolver.setViewNames(viewNames);
+		resolver.setLayoutKey(layoutKey);
+
+		if (defaultLayout != null && !defaultLayout.isEmpty()) {
+			resolver.setDefaultLayout(defaultLayout);
+		}
+
+		if (!mappings.isEmpty()) {
+			resolver.setLayoutMappings(mappings);
+		}
+
 		return resolver;
 	}
 
@@ -205,5 +242,58 @@ public class MustacheConfiguration {
 			names[i] = names[i].trim();
 		}
 		return names;
+	}
+
+	/**
+	 * Resolve default layout to use.
+	 * This layout can be used to define template to be used as main layout and render
+	 * view within this layout.
+	 *
+	 * @return Layout name.
+	 */
+	protected String getDefaultLayout() {
+		return environment.getProperty("mustache.defaultLayout", DEFAULT_LAYOUT).trim();
+	}
+
+	/**
+	 * Resolve default key to use as partials alias in default view layout.
+	 *
+	 * @return Partial key in layout.
+	 */
+	protected String getLayoutKey() {
+		return environment.getProperty("mustache.layoutKey", LAYOUT_KEY).trim();
+	}
+
+	/**
+	 * Get mappings to use with resolvers.
+	 *
+	 * @return Layouts mappings
+	 */
+	protected Map<String, String> getLayoutMappings() {
+		String mappingsValues = environment.getProperty("mustache.layoutMappings", LAYOUT_MAPPINGS).trim();
+
+		if (mappingsValues == null || mappingsValues.isEmpty()) {
+			return emptyMap();
+		}
+
+		Map<String, String> mappings = new HashMap<String, String>();
+		String[] values = mappingsValues.split(";");
+		if (values != null && values.length > 0) {
+			for (String value : values) {
+				String val = value == null ? "" : value.trim();
+				if (val.isEmpty()) {
+					continue;
+				}
+
+				String[] mapping = val.split(":");
+				if (mapping.length != 2) {
+					throw new IllegalArgumentException("Mapping must use [viewName]:[layout] format!");
+				}
+
+				mappings.put(mapping[0].trim(), mapping[1].trim());
+			}
+		}
+
+		return unmodifiableMap(mappings);
 	}
 }
