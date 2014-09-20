@@ -13,7 +13,7 @@ With Maven, add explicit dependency:
     <dependency>
         <groupId>com.github.mjeanroy</groupId>
         <artifactId>springmvc-mustache</artifactId>
-        <version>0.1.0<version>
+        <version>0.1.1<version>
     </dependency>
 ```
 
