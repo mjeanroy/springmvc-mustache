@@ -29,17 +29,17 @@ import java.util.Map;
 
 /**
  * Mustache template loader.
- *
+ * <p/>
  * Resource are retrieved using {@link org.springframework.core.io.DefaultResourceLoader} by default unless a
  * specific resource loader is used during construction.
- *
+ * <p/>
  * Prefix and Suffix can be set, these will be used to retrieve template by its name (if given
  * does not already starts with prefix and does not already ends with suffix).
- *
+ * <p/>
  * For example:
  * - If prefix and suffix are null:
  * getTemplate("foo"); // Call internally resourceLoader.getResource("foo");
- *
+ * <p/>
  * - If prefix or suffix are not null:
  * getTemplate("foo"); // Call internally resourceLoader.getResource({prefix} + "foo" + {suffix});
  */
@@ -49,7 +49,6 @@ public interface MustacheTemplateLoader {
 	 * Get template from name.
 	 *
 	 * @param name Name of template.
-	 *
 	 * @return Template reader.
 	 */
 	Reader getTemplate(String name);
@@ -57,12 +56,20 @@ public interface MustacheTemplateLoader {
 	/**
 	 * Get template from name using partials mapping.
 	 *
-	 * @param name           Name of template.
+	 * @param name Name of template.
 	 * @param partialAliases Partials mapping.
-	 *
 	 * @return Template reader.
 	 */
 	Reader getTemplate(String name, Map<String, String> partialAliases);
+
+	/**
+	 * Resolve template location from template name.
+	 * This location must include prefix and suffix of template location.
+	 *
+	 * @param name Template name.
+	 * @return Full template location.
+	 */
+	String resolve(String name);
 
 	/**
 	 * Set prefix on template names.
@@ -77,6 +84,20 @@ public interface MustacheTemplateLoader {
 	 * @param suffix New suffix.
 	 */
 	void setSuffix(String suffix);
+
+	/**
+	 * Get prefix used on template names.
+	 *
+	 * @return Prefix.
+	 */
+	String getPrefix();
+
+	/**
+	 * Get suffix used on template names.
+	 *
+	 * @return Prefix.
+	 */
+	String getSuffix();
 
 	/**
 	 * Add partials mapping.

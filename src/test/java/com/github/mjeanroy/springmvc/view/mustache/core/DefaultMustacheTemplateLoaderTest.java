@@ -24,16 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.rules.ExpectedException.none;
-import static org.mockito.Mockito.*;
-
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,11 +36,22 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.junit.rules.ExpectedException.none;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
-public class JMustacheTemplateLoaderTest {
+public class DefaultMustacheTemplateLoaderTest {
 
 	@Rule
 	public ExpectedException thrown = none();
@@ -210,8 +212,7 @@ public class JMustacheTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_read_template_using_prefix_and_suffix()
-			throws Exception {
+	public void it_should_read_template_using_prefix_and_suffix() throws Exception {
 		String name = "foo";
 		String prefix = "/";
 		String suffix = ".template.html";
@@ -229,5 +230,48 @@ public class JMustacheTemplateLoaderTest {
 		assertThat(reader).isNotNull();
 		verify(resourceLoader).getResource(templateName);
 		verify(resourceLoader, never()).getResource(name);
+	}
+
+	@Test
+	public void it_should_get_and_set_prefix() {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		assertThat(mustacheTemplateLoader.getPrefix()).isNotNull().isNotEmpty().isEqualTo(prefix);
+
+		String newPrefix = "foobar";
+		mustacheTemplateLoader.setPrefix(newPrefix);
+		assertThat(mustacheTemplateLoader.getPrefix()).isNotNull().isNotEmpty().isEqualTo(newPrefix);
+	}
+
+	@Test
+	public void it_should_get_and_set_suffix() {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		assertThat(mustacheTemplateLoader.getSuffix()).isNotNull().isNotEmpty().isEqualTo(suffix);
+
+		String newSuffix = "foobar";
+		mustacheTemplateLoader.setSuffix(newSuffix);
+		assertThat(mustacheTemplateLoader.getSuffix()).isNotNull().isNotEmpty().isEqualTo(newSuffix);
+	}
+
+	@Test
+	public void it_should_resolve_template_location_without_prefix_suffix() {
+		String templateName = "foo";
+		String location = mustacheTemplateLoader.resolve(templateName);
+		assertThat(location).isNotNull().isNotEmpty().isEqualTo(templateName);
+	}
+
+	@Test
+	public void it_should_resolve_template_location_with_prefix_suffix() {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		String templateName = "foo";
+		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+
+		String location = mustacheTemplateLoader.resolve(templateName);
+
+		assertThat(location).isNotNull().isNotEmpty().isEqualTo(prefix + templateName + suffix);
 	}
 }

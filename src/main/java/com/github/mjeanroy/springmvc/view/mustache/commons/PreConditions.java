@@ -22,44 +22,31 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
-
-import java.io.Writer;
-import java.util.Map;
-
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
-import com.samskivert.mustache.MustacheException;
-import com.samskivert.mustache.Template;
+package com.github.mjeanroy.springmvc.view.mustache.commons;
 
 /**
- * Implementation of {@link MustacheTemplate} using JMustache
- * as real template implementation.
+ * Commons static pre-conditions utilities.
  */
-public class JMustacheTemplate implements MustacheTemplate {
+public final class PreConditions {
 
-	/**
-	 * JMustache template.
-	 * This template will be rendered using jmustache api.
-	 */
-	private final Template template;
-
-	/**
-	 * Build new template.
-	 *
-	 * @param template JMustache template.
-	 */
-	public JMustacheTemplate(Template template) {
-		this.template = template;
+	private PreConditions() {
 	}
 
-	@Override
-	public void execute(Map<String, Object> model, Writer writer) {
-		try {
-			template.execute(model, writer);
+	/**
+	 * Check that a given object is not null.
+	 * If object is null, a {@link java.lang.NullPointerException} is thrown
+	 * with given message.
+	 * If object is not null, it is automatically returns.
+	 *
+	 * @param object  Object to check.
+	 * @param message Exception message.
+	 * @param <T>     Object Generic Type.
+	 * @return Non null object.
+	 */
+	public static <T> T notNull(T object, String message) {
+		if (object == null) {
+			throw new NullPointerException(message);
 		}
-		catch (MustacheException ex) {
-			throw new MustacheCompilationException(ex);
-		}
+		return object;
 	}
 }

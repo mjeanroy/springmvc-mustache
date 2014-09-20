@@ -122,6 +122,16 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	}
 
 	@Override
+	public String getPrefix() {
+		return prefix;
+	}
+
+	@Override
+	public String getSuffix() {
+		return suffix;
+	}
+
+	@Override
 	public void addPartialAliases(Map<String, String> partialAliases) {
 		notNull(partialAliases);
 		this.partialAliases.putAll(partialAliases);
@@ -139,7 +149,7 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 			realName = partialsAliases.get(name);
 		}
 
-		String templateName = formatName(realName);
+		String templateName = resolve(realName);
 		Resource resource = resourceLoader.getResource(templateName);
 
 		if (!resource.exists()) {
@@ -155,7 +165,8 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 		}
 	}
 
-	private String formatName(String name) {
+	@Override
+	public String resolve(String name) {
 		if (prefix == null && suffix == null) {
 			return name;
 		}

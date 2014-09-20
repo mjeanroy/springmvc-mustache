@@ -22,44 +22,21 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
-import java.io.Writer;
-import java.util.Map;
-
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
-import com.samskivert.mustache.MustacheException;
-import com.samskivert.mustache.Template;
+import java.io.IOException;
 
 /**
- * Implementation of {@link MustacheTemplate} using JMustache
- * as real template implementation.
+ * Exception thrown when an IO exception is thrown during template content extraction.
  */
-public class JMustacheTemplate implements MustacheTemplate {
+public final class MustacheIOException extends RuntimeException {
 
 	/**
-	 * JMustache template.
-	 * This template will be rendered using jmustache api.
-	 */
-	private final Template template;
-
-	/**
-	 * Build new template.
+	 * Build new exception using original IO Exception.
 	 *
-	 * @param template JMustache template.
+	 * @param ex Original Exception.
 	 */
-	public JMustacheTemplate(Template template) {
-		this.template = template;
-	}
-
-	@Override
-	public void execute(Map<String, Object> model, Writer writer) {
-		try {
-			template.execute(model, writer);
-		}
-		catch (MustacheException ex) {
-			throw new MustacheCompilationException(ex);
-		}
+	public MustacheIOException(IOException ex) {
+		super(ex);
 	}
 }
