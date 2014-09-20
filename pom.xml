@@ -68,6 +68,7 @@
 		<slf4j.version>1.7.6</slf4j.version>
 		<logback.version>1.1.1</logback.version>
 		<jmustache.version>1.9</jmustache.version>
+		<handlebars-version>1.3.2</handlebars-version>
 		<spring.version>4.1.0.RELEASE</spring.version>
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
@@ -116,6 +117,13 @@
 			<groupId>com.samskivert</groupId>
 			<artifactId>jmustache</artifactId>
 			<version>${jmustache.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars</artifactId>
+			<version>${handlebars-version}</version>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
