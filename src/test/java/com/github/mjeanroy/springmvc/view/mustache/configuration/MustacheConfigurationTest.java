@@ -24,20 +24,37 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import org.springframework.context.annotation.ImportSelector;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.getAnnotationValue;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Select mustache configuration to use.
- */
-public class MustacheConfiguration implements ImportSelector {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-	@Override
-	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);
-		Class klass = provider.configuration();
-		return new String[]{ klass.getName() };
+public class MustacheConfigurationTest {
+
+	private MustacheConfiguration mustacheConfiguration;
+
+	@Before
+	public void setUp() {
+		mustacheConfiguration = new MustacheConfiguration();
+	}
+
+	@Test
+	public void it_should_select_configuration_class() {
+		MustacheProvider provider = MustacheProvider.JMUSTACHE;
+		Map<String, Object> attributes = new HashMap<String, Object>();
+		attributes.put("provider", provider);
+
+		AnnotationMetadata annotationMetadata = mock(AnnotationMetadata.class);
+		when(annotationMetadata.getAnnotationAttributes(EnableMustache.class.getName())).thenReturn(attributes);
+
+		String[] imports = mustacheConfiguration.selectImports(annotationMetadata);
+
+		assertThat(imports).isNotNull().isNotEmpty().hasSize(1).containsOnly(provider.configuration().getName());
 	}
 }
