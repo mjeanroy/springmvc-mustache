@@ -22,46 +22,51 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
-import com.samskivert.mustache.Template;
 
-import java.io.Reader;
+import java.io.IOException;
 import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-import static com.samskivert.mustache.Mustache.Compiler;
 
 /**
- * Mustache Compiler using JMustache as real implementation.
+ * Mustache compiler using Java Handlebar as real implementation.
  */
-public class JMustacheCompiler implements MustacheCompiler {
+public class HandlebarCompiler implements MustacheCompiler {
 
 	/**
-	 * Original JMustache compiler.
+	 * Handlebar compiler.
+	 * This compiler will be used internally to compile template.
 	 */
-	private final Compiler compiler;
+	private final Handlebars handlebars;
 
 	/**
-	 * Original JMustache template loader.
+	 * Handlebar template loader implementation.
+	 * This loader will be used internally to load templates by name.
 	 */
-	private final MustacheTemplateLoader templateLoader;
+	private final HandlebarTemplateLoader templateLoader;
 
 	/**
-	 * Build new mustache compiler using JMustache API.
-	 * This compiler need a {@link Compiler} to produce compiled template
+	 * Build new mustache compiler using Handlebars API.
+	 * This compiler need a {@link Handlebars} to produce compiled template
 	 * and a {@link MustacheTemplateLoader} to load partials defined in templates.
 	 *
-	 * @param compiler JMustache Compiler.
-	 * @param templateLoader Template Loader.
+	 * @param handlebars     Handlebars Compiler (must not be null).
+	 * @param templateLoader Template Loader (must not be null).
 	 */
-	public JMustacheCompiler(Compiler compiler, MustacheTemplateLoader templateLoader) {
-		this.compiler = notNull(compiler, "Compiler must not be null");
-		this.templateLoader = notNull(templateLoader, "Template loader must not be null");
+	public HandlebarCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
+		notNull(templateLoader, "Template loader must not be null");
+		notNull(handlebars, "Handlebars compiler must not be null");
+
+		this.templateLoader = new HandlebarTemplateLoader(templateLoader);
+		this.handlebars = handlebars.with(this.templateLoader);
 	}
 
 	@Override
@@ -91,11 +96,10 @@ public class JMustacheCompiler implements MustacheCompiler {
 		notNull(name, "Template name must not be null");
 
 		try {
-			final Reader template = templateLoader.getTemplate(name);
-			final Template result = getTemplate(template, templateLoader);
-			return new JMustacheTemplate(result);
+			Template template = handlebars.compile(name);
+			return new HandlebarTemplate(template);
 		}
-		catch (Exception ex) {
+		catch (IOException ex) {
 			throw new MustacheCompilationException(ex);
 		}
 	}
@@ -109,11 +113,5 @@ public class JMustacheCompiler implements MustacheCompiler {
 	@Override
 	public void removeTemporaryPartialAliases() {
 		templateLoader.removeTemporaryPartialAliases();
-	}
-
-	private Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
-		return compiler
-				.withLoader(new JMustacheTemplateLoader(templateLoader))
-				.compile(template);
 	}
 }

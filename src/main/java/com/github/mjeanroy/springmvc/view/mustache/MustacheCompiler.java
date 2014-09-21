@@ -34,16 +34,6 @@ public interface MustacheCompiler {
 
 	/**
 	 * Compile template.
-	 * This compilation allow partial aliases to be used for template compilation.
-	 *
-	 * @param name Template name.
-	 * @param partialAliases Partials aliases that will be used during template compilation.
-	 * @return Compiled template.
-	 */
-	MustacheTemplate compile(String name, Map<String, String> partialAliases);
-
-	/**
-	 * Compile template.
 	 *
 	 * @param name Template name.
 	 * @return Compiled template.
@@ -63,4 +53,35 @@ public interface MustacheCompiler {
 	 * @param suffix New suffix value.
 	 */
 	void setSuffix(String suffix);
+
+	/**
+	 * Get prefix prepended to template names.
+	 *
+	 * @return Prefix.
+	 */
+	String getPrefix();
+
+	/**
+	 * Get suffix appended to template names.
+	 *
+	 * @return Suffix.
+	 */
+	String getSuffix();
+
+	/**
+	 * Add temporary partials aliases.
+	 * These partials can be removed later with {@link #removeTemporaryPartialAliases()}
+	 * method.
+	 * Implementation should be thread safe.
+	 *
+	 * @param partialAliases Partials aliases to add.
+	 */
+	void addTemporaryPartialAliases(Map<String, String> partialAliases);
+
+	/**
+	 * Remove temporary partial aliases previously added
+	 * with {@link #addTemporaryPartialAliases(java.util.Map)} method.
+	 * Implementation should be thread safe.
+	 */
+	void removeTemporaryPartialAliases();
 }

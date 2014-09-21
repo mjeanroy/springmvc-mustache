@@ -42,11 +42,31 @@ public final class PreConditions {
 	 * @param message Exception message.
 	 * @param <T>     Object Generic Type.
 	 * @return Non null object.
+	 * @throws java.lang.NullPointerException if object is null.
 	 */
 	public static <T> T notNull(T object, String message) {
 		if (object == null) {
 			throw new NullPointerException(message);
 		}
 		return object;
+	}
+
+	/**
+	 * Check that a given string value is not blank (i.e. not null,
+	 * not empty and does not contain only whitespaces).
+	 * If value is blank, an {@link java.lang.IllegalArgumentException} is
+	 * thrown.
+	 * If value is not blank, original string value is automatically returned.
+	 *
+	 * @param value   String value.
+	 * @param message Error message given to exception.
+	 * @return Original string value.
+	 * @throws java.lang.IllegalArgumentException if value is blank.
+	 */
+	public static String hasText(String value, String message) {
+		if (value == null || value.trim().isEmpty()) {
+			throw new IllegalArgumentException(message);
+		}
+		return value;
 	}
 }

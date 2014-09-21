@@ -54,15 +54,6 @@ public interface MustacheTemplateLoader {
 	Reader getTemplate(String name);
 
 	/**
-	 * Get template from name using partials mapping.
-	 *
-	 * @param name Name of template.
-	 * @param partialAliases Partials mapping.
-	 * @return Template reader.
-	 */
-	Reader getTemplate(String name, Map<String, String> partialAliases);
-
-	/**
 	 * Resolve template location from template name.
 	 * This location must include prefix and suffix of template location.
 	 *
@@ -101,15 +92,28 @@ public interface MustacheTemplateLoader {
 
 	/**
 	 * Add partials mapping.
+	 * These partials cannot be removed.
+	 * If you need partials aliases and remove them after compilation,
+	 * use {@link #addTemporaryPartialAliases(java.util.Map)} method.
 	 *
 	 * @param partialAliases Partials aliases.
 	 */
 	void addPartialAliases(Map<String, String> partialAliases);
 
 	/**
-	 * Clone current instance.
+	 * Add temporary partials aliases.
+	 * These partials can be removed later with {@link #removeTemporaryPartialAliases()}
+	 * method.
+	 * Implementation should be thread safe.
 	 *
-	 * @return Clone instance.
+	 * @param partialAliases Partials aliases to add.
 	 */
-	MustacheTemplateLoader clone();
+	void addTemporaryPartialAliases(Map<String, String> partialAliases);
+
+	/**
+	 * Remove temporary partial aliases previously added
+	 * with {@link #addTemporaryPartialAliases(java.util.Map)} method.
+	 * Implementation should be thread safe.
+	 */
+	void removeTemporaryPartialAliases();
 }

@@ -29,8 +29,8 @@ import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.util.Assert.hasText;
-import static org.springframework.util.Assert.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Mustache View Resolver.
@@ -74,10 +74,8 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param compiler Mustache compiler.
 	 */
 	public MustacheViewResolver(MustacheCompiler compiler) {
-		notNull(compiler);
-
 		setViewClass(requiredViewClass());
-		this.compiler = compiler;
+		this.compiler = notNull(compiler, "Compiler must not be null");
 		this.layoutKey = MustacheSettings.DEFAULT_LAYOUT_KEY;
 		this.layoutMappings = new HashMap<String, String>();
 	}
@@ -105,7 +103,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param defaultLayout Default layout.
 	 */
 	public void setDefaultLayout(String defaultLayout) {
-		hasText(defaultLayout);
+		hasText(defaultLayout, "Default layout must not be empty");
 		this.defaultLayout = defaultLayout;
 	}
 
@@ -115,7 +113,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param layoutKey New view layout key.
 	 */
 	public void setLayoutKey(String layoutKey) {
-		hasText(layoutKey);
+		hasText(layoutKey, "Layout key must not be empty");
 		this.layoutKey = layoutKey;
 	}
 
@@ -125,7 +123,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param layoutMappings New mappings.
 	 */
 	public void setLayoutMappings(Map<String, String> layoutMappings) {
-		notNull(layoutMappings);
+		notNull(layoutMappings, "Layout mappings must not be null");
 		this.layoutMappings.clear();
 		for (Map.Entry<String, String> entry : layoutMappings.entrySet()) {
 			addLayoutMapping(entry.getKey(), entry.getValue());
@@ -139,8 +137,8 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param layoutName Layout name to use for given view.
 	 */
 	public void addLayoutMapping(String viewName, String layoutName) {
-		notNull(viewName);
-		notNull(layoutName);
+		notNull(viewName, "View name must not be null");
+		notNull(layoutName, "Layout name must not be null");
 		this.layoutMappings.put(viewName, layoutName);
 	}
 

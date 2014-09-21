@@ -142,46 +142,52 @@ public class DefaultMustacheTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_clone_template_loader() throws Exception {
+	public void it_should_add_temporary_partial_aliases() throws Exception {
 		String k1 = "foo";
 		String v1 = "bar";
+		String k2 = "bar";
+		String v2 = "foo";
+
 		Map<String, String> aliases = new HashMap<String, String>();
 		aliases.put(k1, v1);
+		aliases.put(k2, v2);
 
 		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
-		loader.addPartialAliases(aliases);
-		Map<String, String> originalPartialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
+		loader.addTemporaryPartialAliases(aliases);
 
-		DefaultMustacheTemplateLoader clone = loader.clone();
-
-		assertThat(clone).isNotSameAs(loader);
-
-		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
-		String prefix = (String) readField(clone, "prefix", true);
-		String suffix = (String) readField(clone, "suffix", true);
-		Map<String, String> partialsAliases = (Map<String, String>) readField(clone, "partialAliases", true);
-
-		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
-		assertThat(prefix).isNotNull().isEqualTo(this.prefix);
-		assertThat(suffix).isNotNull().isEqualTo(this.suffix);
-		assertThat(partialsAliases).isNotNull().isNotSameAs(originalPartialsAliases).isEqualTo(originalPartialsAliases);
+		ThreadLocal<Map<String, String>> tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
+		Map<String, String> partialsAliases = tl.get();
+		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(aliases.size()).containsOnly(
+				entry(k1, v1),
+				entry(k2, v2)
+		);
 	}
 
 	@Test
-	public void it_should_clone_template_loader_without_prefix_suffix() throws Exception {
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader);
-		DefaultMustacheTemplateLoader clone = loader.clone();
+	public void it_should_remove_temporary_partial_aliases() throws Exception {
+		String k1 = "foo";
+		String v1 = "bar";
+		String k2 = "bar";
+		String v2 = "foo";
 
-		assertThat(clone).isNotSameAs(loader);
+		Map<String, String> aliases = new HashMap<String, String>();
+		aliases.put(k1, v1);
+		aliases.put(k2, v2);
 
-		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
-		String prefix = (String) readField(clone, "prefix", true);
-		String suffix = (String) readField(clone, "suffix", true);
-		Map<String, String> partialsAliases = (Map<String, String>) readField(clone, "partialAliases", true);
+		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		loader.addTemporaryPartialAliases(aliases);
 
-		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
-		assertThat(prefix).isNull();
-		assertThat(suffix).isNull();
+		ThreadLocal<Map<String, String>> tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
+		Map<String, String> partialsAliases = tl.get();
+		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(aliases.size()).containsOnly(
+				entry(k1, v1),
+				entry(k2, v2)
+		);
+
+		loader.removeTemporaryPartialAliases();
+
+		tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
+		partialsAliases = tl.get();
 		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 

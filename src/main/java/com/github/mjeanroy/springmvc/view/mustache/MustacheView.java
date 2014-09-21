@@ -119,6 +119,7 @@ public class MustacheView extends AbstractTemplateView {
 	private void renderTemplate(Map<String, Object> model, Writer writer) {
 		final Map<String, String> viewPartials = new HashMap<String, String>(aliases);
 		final Object object = model.get(MustacheSettings.PARTIALS_KEY);
+
 		if (object != null) {
 			if (!(object instanceof Map)) {
 				throw new MustachePartialsMappingException();
@@ -126,8 +127,20 @@ public class MustacheView extends AbstractTemplateView {
 			viewPartials.putAll((Map<String, String>) object);
 		}
 
-		final MustacheTemplate template = compiler.compile(viewLayoutName(), viewPartials);
-		template.execute(model, writer);
+		final boolean hasAliases = !viewPartials.isEmpty();
+		if (hasAliases) {
+			compiler.addTemporaryPartialAliases(viewPartials);
+		}
+
+		try {
+			final MustacheTemplate template = compiler.compile(viewLayoutName());
+			template.execute(model, writer);
+		}
+		finally {
+			if (hasAliases) {
+				compiler.removeTemporaryPartialAliases();
+			}
+		}
 	}
 
 	private String viewLayoutName() {

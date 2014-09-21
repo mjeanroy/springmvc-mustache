@@ -22,29 +22,42 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.samskivert.mustache.Mustache.Compiler;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
-public class JMustacheCompilerTest {
+public class MustacheView_JMustache_Test {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
+
+	@Mock
+	private HttpServletRequest request;
+
+	@Mock
+	private HttpServletResponse response;
 
 	private StringWriter writer;
 
@@ -52,7 +65,7 @@ public class JMustacheCompilerTest {
 
 	private MustacheTemplateLoader templateLoader;
 
-	private JMustacheCompiler mustacheCompiler;
+	private MustacheView mustacheView;
 
 	@Before
 	public void setUp() throws Exception {
@@ -62,23 +75,69 @@ public class JMustacheCompilerTest {
 		this.model.put("emptyString", "");
 
 		writer = new StringWriter();
+		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
 		templateLoader = new DefaultMustacheTemplateLoader();
 		Compiler compiler = Mustache.compiler()
 				.zeroIsFalse(true)
 				.emptyStringIsFalse(true);
 
-		mustacheCompiler = new JMustacheCompiler(compiler, templateLoader);
+		MustacheCompiler mustacheCompiler = new JMustacheCompiler(compiler, templateLoader);
+		mustacheView = new MustacheView();
+		mustacheView.setCompiler(mustacheCompiler);
+	}
+
+	@Test
+	public void it_should_add_partial_aliases() throws Exception {
+		String k1 = "foo1";
+		String v1 = "bar1";
+
+		String k2 = "foo2";
+		String v2 = "bar2";
+
+		Map<String, String> aliases = new HashMap<String, String>();
+		aliases.put(k1, v1);
+		aliases.put(k2, v2);
+
+		Map<String, String> partialsAliases = mustacheView.getAliases();
+		assertThat(partialsAliases)
+				.isNotNull()
+				.isEmpty();
+
+		mustacheView.addAliases(aliases);
+
+		partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
+		assertThat(partialsAliases)
+				.isNotNull()
+				.hasSize(aliases.size())
+				.contains(
+						entry(k1, v1),
+						entry(k2, v2)
+				);
+	}
+
+	@Test
+	public void it_should_add_partial_alias() throws Exception {
+		String key = "foo";
+		String value = "bar";
+
+		Map<String, String> partialsAliases = mustacheView.getAliases();
+		assertThat(partialsAliases).isNotNull().isEmpty();
+
+		mustacheView.addAlias(key, value);
+
+		partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
+		assertThat(partialsAliases).isNotNull().hasSize(1).contains(
+				entry(key, value)
+		);
 	}
 
 	@Test
 	public void it_should_render_template() throws Exception {
-		String name = "/templates/foo.template.html";
+		mustacheView.setUrl("/templates/foo.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>Hello foo</div>";
@@ -89,12 +148,10 @@ public class JMustacheCompilerTest {
 
 	@Test
 	public void it_should_treat_zero_as_falsy() throws Exception {
-		String name = "/templates/zero.template.html";
+		mustacheView.setUrl("/templates/zero.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +
@@ -108,12 +165,10 @@ public class JMustacheCompilerTest {
 
 	@Test
 	public void it_should_treat_empty_string_as_falsy() throws Exception {
-		String name = "/templates/empty-string.template.html";
+		mustacheView.setUrl("/templates/empty-string.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +
@@ -127,12 +182,10 @@ public class JMustacheCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial() throws Exception {
-		String name = "/templates/composite.template.html";
+		mustacheView.setUrl("/templates/composite.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +
@@ -147,12 +200,10 @@ public class JMustacheCompilerTest {
 	public void it_should_display_template_with_partial_using_prefix_suffix() throws Exception {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
-		String name = "/templates/composite-aliases.template.html";
+		mustacheView.setUrl("/templates/composite-aliases.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +
@@ -167,12 +218,10 @@ public class JMustacheCompilerTest {
 	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() throws Exception {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
-		String name = "/templates/composite.template.html";
+		mustacheView.setUrl("/templates/composite.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +
@@ -185,18 +234,11 @@ public class JMustacheCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial_aliases() throws Exception {
-		Map<String, String> aliases = new HashMap<String, String>();
-		aliases.put("foo", "/templates/foo.template.html");
-		templateLoader.addTemporaryPartialAliases(aliases);
+		mustacheView.addAlias("foo", "/templates/foo.template.html");
+		mustacheView.setUrl("/templates/composite-aliases.template.html");
+		mustacheView.renderMergedTemplateModel(model, request, response);
 
-		String name = "/templates/composite-aliases.template.html";
-
-		MustacheTemplate template = mustacheCompiler.compile(name);
-
-		// Try to execute template to check real result
-		template.execute(model, writer);
-
-		templateLoader.removeTemporaryPartialAliases();
+		verify(response).getWriter();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +

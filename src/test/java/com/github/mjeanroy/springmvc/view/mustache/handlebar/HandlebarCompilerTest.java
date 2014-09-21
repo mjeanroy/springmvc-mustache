@@ -22,40 +22,44 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
-import com.samskivert.mustache.Mustache;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.samskivert.mustache.Mustache.Compiler;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SuppressWarnings("unchecked")
-@RunWith(MockitoJUnitRunner.class)
-public class JMustacheCompilerTest {
+public class HandlebarCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
+
+	private Handlebars hb;
+
+	private MustacheTemplateLoader templateLoader;
+
+	private HandlebarCompiler hbCompiler;
 
 	private StringWriter writer;
 
 	private Map<String, Object> model;
 
-	private MustacheTemplateLoader templateLoader;
-
-	private JMustacheCompiler mustacheCompiler;
-
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.model = new HashMap<String, Object>();
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
@@ -64,18 +68,33 @@ public class JMustacheCompilerTest {
 		writer = new StringWriter();
 
 		templateLoader = new DefaultMustacheTemplateLoader();
-		Compiler compiler = Mustache.compiler()
-				.zeroIsFalse(true)
-				.emptyStringIsFalse(true);
+		hb = new Handlebars();
 
-		mustacheCompiler = new JMustacheCompiler(compiler, templateLoader);
+		hbCompiler = new HandlebarCompiler(hb, templateLoader);
+	}
+
+	@Test
+	public void it_should_build_a_compiler() throws Exception {
+		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
+
+		Handlebars handlebars = mock(Handlebars.class);
+		when(handlebars.with(any(TemplateLoader.class))).thenReturn(handlebars);
+
+		HandlebarCompiler hbCompiler = new HandlebarCompiler(handlebars, templateLoader);
+
+		Handlebars hb = (Handlebars) readField(hbCompiler, "handlebars", true);
+		HandlebarTemplateLoader hbTemplateLoader = (HandlebarTemplateLoader) readField(hbCompiler, "templateLoader", true);
+
+		assertThat(hb).isNotNull().isSameAs(handlebars);
+		assertThat(hbTemplateLoader).isNotNull();
+		verify(handlebars).with(hbTemplateLoader);
 	}
 
 	@Test
 	public void it_should_render_template() throws Exception {
 		String name = "/templates/foo.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
@@ -91,7 +110,7 @@ public class JMustacheCompilerTest {
 	public void it_should_treat_zero_as_falsy() throws Exception {
 		String name = "/templates/zero.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
@@ -110,7 +129,7 @@ public class JMustacheCompilerTest {
 	public void it_should_treat_empty_string_as_falsy() throws Exception {
 		String name = "/templates/empty-string.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
@@ -126,10 +145,11 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
+	@Ignore("With Handlebars, partials must not start with '/'")
 	public void it_should_display_template_with_partial() throws Exception {
 		String name = "/templates/composite.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
@@ -149,7 +169,7 @@ public class JMustacheCompilerTest {
 		templateLoader.setSuffix(".template.html");
 		String name = "/templates/composite-aliases.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
@@ -164,12 +184,13 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() throws Exception {
+	@Ignore("With Handlebars, partials must not start with '/'")
+	public void it_should_display_template_with_partial_using_prefix_suffix_even_with_full_name() throws Exception {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		String name = "/templates/composite.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
@@ -187,16 +208,16 @@ public class JMustacheCompilerTest {
 	public void it_should_display_template_with_partial_aliases() throws Exception {
 		Map<String, String> aliases = new HashMap<String, String>();
 		aliases.put("foo", "/templates/foo.template.html");
-		templateLoader.addTemporaryPartialAliases(aliases);
+		hbCompiler.addTemporaryPartialAliases(aliases);
 
 		String name = "/templates/composite-aliases.template.html";
 
-		MustacheTemplate template = mustacheCompiler.compile(name);
+		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		templateLoader.removeTemporaryPartialAliases();
+		hbCompiler.removeTemporaryPartialAliases();
 
 		String expected = "" +
 				"<div>" + SEPARATOR +

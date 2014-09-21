@@ -38,7 +38,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.util.Assert.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Default template loader implementation.
@@ -72,6 +72,19 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	private final Map<String, String> partialAliases = new HashMap<String, String>();
 
 	/**
+	 * Temporary partial aliases: i.e. aliases that can be added
+	 * before compilation with {@link #addPartialAliases(java.util.Map)} method and
+	 * removed after compilation with {@link #removeTemporaryPartialAliases()} method.
+	 * This implementation use a thread local object to be thread safe.
+	 */
+	private final ThreadLocal<Map<String, String>> temporaryPartialAliases = new ThreadLocal<Map<String, String>>() {
+		@Override
+		public Map<String, String> initialValue() {
+			return new HashMap<String, String>();
+		}
+	};
+
+	/**
 	 * Build new template loader.
 	 * Use {@link org.springframework.core.io.DefaultResourceLoader} as resource loader implementation.
 	 */
@@ -87,9 +100,7 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	 * @param resourceLoader Resource loader implementation to use.
 	 */
 	public DefaultMustacheTemplateLoader(ResourceLoader resourceLoader) {
-		notNull(resourceLoader);
-
-		this.resourceLoader = resourceLoader;
+		this.resourceLoader = notNull(resourceLoader, "Resource loader must not be null");
 		this.prefix = null;
 		this.suffix = null;
 	}
@@ -102,13 +113,9 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	 * @param suffix         Suffix to append to template before loading it using resource loader.
 	 */
 	public DefaultMustacheTemplateLoader(ResourceLoader resourceLoader, String prefix, String suffix) {
-		notNull(resourceLoader);
-		notNull(prefix);
-		notNull(suffix);
-
-		this.resourceLoader = resourceLoader;
-		this.prefix = prefix;
-		this.suffix = suffix;
+		this.resourceLoader = notNull(resourceLoader, "Resource loader must not be null");
+		this.prefix = notNull(prefix, "Prefix must not be null");
+		this.suffix = notNull(suffix, "Suffix must not be null");
 	}
 
 	@Override
@@ -133,17 +140,14 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 
 	@Override
 	public void addPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases);
+		notNull(partialAliases, "Partial aliases must not be null");
 		this.partialAliases.putAll(partialAliases);
 	}
 
 	@Override
 	public Reader getTemplate(String name) {
-		return getTemplate(name, partialAliases);
-	}
+		Map<String, String> partialsAliases = getPartialAliases();
 
-	@Override
-	public Reader getTemplate(String name, Map<String, String> partialsAliases) {
 		String realName = name;
 		if (partialsAliases.containsKey(name)) {
 			realName = partialsAliases.get(name);
@@ -185,15 +189,20 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	}
 
 	@Override
-	public DefaultMustacheTemplateLoader clone() {
-		DefaultMustacheTemplateLoader templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
-		if (prefix != null) {
-			templateLoader.setPrefix(prefix);
-		}
-		if (suffix != null) {
-			templateLoader.setSuffix(suffix);
-		}
-		templateLoader.addPartialAliases(partialAliases);
-		return templateLoader;
+	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
+		notNull(partialAliases, "Partial aliases must not be null");
+		temporaryPartialAliases.get().putAll(partialAliases);
+	}
+
+	@Override
+	public void removeTemporaryPartialAliases() {
+		temporaryPartialAliases.remove();
+	}
+
+	private Map<String, String> getPartialAliases() {
+		Map<String, String> aliases = new HashMap<String, String>();
+		aliases.putAll(partialAliases);
+		aliases.putAll(temporaryPartialAliases.get());
+		return aliases;
 	}
 }

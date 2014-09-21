@@ -31,6 +31,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
@@ -92,5 +93,24 @@ public class HandlebarTemplateLoader implements TemplateLoader {
 	public void setSuffix(String suffix) {
 		notNull(suffix, "suffix must not be null");
 		loader.setSuffix(suffix);
+	}
+
+	/**
+	 * Add temporary partial aliases to use with internal template loader
+	 * implementation.
+	 *
+	 * @param partialAliases Temporary partial aliases.
+	 */
+	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
+		notNull(partialAliases, "Partial aliases must not be null");
+		loader.addTemporaryPartialAliases(partialAliases);
+	}
+
+	/**
+	 * Remove temporary partial aliases used with internal template
+	 * loader implementation.
+	 */
+	public void removeTemporaryPartialAliases() {
+		loader.removeTemporaryPartialAliases();
 	}
 }
