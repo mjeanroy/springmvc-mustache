@@ -1,10 +1,8 @@
-package com.github.mjeanroy.springmvc.view.mustache.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,18 +13,21 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.core.env.Environment;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MustacheConfigurationTest {
+public class HandlebarConfigurationTest {
 
 	@Mock
 	private Environment environment;
 
 	@InjectMocks
-	private MustacheConfiguration mustacheConfiguration;
+	private HandlebarConfiguration handlebarConfiguration;
 
 	@Before
 	public void setUp() {
@@ -40,19 +41,19 @@ public class MustacheConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_template_loader() {
-		MustacheTemplateLoader templateLoader = mustacheConfiguration.mustacheTemplateLoader();
+		MustacheTemplateLoader templateLoader = handlebarConfiguration.mustacheTemplateLoader();
 		assertThat(templateLoader).isNotNull();
 	}
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		MustacheCompiler mustacheCompiler = mustacheConfiguration.mustacheCompiler();
+		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler();
 		assertThat(mustacheCompiler).isNotNull();
 	}
 
 	@Test
 	public void it_should_instantiate_mustache_view_resolver() {
-		MustacheViewResolver mustacheViewResolver = mustacheConfiguration.mustacheViewResolver();
+		MustacheViewResolver mustacheViewResolver = handlebarConfiguration.mustacheViewResolver();
 		assertThat(mustacheViewResolver).isNotNull();
 	}
 
@@ -65,7 +66,7 @@ public class MustacheConfigurationTest {
 		String mappings = admin1 + ":" + secure + ";" + admin2 + ":" + secure;
 		when(environment.getProperty("mustache.layoutMappings", "")).thenReturn(mappings);
 
-		Map<String, String> map = mustacheConfiguration.getLayoutMappings();
+		Map<String, String> map = handlebarConfiguration.getLayoutMappings();
 
 		assertThat(map).isNotNull().isNotEmpty().hasSize(2)
 				.containsOnly(
@@ -81,7 +82,7 @@ public class MustacheConfigurationTest {
 		String viewNames = n1 + ", " + n2;
 		when(environment.getProperty("mustache.viewNames", "*")).thenReturn(viewNames);
 
-		String[] names = mustacheConfiguration.getViewNames();
+		String[] names = handlebarConfiguration.getViewNames();
 
 		assertThat(names).isNotNull().isNotEmpty().hasSize(2).containsOnly(n1, n2);
 	}
