@@ -3,7 +3,7 @@
 
 Simple library that will allow you to use a mustache templates with your SpringMVC application.
 
-Note: this library use jmustache under the hood but options will be added to be able to use mustache.java or handlebar implementation.
+Note: this library use jmustache or handlebars under the hood, mustache.java will be supported soon.
 
 ## Installation
 
@@ -15,11 +15,33 @@ With Maven, add explicit dependency:
         <artifactId>springmvc-mustache</artifactId>
         <version>0.1.1<version>
     </dependency>
+
+    <!-- Add mustache implementation to use -->
+    <!-- You can add one of the following: -->
+    <dependency>
+        <groupId>com.samskivert</groupId>
+        <artifactId>jmustache</artifactId>
+        <version>1.9<version>
+    </dependency>
+    <dependency>
+        <groupId>com.github.jknack</groupId>
+        <artifactId>handlebars</artifactId>
+        <version>1.3.2<version>
+    </dependency>
 ```
 
 ## Configuration
 
 Configuration is very easy, add `@EnableMustache` annotation to your configuration and you're done!
+
+Default configuration will try to detect mustache implementation on classpath (jmustache or handlebars), but you can specify
+which implementation you want to use:
+
+| Options  | Value      |                                                                            |
+|----------|------------|----------------------------------------------------------------------------|
+| provider | AUTO       | Use classpath detection to select the implementation. This is the default. |
+|          | JMUSTACHE  | Use jmustache implementation. JMustache dependency must be available.      |
+|          | HANDLEBAR  | Use handlebar implementation. Handlebar dependency must be available.      |
 
 ```java
 package com.myApp;
@@ -28,10 +50,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvider;
 
 @Configuration
 @EnableWebMvc
-@EnableMustache
+@EnableMustache(provider = MustacheProvider.AUTO)
 @ComponentScan("com.myApp")
 public class SpringConfiguration {
 }
