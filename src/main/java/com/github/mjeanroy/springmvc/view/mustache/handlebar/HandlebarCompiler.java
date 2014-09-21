@@ -96,7 +96,7 @@ public class HandlebarCompiler implements MustacheCompiler {
 		notNull(name, "Template name must not be null");
 
 		try {
-			Template template = handlebars.compile(name);
+			final Template template = handlebars.compile(name);
 			return new HandlebarTemplate(template);
 		}
 		catch (IOException ex) {

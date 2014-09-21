@@ -146,22 +146,24 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 
 	@Override
 	public Reader getTemplate(String name) {
-		Map<String, String> partialsAliases = getPartialAliases();
+		final Map<String, String> partialsAliases = getPartialAliases();
 
-		String realName = name;
+		final String realName;
 		if (partialsAliases.containsKey(name)) {
 			realName = partialsAliases.get(name);
+		} else {
+			realName = name;
 		}
 
-		String templateName = resolve(realName);
-		Resource resource = resourceLoader.getResource(templateName);
+		final String templateName = resolve(realName);
+		final Resource resource = resourceLoader.getResource(templateName);
 
 		if (!resource.exists()) {
 			throw new MustacheTemplateNotFoundException(templateName);
 		}
 
 		try {
-			InputStream inputStream = resource.getInputStream();
+			final InputStream inputStream = resource.getInputStream();
 			return new InputStreamReader(inputStream);
 		}
 		catch (IOException ex) {
@@ -200,7 +202,7 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	}
 
 	private Map<String, String> getPartialAliases() {
-		Map<String, String> aliases = new HashMap<String, String>();
+		final Map<String, String> aliases = new HashMap<String, String>();
 		aliases.putAll(partialAliases);
 		aliases.putAll(temporaryPartialAliases.get());
 		return aliases;

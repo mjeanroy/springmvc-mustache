@@ -24,15 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
-import static org.springframework.util.Assert.notNull;
+import com.github.jknack.handlebars.Template;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-import com.github.jknack.handlebars.Template;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Implementation of {@link MustacheTemplate} using Java Handlebar
@@ -52,8 +52,7 @@ public class HandlebarTemplate implements MustacheTemplate {
 	 * @param template Original handlebar template.
 	 */
 	public HandlebarTemplate(Template template) {
-		notNull(template, "Template must not be null");
-		this.template = template;
+		this.template = notNull(template, "Template must not be null");
 	}
 
 	@Override

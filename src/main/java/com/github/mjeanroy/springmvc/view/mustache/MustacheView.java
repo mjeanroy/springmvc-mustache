@@ -33,8 +33,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 import static java.util.Collections.unmodifiableMap;
-import static org.springframework.util.Assert.notNull;
 
 /**
  * Implementation of mustache view.
@@ -62,7 +62,7 @@ public class MustacheView extends AbstractTemplateView {
 	 * @param compiler Mustache compiler.
 	 */
 	public void setCompiler(MustacheCompiler compiler) {
-		notNull(compiler);
+		notNull(compiler, "Compiler must not be null");
 		this.compiler = compiler;
 	}
 
@@ -81,7 +81,7 @@ public class MustacheView extends AbstractTemplateView {
 	 * @param aliases New aliases.
 	 */
 	public void addAliases(Map<String, String> aliases) {
-		notNull(aliases);
+		notNull(aliases, "Aliases must not be null");
 		for (Map.Entry<String, String> entry : aliases.entrySet()) {
 			addAlias(entry.getKey(), entry.getValue());
 		}
@@ -94,9 +94,10 @@ public class MustacheView extends AbstractTemplateView {
 	 * @param value Partial name.
 	 */
 	public void addAlias(String key, String value) {
-		notNull(key);
-		notNull(value);
-		this.aliases.put(key, value);
+		this.aliases.put(
+				notNull(key, "Key must not be null"),
+				notNull(value, "Value must not be null")
+		);
 	}
 
 	/**
@@ -110,8 +111,7 @@ public class MustacheView extends AbstractTemplateView {
 
 	@Override
 	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		notNull(compiler);
-
+		notNull(compiler, "Compiler must not be null and must have been set");
 		response.setContentType(getContentType());
 		renderTemplate(model, response.getWriter());
 	}

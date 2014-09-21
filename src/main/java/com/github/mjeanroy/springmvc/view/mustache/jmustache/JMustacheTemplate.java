@@ -24,13 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
-import java.io.Writer;
-import java.util.Map;
-
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 import com.samskivert.mustache.MustacheException;
 import com.samskivert.mustache.Template;
+
+import java.io.Writer;
+import java.util.Map;
+
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Implementation of {@link MustacheTemplate} using JMustache
@@ -50,7 +52,7 @@ public class JMustacheTemplate implements MustacheTemplate {
 	 * @param template JMustache template.
 	 */
 	public JMustacheTemplate(Template template) {
-		this.template = template;
+		this.template = notNull(template, "Template must not be null");
 	}
 
 	@Override

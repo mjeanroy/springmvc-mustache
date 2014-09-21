@@ -28,6 +28,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 
 import java.io.Reader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 import static com.samskivert.mustache.Mustache.TemplateLoader;
 
 /**
@@ -49,7 +50,7 @@ public class JMustacheTemplateLoader implements TemplateLoader {
 	 * @param loader Loader.
 	 */
 	public JMustacheTemplateLoader(MustacheTemplateLoader loader) {
-		this.loader = loader;
+		this.loader = notNull(loader, "Template loader must not be null");
 	}
 
 	@Override
