@@ -103,8 +103,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param defaultLayout Default layout.
 	 */
 	public void setDefaultLayout(String defaultLayout) {
-		hasText(defaultLayout, "Default layout must not be empty");
-		this.defaultLayout = defaultLayout;
+		this.defaultLayout = hasText(defaultLayout, "Default layout must not be empty");
 	}
 
 	/**
@@ -113,8 +112,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param layoutKey New view layout key.
 	 */
 	public void setLayoutKey(String layoutKey) {
-		hasText(layoutKey, "Layout key must not be empty");
-		this.layoutKey = layoutKey;
+		this.layoutKey = hasText(layoutKey, "Layout key must not be empty");
 	}
 
 	/**

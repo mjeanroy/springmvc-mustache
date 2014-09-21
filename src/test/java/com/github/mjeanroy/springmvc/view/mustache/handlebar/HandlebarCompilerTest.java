@@ -48,8 +48,6 @@ public class HandlebarCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
 
-	private Handlebars hb;
-
 	private MustacheTemplateLoader templateLoader;
 
 	private HandlebarCompiler hbCompiler;
@@ -68,7 +66,7 @@ public class HandlebarCompilerTest {
 		writer = new StringWriter();
 
 		templateLoader = new DefaultMustacheTemplateLoader();
-		hb = new Handlebars();
+		Handlebars hb = new Handlebars();
 
 		hbCompiler = new HandlebarCompiler(hb, templateLoader);
 	}

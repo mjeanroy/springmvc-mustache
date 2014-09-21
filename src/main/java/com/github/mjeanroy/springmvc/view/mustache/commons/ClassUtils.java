@@ -66,6 +66,7 @@ public final class ClassUtils {
 	 * @param <T>                    Type of returned value.
 	 * @return Annotation value, or default value if original value is null.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T getAnnotationValue(AnnotationMetadata importingClassMetadata, Class annotationClass, String name, T defaultValue) {
 		Map<String, Object> attributes = importingClassMetadata.getAnnotationAttributes(annotationClass.getName());
 		T value = (T) attributes.get(name);

@@ -262,13 +262,13 @@ public abstract class AbstractMustacheConfiguration {
 	public Map<String, String> getLayoutMappings() {
 		String mappingsValues = environment.getProperty("mustache.layoutMappings", LAYOUT_MAPPINGS).trim();
 
-		if (mappingsValues == null || mappingsValues.isEmpty()) {
+		if (mappingsValues.isEmpty()) {
 			return emptyMap();
 		}
 
 		Map<String, String> mappings = new HashMap<String, String>();
 		String[] values = mappingsValues.split(";");
-		if (values != null && values.length > 0) {
+		if (values.length > 0) {
 			for (String value : values) {
 				String val = value == null ? "" : value.trim();
 				if (val.isEmpty()) {

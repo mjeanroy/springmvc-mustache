@@ -116,6 +116,7 @@ public class MustacheView extends AbstractTemplateView {
 		renderTemplate(model, response.getWriter());
 	}
 
+	@SuppressWarnings("unchecked")
 	private void renderTemplate(Map<String, Object> model, Writer writer) {
 		final Map<String, String> viewPartials = new HashMap<String, String>(aliases);
 		final Object object = model.get(MustacheSettings.PARTIALS_KEY);

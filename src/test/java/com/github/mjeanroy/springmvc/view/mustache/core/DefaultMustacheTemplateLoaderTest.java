@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
 public class DefaultMustacheTemplateLoaderTest {
 
 	@Rule
-	public ExpectedException thrown = none();
+	public final ExpectedException thrown = none();
 
 	@Mock
 	private Resource resource;
