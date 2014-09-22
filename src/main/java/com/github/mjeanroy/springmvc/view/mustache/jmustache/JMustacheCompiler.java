@@ -24,32 +24,27 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.samskivert.mustache.Mustache.Compiler;
+
+import java.io.Reader;
+
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 import com.samskivert.mustache.Template;
-
-import java.io.Reader;
-import java.util.Map;
-
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-import static com.samskivert.mustache.Mustache.Compiler;
 
 /**
  * Mustache Compiler using JMustache as real implementation.
  */
-public class JMustacheCompiler implements MustacheCompiler {
+public class JMustacheCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Original JMustache compiler.
 	 */
 	private final Compiler compiler;
-
-	/**
-	 * Original JMustache template loader.
-	 */
-	private final MustacheTemplateLoader templateLoader;
 
 	/**
 	 * Build new mustache compiler using JMustache API.
@@ -60,30 +55,8 @@ public class JMustacheCompiler implements MustacheCompiler {
 	 * @param templateLoader Template Loader.
 	 */
 	public JMustacheCompiler(Compiler compiler, MustacheTemplateLoader templateLoader) {
+		super(templateLoader);
 		this.compiler = notNull(compiler, "Compiler must not be null");
-		this.templateLoader = notNull(templateLoader, "Template loader must not be null");
-	}
-
-	@Override
-	public void setPrefix(String prefix) {
-		notNull(prefix, "Prefix must not be null");
-		templateLoader.setPrefix(prefix);
-	}
-
-	@Override
-	public void setSuffix(String suffix) {
-		notNull(suffix, "Suffix must not be null");
-		templateLoader.setSuffix(suffix);
-	}
-
-	@Override
-	public String getPrefix() {
-		return templateLoader.getPrefix();
-	}
-
-	@Override
-	public String getSuffix() {
-		return templateLoader.getSuffix();
 	}
 
 	@Override
@@ -100,18 +73,7 @@ public class JMustacheCompiler implements MustacheCompiler {
 		}
 	}
 
-	@Override
-	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases, "Partial aliases must not be null");
-		templateLoader.addTemporaryPartialAliases(partialAliases);
-	}
-
-	@Override
-	public void removeTemporaryPartialAliases() {
-		templateLoader.removeTemporaryPartialAliases();
-	}
-
-	private Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
+	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
 		return compiler
 				.withLoader(new JMustacheTemplateLoader(templateLoader))
 				.compile(template);

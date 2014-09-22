@@ -24,13 +24,10 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-
-import java.util.Map;
-
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 
@@ -38,7 +35,7 @@ import com.github.mustachejava.MustacheFactory;
  * Mustache compiler.
  * This compiler use internally mustache.java as real implementation.
  */
-public class MustacheJavaCompiler implements MustacheCompiler {
+public class MustacheJavaCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Implementation of {@link MustacheFactory} used internally
@@ -47,19 +44,13 @@ public class MustacheJavaCompiler implements MustacheCompiler {
 	private final MustacheFactory mustacheFactory;
 
 	/**
-	 * Template loader used internally to resolve templates
-	 * and partials.
-	 */
-	private final MustacheTemplateLoader templateLoader;
-
-	/**
 	 * Build new compiler based on mustache.java.
 	 * An instance of {@link SpringMustacheFactory} that used template loader is automatically created.
 	 *
 	 * @param templateLoader Template loader.
 	 */
 	public MustacheJavaCompiler(MustacheTemplateLoader templateLoader) {
-		this.templateLoader = notNull(templateLoader, "Template loader must not be null");
+		super(templateLoader);
 		this.mustacheFactory = new SpringMustacheFactory(templateLoader);
 	}
 
@@ -67,38 +58,5 @@ public class MustacheJavaCompiler implements MustacheCompiler {
 	public MustacheTemplate compile(String name) {
 		Mustache mustache = mustacheFactory.compile(name);
 		return new MustacheJavaTemplate(mustache);
-	}
-
-	@Override
-	public void setPrefix(String prefix) {
-		notNull(prefix, "Prefix must not be null");
-		templateLoader.setPrefix(prefix);
-	}
-
-	@Override
-	public void setSuffix(String suffix) {
-		notNull(suffix, "Suffix must not be null");
-		templateLoader.setSuffix(suffix);
-	}
-
-	@Override
-	public String getPrefix() {
-		return templateLoader.getPrefix();
-	}
-
-	@Override
-	public String getSuffix() {
-		return templateLoader.getSuffix();
-	}
-
-	@Override
-	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases, "Partial aliases must not be null");
-		templateLoader.addTemporaryPartialAliases(partialAliases);
-	}
-
-	@Override
-	public void removeTemporaryPartialAliases() {
-		templateLoader.removeTemporaryPartialAliases();
 	}
 }

@@ -27,31 +27,25 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 import java.io.IOException;
-import java.util.Map;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 
 /**
  * Mustache compiler using Java Handlebar as real implementation.
  */
-public class HandlebarCompiler implements MustacheCompiler {
+public class HandlebarCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Handlebar compiler.
 	 * This compiler will be used internally to compile template.
 	 */
 	private final Handlebars handlebars;
-
-	/**
-	 * Mustache template loader to use to load templates
-	 * and partials.
-	 */
-	private final MustacheTemplateLoader templateLoader;
 
 	/**
 	 * Build new mustache compiler using Handlebars API.
@@ -62,33 +56,11 @@ public class HandlebarCompiler implements MustacheCompiler {
 	 * @param templateLoader Template Loader (must not be null).
 	 */
 	public HandlebarCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
-		notNull(templateLoader, "Template loader must not be null");
-		notNull(handlebars, "Handlebars compiler must not be null");
+		super(templateLoader);
 
-		this.templateLoader = templateLoader;
-		this.handlebars = handlebars.with(new HandlebarTemplateLoader(templateLoader));
-	}
-
-	@Override
-	public void setPrefix(String prefix) {
-		notNull(prefix, "Prefix must not be null");
-		templateLoader.setPrefix(prefix);
-	}
-
-	@Override
-	public void setSuffix(String suffix) {
-		notNull(suffix, "Suffix must not be null");
-		templateLoader.setSuffix(suffix);
-	}
-
-	@Override
-	public String getPrefix() {
-		return templateLoader.getPrefix();
-	}
-
-	@Override
-	public String getSuffix() {
-		return templateLoader.getSuffix();
+		final HandlebarTemplateLoader hbTemplateLoader = new HandlebarTemplateLoader(templateLoader);
+		this.handlebars = notNull(handlebars, "Handlebars compiler must not be null")
+				.with(hbTemplateLoader);
 	}
 
 	@Override
@@ -102,16 +74,5 @@ public class HandlebarCompiler implements MustacheCompiler {
 		catch (IOException ex) {
 			throw new MustacheCompilationException(ex);
 		}
-	}
-
-	@Override
-	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases, "Partial aliases must not be null");
-		templateLoader.addTemporaryPartialAliases(partialAliases);
-	}
-
-	@Override
-	public void removeTemporaryPartialAliases() {
-		templateLoader.removeTemporaryPartialAliases();
 	}
 }
