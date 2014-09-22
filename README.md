@@ -3,7 +3,7 @@
 
 Simple library that will allow you to use a mustache templates with your SpringMVC application.
 
-Note: this library use jmustache or handlebars under the hood, mustache.java will be supported soon.
+Note: this library use jmustache, handlebars or mustache.java under the hood.
 
 ## Installation
 
@@ -28,6 +28,11 @@ With Maven, add explicit dependency:
         <artifactId>handlebars</artifactId>
         <version>1.3.2<version>
     </dependency>
+    <dependency>
+        <groupId>com.github.spullara.mustache.java</groupId>
+        <artifactId>compiler</artifactId>
+        <version>0.8.16<version>
+    </dependency>
 ```
 
 ## Configuration
@@ -37,11 +42,12 @@ Configuration is very easy, add `@EnableMustache` annotation to your configurati
 Default configuration will try to detect mustache implementation on classpath (jmustache or handlebars), but you can specify
 which implementation you want to use:
 
-| Options  | Value      |                                                                            |
-|----------|------------|----------------------------------------------------------------------------|
-| provider | AUTO       | Use classpath detection to select the implementation. This is the default. |
-|          | JMUSTACHE  | Use jmustache implementation. JMustache dependency must be available.      |
-|          | HANDLEBAR  | Use handlebar implementation. Handlebar dependency must be available.      |
+| Options  | Value         |                                                                               |
+|----------|---------------|-------------------------------------------------------------------------------|
+| provider | AUTO          | Use classpath detection to select the implementation. This is the default.    |
+|          | JMUSTACHE     | Use jmustache implementation. JMustache dependency must be available.         |
+|          | HANDLEBAR     | Use handlebar implementation. Handlebar dependency must be available.         |
+|          | MUSTACHE_JAVA | Use mustache.java implementation. Mustache.java dependency must be available. |
 
 ```java
 package com.myApp;
