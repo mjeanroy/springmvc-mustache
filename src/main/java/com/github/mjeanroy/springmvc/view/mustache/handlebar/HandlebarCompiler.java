@@ -24,17 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+
+import java.io.IOException;
+import java.util.Map;
+
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
-
-import java.io.IOException;
-import java.util.Map;
-
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Mustache compiler using Java Handlebar as real implementation.
@@ -48,10 +48,10 @@ public class HandlebarCompiler implements MustacheCompiler {
 	private final Handlebars handlebars;
 
 	/**
-	 * Handlebar template loader implementation.
-	 * This loader will be used internally to load templates by name.
+	 * Mustache template loader to use to load templates
+	 * and partials.
 	 */
-	private final HandlebarTemplateLoader templateLoader;
+	private final MustacheTemplateLoader templateLoader;
 
 	/**
 	 * Build new mustache compiler using Handlebars API.
@@ -65,8 +65,8 @@ public class HandlebarCompiler implements MustacheCompiler {
 		notNull(templateLoader, "Template loader must not be null");
 		notNull(handlebars, "Handlebars compiler must not be null");
 
-		this.templateLoader = new HandlebarTemplateLoader(templateLoader);
-		this.handlebars = handlebars.with(this.templateLoader);
+		this.templateLoader = templateLoader;
+		this.handlebars = handlebars.with(new HandlebarTemplateLoader(templateLoader));
 	}
 
 	@Override

@@ -24,17 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+
+import java.io.IOException;
+import java.io.Reader;
+
 import com.github.jknack.handlebars.io.StringTemplateSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Map;
-
-import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Implement template loader for use with java handlebar
@@ -93,24 +92,5 @@ public class HandlebarTemplateLoader implements TemplateLoader {
 	public void setSuffix(String suffix) {
 		notNull(suffix, "suffix must not be null");
 		loader.setSuffix(suffix);
-	}
-
-	/**
-	 * Add temporary partial aliases to use with internal template loader
-	 * implementation.
-	 *
-	 * @param partialAliases Temporary partial aliases.
-	 */
-	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases, "Partial aliases must not be null");
-		loader.addTemporaryPartialAliases(partialAliases);
-	}
-
-	/**
-	 * Remove temporary partial aliases used with internal template
-	 * loader implementation.
-	 */
-	public void removeTemporaryPartialAliases() {
-		loader.removeTemporaryPartialAliases();
 	}
 }
