@@ -29,7 +29,9 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
 import java.util.Map;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 
 /**
  * Abstraction that define commons code to all mustache
@@ -51,6 +53,28 @@ public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 	protected AbstractMustacheCompiler(MustacheTemplateLoader templateLoader) {
 		this.templateLoader = notNull(templateLoader, "Template loader must not be null");
 	}
+
+	@Override
+	public MustacheTemplate compile(String name) {
+		notNull(name, "Template name must not be null");
+		try {
+			return doCompile(name);
+		}
+		catch (Exception ex) {
+			throw new MustacheCompilationException(ex);
+		}
+	}
+
+	/**
+	 * Process template compilation.
+	 * This methods should rethrows exception since it will be
+	 * catches later (and a new {@link MustacheCompilationException} will
+	 * be thrown).
+	 *
+	 * @param name Template name.
+	 * @return Mustache template.
+	 */
+	protected abstract MustacheTemplate doCompile(String name) throws Exception;
 
 	@Override
 	public void setPrefix(String prefix) {

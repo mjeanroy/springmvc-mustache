@@ -26,15 +26,12 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
-import java.io.IOException;
-
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 
 /**
  * Mustache compiler using Java Handlebar as real implementation.
@@ -64,15 +61,8 @@ public class HandlebarCompiler extends AbstractMustacheCompiler implements Musta
 	}
 
 	@Override
-	public MustacheTemplate compile(String name) {
-		notNull(name, "Template name must not be null");
-
-		try {
-			final Template template = handlebars.compile(name);
-			return new HandlebarTemplate(template);
-		}
-		catch (IOException ex) {
-			throw new MustacheCompilationException(ex);
-		}
+	protected MustacheTemplate doCompile(String name) throws Exception {
+		final Template template = handlebars.compile(name);
+		return new HandlebarTemplate(template);
 	}
 }

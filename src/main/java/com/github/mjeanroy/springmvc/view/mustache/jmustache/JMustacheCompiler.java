@@ -33,7 +33,6 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
 import com.samskivert.mustache.Template;
 
 /**
@@ -60,17 +59,10 @@ public class JMustacheCompiler extends AbstractMustacheCompiler implements Musta
 	}
 
 	@Override
-	public MustacheTemplate compile(String name) {
-		notNull(name, "Template name must not be null");
-
-		try {
-			final Reader template = templateLoader.getTemplate(name);
-			final Template result = getTemplate(template, templateLoader);
-			return new JMustacheTemplate(result);
-		}
-		catch (Exception ex) {
-			throw new MustacheCompilationException(ex);
-		}
+	protected MustacheTemplate doCompile(String name) throws Exception {
+		final Reader template = templateLoader.getTemplate(name);
+		final Template result = getTemplate(template, templateLoader);
+		return new JMustacheTemplate(result);
 	}
 
 	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
