@@ -22,40 +22,38 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.handlebar;
+package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheExecutionException;
 
 import java.io.Writer;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-
 /**
- * Implementation of {@link MustacheTemplate} using Java Handlebar
- * as real template implementation.
+ * Abstract that define commons code to
+ * template implementation.
  */
-public class HandlebarTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
-
-	/**
-	 * Original handlebar template that will be used to render
-	 * mustache template.
-	 */
-	private final Template template;
-
-	/**
-	 * Build new handlebar template.
-	 *
-	 * @param template Original handlebar template.
-	 */
-	public HandlebarTemplate(Template template) {
-		this.template = notNull(template, "Template must not be null");
-	}
+public abstract class AbstractMustacheTemplate implements MustacheTemplate {
 
 	@Override
-	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
-		template.apply(model, writer);
+	public void execute(Map<String, Object> model, Writer writer) {
+		try {
+			doExecute(model, writer);
+		}
+		catch (Exception ex) {
+			throw new MustacheExecutionException(ex);
+		}
 	}
+
+	/**
+	 * Process template execution.
+	 * This methods should rethrows exception since it will be
+	 * catches later (and a new {@link com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheExecutionException} will
+	 * be thrown).
+	 *
+	 * @param model Data model.
+	 * @param writer Target writer.
+	 */
+	protected abstract void doExecute(Map<String, Object> model, Writer writer) throws Exception;
 }

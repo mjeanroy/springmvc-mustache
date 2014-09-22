@@ -22,40 +22,19 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.handlebar;
-
-import com.github.jknack.handlebars.Template;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
-
-import java.io.Writer;
-import java.util.Map;
-
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
 /**
- * Implementation of {@link MustacheTemplate} using Java Handlebar
- * as real template implementation.
+ * Exception thrown when template execution failed.
  */
-public class HandlebarTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
+public final class MustacheExecutionException extends RuntimeException {
 
 	/**
-	 * Original handlebar template that will be used to render
-	 * mustache template.
-	 */
-	private final Template template;
-
-	/**
-	 * Build new handlebar template.
+	 * Build new exception using origin exception.
 	 *
-	 * @param template Original handlebar template.
+	 * @param ex Original exception.
 	 */
-	public HandlebarTemplate(Template template) {
-		this.template = notNull(template, "Template must not be null");
-	}
-
-	@Override
-	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
-		template.apply(model, writer);
+	public MustacheExecutionException(Exception ex) {
+		super(ex);
 	}
 }

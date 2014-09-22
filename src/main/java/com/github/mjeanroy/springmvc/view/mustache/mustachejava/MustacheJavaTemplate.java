@@ -24,19 +24,20 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
+import com.github.mustachejava.Mustache;
 
 import java.io.Writer;
 import java.util.Map;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mustachejava.Mustache;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Implementation of {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate} using
  * mustache.java as real template implementation.
  */
-public class MustacheJavaTemplate implements MustacheTemplate {
+public class MustacheJavaTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
 	/**
 	 * Mustache.java template.
@@ -54,7 +55,7 @@ public class MustacheJavaTemplate implements MustacheTemplate {
 	}
 
 	@Override
-	public void execute(Map<String, Object> model, Writer writer) {
+	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
 		mustache.execute(writer, model);
 	}
 }

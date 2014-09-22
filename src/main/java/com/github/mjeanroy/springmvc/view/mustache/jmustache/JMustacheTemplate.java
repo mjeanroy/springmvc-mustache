@@ -25,8 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilationException;
-import com.samskivert.mustache.MustacheException;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 import com.samskivert.mustache.Template;
 
 import java.io.Writer;
@@ -38,7 +37,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * Implementation of {@link MustacheTemplate} using JMustache
  * as real template implementation.
  */
-public class JMustacheTemplate implements MustacheTemplate {
+public class JMustacheTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
 	/**
 	 * JMustache template.
@@ -56,12 +55,7 @@ public class JMustacheTemplate implements MustacheTemplate {
 	}
 
 	@Override
-	public void execute(Map<String, Object> model, Writer writer) {
-		try {
-			template.execute(model, writer);
-		}
-		catch (MustacheException ex) {
-			throw new MustacheCompilationException(ex);
-		}
+	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
+		template.execute(model, writer);
 	}
 }
