@@ -24,10 +24,11 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
+
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar.HandlebarConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
-
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
 
 /**
  * Set of mustache provider.
@@ -59,6 +60,17 @@ public enum MustacheProvider {
 	},
 
 	/**
+	 * Mustache implementation that use mustache.java java as
+	 * internal compiler.
+	 */
+	MUSTACHE_JAVA {
+		@Override
+		public Class configuration() {
+			return MustacheJavaConfiguration.class;
+		}
+	},
+
+	/**
 	 * Option that detect class available on classpath
 	 * and select the best implementation.
 	 */
@@ -73,6 +85,11 @@ public enum MustacheProvider {
 			if (isPresent("com.github.jknack.handlebars.Handlebars")) {
 				// Use Handlebar
 				return HANDLEBAR.configuration();
+			}
+
+			if (isPresent("com.github.mustachejava.MustacheFactory")) {
+				// Use mustache.java
+				return MUSTACHE_JAVA.configuration();
 			}
 
 			// No implementation detected, throw exception
