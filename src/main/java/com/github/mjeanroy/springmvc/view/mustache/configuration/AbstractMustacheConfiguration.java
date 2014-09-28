@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
@@ -59,61 +60,6 @@ import static java.util.Collections.unmodifiableMap;
 		ignoreResourceNotFound = true
 )
 public abstract class AbstractMustacheConfiguration {
-
-	/**
-	 * Default prefix prepended to view names.
-	 * This prefix will be used by view resolver and mustache template
-	 * loader.
-	 */
-	public static final String PREFIX = "/templates/";
-
-	/**
-	 * Default suffix appended to view names.
-	 * This suffix will be used by view resolver and mustache template
-	 * loader.
-	 */
-	public static final String SUFFIX = ".template.html";
-
-	/**
-	 * Default view resolver order defined
-	 * on {@link org.springframework.web.servlet.view.UrlBasedViewResolver#setOrder}.
-	 * This settings set the order in which this {@link com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver}
-	 * will be evaluated.
-	 */
-	public static final int ORDER = 1;
-
-	/**
-	 * Default cache settings defined
-	 * on {@link org.springframework.web.servlet.view.UrlBasedViewResolver#setCache}.
-	 */
-	public static final boolean CACHE = true;
-
-	/**
-	 * Default cache settings defined
-	 * on {@link org.springframework.web.servlet.view.UrlBasedViewResolver#setCache}.
-	 * This settings set the view names (or name patterns) that can be handled by
-	 * {@link com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver}
-	 */
-	public static final String VIEW_NAMES = "*";
-
-	/**
-	 * Default layout value
-	 * on {@link MustacheViewResolver#setDefaultLayout(String)}.
-	 * By default, this feature is disabled.
-	 */
-	public static final String DEFAULT_LAYOUT = "";
-
-	/**
-	 * Default key that can be used to map view to partials in default layout.
-	 * This property is set on {@link MustacheViewResolver#setLayoutKey(String)}.
-	 */
-	public static final String LAYOUT_KEY = "content";
-
-	/**
-	 * Default key that can be used to define layout mappings.
-	 * This property is set on {@link MustacheViewResolver#setLayoutMappings(java.util.Map)} (String)}.
-	 */
-	public static final String LAYOUT_MAPPINGS = "";
 
 	@Autowired
 	private Environment environment;
@@ -204,57 +150,57 @@ public abstract class AbstractMustacheConfiguration {
 
 	/**
 	 * Resolve views prefix value.
-	 * Default is to look for "mustache.prefix" property or use {@link #PREFIX} if
+	 * Default is to look for "mustache.prefix" property or use {@link MustacheSettings#PREFIX} if
 	 * property cannot be resolved.
 	 *
 	 * @return Prefix value.
 	 */
 	public String getPrefix() {
-		return environment.getProperty("mustache.prefix", PREFIX).trim();
+		return environment.getProperty("mustache.prefix", MustacheSettings.PREFIX).trim();
 	}
 
 	/**
 	 * Resolve views suffix value.
-	 * Default is to look for "mustache.suffix" property or use {@link #SUFFIX} if
+	 * Default is to look for "mustache.suffix" property or use {@link MustacheSettings#SUFFIX} if
 	 * property cannot be resolved.
 	 *
 	 * @return Suffix value.
 	 */
 	public String getSuffix() {
-		return environment.getProperty("mustache.suffix", SUFFIX).trim();
+		return environment.getProperty("mustache.suffix", MustacheSettings.SUFFIX).trim();
 	}
 
 	/**
 	 * Resolve mustache view resolver order.
-	 * Default is to look for "mustache.order" property or use {@link #ORDER} if
+	 * Default is to look for "mustache.order" property or use {@link MustacheSettings#ORDER} if
 	 * property cannot be resolved.
 	 *
 	 * @return Order value.
 	 */
 	public int getOrder() {
-		return parseInt(environment.getProperty("mustache.order", valueOf(ORDER)).trim());
+		return parseInt(environment.getProperty("mustache.order", valueOf(MustacheSettings.ORDER)).trim());
 	}
 
 	/**
 	 * Resolve mustache view resolver cache settings.
-	 * Default is to look for "mustache.cache" property or use {@link #CACHE} if
+	 * Default is to look for "mustache.cache" property or use {@link MustacheSettings#CACHE} if
 	 * property cannot be resolved.
 	 *
 	 * @return Cache settings.
 	 */
 	public boolean getCache() {
-		return parseBoolean(environment.getProperty("mustache.cache", valueOf(CACHE)).trim());
+		return parseBoolean(environment.getProperty("mustache.cache", valueOf(MustacheSettings.CACHE)).trim());
 	}
 
 	/**
 	 * Resolve view names matchers of mustache view resolver.
-	 * Default is to look for "mustache.viewNames" property or use {@link #VIEW_NAMES} if
+	 * Default is to look for "mustache.viewNames" property or use {@link MustacheSettings#VIEW_NAMES} if
 	 * property cannot be resolved.
 	 *
 	 * @return View names patterns.
 	 */
 	public String[] getViewNames() {
-		String viewNames = environment.getProperty("mustache.viewNames", valueOf(VIEW_NAMES)).trim();
+		String viewNames = environment.getProperty("mustache.viewNames", valueOf(MustacheSettings.VIEW_NAMES)).trim();
 		String[] names = viewNames.split(",");
 		for (int i = 0; i < names.length; i++) {
 			names[i] = names[i].trim();
@@ -270,7 +216,7 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Layout name.
 	 */
 	public String getDefaultLayout() {
-		return environment.getProperty("mustache.defaultLayout", DEFAULT_LAYOUT).trim();
+		return environment.getProperty("mustache.defaultLayout", MustacheSettings.DEFAULT_LAYOUT).trim();
 	}
 
 	/**
@@ -279,7 +225,7 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Partial key in layout.
 	 */
 	public String getLayoutKey() {
-		return environment.getProperty("mustache.layoutKey", LAYOUT_KEY).trim();
+		return environment.getProperty("mustache.layoutKey", MustacheSettings.LAYOUT_KEY).trim();
 	}
 
 	/**
@@ -288,7 +234,7 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Layouts mappings
 	 */
 	public Map<String, String> getLayoutMappings() {
-		String mappingsValues = environment.getProperty("mustache.layoutMappings", LAYOUT_MAPPINGS).trim();
+		String mappingsValues = environment.getProperty("mustache.layoutMappings", MustacheSettings.LAYOUT_MAPPINGS).trim();
 
 		if (mappingsValues.isEmpty()) {
 			return emptyMap();
