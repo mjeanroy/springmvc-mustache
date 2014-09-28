@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateException;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -83,16 +82,6 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 			return new HashMap<String, String>();
 		}
 	};
-
-	/**
-	 * Build new template loader.
-	 * Use {@link org.springframework.core.io.DefaultResourceLoader} as resource loader implementation.
-	 */
-	public DefaultMustacheTemplateLoader() {
-		this.resourceLoader = new DefaultResourceLoader();
-		this.prefix = null;
-		this.suffix = null;
-	}
 
 	/**
 	 * Build new template loader.

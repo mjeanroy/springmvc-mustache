@@ -32,6 +32,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,7 +79,8 @@ public class MustacheView_JMustache_Test {
 		writer = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
-		templateLoader = new DefaultMustacheTemplateLoader();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 		Compiler compiler = Mustache.compiler()
 				.zeroIsFalse(true)
 				.emptyStringIsFalse(true);

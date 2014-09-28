@@ -24,21 +24,22 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -63,7 +64,8 @@ public class MustacheJavaCompilerTest {
 
 		writer = new StringWriter();
 
-		templateLoader = new DefaultMustacheTemplateLoader();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 		mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
 	}
 

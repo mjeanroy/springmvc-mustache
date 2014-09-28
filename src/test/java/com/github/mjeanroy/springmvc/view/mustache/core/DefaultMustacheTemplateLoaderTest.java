@@ -32,7 +32,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -73,21 +72,6 @@ public class DefaultMustacheTemplateLoaderTest {
 		prefix = "foo";
 		suffix = "bar";
 		mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
-	}
-
-	@Test
-	public void it_should_build_template_loader_using_default_resource_loader() throws Exception {
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader();
-
-		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
-		String prefix = (String) readField(loader, "prefix", true);
-		String suffix = (String) readField(loader, "suffix", true);
-		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
-
-		assertThat(resourceLoader).isNotNull().isExactlyInstanceOf(DefaultResourceLoader.class);
-		assertThat(prefix).isNull();
-		assertThat(suffix).isNull();
-		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 
 	@Test

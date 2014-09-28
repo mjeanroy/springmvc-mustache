@@ -24,6 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
+import java.util.Collection;
+
 /**
  * Commons static pre-conditions utilities.
  */
@@ -49,6 +51,40 @@ public final class PreConditions {
 			throw new NullPointerException(message);
 		}
 		return object;
+	}
+
+	/**
+	 * Check if an array is not null and not empty.
+	 * If array is null or empty, an {@link java.lang.IllegalArgumentException} is thrown.
+	 * If array is not null and not empty, it will be automatically returned.
+	 *
+	 * @param array Array to check.
+	 * @param message Exception message.
+	 * @param <T> Type of array elements.
+	 * @return Original array.
+	 */
+	public static <T> T[] notEmpty(T[] array, String message) {
+		if (array == null || array.length == 0) {
+			throw new IllegalArgumentException(message);
+		}
+		return array;
+	}
+
+	/**
+	 * Check if a collection is not null and not empty.
+	 * If collection is null or empty, an {@link java.lang.IllegalArgumentException} is thrown.
+	 * If collection is not null and not empty, it will be automatically returned.
+	 *
+	 * @param array Collection to check.
+	 * @param message Exception message.
+	 * @param <T> Type of array elements.
+	 * @return Original collection.
+	 */
+	public static <T> Collection<T> notEmpty(Collection<T> array, String message) {
+		if (array == null || array.size() == 0) {
+			throw new IllegalArgumentException(message);
+		}
+		return array;
 	}
 
 	/**

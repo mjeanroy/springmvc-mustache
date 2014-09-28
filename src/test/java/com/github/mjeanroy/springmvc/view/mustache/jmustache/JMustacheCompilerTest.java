@@ -32,6 +32,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -63,7 +65,8 @@ public class JMustacheCompilerTest {
 
 		writer = new StringWriter();
 
-		templateLoader = new DefaultMustacheTemplateLoader();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 		Compiler compiler = Mustache.compiler()
 				.zeroIsFalse(true)
 				.emptyStringIsFalse(true);

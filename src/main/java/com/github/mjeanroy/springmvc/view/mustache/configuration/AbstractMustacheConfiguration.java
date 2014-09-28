@@ -27,14 +27,20 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Boolean.parseBoolean;
@@ -112,6 +118,9 @@ public abstract class AbstractMustacheConfiguration {
 	@Autowired
 	private Environment environment;
 
+	@Autowired(required = false)
+	private ResourceLoader resourceLoader;
+
 	/**
 	 * Build mustache view resolver.
 	 * This view resolver needs an instance of {@link com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler}
@@ -171,7 +180,26 @@ public abstract class AbstractMustacheConfiguration {
 	 */
 	@Bean
 	public MustacheTemplateLoader mustacheTemplateLoader() {
-		return new DefaultMustacheTemplateLoader();
+		return new DefaultMustacheTemplateLoader(getResourceLoader());
+	}
+
+	/**
+	 * Get active resource loader.
+	 * The default implementation is to return a set of resource loaders.
+	 *
+	 * @return Resource loader.
+	 */
+	protected ResourceLoader getResourceLoader() {
+		List<ResourceLoader> resourceLoaders = new ArrayList<ResourceLoader>();
+
+		if (resourceLoader != null) {
+			resourceLoaders.add(resourceLoader);
+		}
+
+		resourceLoaders.add(new ClassPathXmlApplicationContext());
+		resourceLoaders.add(new FileSystemXmlApplicationContext());
+
+		return new CompositeResourceLoader(resourceLoaders);
 	}
 
 	/**

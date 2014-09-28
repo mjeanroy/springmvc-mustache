@@ -24,9 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,15 +42,11 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -75,7 +78,8 @@ public class MustacheView_MustacheJava_Test {
 		writer = new StringWriter();
 		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
-		templateLoader = new DefaultMustacheTemplateLoader();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 
 		MustacheCompiler mustacheCompiler = new MustacheJavaCompiler(templateLoader);
 		mustacheView = new MustacheView();

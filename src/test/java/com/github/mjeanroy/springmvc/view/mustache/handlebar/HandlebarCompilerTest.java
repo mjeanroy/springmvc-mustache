@@ -24,25 +24,28 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
+
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class HandlebarCompilerTest {
 
@@ -65,7 +68,8 @@ public class HandlebarCompilerTest {
 
 		writer = new StringWriter();
 
-		templateLoader = new DefaultMustacheTemplateLoader();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 		Handlebars hb = new Handlebars();
 
 		hbCompiler = new HandlebarCompiler(hb, templateLoader);
