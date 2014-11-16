@@ -24,22 +24,22 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import static org.assertj.core.api.Assertions.*;
+
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -86,7 +86,6 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	@Ignore("Zero is not a falsy value with mustache.java, see https://github.com/spullara/mustache.java/pull/111")
 	public void it_should_treat_zero_as_falsy() throws Exception {
 		String name = "/templates/zero.template.html";
 

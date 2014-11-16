@@ -52,6 +52,11 @@ public class MustacheJavaCompiler extends AbstractMustacheCompiler implements Mu
 	public MustacheJavaCompiler(MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 		this.mustacheFactory = new SpringMustacheFactory(templateLoader);
+
+		// Use a custom reflection object handler to "see" zero as a falsey value
+		// See: https://github.com/spullara/mustache.java/pull/111
+		SpringMustacheReflectionObjectHandler reflectionObjectHandler = new SpringMustacheReflectionObjectHandler();
+		((SpringMustacheFactory) this.mustacheFactory).setObjectHandler(reflectionObjectHandler);
 	}
 
 	@Override
