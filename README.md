@@ -13,7 +13,7 @@ With Maven, add explicit dependency:
     <dependency>
         <groupId>com.github.mjeanroy</groupId>
         <artifactId>springmvc-mustache</artifactId>
-        <version>0.2.0<version>
+        <version>0.2.0</version>
     </dependency>
 
     <!-- Add mustache implementation to use -->
@@ -21,17 +21,17 @@ With Maven, add explicit dependency:
     <dependency>
         <groupId>com.samskivert</groupId>
         <artifactId>jmustache</artifactId>
-        <version>1.9<version>
+        <version>1.9</version>
     </dependency>
     <dependency>
         <groupId>com.github.jknack</groupId>
         <artifactId>handlebars</artifactId>
-        <version>1.3.2<version>
+        <version>1.3.2</version>
     </dependency>
     <dependency>
         <groupId>com.github.spullara.mustache.java</groupId>
         <artifactId>compiler</artifactId>
-        <version>0.8.16<version>
+        <version>0.8.16</version>
     </dependency>
 ```
 
