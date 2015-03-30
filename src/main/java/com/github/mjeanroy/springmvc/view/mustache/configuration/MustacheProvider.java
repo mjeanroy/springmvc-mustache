@@ -25,6 +25,13 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
+import static java.util.Collections.unmodifiableMap;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar.HandlebarConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
@@ -77,22 +84,20 @@ public enum MustacheProvider {
 	AUTO {
 		@Override
 		public Class configuration() {
-			if (isPresent("com.samskivert.mustache.Mustache")) {
-				// Use JMustache
-				return JMUSTACHE.configuration();
-			}
-
-			if (isPresent("com.github.jknack.handlebars.Handlebars")) {
-				// Use Handlebar
-				return HANDLEBAR.configuration();
-			}
-
-			if (isPresent("com.github.mustachejava.MustacheFactory")) {
-				// Use mustache.java
-				return MUSTACHE_JAVA.configuration();
+			for (Map.Entry<String, MustacheProvider> conf : CONF.entrySet()) {
+				String klass = conf.getKey();
+				MustacheProvider provider = conf.getValue();
+				if (isPresent(klass)) {
+					log.debug("Class '{}' found in classpath, use {} configuration", klass, provider.name());
+					return provider.configuration();
+				}
+				else {
+					log.trace("Class '{}' is missing, skip", klass);
+				}
 			}
 
 			// No implementation detected, throw exception
+			log.error("Mustache implementation is missing, please add one of following dependency to your classpath: {}", CONF.keySet());
 			throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache or handlebar to classpath");
 		}
 	};
@@ -103,5 +108,17 @@ public enum MustacheProvider {
 	 * @return Configuration class.
 	 */
 	public abstract Class configuration();
+
+	private static final Map<String, MustacheProvider> CONF;
+
+	static {
+		Map<String, MustacheProvider> map = new TreeMap<String, MustacheProvider>();
+		map.put("com.samskivert.mustache.Mustache", JMUSTACHE);
+		map.put("com.github.jknack.handlebars.Handlebars", HANDLEBAR);
+		map.put("com.github.mustachejava.MustacheFactory", MUSTACHE_JAVA);
+		CONF = unmodifiableMap(map);
+	}
+
+	private static final Logger log = LoggerFactory.getLogger(MustacheProvider.class);
 
 }

@@ -24,8 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
-import org.springframework.web.servlet.view.AbstractTemplateView;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static java.util.Collections.unmodifiableMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,8 +33,11 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-import static java.util.Collections.unmodifiableMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.view.AbstractTemplateView;
+
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
 
 /**
  * Implementation of mustache view.
@@ -42,7 +45,11 @@ import static java.util.Collections.unmodifiableMap;
  */
 public class MustacheView extends AbstractTemplateView {
 
-	/** Mustache compiler. */
+	private static final Logger log = LoggerFactory.getLogger(MustacheView.class);
+
+	/**
+	 * Mustache compiler.
+	 */
 	private MustacheCompiler compiler;
 
 	/** List of aliases that map alias name to partial path. */
@@ -112,6 +119,19 @@ public class MustacheView extends AbstractTemplateView {
 	@Override
 	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		notNull(compiler, "Compiler must not be null and must have been set");
+		notNull(model, "Model must not be null");
+
+		if (log.isDebugEnabled()) {
+			log.debug("Render template {}", viewLayoutName());
+
+			if (log.isTraceEnabled()) {
+				log.trace("Using model: ");
+				for (Map.Entry<String, Object> entry : model.entrySet()) {
+					log.trace("  => {} = {}", entry.getKey(), entry.getValue());
+				}
+			}
+		}
+
 		response.setContentType(getContentType());
 		renderTemplate(model, response.getWriter());
 	}
@@ -125,6 +145,7 @@ public class MustacheView extends AbstractTemplateView {
 			if (!(object instanceof Map)) {
 				throw new MustachePartialsMappingException();
 			}
+
 			viewPartials.putAll((Map<String, String>) object);
 		}
 

@@ -24,13 +24,21 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
-import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Integer.parseInt;
+import static java.lang.String.valueOf;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -39,16 +47,12 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
-import static java.lang.String.valueOf;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.unmodifiableMap;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 
 /**
  * Abstraction that create basic beans to use with
@@ -61,11 +65,16 @@ import static java.util.Collections.unmodifiableMap;
 )
 public abstract class AbstractMustacheConfiguration {
 
+	private static final Logger log = LoggerFactory.getLogger(AbstractMustacheConfiguration.class);
+
 	@Autowired
 	private Environment environment;
 
 	@Autowired(required = false)
 	private ResourceLoader resourceLoader;
+
+	@Autowired(required = false)
+	private ApplicationContext applicationContext;
 
 	/**
 	 * Build mustache view resolver.
@@ -75,9 +84,7 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Mustache view resolver instance.
 	 */
 	@Bean
-	public MustacheViewResolver mustacheViewResolver() {
-		MustacheCompiler compiler = mustacheCompiler();
-
+	public MustacheViewResolver mustacheViewResolver(MustacheCompiler compiler) {
 		// Get resolver properties
 		String prefix = getPrefix();
 		String suffix = getSuffix();
@@ -87,6 +94,16 @@ public abstract class AbstractMustacheConfiguration {
 		String defaultLayout = getDefaultLayout();
 		String layoutKey = getLayoutKey();
 		Map<String, String> mappings = getLayoutMappings();
+
+		log.info("Create mustache view resolver");
+		log.trace("  => Cache: {}", cache);
+		log.trace("  => Prefix: {}", prefix);
+		log.trace("  => Suffix: {}", suffix);
+		log.trace("  => Order: {}", order);
+		log.trace("  => View Names: {}", viewNames);
+		log.trace("  => Default layout: {}", defaultLayout);
+		log.trace("  => Layout key: {}", layoutKey);
+		log.trace("  => Mappings: {}", mappings);
 
 		MustacheViewResolver resolver = new MustacheViewResolver(compiler);
 		resolver.setCache(cache);
@@ -115,7 +132,7 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public abstract MustacheCompiler mustacheCompiler();
+	public abstract MustacheCompiler mustacheCompiler(MustacheTemplateLoader mustacheTemplateLoader);
 
 	/**
 	 * Build mustache template loader.
@@ -126,6 +143,7 @@ public abstract class AbstractMustacheConfiguration {
 	 */
 	@Bean
 	public MustacheTemplateLoader mustacheTemplateLoader() {
+		log.info("Create default mustache template loader");
 		return new DefaultMustacheTemplateLoader(getResourceLoader());
 	}
 
@@ -142,8 +160,16 @@ public abstract class AbstractMustacheConfiguration {
 			resourceLoaders.add(resourceLoader);
 		}
 
-		resourceLoaders.add(new ClassPathXmlApplicationContext());
-		resourceLoaders.add(new FileSystemXmlApplicationContext());
+		if (applicationContext != null) {
+			resourceLoaders.add(applicationContext);
+		}
+
+		if (resourceLoaders.isEmpty()) {
+			resourceLoaders.add(new ClassPathXmlApplicationContext());
+			resourceLoaders.add(new FileSystemXmlApplicationContext());
+		}
+
+		log.debug("Create resource loader using: {}", resourceLoaders);
 
 		return new CompositeResourceLoader(resourceLoaders);
 	}

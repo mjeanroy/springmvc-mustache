@@ -24,16 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
+import static org.springframework.util.Assert.notNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.util.Assert.notNull;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+
+import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
 
 /**
  * Extension of {@link org.springframework.web.servlet.ModelAndView} class

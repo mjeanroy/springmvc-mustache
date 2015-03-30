@@ -70,13 +70,13 @@ public class MustacheJavaConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler();
+		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler(mock(MustacheTemplateLoader.class));
 		assertThat(mustacheCompiler).isNotNull();
 	}
 
 	@Test
 	public void it_should_instantiate_mustache_view_resolver() {
-		MustacheViewResolver mustacheViewResolver = mustacheJavaConfiguration.mustacheViewResolver();
+		MustacheViewResolver mustacheViewResolver = mustacheJavaConfiguration.mustacheViewResolver(mock(MustacheCompiler.class));
 		assertThat(mustacheViewResolver).isNotNull();
 	}
 

@@ -24,17 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import org.junit.Before;
+import org.junit.Test;
 
 @SuppressWarnings("unchecked")
 public class MustacheViewResolverTest {

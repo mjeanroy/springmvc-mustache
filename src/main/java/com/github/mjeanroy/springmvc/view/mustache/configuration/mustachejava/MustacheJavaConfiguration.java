@@ -24,25 +24,32 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 
 @Configuration
 public class MustacheJavaConfiguration extends AbstractMustacheConfiguration {
 
+	private static final Logger log = LoggerFactory.getLogger(MustacheJavaConfiguration.class);
+
 	/**
 	 * Build mustache compiler.
 	 * This compiler use an instance of {@link com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory}
 	 * under the hood.
 	 *
+	 * @param mustacheTemplateLoader Template loader implementation.
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler() {
-		return new MustacheJavaCompiler(mustacheTemplateLoader());
+	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader mustacheTemplateLoader) {
+		log.info("Create mustache.java compiler");
+		return new MustacheJavaCompiler(mustacheTemplateLoader);
 	}
 }

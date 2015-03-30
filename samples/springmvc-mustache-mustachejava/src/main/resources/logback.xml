@@ -7,7 +7,7 @@
 <!-- For professional support please see                            -->
 <!--    http://www.qos.ch/shop/products/professionalSupport         -->
 <!--                                                                -->
-<configuration debug="false">
+<configuration debug="true">
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -15,5 +15,9 @@
 		</encoder>
 	</appender>
 
-	<root level="OFF" />
+	<logger name="com.github.mjeanroy" level="TRACE"/>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT"/>
+	</root>
 </configuration>

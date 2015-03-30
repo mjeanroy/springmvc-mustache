@@ -24,6 +24,10 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.configuration;
 
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,11 +44,18 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
 @ComponentScan(basePackageClasses = IndexController.class)
 public class SpringConfiguration extends WebMvcConfigurationSupport {
 
+	private static final Logger log = LoggerFactory.getLogger(SpringConfiguration.class);
+
 	@Bean
 	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
 		RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
 		handlerMapping.setAlwaysUseFullPath(true);
 		handlerMapping.setUseSuffixPatternMatch(false);
 		return handlerMapping;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		log.info("Application initialied");
 	}
 }

@@ -26,6 +26,9 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import java.io.Reader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mustachejava.DefaultMustacheFactory;
 
@@ -38,6 +41,8 @@ import com.github.mustachejava.DefaultMustacheFactory;
  * See: https://github.com/spullara/mustache.java/pull/105
  */
 public class SpringMustacheFactory extends DefaultMustacheFactory {
+
+	private static final Logger log = LoggerFactory.getLogger(SpringMustacheFactory.class);
 
 	/**
 	 * Mustache template loader that will load
@@ -58,6 +63,7 @@ public class SpringMustacheFactory extends DefaultMustacheFactory {
 
 	@Override
 	public Reader getReader(String resourceName) {
+		log.debug("Load template associated to resource: {}", resourceName);
 		return templateLoader.getTemplate(resourceName);
 	}
 
@@ -67,6 +73,7 @@ public class SpringMustacheFactory extends DefaultMustacheFactory {
 		// always added to template name
 		// See: https://github.com/spullara/mustache.java/pull/110
 		// For now, this method has to be overridden
+		log.debug("Resolve partial path for name: {}", name);
 		return templateLoader.resolve(name);
 	}
 }

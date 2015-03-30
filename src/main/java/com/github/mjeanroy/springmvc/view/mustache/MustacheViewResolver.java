@@ -24,20 +24,26 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
 /**
  * Mustache View Resolver.
  */
 public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
-	/** Mustache compiler. */
+	private static final Logger log = LoggerFactory.getLogger(MustacheViewResolver.class);
+
+	/**
+	 * Mustache compiler.
+	 */
 	private final MustacheCompiler compiler;
 
 	/**
@@ -75,6 +81,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 */
 	public MustacheViewResolver(MustacheCompiler compiler) {
 		setViewClass(requiredViewClass());
+
 		this.compiler = notNull(compiler, "Compiler must not be null");
 		this.layoutKey = MustacheSettings.DEFAULT_LAYOUT_KEY;
 		this.layoutMappings = new HashMap<String, String>();
@@ -87,12 +94,16 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 	@Override
 	public void setPrefix(String prefix) {
+		log.trace("Set view resolver prefix: '{}'", prefix);
+
 		super.setPrefix(prefix);
 		compiler.setPrefix(prefix);
 	}
 
 	@Override
 	public void setSuffix(String suffix) {
+		log.trace("Set view resolver suffix: '{}'", suffix);
+
 		super.setSuffix(suffix);
 		compiler.setSuffix(suffix);
 	}
@@ -103,6 +114,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param defaultLayout Default layout.
 	 */
 	public void setDefaultLayout(String defaultLayout) {
+		log.trace("Set view resolver default layout: '{}'", defaultLayout);
 		this.defaultLayout = hasText(defaultLayout, "Default layout must not be empty");
 	}
 
@@ -112,6 +124,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param layoutKey New view layout key.
 	 */
 	public void setLayoutKey(String layoutKey) {
+		log.trace("Set view resolver layout key: '{}'", layoutKey);
 		this.layoutKey = hasText(layoutKey, "Layout key must not be empty");
 	}
 
@@ -122,6 +135,9 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 */
 	public void setLayoutMappings(Map<String, String> layoutMappings) {
 		notNull(layoutMappings, "Layout mappings must not be null");
+
+		log.debug("Set view resolver layout mappings");
+
 		this.layoutMappings.clear();
 		for (Map.Entry<String, String> entry : layoutMappings.entrySet()) {
 			addLayoutMapping(entry.getKey(), entry.getValue());
@@ -135,6 +151,9 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	 * @param layoutName Layout name to use for given view.
 	 */
 	public void addLayoutMapping(String viewName, String layoutName) {
+		log.debug("Add new layout mapping");
+		log.trace("  => {} -> {}", viewName, layoutName);
+
 		notNull(viewName, "View name must not be null");
 		notNull(layoutName, "Layout name must not be null");
 		this.layoutMappings.put(viewName, layoutName);
@@ -146,6 +165,11 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		final String layout = mapping != null ? mapping : defaultLayout;
 		final boolean useLayout = layout != null && layoutKey != null;
 		final String name = useLayout ? layout : viewName;
+
+		log.info("Build view '{}'", viewName);
+		log.trace("  => Use layout: {}", useLayout);
+		log.trace("  => Layout: {}", layout);
+		log.trace("  => Name: {}", name);
 
 		final MustacheView view = (MustacheView) super.buildView(name);
 		view.setCompiler(compiler);

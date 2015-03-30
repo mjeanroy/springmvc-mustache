@@ -24,9 +24,11 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,12 +39,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.core.env.Environment;
 
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.when;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HandlebarConfigurationTest {
@@ -71,13 +70,13 @@ public class HandlebarConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler();
+		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(mock(MustacheTemplateLoader.class));
 		assertThat(mustacheCompiler).isNotNull();
 	}
 
 	@Test
 	public void it_should_instantiate_mustache_view_resolver() {
-		MustacheViewResolver mustacheViewResolver = handlebarConfiguration.mustacheViewResolver();
+		MustacheViewResolver mustacheViewResolver = handlebarConfiguration.mustacheViewResolver(mock(MustacheCompiler.class));
 		assertThat(mustacheViewResolver).isNotNull();
 	}
 

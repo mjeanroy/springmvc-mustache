@@ -24,28 +24,36 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
-import com.samskivert.mustache.Mustache;
+import static com.samskivert.mustache.Mustache.Compiler;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.samskivert.mustache.Mustache.Compiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import com.samskivert.mustache.Mustache;
 
 @Configuration
 public class JMustacheConfiguration extends AbstractMustacheConfiguration {
+
+	private static final Logger log = LoggerFactory.getLogger(JMustacheConfiguration.class);
 
 	/**
 	 * Build mustache compiler.
 	 * This compiler use an instance of {@link com.samskivert.mustache.Mustache.Compiler}
 	 * under the hood.
 	 *
+	 * @param mustacheTemplateLoader Template loader implementation.
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler() {
-		return new JMustacheCompiler(jMustacheCompiler(), mustacheTemplateLoader());
+	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader mustacheTemplateLoader) {
+		log.info("Create JMustache compiler");
+		return new JMustacheCompiler(jMustacheCompiler(), mustacheTemplateLoader);
 	}
 
 	/**

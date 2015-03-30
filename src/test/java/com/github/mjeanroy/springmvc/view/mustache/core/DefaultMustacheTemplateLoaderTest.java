@@ -24,7 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.rules.ExpectedException.none;
+import static org.mockito.Mockito.*;
+
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,18 +45,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
-import static org.junit.rules.ExpectedException.none;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
@@ -263,5 +262,19 @@ public class DefaultMustacheTemplateLoaderTest {
 		String location = mustacheTemplateLoader.resolve(templateName);
 
 		assertThat(location).isNotNull().isNotEmpty().isEqualTo(prefix + templateName + suffix);
+	}
+
+	@Test
+	public void it_should_resolve_template_location_with_prefix_suffix_and_aliases() {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		String templateName = "foo";
+		String realName = "bar";
+		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		mustacheTemplateLoader.addPartialAliases(singletonMap(templateName, realName));
+
+		String location = mustacheTemplateLoader.resolve(templateName);
+
+		assertThat(location).isNotNull().isNotEmpty().isEqualTo(prefix + realName + suffix);
 	}
 }

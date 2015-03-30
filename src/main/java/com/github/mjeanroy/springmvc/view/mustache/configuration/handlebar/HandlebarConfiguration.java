@@ -24,12 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarCompiler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.github.jknack.handlebars.Handlebars;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarCompiler;
 
 /**
  * Configure handlebar template engine.
@@ -37,16 +41,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HandlebarConfiguration extends AbstractMustacheConfiguration {
 
+	private static final Logger log = LoggerFactory.getLogger(HandlebarConfiguration.class);
+
 	/**
 	 * Build mustache compiler.
 	 * This compiler use an instance of {@link com.github.jknack.handlebars.Handlebars}
 	 * under the hood.
 	 *
+	 * @param mustacheTemplateLoader Template loader implementation.
 	 * @return Mustache compiler implementation.
 	 */
 	@Override
-	public MustacheCompiler mustacheCompiler() {
-		return new HandlebarCompiler(handlebarsCompiler(), mustacheTemplateLoader());
+	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader mustacheTemplateLoader) {
+		log.info("Create handlebar compiler");
+		return new HandlebarCompiler(handlebarsCompiler(), mustacheTemplateLoader);
 	}
 
 	/**

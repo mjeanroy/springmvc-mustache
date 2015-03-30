@@ -28,6 +28,9 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
@@ -38,6 +41,8 @@ import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheCompilatio
  * compilers.
  */
 public abstract class AbstractMustacheCompiler implements MustacheCompiler {
+
+	private static final Logger log = LoggerFactory.getLogger(AbstractMustacheCompiler.class);
 
 	/**
 	 * Mustache template loader that will be used to load templates
@@ -56,7 +61,9 @@ public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 
 	@Override
 	public MustacheTemplate compile(String name) {
+		log.debug("Compile template: {}", name);
 		notNull(name, "Template name must not be null");
+
 		try {
 			return doCompile(name);
 		}
@@ -78,14 +85,14 @@ public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 
 	@Override
 	public void setPrefix(String prefix) {
-		notNull(prefix, "Prefix must not be null");
-		templateLoader.setPrefix(prefix);
+		log.trace("Set compiler prefix: {}", prefix);
+		templateLoader.setPrefix(notNull(prefix, "Prefix must not be null"));
 	}
 
 	@Override
 	public void setSuffix(String suffix) {
-		notNull(suffix, "Suffix must not be null");
-		templateLoader.setSuffix(suffix);
+		log.trace("Set compiler suffix: '{}'", suffix);
+		templateLoader.setSuffix(notNull(suffix, "Suffix must not be null"));
 	}
 
 	@Override
@@ -101,11 +108,20 @@ public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 	@Override
 	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
 		notNull(partialAliases, "Partial aliases must not be null");
+
+		log.debug("Add temporary partial aliases");
+		if (log.isTraceEnabled()) {
+			for (Map.Entry<String, String> entry : partialAliases.entrySet()) {
+				log.trace("  => {} -> {}", entry.getKey(), entry.getValue());
+			}
+		}
+
 		templateLoader.addTemporaryPartialAliases(partialAliases);
 	}
 
 	@Override
 	public void removeTemporaryPartialAliases() {
+		log.debug("Remove temporary partial aliases");
 		templateLoader.removeTemporaryPartialAliases();
 	}
 }
