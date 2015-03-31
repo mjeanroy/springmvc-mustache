@@ -1,0 +1,6 @@
+##
+# File used by Spring Boot to enable auto configuration
+##
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.mjeanroy.springmvc.view.mustache.configuration.autoconfiguration.SpringMustacheAutoConfiguration

@@ -30,7 +30,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 
@@ -44,12 +43,11 @@ public class MustacheJavaConfiguration extends AbstractMustacheConfiguration {
 	 * This compiler use an instance of {@link com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory}
 	 * under the hood.
 	 *
-	 * @param mustacheTemplateLoader Template loader implementation.
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader mustacheTemplateLoader) {
+	public MustacheCompiler mustacheCompiler() {
 		log.info("Create mustache.java compiler");
-		return new MustacheJavaCompiler(mustacheTemplateLoader);
+		return new MustacheJavaCompiler(mustacheTemplateLoader());
 	}
 }

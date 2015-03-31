@@ -48,13 +48,12 @@ public class HandlebarConfiguration extends AbstractMustacheConfiguration {
 	 * This compiler use an instance of {@link com.github.jknack.handlebars.Handlebars}
 	 * under the hood.
 	 *
-	 * @param mustacheTemplateLoader Template loader implementation.
 	 * @return Mustache compiler implementation.
 	 */
 	@Override
-	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader mustacheTemplateLoader) {
+	public MustacheCompiler mustacheCompiler() {
 		log.info("Create handlebar compiler");
-		return new HandlebarCompiler(handlebarsCompiler(), mustacheTemplateLoader);
+		return new HandlebarCompiler(handlebarsCompiler(), mustacheTemplateLoader());
 	}
 
 	/**

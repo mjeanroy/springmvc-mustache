@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,28 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.autoconfiguration;
 
-import org.springframework.context.annotation.ImportSelector;
-import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.getAnnotationValue;
+@Configuration
+@AutoConfigureBefore(MustacheAutoConfiguration.class)
+public class SpringMustacheAutoConfiguration {
 
-/**
- * Select mustache configuration to use.
- */
-public class MustacheConfiguration implements ImportSelector {
+	@Configuration
+	@AutoConfigureBefore(MustacheAutoConfiguration.class)
+	@Import(com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheEngineConfiguration.class)
+	public static class MustacheEngineConfiguration {
+	}
 
-	@Override
-	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);
-		Class klass = provider.configuration();
-		return new String[]{ klass.getName() };
+	@Configuration
+	@AutoConfigureBefore(MustacheAutoConfiguration.class)
+	@ConditionalOnWebApplication
+	@Import(com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheWebConfiguration.class)
+	public static class MustacheWebConfiguration {
 	}
 }

@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import org.springframework.context.annotation.Import;
+import static com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvider.AUTO;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -32,12 +32,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvider.AUTO;
+import org.springframework.context.annotation.Import;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(MustacheConfiguration.class)
+@Import(value = {
+		MustacheEngineConfiguration.class,
+		MustacheWebConfiguration.class
+})
 public @interface EnableMustache {
 
 	/**

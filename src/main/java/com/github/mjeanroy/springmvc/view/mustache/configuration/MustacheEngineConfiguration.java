@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,22 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.getAnnotationValue;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.annotation.ImportSelector;
+import org.springframework.core.type.AnnotationMetadata;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+/**
+ * Select mustache configuration to use.
+ */
+public class MustacheEngineConfiguration implements ImportSelector {
 
-@RunWith(MockitoJUnitRunner.class)
-public class JMustacheConfigurationTest {
-
-	@InjectMocks
-	private JMustacheConfiguration jMustacheConfiguration;
-
-	@Test
-	public void it_should_instantiate_template_loader() {
-		MustacheTemplateLoader templateLoader = jMustacheConfiguration.mustacheTemplateLoader();
-		assertThat(templateLoader).isNotNull();
-	}
-
-	@Test
-	public void it_should_instantiate_mustache_compiler() {
-		MustacheCompiler mustacheCompiler = jMustacheConfiguration.mustacheCompiler();
-		assertThat(mustacheCompiler).isNotNull();
+	@Override
+	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);
+		Class klass = provider.configuration();
+		return new String[]{ klass.getName() };
 	}
 }
