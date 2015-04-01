@@ -13,7 +13,7 @@ With Maven, add explicit dependency:
     <dependency>
         <groupId>com.github.mjeanroy</groupId>
         <artifactId>springmvc-mustache</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
     </dependency>
 
     <!-- Add mustache implementation to use -->
@@ -64,6 +64,39 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvide
 @ComponentScan("com.myApp")
 public class SpringConfiguration {
 }
+```
+
+If you are using Spring Boot, then configuration will be automatically detected. Note that if you choose to use jmustache as implementation, then you will probably have to disable native spring boot mustache configuration.
+
+Here is an exemple using Spring Boot:
+
+```java
+package com.myApp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@EnableAutoConfiguration(exclude = MustacheAutoConfiguration.class)
+@Controller
+public class Application {
+
+	// Render a simple template
+        @RequestMapping("/")
+        public ModelAndView fooView() {
+                ModelAndView modelAndView = new ModelAndView("foo");
+                modelAndView.addObject("name", "foo");
+                return modelAndView;
+        }
+
+        public static void main(String[] args) throws Exception {
+                SpringApplication.run(Application.class, args);
+        }
+}
+
 ```
 
 By default, following configuration will be used:
@@ -292,6 +325,17 @@ public class FooController {
   }
 }
 ```
+
+## Samples
+
+If you clone the repository, you will find samples using:
+
+- JMustache
+- Mustache.java
+- Handlebars
+- Spring boot with JMustache implementation.
+
+These samples are really simple (render a really simple template with partial). Do not hesitate to submit your sample if you want.
 
 ## Licence
 
