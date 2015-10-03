@@ -24,9 +24,10 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.ResourceLoader;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Abstraction that create basic beans to use with
@@ -49,6 +48,9 @@ import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateL
 @Configuration
 public abstract class AbstractMustacheConfiguration {
 
+	/**
+	 * Class logger.
+	 */
 	private static final Logger log = LoggerFactory.getLogger(AbstractMustacheConfiguration.class);
 
 	@Autowired(required = false)
@@ -87,23 +89,28 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Resource loader.
 	 */
 	protected ResourceLoader getResourceLoader() {
-		List<ResourceLoader> resourceLoaders = new ArrayList<ResourceLoader>();
+		log.debug("Build composite resource loader");
+		List<ResourceLoader> resourceLoaders = new LinkedList<ResourceLoader>();
 
 		if (resourceLoader != null) {
+			log.trace(" -> Add custom resource loader: {}", resourceLoader);
 			resourceLoaders.add(resourceLoader);
 		}
 
 		if (applicationContext != null) {
+			log.trace(" -> Add application context as resource loader: {}", applicationContext);
 			resourceLoaders.add(applicationContext);
 		}
 
 		if (resourceLoaders.isEmpty()) {
+			log.trace(" -> Add instance of ClassPathXmlApplicationContext as resource loader");
 			resourceLoaders.add(new ClassPathXmlApplicationContext());
+
+			log.trace(" -> Add instance of FileSystemXmlApplicationContext as resource loader");
 			resourceLoaders.add(new FileSystemXmlApplicationContext());
 		}
 
 		log.debug("Create resource loader using: {}", resourceLoaders);
-
 		return new CompositeResourceLoader(resourceLoaders);
 	}
 }

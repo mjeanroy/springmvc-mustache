@@ -24,6 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ClassUtils;
@@ -44,6 +46,11 @@ import static java.util.Arrays.asList;
  * If no one find an existing resource, the last computed resource is returned.
  */
 public class CompositeResourceLoader implements ResourceLoader {
+
+	/**
+	 * Class logger.
+	 */
+	private static final Logger log = LoggerFactory.getLogger(CompositeResourceLoader.class);
 
 	/**
 	 * Set of resource loaders that will be used internally.
@@ -74,15 +81,22 @@ public class CompositeResourceLoader implements ResourceLoader {
 
 	@Override
 	public Resource getResource(String location) {
+		log.debug("Get resource: {}", location);
+
 		Resource resource = null;
+
 		for (ResourceLoader resourceLoader : resourceLoaders) {
+			log.trace("Test for resourceLoader: {}", resourceLoader);
 			resource = resourceLoader.getResource(location);
+
 			if (resource.exists()) {
+				log.trace("Resource {} exist, return it", resource);
 				return resource;
 			}
 		}
 
 		// Return last resource
+		log.trace("Resource {} not found, return last computed value", resource);
 		return resource;
 	}
 
