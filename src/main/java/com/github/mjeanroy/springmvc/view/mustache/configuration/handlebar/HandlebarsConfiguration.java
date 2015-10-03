@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarsCompiler;
 import org.slf4j.Logger;
@@ -46,12 +47,14 @@ public class HandlebarsConfiguration extends AbstractMustacheConfiguration {
 	 * This compiler use an instance of {@link com.github.jknack.handlebars.Handlebars}
 	 * under the hood.
 	 *
+	 * @param handlebars Handlebars instance.
+	 * @param templateLoader Template loader.
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler(Handlebars handlebars) {
+	public MustacheCompiler mustacheCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
 		log.info("Create handlebar compiler");
-		return new HandlebarsCompiler(handlebars, mustacheTemplateLoader());
+		return new HandlebarsCompiler(handlebars, templateLoader);
 	}
 
 	/**

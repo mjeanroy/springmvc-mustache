@@ -24,21 +24,10 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.core.io.ResourceLoader;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
 
 /**
  * Abstraction that create basic beans to use with
@@ -52,12 +41,6 @@ public abstract class AbstractMustacheConfiguration {
 	 */
 	private static final Logger log = LoggerFactory.getLogger(AbstractMustacheConfiguration.class);
 
-	@Autowired(required = false)
-	private ResourceLoader resourceLoader;
-
-	@Autowired(required = false)
-	private ApplicationContext applicationContext;
-
 	/**
 	 * Build mustache template loader.
 	 * This compiler use an instance of {@link org.springframework.core.io.DefaultResourceLoader}
@@ -66,41 +49,8 @@ public abstract class AbstractMustacheConfiguration {
 	 * @return Mustache template loader implementation.
 	 */
 	@Bean
-	public MustacheTemplateLoader mustacheTemplateLoader() {
+	public MustacheTemplateLoaderFactoryBean mustacheTemplateLoader() {
 		log.info("Create default mustache template loader");
-		return new DefaultTemplateLoader(getResourceLoader());
-	}
-
-	/**
-	 * Get active resource loader.
-	 * The default implementation is to return a set of resource loaders.
-	 *
-	 * @return Resource loader.
-	 */
-	protected ResourceLoader getResourceLoader() {
-		log.debug("Build composite resource loader");
-		Collection<ResourceLoader> resourceLoaders = new LinkedHashSet<ResourceLoader>();
-
-		if (resourceLoader != null) {
-			log.trace(" => Add custom resource loader: {}", resourceLoader);
-			resourceLoaders.add(resourceLoader);
-		}
-
-		if (applicationContext != null) {
-			log.trace(" => Add application context as resource loader: {}", applicationContext);
-			resourceLoaders.add(applicationContext);
-		}
-
-		if (resourceLoaders.isEmpty()) {
-			log.trace(" => Add instance of ClassPathXmlApplicationContext as resource loader");
-			resourceLoaders.add(new ClassPathXmlApplicationContext());
-
-			log.trace(" => Add instance of FileSystemXmlApplicationContext as resource loader");
-			resourceLoaders.add(new FileSystemXmlApplicationContext());
-		}
-
-		log.debug("Create composite resource loader using: {}", resourceLoaders);
-		log.trace(" => Number of loaders: {}", resourceLoaders.size());
-		return new CompositeResourceLoader(resourceLoaders);
+		return new MustacheTemplateLoaderFactoryBean();
 	}
 }

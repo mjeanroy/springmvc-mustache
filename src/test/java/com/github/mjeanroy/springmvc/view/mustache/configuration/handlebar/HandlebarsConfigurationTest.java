@@ -27,23 +27,12 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.core.io.ResourceLoader;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.apache.commons.lang3.reflect.FieldUtils.writeField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -55,117 +44,15 @@ public class HandlebarsConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_template_loader() {
-		MustacheTemplateLoader templateLoader = handlebarConfiguration.mustacheTemplateLoader();
+		MustacheTemplateLoaderFactoryBean templateLoader = handlebarConfiguration.mustacheTemplateLoader();
 		assertThat(templateLoader).isNotNull();
-	}
-
-	@Test
-	public void it_should_instantiate_template_loader_using_unique_loaders() throws Exception {
-		ApplicationContext applicationContext = mock(ApplicationContext.class);
-		writeField(handlebarConfiguration, "applicationContext", applicationContext, true);
-		writeField(handlebarConfiguration, "resourceLoader", applicationContext, true);
-
-		MustacheTemplateLoader templateLoader = handlebarConfiguration.mustacheTemplateLoader();
-
-		assertThat(templateLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultTemplateLoader.class);
-
-		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
-		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(CompositeResourceLoader.class);
-
-		CompositeResourceLoader compositeResourceLoader = (CompositeResourceLoader) resourceLoader;
-
-		@SuppressWarnings("unchecked")
-		Collection<ResourceLoader> loaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(loaders)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(1)
-				.containsOnly(applicationContext);
-	}
-
-	@Test
-	public void it_should_instantiate_template_loader_using_given_loaders() throws Exception {
-		ApplicationContext applicationContext = mock(ApplicationContext.class);
-		ResourceLoader resourceLoader = mock(ResourceLoader.class);
-
-		writeField(handlebarConfiguration, "applicationContext", applicationContext, true);
-		writeField(handlebarConfiguration, "resourceLoader", resourceLoader, true);
-
-		MustacheTemplateLoader templateLoader = handlebarConfiguration.mustacheTemplateLoader();
-
-		assertThat(templateLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultTemplateLoader.class);
-
-		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
-		ResourceLoader rl = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
-		assertThat(rl)
-				.isNotNull()
-				.isExactlyInstanceOf(CompositeResourceLoader.class);
-
-		CompositeResourceLoader compositeResourceLoader = (CompositeResourceLoader) rl;
-
-		@SuppressWarnings("unchecked")
-		Collection<ResourceLoader> loaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(loaders)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(2)
-				.containsOnly(
-						applicationContext,
-						resourceLoader
-				);
-	}
-
-	@Test
-	public void it_should_instantiate_template_loader_using_default_loaders() throws Exception {
-		writeField(handlebarConfiguration, "applicationContext", null, true);
-		writeField(handlebarConfiguration, "resourceLoader", null, true);
-
-		MustacheTemplateLoader templateLoader = handlebarConfiguration.mustacheTemplateLoader();
-
-		assertThat(templateLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultTemplateLoader.class);
-
-		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
-		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(CompositeResourceLoader.class);
-
-		CompositeResourceLoader compositeResourceLoader = (CompositeResourceLoader) resourceLoader;
-
-		@SuppressWarnings("unchecked")
-		Collection<ResourceLoader> loaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(loaders)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(2);
-
-		List<ResourceLoader> list = new ArrayList<ResourceLoader>(loaders);
-
-		assertThat(list.get(0))
-				.isNotNull()
-				.isExactlyInstanceOf(ClassPathXmlApplicationContext.class);
-
-		assertThat(list.get(1))
-				.isNotNull()
-				.isExactlyInstanceOf(FileSystemXmlApplicationContext.class);
 	}
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
 		Handlebars handlebars = mock(Handlebars.class);
-		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(handlebars);
+		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
+		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(handlebars, templateLoader);
 		assertThat(mustacheCompiler).isNotNull();
 	}
 }

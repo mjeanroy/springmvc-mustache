@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
@@ -45,12 +46,14 @@ public class JMustacheConfiguration extends AbstractMustacheConfiguration {
 	 * This compiler use an instance of {@link com.samskivert.mustache.Mustache.Compiler}
 	 * under the hood.
 	 *
+	 * @param compiler JMustache compiler.
+	 * @param templateLoader Template loader.
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler(Mustache.Compiler compiler) {
+	public MustacheCompiler mustacheCompiler(Mustache.Compiler compiler, MustacheTemplateLoader templateLoader) {
 		log.info("Create JMustache compiler");
-		return new JMustacheCompiler(compiler, mustacheTemplateLoader());
+		return new JMustacheCompiler(compiler, templateLoader);
 	}
 
 	/**
