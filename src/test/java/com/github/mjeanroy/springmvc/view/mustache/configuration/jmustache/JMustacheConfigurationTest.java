@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2014, 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.samskivert.mustache.Mustache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -163,7 +164,25 @@ public class JMustacheConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		MustacheCompiler mustacheCompiler = jMustacheConfiguration.mustacheCompiler();
+		Mustache.Compiler compiler = mock(Mustache.Compiler.class);
+		MustacheCompiler mustacheCompiler = jMustacheConfiguration.mustacheCompiler(compiler);
 		assertThat(mustacheCompiler).isNotNull();
+	}
+
+	@Test
+	public void it_should_create_mustache_compiler_factory_bean() throws Exception {
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+
+		String nullValue = (String) readField(factoryBean, "nullValue", true);
+		String defaultValue = (String) readField(factoryBean, "defaultValue", true);
+		boolean emptyStringIsFalse = (Boolean) readField(factoryBean, "emptyStringIsFalse", true);
+		boolean zeroIsFalse = (Boolean) readField(factoryBean, "zeroIsFalse", true);
+		boolean escapeHTML = (Boolean) readField(factoryBean, "escapeHTML", true);
+
+		assertThat(nullValue).isEqualTo("");
+		assertThat(defaultValue).isEqualTo("");
+		assertThat(emptyStringIsFalse).isTrue();
+		assertThat(zeroIsFalse).isTrue();
+		assertThat(escapeHTML).isTrue();
 	}
 }

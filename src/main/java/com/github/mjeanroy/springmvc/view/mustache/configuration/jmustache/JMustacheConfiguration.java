@@ -24,17 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
-import static com.samskivert.mustache.Mustache.Compiler;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import com.samskivert.mustache.Mustache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
-import com.samskivert.mustache.Mustache;
+import static com.samskivert.mustache.Mustache.Compiler;
 
 @Configuration
 public class JMustacheConfiguration extends AbstractMustacheConfiguration {
@@ -49,9 +48,9 @@ public class JMustacheConfiguration extends AbstractMustacheConfiguration {
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler() {
+	public MustacheCompiler mustacheCompiler(Mustache.Compiler compiler) {
 		log.info("Create JMustache compiler");
-		return new JMustacheCompiler(jMustacheCompiler(), mustacheTemplateLoader());
+		return new JMustacheCompiler(compiler, mustacheTemplateLoader());
 	}
 
 	/**
@@ -61,12 +60,13 @@ public class JMustacheConfiguration extends AbstractMustacheConfiguration {
 	 * @return JMustache compiler.
 	 */
 	@Bean
-	public Compiler jMustacheCompiler() {
-		return Mustache.compiler()
-				.nullValue("")
-				.defaultValue("")
-				.emptyStringIsFalse(true)
-				.zeroIsFalse(true)
-				.escapeHTML(true);
+	public JMustacheCompilerFactoryBean jMustacheCompiler() {
+		JMustacheCompilerFactoryBean factoryBean = new JMustacheCompilerFactoryBean();
+		factoryBean.setNullValue("");
+		factoryBean.setDefaultValue("");
+		factoryBean.setEmptyStringIsFalse(true);
+		factoryBean.setZeroIsFalse(true);
+		factoryBean.setEscapeHTML(true);
+		return factoryBean;
 	}
 }

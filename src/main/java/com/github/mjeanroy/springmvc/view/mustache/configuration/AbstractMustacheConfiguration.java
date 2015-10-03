@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
@@ -58,16 +57,6 @@ public abstract class AbstractMustacheConfiguration {
 
 	@Autowired(required = false)
 	private ApplicationContext applicationContext;
-
-	/**
-	 * Build mustache compiler.
-	 * This compiler use an instance of {@link com.samskivert.mustache.Mustache.Compiler}
-	 * under the hood.
-	 *
-	 * @return Mustache compiler implementation.
-	 */
-	@Bean
-	public abstract MustacheCompiler mustacheCompiler();
 
 	/**
 	 * Build mustache template loader.
