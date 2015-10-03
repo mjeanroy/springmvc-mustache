@@ -24,7 +24,13 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateException;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,14 +39,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateException;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Default template loader implementation.
@@ -48,9 +47,9 @@ import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNo
  * This class can be considered as thread safe if internal state is not
  * modified (if prefix and suffix are not modified, or if aliases are not added).
  */
-public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
+public class DefaultTemplateLoader implements MustacheTemplateLoader {
 
-	private static final Logger log = LoggerFactory.getLogger(DefaultMustacheTemplateLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(DefaultTemplateLoader.class);
 
 	/**
 	 * Resource loader that will be used to retrieve mustache template
@@ -93,7 +92,7 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	 *
 	 * @param resourceLoader Resource loader implementation to use.
 	 */
-	public DefaultMustacheTemplateLoader(ResourceLoader resourceLoader) {
+	public DefaultTemplateLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = notNull(resourceLoader, "Resource loader must not be null");
 		this.prefix = null;
 		this.suffix = null;
@@ -106,7 +105,7 @@ public class DefaultMustacheTemplateLoader implements MustacheTemplateLoader {
 	 * @param prefix         Prefix to prepend to template name before loading it using resource loader.
 	 * @param suffix         Suffix to append to template before loading it using resource loader.
 	 */
-	public DefaultMustacheTemplateLoader(ResourceLoader resourceLoader, String prefix, String suffix) {
+	public DefaultTemplateLoader(ResourceLoader resourceLoader, String prefix, String suffix) {
 		this(resourceLoader);
 		this.prefix = notNull(prefix, "Prefix must not be null");
 		this.suffix = notNull(suffix, "Suffix must not be null");

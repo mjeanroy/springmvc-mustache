@@ -27,7 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -68,10 +68,10 @@ public class MustacheJavaConfigurationTest {
 
 		assertThat(templateLoader)
 				.isNotNull()
-				.isExactlyInstanceOf(DefaultMustacheTemplateLoader.class);
+				.isExactlyInstanceOf(DefaultTemplateLoader.class);
 
-		DefaultMustacheTemplateLoader defaultMustacheTemplateLoader = (DefaultMustacheTemplateLoader) templateLoader;
-		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultMustacheTemplateLoader, "resourceLoader", true);
+		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
+		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
 		assertThat(resourceLoader)
 				.isNotNull()
 				.isExactlyInstanceOf(CompositeResourceLoader.class);
@@ -100,10 +100,10 @@ public class MustacheJavaConfigurationTest {
 
 		assertThat(templateLoader)
 				.isNotNull()
-				.isExactlyInstanceOf(DefaultMustacheTemplateLoader.class);
+				.isExactlyInstanceOf(DefaultTemplateLoader.class);
 
-		DefaultMustacheTemplateLoader defaultMustacheTemplateLoader = (DefaultMustacheTemplateLoader) templateLoader;
-		ResourceLoader rl = (ResourceLoader) readField(defaultMustacheTemplateLoader, "resourceLoader", true);
+		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
+		ResourceLoader rl = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
 		assertThat(rl)
 				.isNotNull()
 				.isExactlyInstanceOf(CompositeResourceLoader.class);
@@ -132,10 +132,10 @@ public class MustacheJavaConfigurationTest {
 
 		assertThat(templateLoader)
 				.isNotNull()
-				.isExactlyInstanceOf(DefaultMustacheTemplateLoader.class);
+				.isExactlyInstanceOf(DefaultTemplateLoader.class);
 
-		DefaultMustacheTemplateLoader defaultMustacheTemplateLoader = (DefaultMustacheTemplateLoader) templateLoader;
-		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultMustacheTemplateLoader, "resourceLoader", true);
+		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
+		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
 		assertThat(resourceLoader)
 				.isNotNull()
 				.isExactlyInstanceOf(CompositeResourceLoader.class);

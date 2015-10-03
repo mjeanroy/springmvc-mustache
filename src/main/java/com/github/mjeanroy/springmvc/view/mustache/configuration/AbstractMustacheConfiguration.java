@@ -26,7 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public abstract class AbstractMustacheConfiguration {
 	@Bean
 	public MustacheTemplateLoader mustacheTemplateLoader() {
 		log.info("Create default mustache template loader");
-		return new DefaultMustacheTemplateLoader(getResourceLoader());
+		return new DefaultTemplateLoader(getResourceLoader());
 	}
 
 	/**

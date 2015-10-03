@@ -49,7 +49,7 @@ import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNo
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultMustacheTemplateLoaderTest {
+public class DefaultTemplateLoaderTest {
 
 	@Rule
 	public final ExpectedException thrown = none();
@@ -64,18 +64,18 @@ public class DefaultMustacheTemplateLoaderTest {
 
 	private String suffix;
 
-	private DefaultMustacheTemplateLoader mustacheTemplateLoader;
+	private DefaultTemplateLoader mustacheTemplateLoader;
 
 	@Before
 	public void setUp() {
 		prefix = "foo";
 		suffix = "bar";
-		mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
+		mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 	}
 
 	@Test
 	public void it_should_build_template_loader_using_custom_resource_loader() throws Exception {
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader);
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
 		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
 		String prefix = (String) readField(loader, "prefix", true);
@@ -90,7 +90,7 @@ public class DefaultMustacheTemplateLoaderTest {
 
 	@Test
 	public void it_should_build_template_loader_using_custom_resource_loader_with_prefix_and_suffix() throws Exception {
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
 		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
 		String prefix = (String) readField(loader, "prefix", true);
@@ -114,7 +114,7 @@ public class DefaultMustacheTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		loader.addPartialAliases(aliases);
 
 		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
@@ -135,7 +135,7 @@ public class DefaultMustacheTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		loader.addTemporaryPartialAliases(aliases);
 
 		ThreadLocal<Map<String, String>> tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
@@ -157,7 +157,7 @@ public class DefaultMustacheTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		DefaultMustacheTemplateLoader loader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		loader.addTemporaryPartialAliases(aliases);
 
 		ThreadLocal<Map<String, String>> tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
@@ -206,7 +206,7 @@ public class DefaultMustacheTemplateLoaderTest {
 		String prefix = "/";
 		String suffix = ".template.html";
 		String templateName = prefix + name + suffix;
-		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
 		when(resource.exists()).thenReturn(false);
 		when(resourceLoader.getResource(templateName)).thenReturn(resource);
@@ -225,7 +225,7 @@ public class DefaultMustacheTemplateLoaderTest {
 	public void it_should_get_and_set_prefix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
-		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		assertThat(mustacheTemplateLoader.getPrefix()).isNotNull().isNotEmpty().isEqualTo(prefix);
 
 		String newPrefix = "foobar";
@@ -237,7 +237,7 @@ public class DefaultMustacheTemplateLoaderTest {
 	public void it_should_get_and_set_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
-		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		assertThat(mustacheTemplateLoader.getSuffix()).isNotNull().isNotEmpty().isEqualTo(suffix);
 
 		String newSuffix = "foobar";
@@ -257,7 +257,7 @@ public class DefaultMustacheTemplateLoaderTest {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		String templateName = "foo";
-		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
 		String location = mustacheTemplateLoader.resolve(templateName);
 
@@ -270,7 +270,7 @@ public class DefaultMustacheTemplateLoaderTest {
 		String suffix = ".template.html";
 		String templateName = "foo";
 		String realName = "bar";
-		DefaultMustacheTemplateLoader mustacheTemplateLoader = new DefaultMustacheTemplateLoader(resourceLoader, prefix, suffix);
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		mustacheTemplateLoader.addPartialAliases(singletonMap(templateName, realName));
 
 		String location = mustacheTemplateLoader.resolve(templateName);

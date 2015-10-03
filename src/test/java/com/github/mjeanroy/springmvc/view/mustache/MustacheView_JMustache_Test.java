@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
@@ -80,7 +80,7 @@ public class MustacheView_JMustache_Test {
 		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
+		templateLoader = new DefaultTemplateLoader(resourceLoader);
 		Compiler compiler = Mustache.compiler()
 				.zeroIsFalse(true)
 				.emptyStringIsFalse(true);

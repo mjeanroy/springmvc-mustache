@@ -43,7 +43,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 
 @SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class MustacheView_MustacheJava_Test {
 		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
+		templateLoader = new DefaultTemplateLoader(resourceLoader);
 
 		MustacheCompiler mustacheCompiler = new MustacheJavaCompiler(templateLoader);
 		mustacheView = new MustacheView();
