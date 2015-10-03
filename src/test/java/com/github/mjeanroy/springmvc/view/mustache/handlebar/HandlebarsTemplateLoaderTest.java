@@ -45,22 +45,22 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HandlebarTemplateLoaderTest {
+public class HandlebarsTemplateLoaderTest {
 
 	@Mock
 	private MustacheTemplateLoader mustacheTemplateLoader;
 
-	private HandlebarTemplateLoader handlebarTemplateLoader;
+	private HandlebarsTemplateLoader handlebarsTemplateLoader;
 
 	@Before
 	public void setUp() {
-		handlebarTemplateLoader = new HandlebarTemplateLoader(mustacheTemplateLoader);
+		handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
 
 		when(mustacheTemplateLoader.getTemplate(anyString())).thenAnswer(new Answer<Reader>() {
 			@Override
 			public Reader answer(InvocationOnMock invocation) throws Throwable {
 				String location = invocation.getArguments()[0].toString();
-				InputStream stream = HandlebarTemplateLoaderTest.class.getResourceAsStream(location);
+				InputStream stream = HandlebarsTemplateLoaderTest.class.getResourceAsStream(location);
 				return new InputStreamReader(stream);
 			}
 		});
@@ -70,7 +70,7 @@ public class HandlebarTemplateLoaderTest {
 	public void it_should_read_template_source() throws IOException {
 		String location = "/templates/foo.template.html";
 
-		TemplateSource source = handlebarTemplateLoader.sourceAt(location);
+		TemplateSource source = handlebarsTemplateLoader.sourceAt(location);
 
 		String expectedContent = "<div>Hello {{name}}</div>";
 		assertThat(source).isNotNull();
@@ -85,7 +85,7 @@ public class HandlebarTemplateLoaderTest {
 		String templateName = "foo";
 		when(mustacheTemplateLoader.resolve(templateName)).thenReturn(location);
 
-		String result = handlebarTemplateLoader.resolve(templateName);
+		String result = handlebarsTemplateLoader.resolve(templateName);
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(location);
 		verify(mustacheTemplateLoader).resolve(templateName);
@@ -96,7 +96,7 @@ public class HandlebarTemplateLoaderTest {
 		String prefix = "/templates/";
 		when(mustacheTemplateLoader.getPrefix()).thenReturn(prefix);
 
-		String result = handlebarTemplateLoader.getPrefix();
+		String result = handlebarsTemplateLoader.getPrefix();
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(prefix);
 		verify(mustacheTemplateLoader).getPrefix();
@@ -107,7 +107,7 @@ public class HandlebarTemplateLoaderTest {
 		String suffix = ".template.html";
 		when(mustacheTemplateLoader.getSuffix()).thenReturn(suffix);
 
-		String result = handlebarTemplateLoader.getSuffix();
+		String result = handlebarsTemplateLoader.getSuffix();
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(suffix);
 		verify(mustacheTemplateLoader).getSuffix();
@@ -116,14 +116,14 @@ public class HandlebarTemplateLoaderTest {
 	@Test
 	public void it_should_set_prefix() {
 		String prefix = "foo";
-		handlebarTemplateLoader.setPrefix(prefix);
+		handlebarsTemplateLoader.setPrefix(prefix);
 		verify(mustacheTemplateLoader).setPrefix(prefix);
 	}
 
 	@Test
 	public void it_should_set_suffix() {
 		String suffix = "foo";
-		handlebarTemplateLoader.setSuffix(suffix);
+		handlebarsTemplateLoader.setSuffix(suffix);
 		verify(mustacheTemplateLoader).setSuffix(suffix);
 	}
 }

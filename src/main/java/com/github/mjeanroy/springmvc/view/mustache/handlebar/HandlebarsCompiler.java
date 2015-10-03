@@ -24,8 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
@@ -33,10 +31,12 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+
 /**
  * Mustache compiler using Java Handlebar as real implementation.
  */
-public class HandlebarCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public class HandlebarsCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Handlebar compiler.
@@ -52,10 +52,10 @@ public class HandlebarCompiler extends AbstractMustacheCompiler implements Musta
 	 * @param handlebars     Handlebars Compiler (must not be null).
 	 * @param templateLoader Template Loader (must not be null).
 	 */
-	public HandlebarCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
+	public HandlebarsCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 
-		final HandlebarTemplateLoader hbTemplateLoader = new HandlebarTemplateLoader(templateLoader);
+		final HandlebarsTemplateLoader hbTemplateLoader = new HandlebarsTemplateLoader(templateLoader);
 		this.handlebars = notNull(handlebars, "Handlebars compiler must not be null")
 				.with(hbTemplateLoader);
 	}
@@ -63,6 +63,6 @@ public class HandlebarCompiler extends AbstractMustacheCompiler implements Musta
 	@Override
 	protected MustacheTemplate doCompile(String name) throws Exception {
 		final Template template = handlebars.compile(name);
-		return new HandlebarTemplate(template);
+		return new HandlebarsTemplate(template);
 	}
 }

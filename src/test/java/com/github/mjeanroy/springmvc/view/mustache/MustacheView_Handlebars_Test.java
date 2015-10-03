@@ -26,7 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultMustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarsCompiler;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -83,7 +83,7 @@ public class MustacheView_Handlebars_Test {
 		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 
 		Handlebars handlebars = new Handlebars();
-		MustacheCompiler mustacheCompiler = new HandlebarCompiler(handlebars, templateLoader);
+		MustacheCompiler mustacheCompiler = new HandlebarsCompiler(handlebars, templateLoader);
 		mustacheView = new MustacheView();
 		mustacheView.setCompiler(mustacheCompiler);
 	}

@@ -47,13 +47,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class HandlebarCompilerTest {
+public class HandlebarsCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
 
 	private MustacheTemplateLoader templateLoader;
 
-	private HandlebarCompiler hbCompiler;
+	private HandlebarsCompiler hbCompiler;
 
 	private StringWriter writer;
 
@@ -72,7 +72,7 @@ public class HandlebarCompilerTest {
 		templateLoader = new DefaultMustacheTemplateLoader(resourceLoader);
 		Handlebars hb = new Handlebars();
 
-		hbCompiler = new HandlebarCompiler(hb, templateLoader);
+		hbCompiler = new HandlebarsCompiler(hb, templateLoader);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class HandlebarCompilerTest {
 		Handlebars handlebars = mock(Handlebars.class);
 		when(handlebars.with(any(TemplateLoader.class))).thenReturn(handlebars);
 
-		HandlebarCompiler hbCompiler = new HandlebarCompiler(handlebars, templateLoader);
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
 
 		Handlebars hb = (Handlebars) readField(hbCompiler, "handlebars", true);
 		MustacheTemplateLoader tmplLoader = (MustacheTemplateLoader) readField(hbCompiler, "templateLoader", true);
@@ -90,7 +90,7 @@ public class HandlebarCompilerTest {
 		assertThat(hb).isNotNull().isSameAs(handlebars);
 		assertThat(tmplLoader).isNotNull();
 
-		ArgumentCaptor<HandlebarTemplateLoader> hbTemplateLoader = ArgumentCaptor.forClass(HandlebarTemplateLoader.class);
+		ArgumentCaptor<HandlebarsTemplateLoader> hbTemplateLoader = ArgumentCaptor.forClass(HandlebarsTemplateLoader.class);
 		verify(handlebars).with(hbTemplateLoader.capture());
 
 		MustacheTemplateLoader hbInternalLoader = (MustacheTemplateLoader) readField(hbTemplateLoader.getValue(), "loader", true);

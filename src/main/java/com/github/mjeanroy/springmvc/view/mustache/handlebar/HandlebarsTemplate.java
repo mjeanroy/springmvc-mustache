@@ -24,38 +24,38 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
-import static org.mockito.Mockito.*;
+import com.github.jknack.handlebars.Template;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
-import com.github.jknack.handlebars.Template;
+/**
+ * Implementation of {@link MustacheTemplate} using Java Handlebar
+ * as real template implementation.
+ */
+public class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
-public class HandlebarTemplateTest {
+	/**
+	 * Original handlebar template that will be used to render
+	 * mustache template.
+	 */
+	private final Template template;
 
-	private com.github.jknack.handlebars.Template template;
-
-	private HandlebarTemplate handlebarTemplate;
-
-	@Before
-	public void setUp() {
-		template = mock(Template.class);
-		handlebarTemplate = new HandlebarTemplate(template);
+	/**
+	 * Build new handlebar template.
+	 *
+	 * @param template Original handlebar template.
+	 */
+	public HandlebarsTemplate(Template template) {
+		this.template = notNull(template, "Template must not be null");
 	}
 
-	@Test
-	public void it_should_execute_template() throws Exception {
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("foo", "bar");
-
-		Writer writer = mock(Writer.class);
-
-		handlebarTemplate.execute(model, writer);
-
-		verify(template).apply(model, writer);
+	@Override
+	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
+		template.apply(model, writer);
 	}
 }

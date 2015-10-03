@@ -24,22 +24,22 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebar;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-
-import java.io.IOException;
-import java.io.Reader;
-
 import com.github.jknack.handlebars.io.StringTemplateSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 
+import java.io.IOException;
+import java.io.Reader;
+
+import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+
 /**
  * Implement template loader for use with java handlebar
  * implementation.
  */
-public class HandlebarTemplateLoader implements TemplateLoader {
+public class HandlebarsTemplateLoader implements TemplateLoader {
 
 	/**
 	 * Template loader implementation.
@@ -54,7 +54,7 @@ public class HandlebarTemplateLoader implements TemplateLoader {
 	 *
 	 * @param loader Instance of mustache template loader.
 	 */
-	public HandlebarTemplateLoader(MustacheTemplateLoader loader) {
+	public HandlebarsTemplateLoader(MustacheTemplateLoader loader) {
 		this.loader = notNull(loader, "Loader must not be null");
 	}
 
