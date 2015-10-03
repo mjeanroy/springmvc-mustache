@@ -38,8 +38,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.io.ResourceLoader;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
  * Abstraction that create basic beans to use with
@@ -90,27 +90,28 @@ public abstract class AbstractMustacheConfiguration {
 	 */
 	protected ResourceLoader getResourceLoader() {
 		log.debug("Build composite resource loader");
-		List<ResourceLoader> resourceLoaders = new LinkedList<ResourceLoader>();
+		Collection<ResourceLoader> resourceLoaders = new LinkedHashSet<ResourceLoader>();
 
 		if (resourceLoader != null) {
-			log.trace(" -> Add custom resource loader: {}", resourceLoader);
+			log.trace(" => Add custom resource loader: {}", resourceLoader);
 			resourceLoaders.add(resourceLoader);
 		}
 
 		if (applicationContext != null) {
-			log.trace(" -> Add application context as resource loader: {}", applicationContext);
+			log.trace(" => Add application context as resource loader: {}", applicationContext);
 			resourceLoaders.add(applicationContext);
 		}
 
 		if (resourceLoaders.isEmpty()) {
-			log.trace(" -> Add instance of ClassPathXmlApplicationContext as resource loader");
+			log.trace(" => Add instance of ClassPathXmlApplicationContext as resource loader");
 			resourceLoaders.add(new ClassPathXmlApplicationContext());
 
-			log.trace(" -> Add instance of FileSystemXmlApplicationContext as resource loader");
+			log.trace(" => Add instance of FileSystemXmlApplicationContext as resource loader");
 			resourceLoaders.add(new FileSystemXmlApplicationContext());
 		}
 
-		log.debug("Create resource loader using: {}", resourceLoaders);
+		log.debug("Create composite resource loader using: {}", resourceLoaders);
+		log.trace(" => Number of loaders: {}", resourceLoaders.size());
 		return new CompositeResourceLoader(resourceLoaders);
 	}
 }
