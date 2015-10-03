@@ -24,6 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
@@ -163,7 +164,8 @@ public class HandlebarConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler();
+		Handlebars handlebars = mock(Handlebars.class);
+		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(handlebars);
 		assertThat(mustacheCompiler).isNotNull();
 	}
 }

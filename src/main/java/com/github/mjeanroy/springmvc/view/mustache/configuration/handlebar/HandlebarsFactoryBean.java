@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,43 +25,36 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
 
 import com.github.jknack.handlebars.Handlebars;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 /**
- * Configure handlebar template engine.
+ * Factory used to create instance of {@link com.github.jknack.handlebars.Handlebars}.
  */
-@Configuration
-public class HandlebarConfiguration extends AbstractMustacheConfiguration {
-
-	private static final Logger log = LoggerFactory.getLogger(HandlebarConfiguration.class);
+public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> implements FactoryBean<Handlebars> {
 
 	/**
-	 * Build mustache compiler.
-	 * This compiler use an instance of {@link com.github.jknack.handlebars.Handlebars}
-	 * under the hood.
-	 *
-	 * @return Mustache compiler implementation.
+	 * Class logger.
 	 */
-	@Bean
-	public MustacheCompiler mustacheCompiler(Handlebars handlebars) {
-		log.info("Create handlebar compiler");
-		return new HandlebarCompiler(handlebars, mustacheTemplateLoader());
+	private static final Logger log = LoggerFactory.getLogger(HandlebarsFactoryBean.class);
+
+	/**
+	 * Create factory with default settings.
+	 */
+	public HandlebarsFactoryBean() {
+		super();
 	}
 
-	/**
-	 * Build original {@link com.github.jknack.handlebars.Handlebars} compiler
-	 * that will be used to compile and render templates.
-	 *
-	 * @return Handlebars compiler.
-	 */
-	@Bean
-	public HandlebarsFactoryBean handlebarsCompiler() {
-		return new HandlebarsFactoryBean();
+	@Override
+	public Class<?> getObjectType() {
+		return Handlebars.class;
+	}
+
+	@Override
+	protected Handlebars createInstance() throws Exception {
+		log.debug("Create instance of {}", Handlebars.class);
+		return new Handlebars();
 	}
 }
