@@ -11,12 +11,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<!-- Create mustache beans -->
-	<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
 	<bean id="jmustache" class="com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCompilerFactoryBean" />
-	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler">
-		<constructor-arg ref="jmustache" />
-		<constructor-arg ref="mustacheTemplateLoader" />
-	</bean>
+	<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
 
 	<!-- Create view resolver -->
 	<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">

@@ -12,9 +12,7 @@
 
 	<!-- Create mustache beans -->
 	<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
-	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler">
-		<constructor-arg ref="mustacheTemplateLoader" />
-	</bean>
+	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
 
 	<!-- Create view resolver -->
 	<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
