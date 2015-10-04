@@ -8,7 +8,7 @@
 	<groupId>com.github.mjeanroy</groupId>
 	<artifactId>springmvc-mustache-jmustache</artifactId>
 	<packaging>war</packaging>
-	<version>0.3.1-SNAPSHOT</version>
+	<version>0.4.0</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
