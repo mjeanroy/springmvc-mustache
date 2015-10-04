@@ -13,7 +13,7 @@ With Maven, add explicit dependency:
     <dependency>
         <groupId>com.github.mjeanroy</groupId>
         <artifactId>springmvc-mustache</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.0</version>
     </dependency>
 
     <!-- Add mustache implementation to use -->
@@ -26,7 +26,7 @@ With Maven, add explicit dependency:
     <dependency>
         <groupId>com.github.jknack</groupId>
         <artifactId>handlebars</artifactId>
-        <version>1.3.2</version>
+        <version>2.2.3</version>
     </dependency>
     <dependency>
         <groupId>com.github.spullara.mustache.java</groupId>
@@ -36,6 +36,8 @@ With Maven, add explicit dependency:
 ```
 
 ## Configuration
+
+### Java Configuration
 
 Configuration is very easy, add `@EnableMustache` annotation to your configuration and you're done!
 
@@ -68,7 +70,66 @@ public class SpringConfiguration {
 
 If you are using Spring Boot, then configuration will be automatically detected. Note that if you choose to use jmustache as implementation, then you will probably have to disable native spring boot mustache configuration.
 
-Here is an exemple using Spring Boot:
+### XML Configuration
+
+If you prefer XML configuration, you may want to use one of these (depends on the underlying implementation) :
+
+- JMustache :
+
+```xml
+<!-- Create mustache beans -->
+<bean id="jmustache" class="com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCompilerFactoryBean" />
+<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
+
+<!-- Create view resolver -->
+<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+    <constructor-arg ref="mustacheCompiler" />
+    <property name="order" value="1" />
+    <property name="defaultLayout" value="layout" />
+    <property name="prefix" value="templates/" />
+    <property name="suffix" value=".template.html" />
+</bean>
+```
+
+- MustacheJava :
+
+```xml
+<!-- Create mustache beans -->
+<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
+
+<!-- Create view resolver -->
+<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+    <constructor-arg ref="mustacheCompiler" />
+    <property name="order" value="1" />
+    <property name="defaultLayout" value="layout" />
+    <property name="prefix" value="templates/" />
+    <property name="suffix" value=".template.html" />
+</bean>
+```
+
+- Handlebars :
+
+```xml
+<!-- Create mustache beans -->
+<bean id="handlebars" class="com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean" />
+<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
+
+<!-- Create view resolver -->
+<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+    <constructor-arg ref="mustacheCompiler" />
+    <property name="order" value="1" />
+    <property name="defaultLayout" value="layout" />
+    <property name="prefix" value="templates/" />
+    <property name="suffix" value=".template.html" />
+</bean>
+```
+
+### Spring Boot
+
+Finally, here is an exemple using Spring Boot:
 
 ```java
 package com.myApp;
@@ -84,20 +145,23 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class Application {
 
-	// Render a simple template
-        @RequestMapping("/")
-        public ModelAndView fooView() {
-                ModelAndView modelAndView = new ModelAndView("foo");
-                modelAndView.addObject("name", "foo");
-                return modelAndView;
-        }
+    // Render a simple template
+    @RequestMapping("/")
+    public ModelAndView fooView() {
+        ModelAndView modelAndView = new ModelAndView("foo");
+         modelAndView.addObject("name", "foo");
+        return modelAndView;
+    }
 
-        public static void main(String[] args) throws Exception {
-                SpringApplication.run(Application.class, args);
-        }
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
 }
-
 ```
+
+Note that since Spring-Boot provide autoconfiguration for JMustache, you will need to excluce this one explicitly to avoid conflict (but this is not needed you are using Handlebars or MustacheJava implementation).
+
+### Defaults
 
 By default, following configuration will be used:
 
@@ -330,9 +394,9 @@ public class FooController {
 
 If you clone the repository, you will find samples using:
 
-- JMustache
-- Mustache.java
-- Handlebars
+- JMustache (Java Config & XML  Config).
+- Mustache.java (Java Config & XML  Config).
+- Handlebars (Java Config & XML  Config).
 - Spring boot with JMustache implementation.
 
 These samples are really simple (render a really simple template with partial). Do not hesitate to submit your sample if you want.
