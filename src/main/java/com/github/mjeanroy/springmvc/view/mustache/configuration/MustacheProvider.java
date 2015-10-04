@@ -24,18 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
-import static java.util.Collections.unmodifiableMap;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * Set of mustache provider.
@@ -59,7 +58,7 @@ public enum MustacheProvider {
 	 * Mustache implementation that use handlebar java as
 	 * internal compiler.
 	 */
-	HANDLEBAR {
+	HANDLEBARS {
 		@Override
 		public Class configuration() {
 			return HandlebarsConfiguration.class;
@@ -114,7 +113,7 @@ public enum MustacheProvider {
 	static {
 		Map<String, MustacheProvider> map = new TreeMap<String, MustacheProvider>();
 		map.put("com.samskivert.mustache.Mustache", JMUSTACHE);
-		map.put("com.github.jknack.handlebars.Handlebars", HANDLEBAR);
+		map.put("com.github.jknack.handlebars.Handlebars", HANDLEBARS);
 		map.put("com.github.mustachejava.MustacheFactory", MUSTACHE_JAVA);
 		CONF = unmodifiableMap(map);
 	}
