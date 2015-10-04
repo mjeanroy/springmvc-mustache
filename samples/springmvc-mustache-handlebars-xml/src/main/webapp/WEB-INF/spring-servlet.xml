@@ -12,8 +12,8 @@
 
 	<!-- Create mustache beans -->
 	<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
-	<bean id="handlebars" class="com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar.HandlebarsFactoryBean" />
-	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarsCompiler">
+	<bean id="handlebars" class="com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean" />
+	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler">
 		<constructor-arg ref="handlebars" />
 		<constructor-arg ref="mustacheTemplateLoader" />
 	</bean>

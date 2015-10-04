@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,39 +22,40 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
+package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
-import com.github.jknack.handlebars.Handlebars;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.config.AbstractFactoryBean;
+import com.github.jknack.handlebars.Template;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
+
+import java.io.Writer;
+import java.util.Map;
+
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
- * Factory used to create instance of {@link com.github.jknack.handlebars.Handlebars}.
+ * Implementation of {@link MustacheTemplate} using Java Handlebar
+ * as real template implementation.
  */
-public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> implements FactoryBean<Handlebars> {
+public class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
 	/**
-	 * Class logger.
+	 * Original handlebar template that will be used to render
+	 * mustache template.
 	 */
-	private static final Logger log = LoggerFactory.getLogger(HandlebarsFactoryBean.class);
+	private final Template template;
 
 	/**
-	 * Create factory with default settings.
+	 * Build new handlebar template.
+	 *
+	 * @param template Original handlebar template.
 	 */
-	public HandlebarsFactoryBean() {
-		super();
+	public HandlebarsTemplate(Template template) {
+		this.template = notNull(template, "Template must not be null");
 	}
 
 	@Override
-	public Class<?> getObjectType() {
-		return Handlebars.class;
-	}
-
-	@Override
-	protected Handlebars createInstance() throws Exception {
-		log.debug("Create instance of {}", Handlebars.class);
-		return new Handlebars();
+	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
+		template.apply(model, writer);
 	}
 }

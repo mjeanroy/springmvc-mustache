@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +22,51 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
-public class HandlebarsConfigurationTest {
+public class HandlebarsFactoryBeanTest {
 
-	@InjectMocks
-	private HandlebarsConfiguration handlebarConfiguration;
+	private HandlebarsFactoryBean factoryBean;
 
-	@Test
-	public void it_should_instantiate_template_loader() {
-		MustacheTemplateLoaderFactoryBean templateLoader = handlebarConfiguration.mustacheTemplateLoader();
-		assertThat(templateLoader).isNotNull();
+	@Before
+	public void setUp() {
+		factoryBean = new HandlebarsFactoryBean();
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_compiler() {
-		Handlebars handlebars = mock(Handlebars.class);
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
-		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(handlebars, templateLoader);
-		assertThat(mustacheCompiler).isNotNull();
+	public void it_should_create_factory_bean_as_singleton() throws Exception {
+		assertThat(factoryBean.isSingleton()).isTrue();
+	}
+
+	@Test
+	public void it_should_create_factory_bean_with_target_class() throws Exception {
+		assertThat(factoryBean.getObjectType()).isEqualTo(Handlebars.class);
+	}
+
+	@Test
+	public void it_should_create_target_object_with_default_settings() throws Exception {
+		factoryBean.afterPropertiesSet();
+
+		Handlebars handlebars = factoryBean.getObject();
+
+		assertThat(handlebars).isNotNull();
+	}
+
+	@Test
+	public void it_should_not_create_target_object_twice() throws Exception {
+		factoryBean.afterPropertiesSet();
+
+		Handlebars h1 = factoryBean.getObject();
+		Handlebars h2 = factoryBean.getObject();
+
+		assertThat(h1).isNotNull();
+		assertThat(h2).isNotNull();
+		assertThat(h1).isSameAs(h2);
 	}
 }

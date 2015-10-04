@@ -22,40 +22,37 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.handlebar;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
-import com.github.jknack.handlebars.Template;
-import org.junit.Before;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
-public class HandlebarsTemplateTest {
+@RunWith(MockitoJUnitRunner.class)
+public class HandlebarsConfigurationTest {
 
-	private com.github.jknack.handlebars.Template template;
+	@InjectMocks
+	private HandlebarsConfiguration handlebarConfiguration;
 
-	private HandlebarsTemplate handlebarsTemplate;
-
-	@Before
-	public void setUp() {
-		template = mock(Template.class);
-		handlebarsTemplate = new HandlebarsTemplate(template);
+	@Test
+	public void it_should_instantiate_template_loader() {
+		MustacheTemplateLoaderFactoryBean templateLoader = handlebarConfiguration.mustacheTemplateLoader();
+		assertThat(templateLoader).isNotNull();
 	}
 
 	@Test
-	public void it_should_execute_template() throws Exception {
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("foo", "bar");
-
-		Writer writer = mock(Writer.class);
-
-		handlebarsTemplate.execute(model, writer);
-
-		verify(template).apply(model, writer);
+	public void it_should_instantiate_mustache_compiler() {
+		Handlebars handlebars = mock(Handlebars.class);
+		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
+		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(handlebars, templateLoader);
+		assertThat(mustacheCompiler).isNotNull();
 	}
 }

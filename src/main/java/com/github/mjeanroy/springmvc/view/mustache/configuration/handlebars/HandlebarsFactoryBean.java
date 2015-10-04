@@ -22,51 +22,39 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebar;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
-import org.junit.Before;
-import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import static org.assertj.core.api.Assertions.assertThat;
+/**
+ * Factory used to create instance of {@link com.github.jknack.handlebars.Handlebars}.
+ */
+public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> implements FactoryBean<Handlebars> {
 
-public class HandlebarsFactoryBeanTest {
+	/**
+	 * Class logger.
+	 */
+	private static final Logger log = LoggerFactory.getLogger(HandlebarsFactoryBean.class);
 
-	private HandlebarsFactoryBean factoryBean;
-
-	@Before
-	public void setUp() {
-		factoryBean = new HandlebarsFactoryBean();
+	/**
+	 * Create factory with default settings.
+	 */
+	public HandlebarsFactoryBean() {
+		super();
 	}
 
-	@Test
-	public void it_should_create_factory_bean_as_singleton() throws Exception {
-		assertThat(factoryBean.isSingleton()).isTrue();
+	@Override
+	public Class<?> getObjectType() {
+		return Handlebars.class;
 	}
 
-	@Test
-	public void it_should_create_factory_bean_with_target_class() throws Exception {
-		assertThat(factoryBean.getObjectType()).isEqualTo(Handlebars.class);
-	}
-
-	@Test
-	public void it_should_create_target_object_with_default_settings() throws Exception {
-		factoryBean.afterPropertiesSet();
-
-		Handlebars handlebars = factoryBean.getObject();
-
-		assertThat(handlebars).isNotNull();
-	}
-
-	@Test
-	public void it_should_not_create_target_object_twice() throws Exception {
-		factoryBean.afterPropertiesSet();
-
-		Handlebars h1 = factoryBean.getObject();
-		Handlebars h2 = factoryBean.getObject();
-
-		assertThat(h1).isNotNull();
-		assertThat(h2).isNotNull();
-		assertThat(h1).isSameAs(h2);
+	@Override
+	protected Handlebars createInstance() throws Exception {
+		log.debug("Create instance of {}", Handlebars.class);
+		return new Handlebars();
 	}
 }

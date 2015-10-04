@@ -26,7 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.handlebar.HandlebarsCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
