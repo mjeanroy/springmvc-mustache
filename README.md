@@ -48,7 +48,7 @@ which implementation you want to use:
 |----------|---------------|-------------------------------------------------------------------------------|
 | provider | AUTO          | Use classpath detection to select the implementation. This is the default.    |
 |          | JMUSTACHE     | Use jmustache implementation. JMustache dependency must be available.         |
-|          | HANDLEBAR     | Use handlebar implementation. Handlebar dependency must be available.         |
+|          | HANDLEBARS    | Use handlebars implementation. Handlebars dependency must be available.      H |
 |          | MUSTACHE_JAVA | Use mustache.java implementation. Mustache.java dependency must be available. |
 
 ```java
