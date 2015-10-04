@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:context="http://www.springframework.org/schema/context"
+			 xmlns:mvc="http://www.springframework.org/schema/mvc"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- Create mustache beans -->
+	<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler">
+		<constructor-arg ref="mustacheTemplateLoader" />
+	</bean>
+
+	<!-- Create view resolver -->
+	<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+		<constructor-arg ref="mustacheCompiler" />
+		<property name="order" value="1" />
+		<property name="defaultLayout" value="layout" />
+		<property name="prefix" value="templates/" />
+		<property name="suffix" value=".template.html" />
+	</bean>
+
+	<!-- Activate annotations -->
+	<context:component-scan base-package="com.github.mjeanroy.springmvc.mustache.sample"/>
+	<mvc:annotation-driven />
+
+</beans>
