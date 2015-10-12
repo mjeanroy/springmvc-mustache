@@ -38,11 +38,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Map;
-import java.util.TreeMap;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Arrays.sort;
 
 /**
  * Set of mustache provider.
@@ -56,6 +57,11 @@ public enum MustacheProvider {
 	 * internal compiler.
 	 */
 	JMUSTACHE {
+		@Override
+		public boolean isAvailable() {
+			return isPresent("com.samskivert.mustache.Mustache");
+		}
+
 		@Override
 		public Class configuration() {
 			return JMustacheConfiguration.class;
@@ -75,6 +81,11 @@ public enum MustacheProvider {
 	 */
 	HANDLEBARS {
 		@Override
+		public boolean isAvailable() {
+			return isPresent("com.github.jknack.handlebars.Handlebars");
+		}
+
+		@Override
 		public Class configuration() {
 			return HandlebarsConfiguration.class;
 		}
@@ -93,6 +104,46 @@ public enum MustacheProvider {
 	 */
 	MUSTACHE_JAVA {
 		@Override
+		public boolean isAvailable() {
+			return isPresent("com.github.mustachejava.MustacheFactory");
+		}
+
+		@Override
+		public Class configuration() {
+			return MustacheJavaConfiguration.class;
+		}
+
+		@Override
+		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
+			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
+			return new MustacheJavaCompiler(templateLoader);
+		}
+	},
+
+	/**
+	 * Mustache implementation that use nashorn java as
+	 * internal compiler.
+	 */
+	NASHORN {
+		@Override
+		public boolean isAvailable() {
+			// Nashorn is available since Java 1.8.
+			if (getJavaVersion() < 1.8) {
+				return false;
+			}
+
+			// Otherwise, we should check for nashorn script engine.
+			try {
+				ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+				engine.eval("print('hello world');");
+				return true;
+			}
+			catch (ScriptException ex) {
+				return false;
+			}
+		}
+
+		@Override
 		public Class configuration() {
 			return MustacheJavaConfiguration.class;
 		}
@@ -109,6 +160,12 @@ public enum MustacheProvider {
 	 * and select the best implementation.
 	 */
 	AUTO {
+		@Override
+		public boolean isAvailable() {
+			// Return true, no matter it will fail later...
+			return true;
+		}
+
 		@Override
 		public Class configuration() {
 			return detectProvider().configuration();
@@ -135,16 +192,16 @@ public enum MustacheProvider {
 	 */
 	public abstract MustacheCompiler instantiate(ApplicationContext applicationContext);
 
-	private static final Map<String, MustacheProvider> CONF;
+	/**
+	 * Check if implementation is available.
+	 *
+	 * @return True if implementation can safely be used, false otherwise.
+	 */
+	public abstract boolean isAvailable();
 
-	static {
-		Map<String, MustacheProvider> map = new TreeMap<String, MustacheProvider>();
-		map.put("com.samskivert.mustache.Mustache", JMUSTACHE);
-		map.put("com.github.jknack.handlebars.Handlebars", HANDLEBARS);
-		map.put("com.github.mustachejava.MustacheFactory", MUSTACHE_JAVA);
-		CONF = unmodifiableMap(map);
-	}
-
+	/**
+	 * Logger.
+	 */
 	private static final Logger log = LoggerFactory.getLogger(MustacheProvider.class);
 
 	/**
@@ -154,19 +211,34 @@ public enum MustacheProvider {
 	 * @return Available mustache provider.
 	 */
 	private static MustacheProvider detectProvider() {
-		for (Map.Entry<String, MustacheProvider> conf : CONF.entrySet()) {
-			String klass = conf.getKey();
-			MustacheProvider provider = conf.getValue();
-			if (isPresent(klass)) {
-				log.debug("Class '{}' found in classpath, use {} configuration", klass, provider.name());
+		MustacheProvider[] values = MustacheProvider.values();
+
+		// Sort by natural order (i.e priority).
+		sort(values);
+
+		for (MustacheProvider provider : values) {
+			if (provider != AUTO && provider.isAvailable()) {
+				log.debug("Provider '{}' available, use configuration", provider.name());
 				return provider;
 			} else {
-				log.trace("Class '{}' is missing, skip", klass);
+				log.trace("Provider '{}' is missing, skip", provider.name());
 			}
 		}
 
 		// No implementation detected, throw exception
-		log.error("Mustache implementation is missing, please add one of following dependency to your classpath: {}", CONF.keySet());
+		log.error("Mustache implementation is missing, please add one of following dependency to your classpath: {}", MustacheProvider.values());
 		throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache or handlebar to classpath");
+	}
+
+	/**
+	 * Get Java Version.
+	 *
+	 * @return Java Version.
+	 */
+	private static double getJavaVersion() {
+		String version = System.getProperty("java.version");
+		int pos = version.indexOf('.');
+		pos = version.indexOf('.', pos + 1);
+		return Double.parseDouble(version.substring(0, pos));
 	}
 }
