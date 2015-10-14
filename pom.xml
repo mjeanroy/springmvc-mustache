@@ -62,10 +62,18 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Java Version -->
+		<!-- Compile with jdk8, but keep compatibility with java 6 -->
+		<java.version>1.8</java.version>
 		<java.source.version>1.6</java.source.version>
 		<java.target.version>1.6</java.target.version>
+		<java.signature.version>java16</java.signature.version>
+
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<versions-maven-plugin.version>2.2</versions-maven-plugin.version>
+		<animal-sniffer-maven-plugin.version>1.14</animal-sniffer-maven-plugin.version>
+		<maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
 
 		<slf4j.version>1.7.12</slf4j.version>
 		<logback.version>1.1.3</logback.version>
@@ -187,6 +195,7 @@
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<compilerVersion>${java.version}</compilerVersion>
 					<source>${java.source.version}</source>
 					<target>${java.target.version}</target>
 				</configuration>
@@ -196,6 +205,51 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
 				<version>${versions-maven-plugin.version}</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>animal-sniffer-maven-plugin</artifactId>
+				<version>${animal-sniffer-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>check-java-api</id>
+						<phase>test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<signature>
+								<groupId>org.codehaus.mojo.signature</groupId>
+								<artifactId>${java.signature.version}</artifactId>
+								<version>1.0</version>
+							</signature>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>${maven-enforcer-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>enforce-java</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<!-- Use a version range -->
+									<!-- https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html -->
+									<version>[${java.version},)</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
