@@ -25,7 +25,10 @@
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
@@ -34,6 +37,21 @@ import java.io.Reader;
  * Common static IO Utilities.
  */
 public final class IOUtils {
+
+	/**
+	 * Class logger.
+	 */
+	private static final Logger log = LoggerFactory.getLogger(IOUtils.class);
+
+	/**
+	 * Buffer size to read files.
+	 */
+	private static final int BUFFER_SIZE = 1024;
+
+	/**
+	 * Line separator, system dependent.
+	 */
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	private IOUtils() {
 	}
@@ -47,21 +65,30 @@ public final class IOUtils {
 	 * @throws MustacheIOException If an IO exception occurs during reading operation.
 	 */
 	public static String read(final Reader reader) {
-		final int bufferSize = 1024;
+		final BufferedReader buffer = new BufferedReader(reader, BUFFER_SIZE);
+
 		try {
-			char[] cbuf = new char[bufferSize];
-			StringBuilder sb = new StringBuilder(bufferSize);
-			int len;
-			while ((len = reader.read(cbuf, 0, bufferSize)) != -1) {
-				sb.append(cbuf, 0, len);
+			StringBuilder sb = new StringBuilder();
+			String line;
+			boolean started = false;
+
+			// Read line by line
+			while ((line = buffer.readLine()) != null) {
+				if (started) {
+					sb.append(LINE_SEPARATOR);
+				}
+
+				sb.append(line);
+				started = true;
 			}
+
 			return sb.toString();
 		}
 		catch (IOException ex) {
 			throw new MustacheIOException(ex);
 		}
 		finally {
-			closeQuietly(reader);
+			closeQuietly(buffer);
 		}
 	}
 
@@ -71,12 +98,13 @@ public final class IOUtils {
 	 *
 	 * @param stream Closeable stream.
 	 */
-	public static void closeQuietly(Closeable stream) {
+	private static void closeQuietly(Closeable stream) {
 		try {
 			stream.close();
 		}
 		catch (IOException ex) {
-			// Omitted.
+			// Just log.
+			log.debug(ex.getMessage(), ex);
 		}
 	}
 }
