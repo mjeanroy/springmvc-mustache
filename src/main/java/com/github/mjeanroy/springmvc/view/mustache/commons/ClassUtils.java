@@ -24,11 +24,11 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.Map;
 
-import org.springframework.core.type.AnnotationMetadata;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
 
 /**
  * Commons static class utilities.
@@ -69,10 +69,6 @@ public final class ClassUtils {
 	@SuppressWarnings("unchecked")
 	public static <T> T getAnnotationValue(AnnotationMetadata importingClassMetadata, Class annotationClass, String name, T defaultValue) {
 		Map<String, Object> attributes = importingClassMetadata.getAnnotationAttributes(annotationClass.getName());
-		T value = attributes != null ? (T) attributes.get(name) : null;
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
+		return attributes != null && attributes.containsKey(name) ? (T) attributes.get(name) : defaultValue;
 	}
 }
