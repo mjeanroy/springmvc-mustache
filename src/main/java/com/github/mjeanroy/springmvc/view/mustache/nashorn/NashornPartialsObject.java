@@ -25,38 +25,65 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import jdk.nashorn.api.scripting.AbstractJSObject;
 
 import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
 
 /**
- * Load partial during nashorn evaluation.
+ * Implementation of dynamic partial object.
+ *
+ * Instance of this object will be used by nashorn engine to get
+ * template values.
+ *
+ * This is more like a dynamic map object: each key is evaluated to return
+ * associate template.
+ *
+ * Note that this object is a read-only object (you cannot add entry).
+ *
+ * This object is thread safe.
  */
-public class NashornTemplateLoader {
+class NashornPartialsObject extends AbstractJSObject {
 
 	/**
-	 * Mustache template loader.
+	 * Internal template loader implementation.
 	 */
 	private final MustacheTemplateLoader templateLoader;
 
 	/**
-	 * Create nashorn template loader.
+	 * Create nashorn partial object.
 	 *
-	 * @param templateLoader Internal Template Loader.
+	 * @param templateLoader Template loader.
 	 */
-	public NashornTemplateLoader(MustacheTemplateLoader templateLoader) {
+	NashornPartialsObject(MustacheTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
 	}
 
-	/**
-	 * Load partial template.
-	 *
-	 * @param name Template name.
-	 * @return Template.
-	 */
-	public String load(String name) {
+	@Override
+	public boolean hasMember(String name) {
+		// No worries, il will fail later...
+		return true;
+	}
+
+	@Override
+	public Object getMember(String name) {
 		Reader reader = templateLoader.getTemplate(name);
 		return read(reader);
+	}
+
+	@Override
+	public void removeMember(String name) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setMember(String name, Object value) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setSlot(int index, Object value) {
+		throw new UnsupportedOperationException();
 	}
 }

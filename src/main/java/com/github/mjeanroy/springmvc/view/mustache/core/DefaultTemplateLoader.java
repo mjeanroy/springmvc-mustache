@@ -160,6 +160,11 @@ public class DefaultTemplateLoader implements MustacheTemplateLoader {
 		}
 	}
 
+	private Resource getResource(String name) {
+		final String templateName = resolve(name);
+		return resourceLoader.getResource(templateName);
+	}
+
 	@Override
 	public String resolve(String name) {
 		name =  resolveTemplateName(name);

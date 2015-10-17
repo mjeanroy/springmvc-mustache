@@ -47,6 +47,11 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 	private final ScriptEngine engine;
 
 	/**
+	 * Partials object.
+	 */
+	private final NashornPartialsObject partials;
+
+	/**
 	 * Create Nashorn Compiler.
 	 *
 	 * @param templateLoader Template Loader.
@@ -60,14 +65,14 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 				"/mustache/nashorn-bindings.js"
 		));
 
-		// Create loader and load it into global variable.
-		NashornTemplateLoader nashornTemplateLoader = new NashornTemplateLoader(templateLoader);
-		this.engine.put("$loader", nashornTemplateLoader);
+		// Initialize partials object
+		this.partials = new NashornPartialsObject(templateLoader);
 	}
 
 	@Override
 	protected MustacheTemplate doCompile(String name) throws Exception {
 		Reader reader = templateLoader.getTemplate(name);
-		return new NashornTemplate(engine, reader);
+		return new NashornTemplate(engine, reader, partials);
 	}
+
 }

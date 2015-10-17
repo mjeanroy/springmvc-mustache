@@ -27,50 +27,64 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class NashornTemplateLoaderTest {
+public class NashornPartialsObjectTest {
 
-	@Mock
-	private MustacheTemplateLoader mustacheTemplateLoader;
+	private MustacheTemplateLoader templateLoader;
 
-	private NashornTemplateLoader nashornTemplateLoader;
+	private NashornPartialsObject partials;
 
 	@Before
 	public void setUp() {
-		nashornTemplateLoader = new NashornTemplateLoader(mustacheTemplateLoader);
-
-		when(mustacheTemplateLoader.getTemplate(anyString())).thenAnswer(new Answer<Reader>() {
-			@Override
-			public Reader answer(InvocationOnMock invocation) throws Throwable {
-				String location = invocation.getArguments()[0].toString();
-				InputStream stream = NashornTemplateLoaderTest.class.getResourceAsStream(location);
-				return new InputStreamReader(stream);
-			}
-		});
+		templateLoader = mock(MustacheTemplateLoader.class);
+		partials = new NashornPartialsObject(templateLoader);
 	}
 
 	@Test
-	public void it_should_read_template_source() throws IOException {
-		String location = "/templates/foo.template.html";
+	public void it_should_load_template() {
+		String templateValue = "Hello World";
+		String templateName = "foo";
 
-		String template = nashornTemplateLoader.load(location);
+		Reader reader = new StringReader(templateValue);
+		when(templateLoader.getTemplate(templateName)).thenReturn(reader);
 
-		String expectedContent = "<div>Hello {{name}}</div>";
-		assertThat(template).isNotNull().isEqualTo(expectedContent);
+		String template = (String) partials.getMember(templateName);
+
+		verify(templateLoader).getTemplate(templateName);
+		assertThat(template)
+				.isNotNull()
+				.isNotEmpty()
+				.isEqualTo(templateValue);
+	}
+
+	@Test
+	public void it_should_check_if_member_exist() {
+		boolean hasMember = partials.hasMember("foo");
+		assertThat(hasMember).isTrue();
+		verifyNoMoreInteractions(templateLoader);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void it_should_fail_to_add_member() {
+		partials.setMember("foo", "bar");
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void it_should_fail_to_remove_member() {
+		partials.removeMember("foo");
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void it_should_fail_to_set_slot() {
+		partials.setSlot(1, "foo");
 	}
 }

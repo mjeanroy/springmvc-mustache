@@ -43,6 +43,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
 
 public class NashornTemplateTest {
 
@@ -54,9 +55,11 @@ public class NashornTemplateTest {
 
 	@Before
 	public void setUp() throws Exception {
+		NashornPartialsObject partials = mock(NashornPartialsObject.class);
+
 		scriptEngine = new ScriptEngineManager().getEngineByName("nashorn");
 		reader = new StringReader("<div>Hello {{name}}</div>");
-		template = new NashornTemplate(scriptEngine, reader);
+		template = new NashornTemplate(scriptEngine, reader, partials);
 	}
 
 	@Test

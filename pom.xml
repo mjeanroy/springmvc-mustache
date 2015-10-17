@@ -237,6 +237,9 @@
 								<artifactId>${java.signature.version}</artifactId>
 								<version>1.0</version>
 							</signature>
+							<ignores>
+								<ignore>jdk.nashorn.api.scripting.AbstractJSObject</ignore>
+							</ignores>
 						</configuration>
 					</execution>
 				</executions>

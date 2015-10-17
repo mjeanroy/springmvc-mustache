@@ -56,15 +56,18 @@ public class NashornTemplate implements MustacheTemplate {
 	 */
 	private final String template;
 
+	private final NashornPartialsObject partials;
+
 	/**
 	 * Create template.
 	 *
 	 * @param engine Script engine.
 	 * @param reader Template.
 	 */
-	public NashornTemplate(ScriptEngine engine, Reader reader) {
+	public NashornTemplate(ScriptEngine engine, Reader reader, NashornPartialsObject partials) {
 		this.engine = engine;
 		this.template = read(reader);
+		this.partials = partials;
 	}
 
 	@Override
@@ -81,7 +84,7 @@ public class NashornTemplate implements MustacheTemplate {
 	private String render(String template, Map<String, Object> model) {
 		try {
 			Invocable invocable = (Invocable) engine;
-			return (String) invocable.invokeFunction("render", template, model);
+			return (String) invocable.invokeFunction("render", template, model, partials);
 		}
 		catch (ScriptException ex) {
 			throw new NashornException(ex);
