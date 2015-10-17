@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2014, 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,17 +28,17 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.commons.JavaUtils;
+import com.github.mjeanroy.springmvc.view.mustache.commons.NashornUtils;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.NashornConfiguration;
 import com.samskivert.mustache.Mustache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
@@ -133,24 +133,25 @@ public enum MustacheProvider {
 
 			// Otherwise, we should check for nashorn script engine.
 			try {
-				ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+				ScriptEngine engine = NashornUtils.getEngine();
 				engine.eval("print('hello world');");
 				return true;
 			}
 			catch (ScriptException ex) {
+				// Something strange happens...
 				return false;
 			}
 		}
 
 		@Override
 		public Class configuration() {
-			return MustacheJavaConfiguration.class;
+			return NashornConfiguration.class;
 		}
 
 		@Override
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			return new MustacheJavaCompiler(templateLoader);
+			return new NashornConfiguration().mustacheCompiler(templateLoader);
 		}
 	},
 
@@ -161,8 +162,12 @@ public enum MustacheProvider {
 	AUTO {
 		@Override
 		public boolean isAvailable() {
-			// Return true, no matter it will fail later...
-			return true;
+			try {
+				detectProvider();
+				return true;
+			} catch (IllegalArgumentException ex) {
+				return false;
+			}
 		}
 
 		@Override
@@ -226,6 +231,6 @@ public enum MustacheProvider {
 
 		// No implementation detected, throw exception
 		log.error("Mustache implementation is missing, please add one of following dependency to your classpath: {}", MustacheProvider.values());
-		throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache or handlebar to classpath");
+		throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache, handlebars, mustacheJava to classpath or use Java8 with Nashorn");
 	}
 }
