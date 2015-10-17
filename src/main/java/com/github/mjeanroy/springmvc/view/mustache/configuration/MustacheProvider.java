@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.JavaUtils;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
@@ -126,7 +127,7 @@ public enum MustacheProvider {
 		@Override
 		public boolean isAvailable() {
 			// Nashorn is available since Java 1.8.
-			if (getJavaVersion() < 1.8) {
+			if (JavaUtils.getVersion() < 1.8) {
 				return false;
 			}
 
@@ -226,17 +227,5 @@ public enum MustacheProvider {
 		// No implementation detected, throw exception
 		log.error("Mustache implementation is missing, please add one of following dependency to your classpath: {}", MustacheProvider.values());
 		throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache or handlebar to classpath");
-	}
-
-	/**
-	 * Get Java Version.
-	 *
-	 * @return Java Version.
-	 */
-	private static double getJavaVersion() {
-		String version = System.getProperty("java.version");
-		int pos = version.indexOf('.');
-		pos = version.indexOf('.', pos + 1);
-		return Double.parseDouble(version.substring(0, pos));
 	}
 }
