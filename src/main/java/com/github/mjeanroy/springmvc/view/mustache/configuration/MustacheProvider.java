@@ -30,8 +30,6 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 import com.samskivert.mustache.Mustache;
 import org.slf4j.Logger;
@@ -71,7 +69,7 @@ public enum MustacheProvider {
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			Mustache.Compiler compiler = applicationContext.getBean(Mustache.Compiler.class);
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			return new JMustacheCompiler(compiler, templateLoader);
+			return new JMustacheConfiguration().mustacheCompiler(compiler, templateLoader);
 		}
 	},
 
@@ -94,7 +92,7 @@ public enum MustacheProvider {
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			Handlebars handlebars = applicationContext.getBean(Handlebars.class);
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			return new HandlebarsCompiler(handlebars, templateLoader);
+			return new HandlebarsConfiguration().mustacheCompiler(handlebars, templateLoader);
 		}
 	},
 
@@ -116,7 +114,7 @@ public enum MustacheProvider {
 		@Override
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			return new MustacheJavaCompiler(templateLoader);
+			return new MustacheJavaConfiguration().mustacheCompiler(templateLoader);
 		}
 	},
 
