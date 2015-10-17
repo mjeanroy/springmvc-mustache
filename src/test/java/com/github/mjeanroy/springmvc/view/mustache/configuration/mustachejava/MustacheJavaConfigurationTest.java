@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,12 +39,6 @@ public class MustacheJavaConfigurationTest {
 
 	@InjectMocks
 	private MustacheJavaConfiguration mustacheJavaConfiguration;
-
-	@Test
-	public void it_should_instantiate_template_loader() {
-		MustacheTemplateLoaderFactoryBean templateLoader = mustacheJavaConfiguration.mustacheTemplateLoader();
-		assertThat(templateLoader).isNotNull();
-	}
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {

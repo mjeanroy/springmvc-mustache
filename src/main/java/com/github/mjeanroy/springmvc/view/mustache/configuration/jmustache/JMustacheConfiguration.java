@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
 import org.slf4j.Logger;
@@ -37,7 +36,7 @@ import org.springframework.context.annotation.Configuration;
 import static com.samskivert.mustache.Mustache.Compiler;
 
 @Configuration
-public class JMustacheConfiguration extends AbstractMustacheConfiguration {
+public class JMustacheConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(JMustacheConfiguration.class);
 

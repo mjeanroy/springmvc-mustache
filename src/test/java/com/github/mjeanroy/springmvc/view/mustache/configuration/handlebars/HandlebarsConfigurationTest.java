@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -41,12 +40,6 @@ public class HandlebarsConfigurationTest {
 
 	@InjectMocks
 	private HandlebarsConfiguration handlebarConfiguration;
-
-	@Test
-	public void it_should_instantiate_template_loader() {
-		MustacheTemplateLoaderFactoryBean templateLoader = handlebarConfiguration.mustacheTemplateLoader();
-		assertThat(templateLoader).isNotNull();
-	}
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {

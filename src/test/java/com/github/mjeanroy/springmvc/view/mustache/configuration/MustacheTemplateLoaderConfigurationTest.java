@@ -24,25 +24,23 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import org.springframework.context.annotation.ImportSelector;
-import org.springframework.core.type.AnnotationMetadata;
+import org.junit.Before;
+import org.junit.Test;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.getAnnotationValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Select mustache configuration to use.
- */
-public class MustacheEngineConfiguration implements ImportSelector {
+public class MustacheTemplateLoaderConfigurationTest {
 
-	@Override
-	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);
-		return new String[]{
-				// This one is required: it load template loader bean
-				MustacheTemplateLoaderConfiguration.class.getName(),
+	private MustacheTemplateLoaderConfiguration templateLoaderConfiguration;
 
-				// This one is dynamic and depend on chosen provider
-				provider.configuration().getName()
-		};
+	@Before
+	public void setUp() {
+		templateLoaderConfiguration = new MustacheTemplateLoaderConfiguration();
+	}
+
+	@Test
+	public void it_should_create_template_loader() {
+		MustacheTemplateLoaderFactoryBean factoryBean = templateLoaderConfiguration.mustacheTemplateLoader();
+		assertThat(factoryBean).isNotNull();
 	}
 }

@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.AbstractMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,7 @@ import org.springframework.context.annotation.Configuration;
  * Configure handlebar template engine.
  */
 @Configuration
-public class HandlebarsConfiguration extends AbstractMustacheConfiguration {
+public class HandlebarsConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(HandlebarsConfiguration.class);
 

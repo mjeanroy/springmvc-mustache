@@ -24,15 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.core.type.AnnotationMetadata;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MustacheConfigurationTest {
 
@@ -57,8 +58,9 @@ public class MustacheConfigurationTest {
 		assertThat(imports)
 				.isNotNull()
 				.isNotEmpty()
-				.hasSize(1)
-				.containsOnly(
+				.hasSize(2)
+				.containsExactly(
+						MustacheTemplateLoaderConfiguration.class.getName(),
 						provider.configuration().getName()
 				);
 	}

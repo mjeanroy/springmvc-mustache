@@ -34,12 +34,12 @@ import org.springframework.context.annotation.Configuration;
  * mustache template engine.
  */
 @Configuration
-public abstract class AbstractMustacheConfiguration {
+public class MustacheTemplateLoaderConfiguration {
 
 	/**
 	 * Class logger.
 	 */
-	private static final Logger log = LoggerFactory.getLogger(AbstractMustacheConfiguration.class);
+	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderConfiguration.class);
 
 	/**
 	 * Build mustache template loader.
