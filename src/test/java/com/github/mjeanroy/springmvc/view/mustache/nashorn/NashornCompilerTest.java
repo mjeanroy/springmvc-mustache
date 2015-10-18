@@ -48,6 +48,8 @@ public class NashornCompilerTest {
 
 	private MustacheTemplateLoader templateLoader;
 
+	private MustacheEngine mustacheEngine;
+
 	private NashornCompiler nashornCompiler;
 
 	@Before
@@ -61,7 +63,8 @@ public class NashornCompilerTest {
 
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		templateLoader = new DefaultTemplateLoader(resourceLoader);
-		nashornCompiler = new NashornCompiler(templateLoader);
+		mustacheEngine = new MustacheEngine(templateLoader);
+		nashornCompiler = new NashornCompiler(templateLoader, mustacheEngine);
 	}
 
 	@Test

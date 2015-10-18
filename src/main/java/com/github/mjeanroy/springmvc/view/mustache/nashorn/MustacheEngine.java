@@ -36,6 +36,7 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.getFirstAvailableStream;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.getStream;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.NashornUtils.getEngine;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 import static java.util.Arrays.asList;
 
 /**
@@ -107,6 +108,9 @@ public class MustacheEngine {
 	 * @param templateLoader Template loader, used to resolve partials.
 	 */
 	public MustacheEngine(MustacheTemplateLoader templateLoader, InputStream mustacheJs) {
+		notNull(mustacheJs, "Mustache JS must not be null");
+		notNull(templateLoader, "Template Loader must not be null");
+
 		this.engine = getEngine(asList(mustacheJs, getStream("/mustache/nashorn-bindings.js")));
 		this.partials = new NashornPartialsObject(templateLoader);
 	}

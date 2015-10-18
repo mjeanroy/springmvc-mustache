@@ -158,7 +158,7 @@ public final class IOUtils {
 
 			if (log.isTraceEnabled()) {
 				for (Resource resource : resources) {
-					log.trace("  -> Found: {}", resource.getFile().getCanonicalPath());
+					log.trace("  -> Found: {}", resource.getFilename());
 				}
 			}
 

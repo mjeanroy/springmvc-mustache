@@ -37,6 +37,7 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.Nashorn
 import com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
@@ -89,6 +90,9 @@ public class MustacheProviderTest {
 
 		Handlebars handlebars = mock(Handlebars.class);
 		when(applicationContext.getBean(Handlebars.class)).thenReturn(handlebars);
+
+		MustacheEngine mustacheEngine = mock(MustacheEngine.class);
+		when(applicationContext.getBean(MustacheEngine.class)).thenReturn(mustacheEngine);
 
 		mockStatic(ClassUtils.class);
 		mockStatic(JavaUtils.class);

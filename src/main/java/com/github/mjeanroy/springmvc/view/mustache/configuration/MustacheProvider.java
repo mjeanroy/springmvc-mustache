@@ -33,6 +33,7 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.Hand
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.NashornConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.samskivert.mustache.Mustache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +152,8 @@ public enum MustacheProvider {
 		@Override
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			return new NashornConfiguration().mustacheCompiler(templateLoader);
+			MustacheEngine mustacheEngine = applicationContext.getBean(MustacheEngine.class);
+			return new NashornConfiguration().mustacheCompiler(templateLoader, mustacheEngine);
 		}
 	},
 

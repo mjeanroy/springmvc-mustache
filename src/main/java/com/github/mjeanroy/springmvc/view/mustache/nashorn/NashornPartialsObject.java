@@ -30,6 +30,7 @@ import jdk.nashorn.api.scripting.AbstractJSObject;
 import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Implementation of dynamic partial object.
@@ -57,7 +58,7 @@ class NashornPartialsObject extends AbstractJSObject {
 	 * @param templateLoader Template loader.
 	 */
 	NashornPartialsObject(MustacheTemplateLoader templateLoader) {
-		this.templateLoader = templateLoader;
+		this.templateLoader = notNull(templateLoader, "Template Loader must not be null");
 	}
 
 	@Override

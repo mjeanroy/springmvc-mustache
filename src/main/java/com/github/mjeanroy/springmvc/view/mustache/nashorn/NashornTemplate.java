@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Template that will be evaluated using Nashorn engine.
@@ -59,8 +60,8 @@ public class NashornTemplate implements MustacheTemplate {
 	 * @param reader Template.
 	 */
 	public NashornTemplate(MustacheEngine engine, Reader reader) {
-		this.engine = engine;
-		this.template = read(reader);
+		this.engine = notNull(engine, "Mustache Engine must not be null");
+		this.template = read(notNull(reader, "Template Reader must not be null"));
 	}
 
 	@Override

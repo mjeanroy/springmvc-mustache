@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 <mickael.jeanroy@gmail.com>
+ * Copyright (c) 2015 <mickael.jeanroy@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,44 +24,51 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
-import com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 /**
- * Create Nashorn beans used to render mustache templates.
+ * Create Nashorn Engine.
  */
-@Configuration
-@PropertySource(
-		value = "classpath:mustache.properties",
-		ignoreResourceNotFound = true
-)
-public class NashornConfiguration {
+public class MustacheEngineFactoryBean extends AbstractFactoryBean<MustacheEngine> implements FactoryBean<MustacheEngine> {
 
-	@Autowired
-	private Environment environment;
+	/**
+	 * Internal Loader.
+	 */
+	private final MustacheTemplateLoader templateLoader;
 
-	@Bean
-	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader templateLoader, MustacheEngine mustacheEngine) {
-		return new NashornCompiler(templateLoader, mustacheEngine);
+	/**
+	 * Path to mustache javascript file.
+	 */
+	private String path;
+
+	/**
+	 * Create factory.
+	 *
+	 * @param templateLoader Template loader.
+	 */
+	public MustacheEngineFactoryBean(MustacheTemplateLoader templateLoader) {
+		this.templateLoader = templateLoader;
 	}
 
-	@Bean
-	public MustacheEngineFactoryBean mustacheEngine(MustacheTemplateLoader templateLoader) {
-		MustacheEngineFactoryBean factoryBean = new MustacheEngineFactoryBean(templateLoader);
+	@Override
+	public Class<?> getObjectType() {
+		return MustacheEngine.class;
+	}
 
-		// Try to get path from environment
-		String path = environment.getProperty("mustache.path");
-		if (path != null) {
-			factoryBean.setPath(path);
-		}
+	@Override
+	protected MustacheEngine createInstance() throws Exception {
+		return path == null ? new MustacheEngine(templateLoader) : new MustacheEngine(templateLoader, path);
+	}
 
-		return factoryBean;
+	/**
+	 * Set {@link #path}
+	 *
+	 * @param path New {@link #path}
+	 */
+	public void setPath(String path) {
+		this.path = path;
 	}
 }

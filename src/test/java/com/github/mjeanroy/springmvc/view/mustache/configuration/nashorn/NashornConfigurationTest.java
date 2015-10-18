@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler;
 import org.junit.Test;
 
@@ -37,9 +38,10 @@ public class NashornConfigurationTest {
 	@Test
 	public void it_should_create_mustache_compiler() {
 		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
+		MustacheEngine mustacheEngine = mock(MustacheEngine.class);
 		NashornConfiguration nashornConfiguration = new NashornConfiguration();
 
-		MustacheCompiler mustacheCompiler = nashornConfiguration.mustacheCompiler(templateLoader);
+		MustacheCompiler mustacheCompiler = nashornConfiguration.mustacheCompiler(templateLoader, mustacheEngine);
 
 		assertThat(mustacheCompiler)
 				.isNotNull()

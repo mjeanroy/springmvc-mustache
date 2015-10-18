@@ -34,7 +34,7 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webjars.npm</groupId>
+			<groupId>org.webjars.bower</groupId>
 			<artifactId>mustache</artifactId>
 			<version>${mustache.version}</version>
 		</dependency>

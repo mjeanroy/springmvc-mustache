@@ -31,6 +31,8 @@ import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler
 
 import java.io.Reader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+
 /**
  * Mustache compiler using nashorn engine to evaluation templates.
  * Internal implementation is original javascript mustache implementation.
@@ -47,9 +49,9 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 	 *
 	 * @param templateLoader Template Loader.
 	 */
-	public NashornCompiler(MustacheTemplateLoader templateLoader) {
+	public NashornCompiler(MustacheTemplateLoader templateLoader, MustacheEngine engine) {
 		super(templateLoader);
-		this.engine = new MustacheEngine(templateLoader);
+		this.engine = notNull(engine, "Mustache Engine must not be null");
 	}
 
 	@Override
