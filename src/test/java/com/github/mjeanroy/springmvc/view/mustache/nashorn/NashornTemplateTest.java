@@ -24,54 +24,75 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.rules.ExpectedException.none;
+import static org.mockito.Matchers.anyMapOf;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class NashornTemplateTest {
 
-	private ScriptEngine scriptEngine;
+	@Rule
+	public ExpectedException thrown = none();
 
-	private Reader reader;
+	private String markup;
+
+	private MustacheEngine scriptEngine;
 
 	private NashornTemplate template;
 
 	@Before
 	public void setUp() throws Exception {
-		NashornPartialsObject partials = mock(NashornPartialsObject.class);
+		markup = "<div>Hello {{name}}</div>";
+		Reader reader = new StringReader("<div>Hello {{name}}</div>");
 
-		scriptEngine = new ScriptEngineManager().getEngineByName("nashorn");
-		reader = new StringReader("<div>Hello {{name}}</div>");
-		template = new NashornTemplate(scriptEngine, reader, partials);
+		scriptEngine = mock(MustacheEngine.class);
+		template = new NashornTemplate(scriptEngine, reader);
+
+		final ScriptEngine nashorn = new ScriptEngineManager().getEngineByName("nashorn");
+		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.2.0/mustache.js")));
+		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/mustache/nashorn-bindings.js")));
+
+		// Mock Nashorn Engine
+		when(scriptEngine.render(anyString(), anyMapOf(String.class, Object.class))).thenAnswer(new Answer<Object>() {
+			@Override
+			public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+				String tmpl = (String) invocationOnMock.getArguments()[0];
+
+				@SuppressWarnings("unchecked")
+				Map<String, Object> models = (Map<String, Object>) invocationOnMock.getArguments()[1];
+
+				Invocable invocable = (Invocable) nashorn;
+				return invocable.invokeFunction("render", tmpl, models);
+			}
+		});
 	}
 
 	@Test
 	public void it_should_execute_template() throws Exception {
-		InputStream mustacheJs = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.2.0/mustache.js");
-		InputStream bindings = getClass().getResourceAsStream("/mustache/nashorn-bindings.js");
-
-		scriptEngine.eval(new InputStreamReader(mustacheJs));
-		scriptEngine.eval(new InputStreamReader(bindings));
-
 		Writer writer = new StringWriter();
 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -79,6 +100,7 @@ public class NashornTemplateTest {
 
 		template.execute(map, writer);
 
+		verify(scriptEngine).render(markup, map);
 		assertThat(writer.toString())
 				.isNotNull()
 				.isNotEmpty()
@@ -86,39 +108,12 @@ public class NashornTemplateTest {
 	}
 
 	@Test
-	public void it_should_fail_if_method_does_not_exist() {
-		Writer writer = new StringWriter();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", "World");
+	public void it_should_catch_io_exception() throws Exception {
+		thrown.expect(MustacheIOException.class);
 
-		try {
-			template.execute(map, writer);
-			fail("Nashorn Exception should be thrown");
-		}
-		catch (Exception ex) {
-			assertThat(ex)
-					.isExactlyInstanceOf(NashornException.class)
-					.hasCauseExactlyInstanceOf(NoSuchMethodException.class);
-		}
-	}
+		Writer writer = mock(Writer.class);
+		doThrow(IOException.class).when(writer).write(anyString());
 
-	@Test
-	public void it_should_fail_if_script_fail() throws Exception {
-		URL urlBinding = getClass().getResource("/mustache/nashorn-bindings.js");
-		scriptEngine.eval(new FileReader(new File(urlBinding.toURI())));
-
-		Writer writer = new StringWriter();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", "World");
-
-		try {
-			template.execute(map, writer);
-			fail("Nashorn Exception should be thrown");
-		}
-		catch (Exception ex) {
-			assertThat(ex)
-					.isExactlyInstanceOf(NashornException.class)
-					.hasCauseExactlyInstanceOf(ScriptException.class);
-		}
+		template.execute(new HashMap<String, Object>(), writer);
 	}
 }

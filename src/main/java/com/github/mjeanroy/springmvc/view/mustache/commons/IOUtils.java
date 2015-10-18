@@ -125,6 +125,7 @@ public final class IOUtils {
 	 *
 	 * @param names Names collection.
 	 * @return Input Stream.
+	 * @throws MustacheIOException If everything fail.
 	 */
 	public static InputStream getFirstAvailableStream(Collection<String> names) {
 		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(IOUtils.class.getClassLoader());

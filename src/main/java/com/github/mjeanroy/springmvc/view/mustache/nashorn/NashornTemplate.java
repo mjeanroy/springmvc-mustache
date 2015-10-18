@@ -26,11 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -49,14 +45,12 @@ public class NashornTemplate implements MustacheTemplate {
 	 * Nashorn engine.
 	 * This engine must "know" a mustache implementation.
 	 */
-	private final ScriptEngine engine;
+	private final MustacheEngine engine;
 
 	/**
 	 * Original template.
 	 */
 	private final String template;
-
-	private final NashornPartialsObject partials;
 
 	/**
 	 * Create template.
@@ -64,33 +58,19 @@ public class NashornTemplate implements MustacheTemplate {
 	 * @param engine Script engine.
 	 * @param reader Template.
 	 */
-	public NashornTemplate(ScriptEngine engine, Reader reader, NashornPartialsObject partials) {
+	public NashornTemplate(MustacheEngine engine, Reader reader) {
 		this.engine = engine;
 		this.template = read(reader);
-		this.partials = partials;
 	}
 
 	@Override
 	public void execute(Map<String, Object> model, Writer writer) {
 		try {
-			String result = render(template, model);
+			String result = engine.render(template, model);
 			writer.write(result);
 		}
 		catch (IOException ex) {
 			throw new MustacheIOException(ex);
-		}
-	}
-
-	private String render(String template, Map<String, Object> model) {
-		try {
-			Invocable invocable = (Invocable) engine;
-			return (String) invocable.invokeFunction("render", template, model, partials);
-		}
-		catch (ScriptException ex) {
-			throw new NashornException(ex);
-		}
-		catch (NoSuchMethodException ex) {
-			throw new NashornException(ex);
 		}
 	}
 }

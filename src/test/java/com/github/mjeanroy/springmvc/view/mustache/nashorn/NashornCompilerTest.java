@@ -70,7 +70,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		String expected = "" +
@@ -86,7 +86,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		String expected = "" +
@@ -105,7 +105,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		String expected = "" +
@@ -124,7 +124,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		String expected = "" +
@@ -143,7 +143,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		String expected = "" +
@@ -162,7 +162,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		String expected = "" +
@@ -183,7 +183,7 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to execute template to check real result
+		// Try to render template to check real result
 		template.execute(model, writer);
 
 		templateLoader.removeTemporaryPartialAliases();
