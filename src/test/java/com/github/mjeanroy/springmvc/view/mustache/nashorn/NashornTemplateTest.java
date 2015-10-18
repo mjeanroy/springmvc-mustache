@@ -33,6 +33,8 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -64,11 +66,11 @@ public class NashornTemplateTest {
 
 	@Test
 	public void it_should_execute_template() throws Exception {
-		URL urlMustache = getClass().getResource("/mustache/mustache.js");
-		scriptEngine.eval(new FileReader(new File(urlMustache.toURI())));
+		InputStream mustacheJs = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.2.0/mustache.js");
+		InputStream bindings = getClass().getResourceAsStream("/mustache/nashorn-bindings.js");
 
-		URL urlBinding = getClass().getResource("/mustache/nashorn-bindings.js");
-		scriptEngine.eval(new FileReader(new File(urlBinding.toURI())));
+		scriptEngine.eval(new InputStreamReader(mustacheJs));
+		scriptEngine.eval(new InputStreamReader(bindings));
 
 		Writer writer = new StringWriter();
 

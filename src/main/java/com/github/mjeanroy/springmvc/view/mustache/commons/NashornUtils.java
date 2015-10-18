@@ -24,14 +24,11 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
-import org.springframework.core.io.ClassPathResource;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
@@ -59,28 +56,22 @@ public final class NashornUtils {
 	 * @param scripts List of scripts to evaluate.
 	 * @return Nashorn Engine.
 	 */
-	public static ScriptEngine getEngine(Collection<String> scripts) {
+	public static ScriptEngine getEngine(Collection<InputStream> scripts) {
 		ScriptEngine engine = getEngine();
 
-		for (String script : scripts) {
+		for (InputStream script : scripts) {
 			evaluate(engine, script);
 		}
 
 		return engine;
 	}
 
-	private static void evaluate(ScriptEngine engine, String script) {
+	private static void evaluate(ScriptEngine engine, InputStream script) {
 		try {
-			ClassPathResource resource = new ClassPathResource(script);
-			InputStream is = resource.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is);
-			engine.eval(isr);
+			engine.eval(new InputStreamReader(script));
 		}
 		catch (ScriptException ex) {
 			throw new NashornException(ex);
-		}
-		catch (IOException ex) {
-			throw new MustacheIOException(ex);
 		}
 	}
 }

@@ -80,6 +80,7 @@
 		<jmustache.version>1.10</jmustache.version>
 		<handlebars-version>2.2.3</handlebars-version>
 		<mustache.java.version>0.8.17</mustache.java.version>
+		<mustache-bower.version>2.2.0</mustache-bower.version>
 		<spring.version>4.2.1.RELEASE</spring.version>
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
@@ -141,6 +142,12 @@
 			<groupId>com.github.spullara.mustache.java</groupId>
 			<artifactId>compiler</artifactId>
 			<version>${mustache.java.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>mustache</artifactId>
+			<version>${mustache-bower.version}</version>
 			<optional>true</optional>
 		</dependency>
 

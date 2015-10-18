@@ -52,6 +52,8 @@ import org.springframework.context.ApplicationContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import java.io.InputStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
 import static org.mockito.Matchers.anyCollectionOf;
@@ -342,7 +344,7 @@ public class MustacheProviderTest {
 		ScriptEngine scriptEngine = mock(ScriptEngine.class);
 		PowerMockito.when(JavaUtils.getVersion()).thenReturn(1.8);
 		PowerMockito.when(NashornUtils.getEngine()).thenReturn(scriptEngine);
-		PowerMockito.when(NashornUtils.getEngine(anyCollectionOf(String.class))).thenReturn(scriptEngine);
+		PowerMockito.when(NashornUtils.getEngine(anyCollectionOf(InputStream.class))).thenReturn(scriptEngine);
 
 		MustacheCompiler mustacheCompiler = MustacheProvider.AUTO.instantiate(applicationContext);
 		assertThat(mustacheCompiler)

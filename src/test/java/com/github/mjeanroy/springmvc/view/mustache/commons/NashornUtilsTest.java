@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,7 +52,7 @@ public class NashornUtilsTest {
 	@Test
 	public void it_should_get_nashorn_engine_and_evaluate_scripts() {
 		ScriptEngine engine = NashornUtils.getEngine(asList(
-				"/scripts/test-constant.js"
+				getClass().getResourceAsStream("/scripts/test-constant.js")
 		));
 
 		assertThat(engine.getFactory().getEngineName())
@@ -73,16 +72,7 @@ public class NashornUtilsTest {
 		thrown.expect(NashornException.class);
 
 		NashornUtils.getEngine(asList(
-				"/scripts/test-with-error.js"
-		));
-	}
-
-	@Test
-	public void it_should_catch_unknown_scripts() {
-		thrown.expect(MustacheIOException.class);
-
-		NashornUtils.getEngine(asList(
-				"/scripts/test-unknown-script.js"
+				getClass().getResourceAsStream("/scripts/test-with-error.js")
 		));
 	}
 }

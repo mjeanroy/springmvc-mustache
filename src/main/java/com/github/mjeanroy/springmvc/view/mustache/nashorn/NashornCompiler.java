@@ -27,9 +27,11 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 
 import javax.script.ScriptEngine;
+import java.io.InputStream;
 import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.NashornUtils.getEngine;
@@ -59,11 +61,22 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 	public NashornCompiler(MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 
-		// Initialize nashorn engine
-		this.engine = getEngine(asList(
-				"/mustache/mustache.js",
-				"/mustache/nashorn-bindings.js"
+		InputStream bindings = IOUtils.getStream("/mustache/nashorn-bindings.js");
+		InputStream mustacheJs = IOUtils.getFirstAvailableStream(asList(
+				// First, try with webjars
+				"/META-INF/resources/webjars/mustache/**/mustache.js",
+				"/META-INF/resources/npm/mustache/**/mustache.js",
+
+				// Then, try inside a bower_components directory
+				"/bower_components/mustache/**/mustache.js",
+
+				// Then, try "generic" directory
+				"/vendors/mustache/**/mustache.js",
+				"/js/mustache/**/mustache.js"
 		));
+
+		// Initialize nashorn engine
+		this.engine = getEngine(asList(mustacheJs, bindings));
 
 		// Initialize partials object
 		this.partials = new NashornPartialsObject(templateLoader);
