@@ -1,6 +1,8 @@
 # SpringMVC-Mustache
 ---------------------
 
+[![Build Status](https://travis-ci.org/mjeanroy/springmvc-mustache.svg?branch=master)](https://travis-ci.org/mjeanroy/springmvc-mustache)
+
 Simple library that will allow you to use a mustache templates with your SpringMVC application.
 
 Note: this library use jmustache, handlebars or mustache.java under the hood.
