@@ -96,7 +96,7 @@ public class PreConditionsTest {
 	}
 
 	@Test
-	public void it_should_throw_illegal_argument_exception_if_string_has_text() {
+	public void it_should_throw_illegal_argument_exception_if_string_does_not_have_text() {
 		String message = "String must have text";
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage(message);

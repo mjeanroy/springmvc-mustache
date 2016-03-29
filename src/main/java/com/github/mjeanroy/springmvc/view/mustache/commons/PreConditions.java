@@ -94,15 +94,23 @@ public final class PreConditions {
 	 * thrown.
 	 * If value is not blank, original string value is automatically returned.
 	 *
-	 * @param value   String value.
+	 * @param value String value.
 	 * @param message Error message given to exception.
 	 * @return Original string value.
 	 * @throws java.lang.IllegalArgumentException if value is blank.
 	 */
 	public static String hasText(String value, String message) {
-		if (value == null || value.trim().isEmpty()) {
+		if (value == null) {
 			throw new IllegalArgumentException(message);
 		}
-		return value;
+
+		for (char c : value.toCharArray()) {
+			if (!Character.isWhitespace(c)) {
+				return value;
+			}
+		}
+
+		// Found only whitespace characters...
+		throw new IllegalArgumentException(message);
 	}
 }
