@@ -48,6 +48,7 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 	 * Create Nashorn Compiler.
 	 *
 	 * @param templateLoader Template Loader.
+	 * @param engine Mustache JavaScript engine.
 	 */
 	public NashornCompiler(MustacheTemplateLoader templateLoader, MustacheEngine engine) {
 		super(templateLoader);

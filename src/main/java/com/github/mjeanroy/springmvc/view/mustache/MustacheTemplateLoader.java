@@ -29,19 +29,21 @@ import java.util.Map;
 
 /**
  * Mustache template loader.
- * <p/>
+ *
  * Resource are retrieved using {@link org.springframework.core.io.DefaultResourceLoader} by default unless a
  * specific resource loader is used during construction.
- * <p/>
+ *
  * Prefix and Suffix can be set, these will be used to retrieve template by its name (if given
  * does not already starts with prefix and does not already ends with suffix).
- * <p/>
+ *
  * For example:
  * - If prefix and suffix are null:
- * getTemplate("foo"); // Call internally resourceLoader.getResource("foo");
- * <p/>
+ *
+ *   getTemplate("foo"); // Call internally resourceLoader.getResource("foo");
+ *
  * - If prefix or suffix are not null:
- * getTemplate("foo"); // Call internally resourceLoader.getResource({prefix} + "foo" + {suffix});
+ *
+ *   getTemplate("foo"); // Call internally resourceLoader.getResource({prefix} + "foo" + {suffix});
  */
 public interface MustacheTemplateLoader {
 

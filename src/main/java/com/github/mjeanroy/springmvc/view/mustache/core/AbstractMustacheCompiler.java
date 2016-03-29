@@ -80,6 +80,7 @@ public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 	 *
 	 * @param name Template name.
 	 * @return Mustache template.
+	 * @throws Exception If something bad happens (will be catched and rethrows).
 	 */
 	protected abstract MustacheTemplate doCompile(String name) throws Exception;
 

@@ -54,6 +54,7 @@ public abstract class AbstractMustacheTemplate implements MustacheTemplate {
 	 *
 	 * @param model Data model.
 	 * @param writer Target writer.
+	 * @throws Exception If something bad happens (will be catched an rethrows).
 	 */
 	protected abstract void doExecute(Map<String, Object> model, Writer writer) throws Exception;
 }

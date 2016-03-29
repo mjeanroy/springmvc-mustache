@@ -88,9 +88,9 @@ public class ModelAndMustacheView extends ModelAndView {
 
 	/**
 	 * Creates new ModelAndView given a View object and a model.
-	 * <emphasis>Note: the supplied model data is copied into the internal
+	 * Note: the supplied model data is copied into the internal
 	 * storage of this class. You should not consider to modify the supplied
-	 * Map after supplying it to this class</emphasis>
+	 * Map after supplying it to this class
 	 * @param view View object to render
 	 * @param model Map of model names (Strings) to model objects
 	 * (Objects). Model entries may not be {@code null}, but the

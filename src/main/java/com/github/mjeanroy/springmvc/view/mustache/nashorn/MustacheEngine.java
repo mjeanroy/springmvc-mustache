@@ -95,6 +95,7 @@ public class MustacheEngine {
 	 * Mustache file is given as a second parameter and is resolved against classpath.
 	 *
 	 * @param templateLoader Template loader, used to resolve partials.
+	 * @param mustacheJs Mustache JavaScript file (as {@link InputStream} instance).
 	 * @throws com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException If script does not exist.
 	 */
 	public MustacheEngine(MustacheTemplateLoader templateLoader, String mustacheJs) {
@@ -106,6 +107,8 @@ public class MustacheEngine {
 	 * Mustache file is given as a second parameter and is resolved against classpath.
 	 *
 	 * @param templateLoader Template loader, used to resolve partials.
+	 * @param mustacheJs Mustache JavaScript file (as {@link InputStream} instance).
+	 * @throws com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException If script does not exist.
 	 */
 	public MustacheEngine(MustacheTemplateLoader templateLoader, InputStream mustacheJs) {
 		notNull(mustacheJs, "Mustache JS must not be null");
