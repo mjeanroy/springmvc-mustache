@@ -60,17 +60,6 @@ public class CompositeResourceLoader implements ResourceLoader {
 	/**
 	 * Create new composite resource loader.
 	 *
-	 * @param resourceLoaders Resource loaders.
-	 */
-	public CompositeResourceLoader(ResourceLoader... resourceLoaders) {
-		notNull(resourceLoaders, "Resource loaders must not be null");
-		notEmpty(resourceLoaders, "Resource loaders must not be empty");
-		this.resourceLoaders = asList(resourceLoaders);
-	}
-
-	/**
-	 * Create new composite resource loader.
-	 *
 	 * @param resourceLoaders Collection of resource loaders.
 	 */
 	public CompositeResourceLoader(Collection<ResourceLoader> resourceLoaders) {

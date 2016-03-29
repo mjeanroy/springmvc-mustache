@@ -60,15 +60,6 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_create_resource_loader_from_varargs() throws Exception {
-		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(resourceLoader1, resourceLoader2);
-
-		Collection<ResourceLoader> resourceLoaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(resourceLoaders).isNotNull().isNotEmpty().hasSize(2).containsOnly(resourceLoader1, resourceLoader2);
-	}
-
-	@Test
 	public void it_should_create_resource_loader_from_collection() throws Exception {
 		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
 		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(collection);
