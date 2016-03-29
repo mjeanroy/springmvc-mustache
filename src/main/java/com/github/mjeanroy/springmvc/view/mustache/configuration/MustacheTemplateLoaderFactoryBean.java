@@ -24,9 +24,13 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -37,7 +41,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.ClassUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -53,6 +60,11 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 	 * Class logger.
 	 */
 	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderFactoryBean.class);
+
+	/**
+	 * Classpath resource loader, implemented as a singleton.
+	 */
+	private static final ClasspathResourceLoader CLASSPATH_RESOURCE_LOADER = new ClasspathResourceLoader();
 
 	/**
 	 * Current application context.
@@ -134,6 +146,9 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 			resourceLoaders.add(new FileSystemXmlApplicationContext());
 		}
 
+		log.debug("Add instance of classpath resource loader");
+		resourceLoaders.add(CLASSPATH_RESOURCE_LOADER);
+
 		log.debug("Create composite resource loader using: {}", resourceLoaders);
 		log.trace(" => Number of loaders: {}", resourceLoaders.size());
 		return new CompositeResourceLoader(resourceLoaders);
@@ -164,5 +179,48 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 	 */
 	public void setPartialAliases(Map<String, String> partialAliases) {
 		this.partialAliases.putAll(partialAliases);
+	}
+
+	/**
+	 * Implementation of spring {@link org.springframework.core.io.ResourceLoader}
+	 * that will always check for resources in the classpath (not the root of the application
+	 * context).
+	 *
+	 * This class does not guarantee that resource patterns such as "file:/" or "http:" will
+	 * work, that's why this class should remain private and should not be used outside.
+	 */
+	private static final class ClasspathResourceLoader implements ResourceLoader {
+
+		/**
+		 * Classpath prefix.
+		 */
+		private static final String CLASSPATH_PREFIX = "classpath:";
+
+		/**
+		 * Create new resource loader.
+		 */
+		private ClasspathResourceLoader() {
+		}
+
+		@Override
+		public Resource getResource(String location) {
+			notNull(location, "Resource location must not be null");
+			hasText(location, "Resource location must be defined");
+
+			// Remove the classpath if specified.
+			// This should never happen since a previous resource loader will probably be used
+			// before.
+			String classpathLocation = location;
+			if (location.startsWith(CLASSPATH_PREFIX)) {
+				classpathLocation = location.substring(CLASSPATH_PREFIX.length());
+			}
+
+			return new ClassPathResource(classpathLocation);
+		}
+
+		@Override
+		public ClassLoader getClassLoader() {
+			return ClassUtils.getDefaultClassLoader();
+		}
 	}
 }

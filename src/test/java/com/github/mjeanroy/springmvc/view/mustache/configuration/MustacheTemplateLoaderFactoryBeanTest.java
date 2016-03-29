@@ -27,11 +27,13 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.apache.commons.lang3.reflect.FieldUtils.readStaticField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -46,9 +49,12 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 
 	private MustacheTemplateLoaderFactoryBean factoryBean;
 
+	private ResourceLoader classpathResourceLoader;
+
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		factoryBean = new MustacheTemplateLoaderFactoryBean();
+		classpathResourceLoader = (ResourceLoader) readStaticField(MustacheTemplateLoaderFactoryBean.class, "CLASSPATH_RESOURCE_LOADER", true);
 	}
 
 	@Test
@@ -88,8 +94,11 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		assertThat(loaders)
 				.isNotNull()
 				.isNotEmpty()
-				.hasSize(1)
-				.containsOnly(applicationContext);
+				.hasSize(2)
+				.containsOnly(
+						applicationContext,
+						classpathResourceLoader
+				);
 	}
 
 	@Test
@@ -121,10 +130,11 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		assertThat(loaders)
 				.isNotNull()
 				.isNotEmpty()
-				.hasSize(2)
+				.hasSize(3)
 				.containsOnly(
 						applicationContext,
-						resourceLoader
+						resourceLoader,
+						classpathResourceLoader
 				);
 	}
 
@@ -154,7 +164,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		assertThat(loaders)
 				.isNotNull()
 				.isNotEmpty()
-				.hasSize(2);
+				.hasSize(3);
 
 		List<ResourceLoader> list = new ArrayList<ResourceLoader>(loaders);
 
@@ -165,5 +175,36 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		assertThat(list.get(1))
 				.isNotNull()
 				.isExactlyInstanceOf(FileSystemXmlApplicationContext.class);
+
+		assertThat(list.get(2))
+				.isNotNull()
+				.isSameAs(classpathResourceLoader);
+	}
+
+	@Test
+	public void classpath_resource_loader_should_load_resource_from_classpath() throws Exception {
+		Resource resource = classpathResourceLoader.getResource("/templates/foo.template.html");
+		assertThat(resource).isNotNull();
+		assertThat(resource.exists()).isTrue();
+		assertThat(resource.getURI().toString())
+				.startsWith("file:/")
+				.endsWith("/target/test-classes/templates/foo.template.html");
+	}
+
+	@Test
+	public void classpath_resource_loader_should_load_resource_from_classpath_and_remove_prefix() throws Exception {
+		Resource resource = classpathResourceLoader.getResource("classpath:/templates/foo.template.html");
+		assertThat(resource).isNotNull();
+		assertThat(resource.exists()).isTrue();
+		assertThat(resource.getURI().toString())
+				.startsWith("file:/")
+				.endsWith("/target/test-classes/templates/foo.template.html");
+	}
+
+	@Test
+	public void classpath_resource_loader_should_load_resource_from_classpath_and_return_resource_if_it_does_not_exist() throws Exception {
+		Resource resource = classpathResourceLoader.getResource("classpath:/templates/fake.template.html");
+		assertThat(resource).isNotNull();
+		assertThat(resource.exists()).isFalse();
 	}
 }
