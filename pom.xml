@@ -34,7 +34,7 @@
 
 	<groupId>com.github.mjeanroy</groupId>
 	<artifactId>springmvc-mustache</artifactId>
-	<version>0.5.3</version>
+	<version>0.5.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<url>https://github.com/mjeanroy/springmvc-mustache</url>
 
