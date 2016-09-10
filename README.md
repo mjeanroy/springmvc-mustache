@@ -2,6 +2,7 @@
 ---------------------
 
 [![Build Status](https://travis-ci.org/mjeanroy/springmvc-mustache.svg?branch=master)](https://travis-ci.org/mjeanroy/springmvc-mustache)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mjeanroy/springmvc-mustache/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mjeanroy/springmvc-mustache)
 
 Simple library that will allow you to use a mustache templates with your SpringMVC application.
 
