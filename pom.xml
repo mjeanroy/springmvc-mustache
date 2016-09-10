@@ -81,7 +81,7 @@
 		<handlebars-version>4.0.5</handlebars-version>
 		<mustache.java.version>0.8.17</mustache.java.version>
 		<mustache-bower.version>2.2.1</mustache-bower.version>
-		<spring.version>4.2.5.RELEASE</spring.version>
+		<spring.version>4.3.2.RELEASE</spring.version>
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
 		<spring-webmvc.version>${spring.version}</spring-webmvc.version>
