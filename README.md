@@ -190,7 +190,7 @@ public class Application {
     @RequestMapping("/")
     public ModelAndView fooView() {
         ModelAndView modelAndView = new ModelAndView("foo");
-         modelAndView.addObject("name", "foo");
+        modelAndView.addObject("name", "foo");
         return modelAndView;
     }
 
