@@ -67,9 +67,9 @@
 		<!-- Java Version -->
 		<!-- Compile with jdk8, but keep compatibility with java 6 -->
 		<java.version>1.8</java.version>
-		<java.source.version>1.8</java.source.version>
-		<java.target.version>1.8</java.target.version>
-		<java.signature.version>java18</java.signature.version>
+		<java.source.version>1.6</java.source.version>
+		<java.target.version>1.6</java.target.version>
+		<java.signature.version>java16</java.signature.version>
 
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<versions-maven-plugin.version>2.2</versions-maven-plugin.version>
