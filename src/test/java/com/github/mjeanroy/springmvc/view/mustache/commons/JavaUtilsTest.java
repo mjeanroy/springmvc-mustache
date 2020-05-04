@@ -33,9 +33,6 @@ public class JavaUtilsTest {
 	@Test
 	public void it_should_get_java_version() {
 		double version = JavaUtils.getVersion();
-		assertThat(version)
-				.isNotZero()
-				.isGreaterThanOrEqualTo(1.8)
-				.isLessThan(2);
+		assertThat(version).isNotZero().isGreaterThanOrEqualTo(1.7);
 	}
 }

@@ -66,9 +66,9 @@
 		<!-- Java Version -->
 		<!-- Compile with jdk8, but keep compatibility with java 6 -->
 		<java.version>1.8</java.version>
-		<java.source.version>1.6</java.source.version>
-		<java.target.version>1.6</java.target.version>
-		<java.signature.version>java16</java.signature.version>
+		<java.source.version>1.8</java.source.version>
+		<java.target.version>1.8</java.target.version>
+		<java.signature.version>java18</java.signature.version>
 
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
 		<versions-maven-plugin.version>2.2</versions-maven-plugin.version>
@@ -90,9 +90,6 @@
 		<junit.version>4.12</junit.version>
 		<assertj.version>2.4.0</assertj.version>
 		<mockito.version>1.10.19</mockito.version>
-		<powermock.version>1.6.5</powermock.version>
-		<powermock-api-mockito.version>${powermock.version}</powermock-api-mockito.version>
-		<powermock-module-junit4.version>${powermock.version}</powermock-module-junit4.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
 	</properties>
 
@@ -174,18 +171,6 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>${powermock-api-mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<version>${powermock-module-junit4.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
