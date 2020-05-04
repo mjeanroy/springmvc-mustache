@@ -28,11 +28,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.core.env.Environment;
 
@@ -41,22 +37,24 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class MustacheWebConfigurationTest {
 
-	@Mock
 	private Environment environment;
-
-	@Mock
-	private MustacheCompiler mustacheCompiler;
-
-	@InjectMocks
 	private MustacheWebConfiguration mustacheWebConfiguration;
 
 	@Before
 	public void setUp() {
+		environment = mock(Environment.class);
+
+		MustacheCompiler mustacheCompiler = mock(MustacheCompiler.class);
+		mustacheWebConfiguration = new MustacheWebConfiguration(
+				environment,
+				mustacheCompiler
+		);
+
 		when(environment.getProperty(anyString(), anyString())).thenAnswer(new Answer<Object>() {
 			@Override
 			public Object answer(InvocationOnMock invocation) throws Throwable {

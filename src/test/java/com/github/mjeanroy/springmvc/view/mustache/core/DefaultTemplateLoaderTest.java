@@ -29,9 +29,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -45,25 +42,19 @@ import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.junit.rules.ExpectedException.none;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
-@RunWith(MockitoJUnitRunner.class)
 public class DefaultTemplateLoaderTest {
 
 	@Rule
 	public final ExpectedException thrown = none();
 
-	@Mock
-	private Resource resource;
-
-	@Mock
 	private ResourceLoader resourceLoader;
-
 	private String prefix;
-
 	private String suffix;
 
 	private DefaultTemplateLoader mustacheTemplateLoader;
@@ -72,6 +63,7 @@ public class DefaultTemplateLoaderTest {
 	public void setUp() {
 		prefix = "foo";
 		suffix = "bar";
+		resourceLoader = mock(ResourceLoader.class);
 		mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 	}
 
@@ -179,6 +171,8 @@ public class DefaultTemplateLoaderTest {
 	@Test
 	public void it_should_throw_exception_when_resource_does_not_exist() throws Exception {
 		String name = "/templates/does_not_exist.template.html";
+
+		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(false);
 		when(resourceLoader.getResource(name)).thenReturn(resource);
 
@@ -193,6 +187,7 @@ public class DefaultTemplateLoaderTest {
 		String name = "/templates/foo.template.html";
 		InputStream is = getClass().getResourceAsStream(name);
 
+		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(true);
 		when(resource.getInputStream()).thenReturn(is);
 		when(resourceLoader.getResource(name)).thenReturn(resource);
@@ -210,6 +205,7 @@ public class DefaultTemplateLoaderTest {
 		String templateName = prefix + name + suffix;
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
+		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(false);
 		when(resourceLoader.getResource(templateName)).thenReturn(resource);
 

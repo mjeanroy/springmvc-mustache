@@ -26,19 +26,20 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
 public class MustacheJavaConfigurationTest {
 
-	@InjectMocks
 	private MustacheJavaConfiguration mustacheJavaConfiguration;
+
+	@Before
+	public void setUp() {
+		mustacheJavaConfiguration = new MustacheJavaConfiguration();
+	}
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {

@@ -28,9 +28,6 @@ import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -38,28 +35,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
-@RunWith(MockitoJUnitRunner.class)
 public class MustacheView_MustacheJava_Test {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
-
-	@Mock
-	private HttpServletRequest request;
-
-	@Mock
-	private HttpServletResponse response;
-
-	private StringWriter writer;
 
 	private Map<String, Object> model;
 
@@ -73,9 +63,6 @@ public class MustacheView_MustacheJava_Test {
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
 		this.model.put("emptyString", "");
-
-		writer = new StringWriter();
-		when(response.getWriter()).thenReturn(new PrintWriter(writer));
 
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		templateLoader = new DefaultTemplateLoader(resourceLoader);
@@ -132,6 +119,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_render_template() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		mustacheView.setUrl("/templates/foo.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
@@ -146,6 +137,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_treat_zero_as_falsy() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		mustacheView.setUrl("/templates/zero.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
@@ -163,6 +158,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_treat_empty_string_as_falsy() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		mustacheView.setUrl("/templates/empty-string.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
@@ -180,6 +179,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_display_template_with_partial() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		mustacheView.setUrl("/templates/composite.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
 
@@ -196,6 +199,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		mustacheView.setUrl("/templates/composite-aliases.template.html");
@@ -214,6 +221,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		mustacheView.setUrl("/templates/composite.template.html");
@@ -232,6 +243,10 @@ public class MustacheView_MustacheJava_Test {
 
 	@Test
 	public void it_should_display_template_with_partial_aliases() throws Exception {
+		Writer writer = givenWriter();
+		HttpServletRequest request = givenHttpServletRequest();
+		HttpServletResponse response = givenHttpServletResponse(writer);
+
 		mustacheView.addAlias("foo", "/templates/foo.template.html");
 		mustacheView.setUrl("/templates/composite-aliases.template.html");
 		mustacheView.renderMergedTemplateModel(model, request, response);
@@ -245,5 +260,24 @@ public class MustacheView_MustacheJava_Test {
 
 		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+	}
+
+	private static Writer givenWriter() {
+		return new StringWriter();
+	}
+
+	private static HttpServletRequest givenHttpServletRequest() {
+		return mock(HttpServletRequest.class);
+	}
+
+	private static HttpServletResponse givenHttpServletResponse(Writer writer) {
+		try {
+			HttpServletResponse response = mock(HttpServletResponse.class);
+			when(response.getWriter()).thenReturn(new PrintWriter(writer));
+			return response;
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 }

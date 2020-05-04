@@ -28,10 +28,7 @@ import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
@@ -41,19 +38,19 @@ import java.io.Reader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class HandlebarsTemplateLoaderTest {
 
-	@Mock
 	private MustacheTemplateLoader mustacheTemplateLoader;
 
 	private HandlebarsTemplateLoader handlebarsTemplateLoader;
 
 	@Before
 	public void setUp() {
+		mustacheTemplateLoader = mock(MustacheTemplateLoader.class);
 		handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
 
 		when(mustacheTemplateLoader.getTemplate(anyString())).thenAnswer(new Answer<Reader>() {

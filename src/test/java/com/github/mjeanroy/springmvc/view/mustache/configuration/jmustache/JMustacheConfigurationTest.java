@@ -27,20 +27,21 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.samskivert.mustache.Mustache;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
 public class JMustacheConfigurationTest {
 
-	@InjectMocks
 	private JMustacheConfiguration jMustacheConfiguration;
+
+	@Before
+	public void setUp() {
+		jMustacheConfiguration = new JMustacheConfiguration();
+	}
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {

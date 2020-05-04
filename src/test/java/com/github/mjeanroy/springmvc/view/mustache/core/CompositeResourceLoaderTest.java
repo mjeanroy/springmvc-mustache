@@ -26,9 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -42,21 +39,21 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CompositeResourceLoaderTest {
 
-	@Mock
 	private ResourceLoader resourceLoader1;
-
-	@Mock
 	private ResourceLoader resourceLoader2;
 
 	private CompositeResourceLoader compositeResourceLoader;
 
 	@Before
 	public void setUp() {
-		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
-		compositeResourceLoader = new CompositeResourceLoader(collection);
+		resourceLoader1 = mock(ResourceLoader.class);
+		resourceLoader2 = mock(ResourceLoader.class);
+		compositeResourceLoader = new CompositeResourceLoader(asList(
+				resourceLoader1,
+				resourceLoader2
+		));
 	}
 
 	@Test

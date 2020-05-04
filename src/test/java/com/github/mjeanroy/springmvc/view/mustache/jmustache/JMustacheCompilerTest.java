@@ -30,8 +30,6 @@ import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -43,7 +41,6 @@ import static com.samskivert.mustache.Mustache.Compiler;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("unchecked")
-@RunWith(MockitoJUnitRunner.class)
 public class JMustacheCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");

@@ -53,11 +53,14 @@ public class MustacheWebConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(MustacheWebConfiguration.class);
 
-	@Autowired
-	private Environment environment;
+	private final Environment environment;
+	private final MustacheCompiler mustacheCompiler;
 
 	@Autowired
-	private MustacheCompiler mustacheCompiler;
+	public MustacheWebConfiguration(Environment environment, MustacheCompiler mustacheCompiler) {
+		this.environment = environment;
+		this.mustacheCompiler = mustacheCompiler;
+	}
 
 	/**
 	 * Build mustache view resolver.
