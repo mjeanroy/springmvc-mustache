@@ -24,6 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
+import com.github.jknack.handlebars.io.AbstractTemplateLoader;
 import com.github.jknack.handlebars.io.StringTemplateSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
@@ -39,7 +40,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * Implement template loader for use with java handlebar
  * implementation.
  */
-public class HandlebarsTemplateLoader implements TemplateLoader {
+public class HandlebarsTemplateLoader extends AbstractTemplateLoader {
 
 	/**
 	 * Template loader implementation.
