@@ -61,7 +61,7 @@ public class MustacheConfigurationTest {
 				.hasSize(2)
 				.containsExactly(
 						MustacheTemplateLoaderConfiguration.class.getName(),
-						provider.configuration().getName()
+						provider.configurationClass()
 				);
 	}
 }

@@ -24,10 +24,14 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
+import com.github.mjeanroy.junit4.runif.RunIf;
+import com.github.mjeanroy.junit4.runif.RunIfRunner;
+import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 
 import javax.script.ScriptEngine;
 
@@ -35,6 +39,8 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
 
+@RunWith(RunIfRunner.class)
+@RunIf(AtLeastJava8Condition.class)
 public class NashornUtilsTest {
 
 	@Rule

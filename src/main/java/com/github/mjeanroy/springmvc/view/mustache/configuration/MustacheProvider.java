@@ -27,13 +27,12 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.JavaUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.NashornUtils;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.NashornConfiguration;
-import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.samskivert.mustache.Mustache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,9 @@ import org.springframework.context.ApplicationContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.invoke;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.newInstance;
 import static java.util.Arrays.sort;
 
 /**
@@ -63,8 +64,8 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public Class configuration() {
-			return JMustacheConfiguration.class;
+		public String configurationClass() {
+			return JMustacheConfiguration.class.getName();
 		}
 
 		@Override
@@ -86,8 +87,8 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public Class configuration() {
-			return HandlebarsConfiguration.class;
+		public String configurationClass() {
+			return HandlebarsConfiguration.class.getName();
 		}
 
 		@Override
@@ -109,8 +110,8 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public Class configuration() {
-			return MustacheJavaConfiguration.class;
+		public String configurationClass() {
+			return MustacheJavaConfiguration.class.getName();
 		}
 
 		@Override
@@ -145,15 +146,19 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public Class configuration() {
-			return NashornConfiguration.class;
+		public String configurationClass() {
+			return "com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.NashornConfiguration";
 		}
 
 		@Override
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			MustacheEngine mustacheEngine = applicationContext.getBean(MustacheEngine.class);
-			return new NashornConfiguration().mustacheCompiler(templateLoader, mustacheEngine);
+			Object mustacheEngine = applicationContext.getBean(ClassUtils.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine"));
+			Object instance = newInstance(configurationClass());
+			return (MustacheCompiler) invoke(instance, "mustacheCompiler", new Object[] {
+					templateLoader,
+					mustacheEngine
+			});
 		}
 	},
 
@@ -174,8 +179,8 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public Class configuration() {
-			return detectProvider().configuration();
+		public String configurationClass() {
+			return detectProvider().configurationClass();
 		}
 
 		@Override
@@ -189,7 +194,7 @@ public enum MustacheProvider {
 	 *
 	 * @return Configuration class.
 	 */
-	public abstract Class configuration();
+	public abstract String configurationClass();
 
 	/**
 	 * Instantiate compiler using appropriate implementation.

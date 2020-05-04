@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +43,39 @@ public class ClassUtilsTest {
 		String className = getClass().getCanonicalName();
 		assertThat(ClassUtils.isPresent(className)).isTrue();
 		assertThat(ClassUtils.isPresent(className + "FooBar")).isFalse();
+	}
+
+	@Test
+	public void it_should_instantiate_class() {
+		Object instance = ClassUtils.newInstance(FixtureClass.class.getName());
+		assertThat(instance).isNotNull();
+		assertThat(instance).isExactlyInstanceOf(FixtureClass.class);
+	}
+
+	@Test
+	public void it_should_invoke_method_on_given_class() {
+		FixtureClass fixtureClass = new FixtureClass();
+		Object[] args = {};
+		Object result = ClassUtils.invoke(fixtureClass, "emptyMethod", args);
+
+		assertThat(result).isNull();
+		assertThat(fixtureClass.calls).contains(
+				entry("emptyMethod", 1),
+				entry("methodWithArgument", 0)
+		);
+	}
+
+	@Test
+	public void it_should_invoke_method_with_argument_on_given_class() {
+		FixtureClass fixtureClass = new FixtureClass();
+		Object[] args = {"test"};
+		Object result = ClassUtils.invoke(fixtureClass, "methodWithArgument", args);
+
+		assertThat(result).isNull();
+		assertThat(fixtureClass.calls).contains(
+				entry("emptyMethod", 0),
+				entry("methodWithArgument", 1)
+		);
 	}
 
 	@Test
@@ -94,7 +128,28 @@ public class ClassUtilsTest {
 		assertThat(value).isNull();
 	}
 
-	private static @interface Foo {
+	private @interface Foo {
+	}
 
+	private static class FixtureClass {
+		private Map<String, Integer> calls;
+
+		public FixtureClass() {
+			this.calls = new HashMap<String, Integer>();
+			this.calls.put("emptyMethod", 0);
+			this.calls.put("methodWithArgument", 0);
+		}
+
+		public void emptyMethod() {
+			this.increment("emptyMethod");
+		}
+
+		public void methodWithArgument(String arg) {
+			this.increment("methodWithArgument");
+		}
+
+		private void increment(String name) {
+			this.calls.put(name, this.calls.get(name) + 1);
+		}
 	}
 }

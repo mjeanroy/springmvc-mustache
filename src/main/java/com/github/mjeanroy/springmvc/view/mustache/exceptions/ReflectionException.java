@@ -22,27 +22,57 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
-import org.springframework.context.annotation.ImportSelector;
-import org.springframework.core.type.AnnotationMetadata;
-
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.getAnnotationValue;
+import java.lang.reflect.InvocationTargetException;
 
 /**
- * Select mustache configuration to use.
+ * Throwed when a problem occurs during reflection access.
  */
-public class MustacheEngineConfiguration implements ImportSelector {
+public class ReflectionException extends RuntimeException {
 
-	@Override
-	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);
-		return new String[]{
-				// This one is required: it load template loader bean
-				MustacheTemplateLoaderConfiguration.class.getName(),
+	/**
+	 * Create exception.
+	 *
+	 * @param ex Original exception.
+	 */
+	public ReflectionException(ClassNotFoundException ex) {
+		super(ex);
+	}
 
-				// This one is dynamic and depend on chosen provider
-				provider.configurationClass()
-		};
+	/**
+	 * Create exception.
+	 *
+	 * @param ex Original exception.
+	 */
+	public ReflectionException(NoSuchMethodException ex) {
+		super(ex);
+	}
+
+	/**
+	 * Create exception.
+	 *
+	 * @param ex Original exception.
+	 */
+	public ReflectionException(InstantiationException ex) {
+		super(ex);
+	}
+
+	/**
+	 * Create exception.
+	 *
+	 * @param ex Original exception.
+	 */
+	public ReflectionException(IllegalAccessException ex) {
+		super(ex);
+	}
+
+	/**
+	 * Create exception.
+	 *
+	 * @param ex Original exception.
+	 */
+	public ReflectionException(InvocationTargetException ex) {
+		super(ex);
 	}
 }
