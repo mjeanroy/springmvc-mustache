@@ -84,7 +84,7 @@ public class NashornEngineTest {
 
 	@Test
 	public void it_should_create_with_given_stream() throws Exception {
-		InputStream stream = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.2.1/mustache.js");
+		InputStream stream = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js");
 		MustacheEngine engine = new MustacheEngine(templateLoader, stream);
 
 		NashornPartialsObject partials = (NashornPartialsObject) readField(engine, "partials", true);
@@ -99,7 +99,7 @@ public class NashornEngineTest {
 
 	@Test
 	public void it_should_execute_mustache() throws Exception {
-		InputStream stream = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.2.1/mustache.js");
+		InputStream stream = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js");
 		MustacheEngine engine = new MustacheEngine(templateLoader, stream);
 
 		Map<String, Object> map = new HashMap<String, Object>();

@@ -73,7 +73,7 @@ public class NashornTemplateTest {
 		template = new NashornTemplate(scriptEngine, reader);
 
 		final ScriptEngine nashorn = new ScriptEngineManager().getEngineByName("nashorn");
-		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.2.1/mustache.js")));
+		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js")));
 		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/mustache/nashorn-bindings.js")));
 
 		// Mock Nashorn Engine
