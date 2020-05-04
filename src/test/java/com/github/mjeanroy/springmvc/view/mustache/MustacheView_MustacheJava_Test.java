@@ -24,17 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,8 +34,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)

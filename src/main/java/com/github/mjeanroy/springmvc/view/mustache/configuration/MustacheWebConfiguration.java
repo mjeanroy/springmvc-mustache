@@ -24,15 +24,9 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
-import static java.lang.String.valueOf;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.unmodifiableMap;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +35,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Integer.parseInt;
+import static java.lang.String.valueOf;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
 
 @Configuration
 @PropertySource(

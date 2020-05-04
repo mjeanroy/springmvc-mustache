@@ -36,7 +36,6 @@ import java.util.List;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notEmpty;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-import static java.util.Arrays.asList;
 
 /**
  * Implementation of spring {@link org.springframework.core.io.ResourceLoader}

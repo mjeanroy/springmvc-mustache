@@ -24,15 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.io.Reader;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import java.io.Reader;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class SpringMustacheFactoryTest {
 

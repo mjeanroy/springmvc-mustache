@@ -24,13 +24,9 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -50,6 +46,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Factory bean for {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader} instance.

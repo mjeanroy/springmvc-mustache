@@ -24,17 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import com.samskivert.mustache.Template;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.samskivert.mustache.Template;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class JMustacheTemplateTest {
 

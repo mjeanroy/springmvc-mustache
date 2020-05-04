@@ -24,13 +24,12 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import java.io.Reader;
-
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mustachejava.DefaultMustacheFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mustachejava.DefaultMustacheFactory;
+import java.io.Reader;
 
 /**
  * Implementation of mustache factory that use a template loader

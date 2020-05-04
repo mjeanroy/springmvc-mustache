@@ -24,17 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import static org.springframework.util.Assert.notNull;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-
-import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Extension of {@link org.springframework.web.servlet.ModelAndView} class
@@ -132,7 +131,8 @@ public class ModelAndMustacheView extends ModelAndView {
 		if (view != null && view instanceof MustacheView) {
 			MustacheView mustacheView = (MustacheView) view;
 			return mustacheView.getAliases();
-		} else {
+		}
+		else {
 			final Object object = getModelMap().get(MustacheSettings.PARTIALS_KEY);
 
 			if (object != null && !(object instanceof Map)) {
@@ -143,7 +143,8 @@ public class ModelAndMustacheView extends ModelAndView {
 
 			if (object == null) {
 				map = new HashMap<String, String>();
-			} else {
+			}
+			else {
 				map = (Map<String, String>) object;
 			}
 
@@ -166,7 +167,8 @@ public class ModelAndMustacheView extends ModelAndView {
 			// First try to not pollute view model object
 			final MustacheView mustacheView = (MustacheView) view;
 			mustacheView.addAlias(key, name);
-		} else {
+		}
+		else {
 			// Otherwise, add partials to model object
 			final Map<String, String> currentPartials = getPartials();
 			currentPartials.put(key, name);
@@ -187,7 +189,8 @@ public class ModelAndMustacheView extends ModelAndView {
 			// First try to not pollute model object
 			final MustacheView mustacheView = (MustacheView) view;
 			mustacheView.addAliases(partials);
-		} else {
+		}
+		else {
 			// Otherwise, add partials to model object
 			final Map<String, String> currentPartials = getPartials();
 			for (Map.Entry<String, String> entry : partials.entrySet()) {

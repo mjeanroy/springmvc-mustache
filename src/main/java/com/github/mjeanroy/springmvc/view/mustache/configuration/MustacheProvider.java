@@ -167,7 +167,8 @@ public enum MustacheProvider {
 			try {
 				detectProvider();
 				return true;
-			} catch (IllegalArgumentException ex) {
+			}
+			catch (IllegalArgumentException ex) {
 				return false;
 			}
 		}
@@ -226,7 +227,8 @@ public enum MustacheProvider {
 			if (provider != AUTO && provider.isAvailable()) {
 				log.debug("Provider '{}' available, use configuration", provider.name());
 				return provider;
-			} else {
+			}
+			else {
 				log.trace("Provider '{}' is missing, skip", provider.name());
 			}
 		}

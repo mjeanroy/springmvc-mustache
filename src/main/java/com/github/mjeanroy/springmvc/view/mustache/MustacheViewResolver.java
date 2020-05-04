@@ -24,15 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
 
 /**
  * Mustache View Resolver.

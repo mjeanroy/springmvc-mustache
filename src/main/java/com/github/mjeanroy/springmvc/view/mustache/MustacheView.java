@@ -24,8 +24,10 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-import static java.util.Collections.unmodifiableMap;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,11 +35,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.view.AbstractTemplateView;
-
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * Implementation of mustache view.

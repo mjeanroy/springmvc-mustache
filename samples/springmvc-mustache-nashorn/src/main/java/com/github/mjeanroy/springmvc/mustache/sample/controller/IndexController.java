@@ -24,13 +24,12 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
+import com.github.mjeanroy.springmvc.view.mustache.core.ModelAndMustacheView;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.ModelAndMustacheView;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class IndexController {

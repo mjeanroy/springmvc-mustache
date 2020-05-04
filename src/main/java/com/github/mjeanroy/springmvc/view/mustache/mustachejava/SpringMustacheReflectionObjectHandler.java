@@ -24,10 +24,10 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import java.io.Writer;
-
 import com.github.mustachejava.Iteration;
 import com.github.mustachejava.reflect.ReflectionObjectHandler;
+
+import java.io.Writer;
 
 /**
  * Reflection Handler that treat number zero as a falsey value.

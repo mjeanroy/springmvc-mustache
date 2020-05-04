@@ -24,8 +24,8 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.configuration;
 
-import javax.annotation.PostConstruct;
-
+import com.github.mjeanroy.springmvc.mustache.sample.controller.IndexController;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +35,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import com.github.mjeanroy.springmvc.mustache.sample.controller.IndexController;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
+import javax.annotation.PostConstruct;
 
 @Configuration
 @EnableWebMvc

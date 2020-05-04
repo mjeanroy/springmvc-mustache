@@ -24,16 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
-import static com.samskivert.mustache.Mustache.Compiler;
-
-import java.io.Reader;
-
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.samskivert.mustache.Template;
+
+import java.io.Reader;
+
+import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.samskivert.mustache.Mustache.Compiler;
 
 /**
  * Mustache Compiler using JMustache as real implementation.

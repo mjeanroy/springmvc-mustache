@@ -24,17 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import static java.util.Collections.singletonMap;
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.rules.ExpectedException.none;
-import static org.mockito.Mockito.*;
-
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +35,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Collections.singletonMap;
+import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.junit.rules.ExpectedException.none;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)

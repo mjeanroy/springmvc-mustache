@@ -24,15 +24,14 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.configuration;
 
+import com.github.mjeanroy.springmvc.mustache.sample.controller.IndexController;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-
-import com.github.mjeanroy.springmvc.mustache.sample.controller.IndexController;
-import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
 
 @Configuration
 @EnableWebMvc

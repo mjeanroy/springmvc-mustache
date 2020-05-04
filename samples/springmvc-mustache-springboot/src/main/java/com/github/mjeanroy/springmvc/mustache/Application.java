@@ -24,8 +24,7 @@
 
 package com.github.mjeanroy.springmvc.mustache;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
+import com.github.mjeanroy.springmvc.view.mustache.core.ModelAndMustacheView;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
@@ -33,7 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.ModelAndMustacheView;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @EnableAutoConfiguration(exclude = MustacheAutoConfiguration.class)
 @Controller

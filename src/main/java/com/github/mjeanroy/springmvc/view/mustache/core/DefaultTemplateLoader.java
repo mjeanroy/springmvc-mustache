@@ -162,7 +162,7 @@ public class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 	@Override
 	public String resolve(String name) {
-		name =  resolveTemplateName(name);
+		name = resolveTemplateName(name);
 		return formatName(name);
 	}
 
@@ -172,7 +172,8 @@ public class DefaultTemplateLoader implements MustacheTemplateLoader {
 		final String realName;
 		if (partialsAliases.containsKey(name)) {
 			realName = partialsAliases.get(name);
-		} else {
+		}
+		else {
 			realName = name;
 		}
 
