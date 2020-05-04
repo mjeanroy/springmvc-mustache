@@ -55,7 +55,7 @@ public class JMustacheTemplate extends AbstractMustacheTemplate implements Musta
 	}
 
 	@Override
-	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
+	protected void doExecute(Map<String, Object> model, Writer writer) {
 		template.execute(model, writer);
 	}
 }

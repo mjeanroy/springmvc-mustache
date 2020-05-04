@@ -60,7 +60,7 @@ public class MustacheJavaCompiler extends AbstractMustacheCompiler implements Mu
 	}
 
 	@Override
-	protected MustacheTemplate doCompile(String name) throws Exception {
+	protected MustacheTemplate doCompile(String name) {
 		Mustache mustache = mustacheFactory.compile(name);
 		return new MustacheJavaTemplate(mustache);
 	}

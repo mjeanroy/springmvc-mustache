@@ -54,7 +54,7 @@ public class JMustacheTemplateLoader implements TemplateLoader {
 	}
 
 	@Override
-	public Reader getTemplate(String name) throws Exception {
+	public Reader getTemplate(String name) {
 		return loader.getTemplate(name);
 	}
 }

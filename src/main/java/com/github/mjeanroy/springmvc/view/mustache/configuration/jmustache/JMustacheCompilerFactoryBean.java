@@ -96,7 +96,7 @@ public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.C
 	}
 
 	@Override
-	protected Mustache.Compiler createInstance() throws Exception {
+	protected Mustache.Compiler createInstance() {
 		log.debug("Create instance of {}", Mustache.Compiler.class);
 		return Mustache.compiler()
 				.nullValue(nullValue)

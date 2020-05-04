@@ -104,7 +104,7 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 	}
 
 	@Override
-	protected MustacheTemplateLoader createInstance() throws Exception {
+	protected MustacheTemplateLoader createInstance() {
 		log.debug("Create instance of {}", DefaultTemplateLoader.class);
 		DefaultTemplateLoader templateLoader = new DefaultTemplateLoader(computeResourceLoader());
 		templateLoader.setPrefix(prefix);

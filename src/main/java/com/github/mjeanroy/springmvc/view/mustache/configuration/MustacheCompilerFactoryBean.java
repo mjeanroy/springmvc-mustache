@@ -49,7 +49,7 @@ public class MustacheCompilerFactoryBean extends AbstractFactoryBean<MustacheCom
 	}
 
 	@Override
-	protected MustacheCompiler createInstance() throws Exception {
+	protected MustacheCompiler createInstance() {
 		return MustacheProvider.AUTO.instantiate(applicationContext);
 	}
 

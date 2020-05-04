@@ -59,7 +59,7 @@ public class MustacheEngineFactoryBean extends AbstractFactoryBean<MustacheEngin
 	}
 
 	@Override
-	protected MustacheEngine createInstance() throws Exception {
+	protected MustacheEngine createInstance() {
 		return path == null ? new MustacheEngine(templateLoader) : new MustacheEngine(templateLoader, path);
 	}
 

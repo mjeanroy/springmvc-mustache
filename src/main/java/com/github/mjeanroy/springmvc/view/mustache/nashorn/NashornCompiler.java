@@ -56,7 +56,7 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 	}
 
 	@Override
-	protected MustacheTemplate doCompile(String name) throws Exception {
+	protected MustacheTemplate doCompile(String name) {
 		Reader reader = templateLoader.getTemplate(name);
 		return new NashornTemplate(engine, reader);
 	}

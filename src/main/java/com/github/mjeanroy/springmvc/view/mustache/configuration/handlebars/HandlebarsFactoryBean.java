@@ -53,7 +53,7 @@ public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> imple
 	}
 
 	@Override
-	protected Handlebars createInstance() throws Exception {
+	protected Handlebars createInstance() {
 		log.debug("Create instance of {}", Handlebars.class);
 		return new Handlebars();
 	}

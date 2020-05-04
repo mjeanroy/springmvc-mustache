@@ -178,7 +178,7 @@ public class MustacheWebConfiguration {
 	 * @return View names patterns.
 	 */
 	public String[] getViewNames() {
-		String viewNames = environment.getProperty("mustache.viewNames", valueOf(MustacheSettings.VIEW_NAMES)).trim();
+		String viewNames = environment.getProperty("mustache.viewNames", MustacheSettings.VIEW_NAMES).trim();
 		String[] names = viewNames.split(",");
 		for (int i = 0; i < names.length; i++) {
 			names[i] = names[i].trim();

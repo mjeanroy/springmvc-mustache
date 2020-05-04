@@ -55,7 +55,7 @@ public class MustacheJavaTemplate extends AbstractMustacheTemplate implements Mu
 	}
 
 	@Override
-	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
+	protected void doExecute(Map<String, Object> model, Writer writer) {
 		mustache.execute(writer, model);
 	}
 }

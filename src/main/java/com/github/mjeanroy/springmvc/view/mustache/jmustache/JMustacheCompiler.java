@@ -59,7 +59,7 @@ public class JMustacheCompiler extends AbstractMustacheCompiler implements Musta
 	}
 
 	@Override
-	protected MustacheTemplate doCompile(String name) throws Exception {
+	protected MustacheTemplate doCompile(String name) {
 		final Reader template = templateLoader.getTemplate(name);
 		final Template result = getTemplate(template, templateLoader);
 		return new JMustacheTemplate(result);

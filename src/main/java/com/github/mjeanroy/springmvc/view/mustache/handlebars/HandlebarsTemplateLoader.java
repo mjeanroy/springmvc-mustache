@@ -59,7 +59,7 @@ public class HandlebarsTemplateLoader implements TemplateLoader {
 	}
 
 	@Override
-	public TemplateSource sourceAt(String location) throws IOException {
+	public TemplateSource sourceAt(String location) {
 		notNull(location, "location must not be null");
 		Reader reader = loader.getTemplate(location);
 		String content = read(reader);
