@@ -40,12 +40,12 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_factory_bean_as_singleton() throws Exception {
+	public void it_should_create_factory_bean_as_singleton() {
 		assertThat(factoryBean.isSingleton()).isTrue();
 	}
 
 	@Test
-	public void it_should_create_factory_bean_with_target_class() throws Exception {
+	public void it_should_create_factory_bean_with_target_class() {
 		assertThat(factoryBean.getObjectType()).isEqualTo(Handlebars.class);
 	}
 

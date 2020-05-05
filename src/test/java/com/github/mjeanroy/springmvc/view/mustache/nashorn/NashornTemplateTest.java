@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -46,8 +47,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -78,7 +78,7 @@ public class NashornTemplateTest {
 		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/mustache/nashorn-bindings.js")));
 
 		// Mock Nashorn Engine
-		when(scriptEngine.render(anyString(), anyMapOf(String.class, Object.class))).thenAnswer(new Answer<Object>() {
+		when(scriptEngine.render(anyString(), ArgumentMatchers.<String, Object>anyMap())).thenAnswer(new Answer<Object>() {
 			@Override
 			public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
 				String tmpl = (String) invocationOnMock.getArguments()[0];
@@ -93,7 +93,7 @@ public class NashornTemplateTest {
 	}
 
 	@Test
-	public void it_should_execute_template() throws Exception {
+	public void it_should_execute_template() {
 		Writer writer = new StringWriter();
 
 		Map<String, Object> map = new HashMap<String, Object>();

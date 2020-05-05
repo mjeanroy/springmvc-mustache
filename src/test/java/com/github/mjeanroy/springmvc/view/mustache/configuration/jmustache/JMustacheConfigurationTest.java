@@ -30,7 +30,7 @@ import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -52,14 +52,14 @@ public class JMustacheConfigurationTest {
 	}
 
 	@Test
-	public void it_should_create_mustache_compiler_factory_bean() throws Exception {
+	public void it_should_create_mustache_compiler_factory_bean() {
 		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
 
-		String nullValue = (String) readField(factoryBean, "nullValue", true);
-		String defaultValue = (String) readField(factoryBean, "defaultValue", true);
-		boolean emptyStringIsFalse = (Boolean) readField(factoryBean, "emptyStringIsFalse", true);
-		boolean zeroIsFalse = (Boolean) readField(factoryBean, "zeroIsFalse", true);
-		boolean escapeHTML = (Boolean) readField(factoryBean, "escapeHTML", true);
+		String nullValue = readField(factoryBean, "nullValue");
+		String defaultValue = readField(factoryBean, "defaultValue");
+		boolean emptyStringIsFalse = readField(factoryBean, "emptyStringIsFalse");
+		boolean zeroIsFalse = readField(factoryBean, "zeroIsFalse");
+		boolean escapeHTML = readField(factoryBean, "escapeHTML");
 
 		assertThat(nullValue).isEqualTo("");
 		assertThat(defaultValue).isEqualTo("");

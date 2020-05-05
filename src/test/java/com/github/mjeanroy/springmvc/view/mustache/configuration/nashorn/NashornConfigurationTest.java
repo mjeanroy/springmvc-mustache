@@ -44,8 +44,6 @@ public class NashornConfigurationTest {
 
 		MustacheCompiler mustacheCompiler = nashornConfiguration.mustacheCompiler(templateLoader, mustacheEngine);
 
-		assertThat(mustacheCompiler)
-				.isNotNull()
-				.isExactlyInstanceOf(NashornCompiler.class);
+		assertThat(mustacheCompiler).isExactlyInstanceOf(NashornCompiler.class);
 	}
 }

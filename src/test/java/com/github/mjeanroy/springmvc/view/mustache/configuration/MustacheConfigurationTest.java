@@ -55,13 +55,9 @@ public class MustacheConfigurationTest {
 
 		String[] imports = mustacheConfiguration.selectImports(annotationMetadata);
 
-		assertThat(imports)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(2)
-				.containsExactly(
-						MustacheTemplateLoaderConfiguration.class.getName(),
-						provider.configurationClass()
-				);
+		assertThat(imports).hasSize(2).containsExactly(
+				MustacheTemplateLoaderConfiguration.class.getName(),
+				provider.configurationClass()
+		);
 	}
 }

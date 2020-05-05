@@ -132,7 +132,7 @@ public class ClassUtilsTest {
 	}
 
 	private static class FixtureClass {
-		private Map<String, Integer> calls;
+		private final Map<String, Integer> calls;
 
 		public FixtureClass() {
 			this.calls = new HashMap<String, Integer>();
@@ -140,10 +140,12 @@ public class ClassUtilsTest {
 			this.calls.put("methodWithArgument", 0);
 		}
 
+		@SuppressWarnings("unused")
 		public void emptyMethod() {
 			this.increment("emptyMethod");
 		}
 
+		@SuppressWarnings("unused")
 		public void methodWithArgument(String arg) {
 			this.increment("methodWithArgument");
 		}

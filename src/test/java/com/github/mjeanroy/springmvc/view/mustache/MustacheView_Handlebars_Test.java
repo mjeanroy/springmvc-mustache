@@ -41,14 +41,13 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SuppressWarnings("unchecked")
 public class MustacheView_Handlebars_Test {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
@@ -60,7 +59,7 @@ public class MustacheView_Handlebars_Test {
 	private MustacheView mustacheView;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.model = new HashMap<String, Object>();
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
@@ -76,7 +75,7 @@ public class MustacheView_Handlebars_Test {
 	}
 
 	@Test
-	public void it_should_add_partial_aliases() throws Exception {
+	public void it_should_add_partial_aliases() {
 		String k1 = "foo1";
 		String v1 = "bar1";
 
@@ -88,24 +87,19 @@ public class MustacheView_Handlebars_Test {
 		aliases.put(k2, v2);
 
 		Map<String, String> partialsAliases = mustacheView.getAliases();
-		assertThat(partialsAliases)
-				.isNotNull()
-				.isEmpty();
+		assertThat(partialsAliases).isNotNull().isEmpty();
 
 		mustacheView.addAliases(aliases);
 
-		partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
-		assertThat(partialsAliases)
-				.isNotNull()
-				.hasSize(aliases.size())
-				.contains(
-						entry(k1, v1),
-						entry(k2, v2)
-				);
+		Map<String, String> newPartialsAliases = readField(mustacheView, "aliases");
+		assertThat(newPartialsAliases).hasSize(aliases.size()).contains(
+				entry(k1, v1),
+				entry(k2, v2)
+		);
 	}
 
 	@Test
-	public void it_should_add_partial_alias() throws Exception {
+	public void it_should_add_partial_alias() {
 		String key = "foo";
 		String value = "bar";
 
@@ -114,8 +108,8 @@ public class MustacheView_Handlebars_Test {
 
 		mustacheView.addAlias(key, value);
 
-		partialsAliases = (Map<String, String>) readField(mustacheView, "aliases", true);
-		assertThat(partialsAliases).isNotNull().hasSize(1).contains(
+		Map<String, String> newPartialsAliases = readField(mustacheView, "aliases");
+		assertThat(newPartialsAliases).hasSize(1).contains(
 				entry(key, value)
 		);
 	}

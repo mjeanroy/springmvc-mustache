@@ -37,7 +37,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +55,7 @@ public class HandlebarsTemplateLoaderTest {
 
 		when(mustacheTemplateLoader.getTemplate(anyString())).thenAnswer(new Answer<Reader>() {
 			@Override
-			public Reader answer(InvocationOnMock invocation) throws Throwable {
+			public Reader answer(InvocationOnMock invocation) {
 				String location = invocation.getArguments()[0].toString();
 				InputStream stream = HandlebarsTemplateLoaderTest.class.getResourceAsStream(location);
 				return new InputStreamReader(stream);

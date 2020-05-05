@@ -39,8 +39,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
-import static org.apache.commons.lang3.reflect.FieldUtils.readStaticField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readStaticField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -51,9 +51,9 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	private ResourceLoader classpathResourceLoader;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		factoryBean = new MustacheTemplateLoaderFactoryBean();
-		classpathResourceLoader = (ResourceLoader) readStaticField(MustacheTemplateLoaderFactoryBean.class, "CLASSPATH_RESOURCE_LOADER", true);
+		classpathResourceLoader = readStaticField(MustacheTemplateLoaderFactoryBean.class, "CLASSPATH_RESOURCE_LOADER");
 	}
 
 	@Test
@@ -74,30 +74,19 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		factoryBean.afterPropertiesSet();
 
 		MustacheTemplateLoader templateLoader = factoryBean.getObject();
-
-		assertThat(templateLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultTemplateLoader.class);
+		assertThat(templateLoader).isExactlyInstanceOf(DefaultTemplateLoader.class);
 
 		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
-		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(CompositeResourceLoader.class);
+		ResourceLoader resourceLoader = readField(defaultTemplateLoader, "resourceLoader");
+		assertThat(resourceLoader).isExactlyInstanceOf(CompositeResourceLoader.class);
 
 		CompositeResourceLoader compositeResourceLoader = (CompositeResourceLoader) resourceLoader;
+		Collection<ResourceLoader> loaders = readField(compositeResourceLoader, "resourceLoaders");
 
-		@SuppressWarnings("unchecked")
-		Collection<ResourceLoader> loaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(loaders)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(2)
-				.containsOnly(
-						applicationContext,
-						classpathResourceLoader
-				);
+		assertThat(loaders).hasSize(2).containsOnly(
+				applicationContext,
+				classpathResourceLoader
+		);
 	}
 
 	@Test
@@ -110,31 +99,20 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		factoryBean.afterPropertiesSet();
 
 		MustacheTemplateLoader templateLoader = factoryBean.getObject();
-
-		assertThat(templateLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultTemplateLoader.class);
+		assertThat(templateLoader).isExactlyInstanceOf(DefaultTemplateLoader.class);
 
 		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
-		ResourceLoader rl = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
-		assertThat(rl)
-				.isNotNull()
-				.isExactlyInstanceOf(CompositeResourceLoader.class);
+		ResourceLoader rl = readField(defaultTemplateLoader, "resourceLoader");
+		assertThat(rl).isExactlyInstanceOf(CompositeResourceLoader.class);
 
 		CompositeResourceLoader compositeResourceLoader = (CompositeResourceLoader) rl;
+		Collection<ResourceLoader> loaders = readField(compositeResourceLoader, "resourceLoaders");
 
-		@SuppressWarnings("unchecked")
-		Collection<ResourceLoader> loaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(loaders)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(3)
-				.containsOnly(
-						applicationContext,
-						resourceLoader,
-						classpathResourceLoader
-				);
+		assertThat(loaders).hasSize(3).containsOnly(
+				applicationContext,
+				resourceLoader,
+				classpathResourceLoader
+		);
 	}
 
 	@Test
@@ -144,40 +122,20 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		factoryBean.afterPropertiesSet();
 
 		MustacheTemplateLoader templateLoader = factoryBean.getObject();
-
-		assertThat(templateLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(DefaultTemplateLoader.class);
+		assertThat(templateLoader).isExactlyInstanceOf(DefaultTemplateLoader.class);
 
 		DefaultTemplateLoader defaultTemplateLoader = (DefaultTemplateLoader) templateLoader;
-		ResourceLoader resourceLoader = (ResourceLoader) readField(defaultTemplateLoader, "resourceLoader", true);
-		assertThat(resourceLoader)
-				.isNotNull()
-				.isExactlyInstanceOf(CompositeResourceLoader.class);
+		ResourceLoader resourceLoader = readField(defaultTemplateLoader, "resourceLoader");
+		assertThat(resourceLoader).isExactlyInstanceOf(CompositeResourceLoader.class);
 
 		CompositeResourceLoader compositeResourceLoader = (CompositeResourceLoader) resourceLoader;
-
-		@SuppressWarnings("unchecked")
-		Collection<ResourceLoader> loaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
-
-		assertThat(loaders)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(3);
+		Collection<ResourceLoader> loaders = readField(compositeResourceLoader, "resourceLoaders");
+		assertThat(loaders).hasSize(3);
 
 		List<ResourceLoader> list = new ArrayList<ResourceLoader>(loaders);
-
-		assertThat(list.get(0))
-				.isNotNull()
-				.isExactlyInstanceOf(ClassPathXmlApplicationContext.class);
-
-		assertThat(list.get(1))
-				.isNotNull()
-				.isExactlyInstanceOf(FileSystemXmlApplicationContext.class);
-
-		assertThat(list.get(2))
-				.isNotNull()
-				.isSameAs(classpathResourceLoader);
+		assertThat(list.get(0)).isExactlyInstanceOf(ClassPathXmlApplicationContext.class);
+		assertThat(list.get(1)).isExactlyInstanceOf(FileSystemXmlApplicationContext.class);
+		assertThat(list.get(2)).isSameAs(classpathResourceLoader);
 	}
 
 	@Test
@@ -201,7 +159,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void classpath_resource_loader_should_load_resource_from_classpath_and_return_resource_if_it_does_not_exist() throws Exception {
+	public void classpath_resource_loader_should_load_resource_from_classpath_and_return_resource_if_it_does_not_exist() {
 		Resource resource = classpathResourceLoader.getResource("classpath:/templates/fake.template.html");
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isFalse();

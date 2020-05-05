@@ -22,40 +22,50 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache.tests;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import org.junit.Before;
-import org.junit.Test;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
-import java.io.Reader;
+/**
+ * Static Reflection Utilities, to use in unit test only.
+ */
+public final class ReflectionTestUtils {
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-public class JMustacheTemplateLoaderTest {
-
-	private MustacheTemplateLoader templateLoader;
-
-	private JMustacheTemplateLoader jMustacheTemplateLoader;
-
-	@Before
-	public void setUp() {
-		templateLoader = mock(MustacheTemplateLoader.class);
-		jMustacheTemplateLoader = new JMustacheTemplateLoader(templateLoader);
+	// Ensure non instantiation.
+	private ReflectionTestUtils() {
 	}
 
-	@Test
-	public void it_should_load_template() {
-		String name = "foo";
-		Reader reader = mock(Reader.class);
-		when(templateLoader.getTemplate(name)).thenReturn(reader);
+	/**
+	 * Read field from given object instance.
+	 * @param instance Object instance.
+	 * @param fieldName Field name.
+	 * @param <T> Type of given field.
+	 * @return The field, may be {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T readField(Object instance, String fieldName) {
+		try {
+			return (T) FieldUtils.readField(instance, fieldName, true);
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
+	}
 
-		Reader result = jMustacheTemplateLoader.getTemplate(name);
-
-		assertThat(result).isNotNull().isSameAs(reader);
-		verify(templateLoader).getTemplate(name);
+	/**
+	 * Read static field from given class.
+	 * @param klass Class.
+	 * @param fieldName Field name.
+	 * @param <T> Type of given field.
+	 * @return The field, may be {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T readStaticField(Class<?> klass, String fieldName) {
+		try {
+			return (T) FieldUtils.readStaticField(klass, fieldName, true);
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 }

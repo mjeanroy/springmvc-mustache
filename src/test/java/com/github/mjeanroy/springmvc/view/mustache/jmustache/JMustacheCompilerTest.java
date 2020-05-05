@@ -40,7 +40,6 @@ import java.util.Map;
 import static com.samskivert.mustache.Mustache.Compiler;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SuppressWarnings("unchecked")
 public class JMustacheCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");
@@ -54,7 +53,7 @@ public class JMustacheCompilerTest {
 	private JMustacheCompiler mustacheCompiler;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.model = new HashMap<String, Object>();
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
@@ -72,7 +71,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_render_template() throws Exception {
+	public void it_should_render_template() {
 		String name = "/templates/foo.template.html";
 
 		MustacheTemplate template = mustacheCompiler.compile(name);
@@ -88,7 +87,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_zero_as_falsy() throws Exception {
+	public void it_should_treat_zero_as_falsy() {
 		String name = "/templates/zero.template.html";
 
 		MustacheTemplate template = mustacheCompiler.compile(name);
@@ -107,7 +106,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_empty_string_as_falsy() throws Exception {
+	public void it_should_treat_empty_string_as_falsy() {
 		String name = "/templates/empty-string.template.html";
 
 		MustacheTemplate template = mustacheCompiler.compile(name);
@@ -126,7 +125,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial() throws Exception {
+	public void it_should_display_template_with_partial() {
 		String name = "/templates/composite.template.html";
 
 		MustacheTemplate template = mustacheCompiler.compile(name);
@@ -144,7 +143,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix() throws Exception {
+	public void it_should_display_template_with_partial_using_prefix_suffix() {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		String name = "/templates/composite-aliases.template.html";
@@ -164,7 +163,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() throws Exception {
+	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		String name = "/templates/composite.template.html";
@@ -184,7 +183,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_aliases() throws Exception {
+	public void it_should_display_template_with_partial_aliases() {
 		Map<String, String> aliases = new HashMap<String, String>();
 		aliases.put("foo", "/templates/foo.template.html");
 		templateLoader.addTemporaryPartialAliases(aliases);

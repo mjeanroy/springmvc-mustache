@@ -48,7 +48,7 @@ public class MustacheJavaTemplateTest {
 	}
 
 	@Test
-	public void it_should_execute_template() throws Exception {
+	public void it_should_execute_template() {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("foo", "bar");
 

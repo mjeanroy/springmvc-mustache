@@ -42,7 +42,7 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -98,7 +98,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_render_template() throws Exception {
+	public void it_should_render_template() {
 		String name = "/templates/foo.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
@@ -114,7 +114,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_zero_as_falsy() throws Exception {
+	public void it_should_treat_zero_as_falsy() {
 		String name = "/templates/zero.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
@@ -133,7 +133,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_empty_string_as_falsy() throws Exception {
+	public void it_should_treat_empty_string_as_falsy() {
 		String name = "/templates/empty-string.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
@@ -153,7 +153,7 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	@Ignore("With Handlebars, partials must not start with '/'")
-	public void it_should_display_template_with_partial() throws Exception {
+	public void it_should_display_template_with_partial() {
 		String name = "/templates/composite.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
@@ -171,7 +171,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix() throws Exception {
+	public void it_should_display_template_with_partial_using_prefix_suffix() {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		String name = "/templates/composite-aliases.template.html";
@@ -192,7 +192,7 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	@Ignore("With Handlebars, partials must not start with '/'")
-	public void it_should_display_template_with_partial_using_prefix_suffix_even_with_full_name() throws Exception {
+	public void it_should_display_template_with_partial_using_prefix_suffix_even_with_full_name() {
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
 		String name = "/templates/composite.template.html";
@@ -212,7 +212,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_aliases() throws Exception {
+	public void it_should_display_template_with_partial_aliases() {
 		Map<String, String> aliases = new HashMap<String, String>();
 		aliases.put("foo", "/templates/foo.template.html");
 		hbCompiler.addTemporaryPartialAliases(aliases);

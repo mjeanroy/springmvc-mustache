@@ -52,10 +52,7 @@ public class IOUtilsTest {
 
 		String content = IOUtils.read(reader);
 
-		assertThat(content)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo("<div>Hello {{name}}</div>");
+		assertThat(content).isEqualTo("<div>Hello {{name}}</div>");
 	}
 
 	@Test
@@ -65,23 +62,18 @@ public class IOUtilsTest {
 
 		String content = IOUtils.read(reader);
 
-		assertThat(content)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo("" +
-						"<div>" + LINE_SEPARATOR +
+		assertThat(content).isEqualTo(
+				"<div>" + LINE_SEPARATOR +
 						"	{{> /templates/foo.template.html}}" + LINE_SEPARATOR +
 						"</div>"
-				);
+		);
 	}
 
 	@Test
 	public void it_should_get_stream() {
 		String fileName = "/templates/foo.template.html";
 		InputStream stream = IOUtils.getStream(fileName);
-		assertThat(stream)
-				.isNotNull()
-				.hasSameContentAs(getClass().getResourceAsStream(fileName));
+		assertThat(stream).hasSameContentAs(getClass().getResourceAsStream(fileName));
 	}
 
 	@Test
@@ -102,9 +94,7 @@ public class IOUtilsTest {
 		);
 
 		InputStream stream = IOUtils.getFirstAvailableStream(fileNames);
-		assertThat(stream)
-				.isNotNull()
-				.hasSameContentAs(getClass().getResourceAsStream(fileNames.get(1)));
+		assertThat(stream).hasSameContentAs(getClass().getResourceAsStream(fileNames.get(1)));
 	}
 
 	@Test

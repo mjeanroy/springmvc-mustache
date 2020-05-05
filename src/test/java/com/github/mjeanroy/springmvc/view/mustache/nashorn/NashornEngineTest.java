@@ -31,12 +31,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javax.script.ScriptEngine;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
 import static org.mockito.Mockito.mock;
@@ -55,51 +54,39 @@ public class NashornEngineTest {
 	}
 
 	@Test
-	public void it_should_create_default_engine() throws Exception {
+	public void it_should_create_default_engine() {
 		MustacheEngine engine = new MustacheEngine(templateLoader);
+		NashornPartialsObject partials = readField(engine, "partials");
 
-		NashornPartialsObject partials = (NashornPartialsObject) readField(engine, "partials", true);
 		assertThat(partials).isNotNull();
-		assertThat((MustacheTemplateLoader) readField(partials, "templateLoader", true))
-				.isNotNull()
-				.isSameAs(templateLoader);
-
-		assertThat((ScriptEngine) readField(engine, "engine", true))
-				.isNotNull();
+		assertThat(readField(partials, "templateLoader")).isSameAs(templateLoader);
+		assertThat(readField(engine, "engine")).isNotNull();
 	}
 
 	@Test
-	public void it_should_create_with_given_scripts() throws Exception {
+	public void it_should_create_with_given_scripts() {
 		String script = "/META-INF/resources/webjars/mustache/**/mustache.js";
 		MustacheEngine engine = new MustacheEngine(templateLoader, script);
 
-		NashornPartialsObject partials = (NashornPartialsObject) readField(engine, "partials", true);
+		NashornPartialsObject partials = readField(engine, "partials");
 		assertThat(partials).isNotNull();
-		assertThat((MustacheTemplateLoader) readField(partials, "templateLoader", true))
-				.isNotNull()
-				.isSameAs(templateLoader);
-
-		assertThat((ScriptEngine) readField(engine, "engine", true))
-				.isNotNull();
+		assertThat(readField(partials, "templateLoader")).isSameAs(templateLoader);
+		assertThat(readField(engine, "engine")).isNotNull();
 	}
 
 	@Test
-	public void it_should_create_with_given_stream() throws Exception {
+	public void it_should_create_with_given_stream() {
 		InputStream stream = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js");
 		MustacheEngine engine = new MustacheEngine(templateLoader, stream);
+		NashornPartialsObject partials = readField(engine, "partials");
 
-		NashornPartialsObject partials = (NashornPartialsObject) readField(engine, "partials", true);
 		assertThat(partials).isNotNull();
-		assertThat((MustacheTemplateLoader) readField(partials, "templateLoader", true))
-				.isNotNull()
-				.isSameAs(templateLoader);
-
-		assertThat((ScriptEngine) readField(engine, "engine", true))
-				.isNotNull();
+		assertThat(readField(partials, "templateLoader")).isSameAs(templateLoader);
+		assertThat(readField(engine, "engine")).isNotNull();
 	}
 
 	@Test
-	public void it_should_execute_mustache() throws Exception {
+	public void it_should_execute_mustache() {
 		InputStream stream = getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js");
 		MustacheEngine engine = new MustacheEngine(templateLoader, stream);
 
@@ -107,15 +94,11 @@ public class NashornEngineTest {
 		map.put("name", "foo");
 
 		String result = engine.render("<div>Hello {{name}}</div>", map);
-
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo("<div>Hello foo</div>");
+		assertThat(result).isEqualTo("<div>Hello foo</div>");
 	}
 
 	@Test
-	public void it_should_execute_mustache_and_catch_script_error() throws Exception {
+	public void it_should_execute_mustache_and_catch_script_error() {
 		thrown.expect(NashornException.class);
 
 		InputStream stream = getClass().getResourceAsStream("/scripts/render-with-error.js");
@@ -124,7 +107,7 @@ public class NashornEngineTest {
 	}
 
 	@Test
-	public void it_should_execute_mustache_and_catch_no_method_error() throws Exception {
+	public void it_should_execute_mustache_and_catch_no_method_error() {
 		thrown.expect(NashornException.class);
 
 		InputStream stream = getClass().getResourceAsStream("/scripts/test-constant.js");

@@ -29,7 +29,7 @@ import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JMustacheCompilerFactoryBeanTest {
@@ -42,14 +42,14 @@ public class JMustacheCompilerFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_factory_bean_with_default_settings() throws Exception {
-		String nullValue = (String) readField(factoryBean, "nullValue", true);
-		String defaultValue = (String) readField(factoryBean, "defaultValue", true);
-		boolean emptyStringIsFalse = (Boolean) readField(factoryBean, "emptyStringIsFalse", true);
-		boolean zeroIsFalse = (Boolean) readField(factoryBean, "zeroIsFalse", true);
-		boolean escapeHTML = (Boolean) readField(factoryBean, "escapeHTML", true);
-		boolean strictSections = (Boolean) readField(factoryBean, "strictSections", true);
-		boolean standardsMode = (Boolean) readField(factoryBean, "standardsMode", true);
+	public void it_should_create_factory_bean_with_default_settings() {
+		String nullValue = readField(factoryBean, "nullValue");
+		String defaultValue = readField(factoryBean, "defaultValue");
+		boolean emptyStringIsFalse = readField(factoryBean, "emptyStringIsFalse");
+		boolean zeroIsFalse = readField(factoryBean, "zeroIsFalse");
+		boolean escapeHTML = readField(factoryBean, "escapeHTML");
+		boolean strictSections = readField(factoryBean, "strictSections");
+		boolean standardsMode = readField(factoryBean, "standardsMode");
 
 		assertThat(nullValue).isEqualTo("");
 		assertThat(defaultValue).isEqualTo("");
@@ -61,12 +61,12 @@ public class JMustacheCompilerFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_factory_bean_as_singleton() throws Exception {
+	public void it_should_create_factory_bean_as_singleton() {
 		assertThat(factoryBean.isSingleton()).isTrue();
 	}
 
 	@Test
-	public void it_should_create_factory_bean_with_target_class() throws Exception {
+	public void it_should_create_factory_bean_with_target_class() {
 		assertThat(factoryBean.getObjectType()).isEqualTo(Mustache.Compiler.class);
 	}
 

@@ -48,7 +48,7 @@ public class SpringMustacheFactoryTest {
 	}
 
 	@Test
-	public void it_should_resolve_template_name_with_template_loader() throws Exception {
+	public void it_should_resolve_template_name_with_template_loader() {
 		String name = "foo";
 		String location = "/templates/foo.template.html";
 		when(templateLoader.resolve(name)).thenReturn(location);
@@ -60,7 +60,7 @@ public class SpringMustacheFactoryTest {
 	}
 
 	@Test
-	public void it_should_resolve_template() throws Exception {
+	public void it_should_resolve_template() {
 		Reader reader = mock(Reader.class);
 		String name = "foo";
 		when(templateLoader.getTemplate(name)).thenReturn(reader);

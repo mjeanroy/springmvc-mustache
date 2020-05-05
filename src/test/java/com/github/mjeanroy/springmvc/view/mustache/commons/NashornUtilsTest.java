@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 
 import javax.script.ScriptEngine;
 
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
 
@@ -49,35 +49,26 @@ public class NashornUtilsTest {
 	@Test
 	public void it_should_get_nashorn_engine() {
 		ScriptEngine engine = NashornUtils.getEngine();
-		assertThat(engine.getFactory().getEngineName())
-				.isNotNull()
-				.isNotEmpty()
-				.containsIgnoringCase("nashorn");
+		assertThat(engine.getFactory().getEngineName()).containsIgnoringCase("nashorn");
 	}
 
 	@Test
 	public void it_should_get_nashorn_engine_and_evaluate_scripts() {
-		ScriptEngine engine = NashornUtils.getEngine(asList(
+		ScriptEngine engine = NashornUtils.getEngine(singletonList(
 				getClass().getResourceAsStream("/scripts/test-constant.js")
 		));
 
-		assertThat(engine.getFactory().getEngineName())
-				.isNotNull()
-				.isNotEmpty()
-				.containsIgnoringCase("nashorn");
+		assertThat(engine.getFactory().getEngineName()).containsIgnoringCase("nashorn");
 
 		String result = (String) engine.get("HELLO_WORLD");
-		assertThat(result)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo("Hello World");
+		assertThat(result).isEqualTo("Hello World");
 	}
 
 	@Test
 	public void it_should_catch_script_exception() {
 		thrown.expect(NashornException.class);
 
-		NashornUtils.getEngine(asList(
+		NashornUtils.getEngine(singletonList(
 				getClass().getResourceAsStream("/scripts/test-with-error.js")
 		));
 	}

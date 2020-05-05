@@ -37,8 +37,8 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static java.util.Collections.singletonMap;
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.junit.rules.ExpectedException.none;
@@ -47,7 +47,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SuppressWarnings("unchecked")
 public class DefaultTemplateLoaderTest {
 
 	@Rule
@@ -68,13 +67,13 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_build_template_loader_using_custom_resource_loader() throws Exception {
+	public void it_should_build_template_loader_using_custom_resource_loader() {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
-		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
-		String prefix = (String) readField(loader, "prefix", true);
-		String suffix = (String) readField(loader, "suffix", true);
-		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
+		ResourceLoader resourceLoader = readField(loader, "resourceLoader");
+		String prefix = readField(loader, "prefix");
+		String suffix = readField(loader, "suffix");
+		Map<String, String> partialsAliases = readField(loader, "partialAliases");
 
 		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
 		assertThat(prefix).isNull();
@@ -83,13 +82,13 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_build_template_loader_using_custom_resource_loader_with_prefix_and_suffix() throws Exception {
+	public void it_should_build_template_loader_using_custom_resource_loader_with_prefix_and_suffix() {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
-		ResourceLoader resourceLoader = (ResourceLoader) readField(loader, "resourceLoader", true);
-		String prefix = (String) readField(loader, "prefix", true);
-		String suffix = (String) readField(loader, "suffix", true);
-		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
+		ResourceLoader resourceLoader = readField(loader, "resourceLoader");
+		String prefix = readField(loader, "prefix");
+		String suffix = readField(loader, "suffix");
+		Map<String, String> partialsAliases = readField(loader, "partialAliases");
 
 		assertThat(resourceLoader).isNotNull().isSameAs(resourceLoader);
 		assertThat(prefix).isNotNull().isEqualTo(this.prefix);
@@ -98,7 +97,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_add_partial_aliases() throws Exception {
+	public void it_should_add_partial_aliases() {
 		String k1 = "foo";
 		String v1 = "bar";
 		String k2 = "bar";
@@ -111,7 +110,7 @@ public class DefaultTemplateLoaderTest {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		loader.addPartialAliases(aliases);
 
-		Map<String, String> partialsAliases = (Map<String, String>) readField(loader, "partialAliases", true);
+		Map<String, String> partialsAliases = readField(loader, "partialAliases");
 		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(aliases.size()).containsOnly(
 				entry(k1, v1),
 				entry(k2, v2)
@@ -119,7 +118,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_add_temporary_partial_aliases() throws Exception {
+	public void it_should_add_temporary_partial_aliases() {
 		String k1 = "foo";
 		String v1 = "bar";
 		String k2 = "bar";
@@ -132,7 +131,7 @@ public class DefaultTemplateLoaderTest {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		loader.addTemporaryPartialAliases(aliases);
 
-		ThreadLocal<Map<String, String>> tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
+		ThreadLocal<Map<String, String>> tl = readField(loader, "temporaryPartialAliases");
 		Map<String, String> partialsAliases = tl.get();
 		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(aliases.size()).containsOnly(
 				entry(k1, v1),
@@ -141,7 +140,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_remove_temporary_partial_aliases() throws Exception {
+	public void it_should_remove_temporary_partial_aliases() {
 		String k1 = "foo";
 		String v1 = "bar";
 		String k2 = "bar";
@@ -154,7 +153,7 @@ public class DefaultTemplateLoaderTest {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		loader.addTemporaryPartialAliases(aliases);
 
-		ThreadLocal<Map<String, String>> tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
+		ThreadLocal<Map<String, String>> tl = readField(loader, "temporaryPartialAliases");
 		Map<String, String> partialsAliases = tl.get();
 		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(aliases.size()).containsOnly(
 				entry(k1, v1),
@@ -163,13 +162,13 @@ public class DefaultTemplateLoaderTest {
 
 		loader.removeTemporaryPartialAliases();
 
-		tl = (ThreadLocal<Map<String, String>>) readField(loader, "temporaryPartialAliases", true);
+		tl = readField(loader, "temporaryPartialAliases");
 		partialsAliases = tl.get();
 		assertThat(partialsAliases).isNotNull().isEmpty();
 	}
 
 	@Test
-	public void it_should_throw_exception_when_resource_does_not_exist() throws Exception {
+	public void it_should_throw_exception_when_resource_does_not_exist() {
 		String name = "/templates/does_not_exist.template.html";
 
 		Resource resource = mock(Resource.class);
@@ -198,7 +197,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_read_template_using_prefix_and_suffix() throws Exception {
+	public void it_should_read_template_using_prefix_and_suffix() {
 		String name = "foo";
 		String prefix = "/";
 		String suffix = ".template.html";

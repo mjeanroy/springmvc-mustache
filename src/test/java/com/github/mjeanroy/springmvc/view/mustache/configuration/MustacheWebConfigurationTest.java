@@ -57,7 +57,7 @@ public class MustacheWebConfigurationTest {
 
 		when(environment.getProperty(anyString(), anyString())).thenAnswer(new Answer<Object>() {
 			@Override
-			public Object answer(InvocationOnMock invocation) throws Throwable {
+			public Object answer(InvocationOnMock invocation) {
 				return invocation.getArguments()[1];
 			}
 		});

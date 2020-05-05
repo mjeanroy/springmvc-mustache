@@ -31,8 +31,8 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.util.Collection;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -57,11 +57,11 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_create_resource_loader_from_collection() throws Exception {
+	public void it_should_create_resource_loader_from_collection() {
 		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
 		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(collection);
 
-		Collection<ResourceLoader> resourceLoaders = (Collection<ResourceLoader>) readField(compositeResourceLoader, "resourceLoaders", true);
+		Collection<ResourceLoader> resourceLoaders = readField(compositeResourceLoader, "resourceLoaders");
 
 		assertThat(resourceLoaders).isNotNull().isNotEmpty()
 				.isNotSameAs(collection)
@@ -69,7 +69,7 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_find_first_resource() throws Exception {
+	public void it_should_find_first_resource() {
 		Resource r1 = newResource(true);
 		Resource r2 = newResource(false);
 
@@ -85,7 +85,7 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_find_second_resource() throws Exception {
+	public void it_should_find_second_resource() {
 		Resource r1 = newResource(false);
 		Resource r2 = newResource(true);
 
@@ -101,7 +101,7 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_not_find_resource() throws Exception {
+	public void it_should_not_find_resource() {
 		Resource r1 = newResource(false);
 		Resource r2 = newResource(false);
 
