@@ -27,10 +27,12 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -63,9 +65,10 @@ public class MustacheCompilerFactoryBeanTest {
 
 	@Test
 	public void it_should_create_object() throws Exception {
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
-		Mustache.Compiler compiler = mock(Mustache.Compiler.class);
-		Handlebars handlebars = mock(Handlebars.class);
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Mustache.Compiler compiler = Mustache.compiler();
+		Handlebars handlebars = new Handlebars();
 
 		when(applicationContext.getBean(MustacheTemplateLoader.class)).thenReturn(templateLoader);
 		when(applicationContext.getBean(Mustache.Compiler.class)).thenReturn(compiler);
@@ -82,9 +85,10 @@ public class MustacheCompilerFactoryBeanTest {
 
 	@Test
 	public void it_should_not_create_twice() throws Exception {
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
-		Mustache.Compiler compiler = mock(Mustache.Compiler.class);
-		Handlebars handlebars = mock(Handlebars.class);
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Mustache.Compiler compiler = Mustache.compiler();
+		Handlebars handlebars = new Handlebars();
 
 		when(applicationContext.getBean(MustacheTemplateLoader.class)).thenReturn(templateLoader);
 		when(applicationContext.getBean(Mustache.Compiler.class)).thenReturn(compiler);

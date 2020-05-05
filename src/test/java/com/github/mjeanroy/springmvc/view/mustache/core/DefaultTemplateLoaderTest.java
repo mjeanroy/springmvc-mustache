@@ -26,70 +26,47 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class DefaultTemplateLoaderTest {
 
-	private ResourceLoader resourceLoader;
-	private String prefix;
-	private String suffix;
-
-	private DefaultTemplateLoader mustacheTemplateLoader;
-
-	@Before
-	public void setUp() {
-		prefix = "foo";
-		suffix = "bar";
-		resourceLoader = mock(ResourceLoader.class);
-		mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
-	}
-
 	@Test
+	@SuppressWarnings("unchecked")
 	public void it_should_build_template_loader_using_custom_resource_loader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
-		ResourceLoader resourceLoader = readField(loader, "resourceLoader");
-		String prefix = readField(loader, "prefix");
-		String suffix = readField(loader, "suffix");
-		Map<String, String> partialsAliases = readField(loader, "partialAliases");
-
-		assertThat(resourceLoader).isNotNull().isSameAs(this.resourceLoader);
-		assertThat(prefix).isNull();
-		assertThat(suffix).isNull();
-		assertThat(partialsAliases).isNotNull().isEmpty();
+		assertThat(readField(loader, "resourceLoader")).isSameAs(resourceLoader);
+		assertThat(readField(loader, "prefix")).isNull();
+		assertThat(readField(loader, "suffix")).isNull();
+		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void it_should_build_template_loader_using_custom_resource_loader_with_prefix_and_suffix() {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
-		ResourceLoader resourceLoader = readField(loader, "resourceLoader");
-		String prefix = readField(loader, "prefix");
-		String suffix = readField(loader, "suffix");
-		Map<String, String> partialsAliases = readField(loader, "partialAliases");
-
-		assertThat(resourceLoader).isNotNull().isSameAs(resourceLoader);
-		assertThat(prefix).isNotNull().isEqualTo(this.prefix);
-		assertThat(suffix).isNotNull().isEqualTo(this.suffix);
-		assertThat(partialsAliases).isNotNull().isEmpty();
+		assertThat(readField(loader, "resourceLoader")).isSameAs(resourceLoader);
+		assertThat(readField(loader, "prefix")).isEqualTo(prefix);
+		assertThat(readField(loader, "suffix")).isEqualTo(suffix);
+		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
 	@Test
@@ -103,7 +80,8 @@ public class DefaultTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 		loader.addPartialAliases(aliases);
 
 		Map<String, String> partialsAliases = readField(loader, "partialAliases");
@@ -124,7 +102,8 @@ public class DefaultTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 		loader.addTemporaryPartialAliases(aliases);
 
 		ThreadLocal<Map<String, String>> tl = readField(loader, "temporaryPartialAliases");
@@ -146,7 +125,8 @@ public class DefaultTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 		loader.addTemporaryPartialAliases(aliases);
 
 		ThreadLocal<Map<String, String>> tl = readField(loader, "temporaryPartialAliases");
@@ -166,10 +146,8 @@ public class DefaultTemplateLoaderTest {
 	@Test
 	public void it_should_throw_exception_when_resource_does_not_exist() {
 		final String name = "/templates/does_not_exist.template.html";
-		final Resource resource = mock(Resource.class);
-
-		when(resource.exists()).thenReturn(false);
-		when(resourceLoader.getResource(name)).thenReturn(resource);
+		final ResourceLoader resourceLoader = new DefaultResourceLoader();
+		final DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 
 		final ThrowingCallable getTemplate = new ThrowingCallable() {
 			@Override
@@ -184,18 +162,29 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_return_reader_when_resource_exist() throws Exception {
+	public void it_should_return_reader_when_resource_exist() {
 		String name = "/templates/foo.template.html";
-		InputStream is = getClass().getResourceAsStream(name);
-
-		Resource resource = mock(Resource.class);
-		when(resource.exists()).thenReturn(true);
-		when(resource.getInputStream()).thenReturn(is);
-		when(resourceLoader.getResource(name)).thenReturn(resource);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 
 		Reader reader = mustacheTemplateLoader.getTemplate(name);
 
 		assertThat(reader).isNotNull();
+		assertThat(read(reader)).isEqualTo("<div>Hello {{name}}</div>");
+	}
+
+	@Test
+	public void it_should_return_reader_when_resource_exist_using_prefix_suffix() {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		String name = "foo";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+
+		Reader reader = mustacheTemplateLoader.getTemplate(name);
+
+		assertThat(reader).isNotNull();
+		assertThat(read(reader)).isEqualTo("<div>Hello {{name}}</div>");
 	}
 
 	@Test
@@ -203,12 +192,8 @@ public class DefaultTemplateLoaderTest {
 		final String name = "foo";
 		final String prefix = "/";
 		final String suffix = ".template.html";
-		final String templateName = prefix + name + suffix;
+		final ResourceLoader resourceLoader = new DefaultResourceLoader();
 		final DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		final Resource resource = mock(Resource.class);
-
-		when(resource.exists()).thenReturn(false);
-		when(resourceLoader.getResource(templateName)).thenReturn(resource);
 
 		final ThrowingCallable getTemplate = new ThrowingCallable() {
 			@Override
@@ -220,39 +205,41 @@ public class DefaultTemplateLoaderTest {
 		assertThatThrownBy(getTemplate)
 				.isInstanceOf(MustacheTemplateNotFoundException.class)
 				.hasMessage("Mustache template /foo.template.html does not exist");
-
-		verify(resourceLoader, never()).getResource(name);
 	}
 
 	@Test
 	public void it_should_get_and_set_prefix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		assertThat(mustacheTemplateLoader.getPrefix()).isNotNull().isNotEmpty().isEqualTo(prefix);
+		assertThat(mustacheTemplateLoader.getPrefix()).isEqualTo(prefix);
 
 		String newPrefix = "foobar";
 		mustacheTemplateLoader.setPrefix(newPrefix);
-		assertThat(mustacheTemplateLoader.getPrefix()).isNotNull().isNotEmpty().isEqualTo(newPrefix);
+		assertThat(mustacheTemplateLoader.getPrefix()).isEqualTo(newPrefix);
 	}
 
 	@Test
 	public void it_should_get_and_set_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		assertThat(mustacheTemplateLoader.getSuffix()).isNotNull().isNotEmpty().isEqualTo(suffix);
+		assertThat(mustacheTemplateLoader.getSuffix()).isEqualTo(suffix);
 
 		String newSuffix = "foobar";
 		mustacheTemplateLoader.setSuffix(newSuffix);
-		assertThat(mustacheTemplateLoader.getSuffix()).isNotNull().isNotEmpty().isEqualTo(newSuffix);
+		assertThat(mustacheTemplateLoader.getSuffix()).isEqualTo(newSuffix);
 	}
 
 	@Test
 	public void it_should_resolve_template_location_without_prefix_suffix() {
 		String templateName = "foo";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 		String location = mustacheTemplateLoader.resolve(templateName);
-		assertThat(location).isNotNull().isNotEmpty().isEqualTo(templateName);
+		assertThat(location).isEqualTo(templateName);
 	}
 
 	@Test
@@ -260,11 +247,12 @@ public class DefaultTemplateLoaderTest {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		String templateName = "foo";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
 		String location = mustacheTemplateLoader.resolve(templateName);
 
-		assertThat(location).isNotNull().isNotEmpty().isEqualTo(prefix + templateName + suffix);
+		assertThat(location).isEqualTo(prefix + templateName + suffix);
 	}
 
 	@Test
@@ -273,11 +261,12 @@ public class DefaultTemplateLoaderTest {
 		String suffix = ".template.html";
 		String templateName = "foo";
 		String realName = "bar";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		mustacheTemplateLoader.addPartialAliases(singletonMap(templateName, realName));
 
 		String location = mustacheTemplateLoader.resolve(templateName);
 
-		assertThat(location).isNotNull().isNotEmpty().isEqualTo(prefix + realName + suffix);
+		assertThat(location).isEqualTo(prefix + realName + suffix);
 	}
 }

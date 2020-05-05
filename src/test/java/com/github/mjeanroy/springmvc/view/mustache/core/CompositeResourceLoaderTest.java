@@ -43,7 +43,6 @@ public class CompositeResourceLoaderTest {
 
 	private ResourceLoader resourceLoader1;
 	private ResourceLoader resourceLoader2;
-
 	private CompositeResourceLoader compositeResourceLoader;
 
 	@Before
@@ -116,7 +115,7 @@ public class CompositeResourceLoaderTest {
 		verify(resourceLoader2).getResource(location);
 	}
 
-	private Resource newResource(boolean exists) {
+	private static Resource newResource(boolean exists) {
 		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(exists);
 		return resource;

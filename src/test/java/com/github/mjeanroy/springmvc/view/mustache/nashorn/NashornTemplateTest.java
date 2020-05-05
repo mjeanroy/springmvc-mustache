@@ -24,15 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
-import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.IOException;
@@ -49,43 +49,24 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 public class NashornTemplateTest {
-
-	private String markup;
-
-	private MustacheEngine scriptEngine;
 
 	private NashornTemplate template;
 
 	@Before
 	public void setUp() throws Exception {
-		markup = "<div>Hello {{name}}</div>";
 		Reader reader = new StringReader("<div>Hello {{name}}</div>");
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheEngine scriptEngine = new MustacheEngine(mustacheTemplateLoader);
 
-		scriptEngine = mock(MustacheEngine.class);
 		template = new NashornTemplate(scriptEngine, reader);
 
-		final ScriptEngine nashorn = new ScriptEngineManager().getEngineByName("nashorn");
+		ScriptEngine nashorn = new ScriptEngineManager().getEngineByName("nashorn");
 		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js")));
 		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/mustache/nashorn-bindings.js")));
-
-		// Mock Nashorn Engine
-		when(scriptEngine.render(anyString(), ArgumentMatchers.<String, Object>anyMap())).thenAnswer(new Answer<Object>() {
-			@Override
-			public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-				String tmpl = (String) invocationOnMock.getArguments()[0];
-
-				@SuppressWarnings("unchecked")
-				Map<String, Object> models = (Map<String, Object>) invocationOnMock.getArguments()[1];
-
-				Invocable invocable = (Invocable) nashorn;
-				return invocable.invokeFunction("render", tmpl, models);
-			}
-		});
 	}
 
 	@Test
@@ -97,11 +78,7 @@ public class NashornTemplateTest {
 
 		template.execute(map, writer);
 
-		verify(scriptEngine).render(markup, map);
-		assertThat(writer.toString())
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo("<div>Hello World</div>");
+		assertThat(writer.toString()).isEqualTo("<div>Hello World</div>");
 	}
 
 	@Test

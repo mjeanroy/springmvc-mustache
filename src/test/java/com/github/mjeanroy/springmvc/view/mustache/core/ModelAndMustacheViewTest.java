@@ -36,9 +36,6 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class ModelAndMustacheViewTest {
 
@@ -54,6 +51,7 @@ public class ModelAndMustacheViewTest {
 	@Test
 	public void it_should_failed_if_current_partials_is_not_valid() {
 		final ModelAndMustacheView view = new ModelAndMustacheView("viewName");
+
 		view.addObject(MustacheSettings.PARTIALS_KEY, "foo");
 
 		final ThrowingCallable getPartials = new ThrowingCallable() {
@@ -70,13 +68,11 @@ public class ModelAndMustacheViewTest {
 	public void it_should_add_partial() {
 		String p1 = "foo";
 		String v1 = "bar";
-
 		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
 
 		view.addPartial(p1, v1);
-		Map<String, String> currentPartials = view.getPartials();
 
-		assertThat(currentPartials).isNotNull().hasSize(1).containsOnly(
+		assertThat(view.getPartials()).hasSize(1).containsOnly(
 				entry(p1, v1)
 		);
 	}
@@ -95,9 +91,8 @@ public class ModelAndMustacheViewTest {
 		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
 
 		view.addPartials(partials);
-		Map<String, String> currentPartials = view.getPartials();
 
-		assertThat(currentPartials).isNotNull().hasSize(partials.size()).containsOnly(
+		assertThat(view.getPartials()).hasSize(partials.size()).containsOnly(
 				entry(p1, v1),
 				entry(p2, v2)
 		);
@@ -108,56 +103,43 @@ public class ModelAndMustacheViewTest {
 		String p1 = "foo";
 		String v1 = "bar";
 
-		MustacheView mustacheView = mock(MustacheView.class);
+		MustacheView mustacheView = new MustacheView();
 		ModelAndMustacheView view = new ModelAndMustacheView(mustacheView);
 
 		view.addPartial(p1, v1);
 
-		verify(mustacheView).addAlias(p1, v1);
+		assertThat(mustacheView.getAliases()).hasSize(1).contains(entry(p1, v1));
 		assertThat(view.getModelMap()).isNotNull().isEmpty();
 	}
 
 	@Test
 	public void it_should_add_partials_to_view() {
-		String p1 = "foo";
-		String v1 = "bar";
-
-		String p2 = "bar";
-		String v2 = "foo";
-
 		Map<String, String> aliases = new HashMap<String, String>();
-		aliases.put(p1, v1);
-		aliases.put(p2, v2);
+		aliases.put("foo", "bar");
+		aliases.put("bar", "foo");
 
-		MustacheView mustacheView = mock(MustacheView.class);
+		MustacheView mustacheView = new MustacheView();
 		ModelAndMustacheView view = new ModelAndMustacheView(mustacheView);
 
 		view.addPartials(aliases);
 
-		verify(mustacheView).addAliases(aliases);
-		assertThat(view.getModelMap()).isNotNull().isEmpty();
+		assertThat(mustacheView.getAliases()).isEqualTo(aliases);
+		assertThat(view.getModelMap()).isEmpty();
 	}
 
 	@Test
 	public void it_should_get_partials_from_view() {
-		String p1 = "foo";
-		String v1 = "bar";
-
-		String p2 = "bar";
-		String v2 = "foo";
-
 		Map<String, String> aliases = new HashMap<String, String>();
-		aliases.put(p1, v1);
-		aliases.put(p2, v2);
+		aliases.put("foo", "bar");
+		aliases.put("bar", "foo");
 
-		MustacheView mustacheView = mock(MustacheView.class);
-		when(mustacheView.getAliases()).thenReturn(aliases);
+		MustacheView mustacheView = new MustacheView();
+		mustacheView.addAliases(aliases);
 
 		ModelAndMustacheView view = new ModelAndMustacheView(mustacheView);
 
 		Map<String, String> partials = view.getPartials();
 
-		verify(mustacheView).getAliases();
-		assertThat(partials).isNotNull().isSameAs(aliases);
+		assertThat(partials).isEqualTo(aliases);
 	}
 }

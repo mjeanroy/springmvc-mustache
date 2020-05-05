@@ -28,39 +28,23 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.springframework.core.env.Environment;
+import org.springframework.mock.env.MockEnvironment;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class MustacheWebConfigurationTest {
 
-	private Environment environment;
+	private MockEnvironment environment;
 	private MustacheWebConfiguration mustacheWebConfiguration;
 
 	@Before
 	public void setUp() {
-		environment = mock(Environment.class);
-
-		MustacheCompiler mustacheCompiler = mock(MustacheCompiler.class);
-		mustacheWebConfiguration = new MustacheWebConfiguration(
-				environment,
-				mustacheCompiler
-		);
-
-		when(environment.getProperty(anyString(), anyString())).thenAnswer(new Answer<Object>() {
-			@Override
-			public Object answer(InvocationOnMock invocation) {
-				return invocation.getArguments()[1];
-			}
-		});
+		environment = new MockEnvironment();
+		mustacheWebConfiguration = new MustacheWebConfiguration(environment, mock(MustacheCompiler.class));
 	}
 
 	@Test
@@ -74,20 +58,16 @@ public class MustacheWebConfigurationTest {
 		String admin1 = "admin1";
 		String admin2 = "admin2";
 		String secure = "secure";
-
 		String mappings = admin1 + ":" + secure + ";" + admin2 + ":" + secure;
-		when(environment.getProperty("mustache.layoutMappings", "")).thenReturn(mappings);
+
+		environment.setProperty("mustache.layoutMappings", mappings);
 
 		Map<String, String> map = mustacheWebConfiguration.getLayoutMappings();
 
-		assertThat(map)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(2)
-				.containsOnly(
-						entry(admin1, secure),
-						entry(admin2, secure)
-				);
+		assertThat(map).hasSize(2).containsOnly(
+				entry(admin1, secure),
+				entry(admin2, secure)
+		);
 	}
 
 	@Test
@@ -95,14 +75,14 @@ public class MustacheWebConfigurationTest {
 		String n1 = "*.template.html";
 		String n2 = "*.mustache";
 		String viewNames = n1 + ", " + n2;
-		when(environment.getProperty("mustache.viewNames", "*")).thenReturn(viewNames);
+
+		environment.setProperty("mustache.viewNames", viewNames);
 
 		String[] names = mustacheWebConfiguration.getViewNames();
 
-		assertThat(names)
-				.isNotNull()
-				.isNotEmpty()
-				.hasSize(2)
-				.containsOnly(n1, n2);
+		assertThat(names).hasSize(2).containsOnly(
+				n1,
+				n2
+		);
 	}
 }
