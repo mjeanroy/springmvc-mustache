@@ -25,15 +25,16 @@
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.Reader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class SpringMustacheFactoryTest {
 
@@ -43,7 +44,11 @@ public class SpringMustacheFactoryTest {
 
 	@Before
 	public void setUp() {
-		templateLoader = mock(MustacheTemplateLoader.class);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+
+		templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		springMustacheFactory = new SpringMustacheFactory(templateLoader);
 	}
 
@@ -51,23 +56,19 @@ public class SpringMustacheFactoryTest {
 	public void it_should_resolve_template_name_with_template_loader() {
 		String name = "foo";
 		String location = "/templates/foo.template.html";
-		when(templateLoader.resolve(name)).thenReturn(location);
 
 		String result = springMustacheFactory.resolvePartialPath("dir", name, "extension");
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(location);
-		verify(templateLoader).resolve(name);
 	}
 
 	@Test
 	public void it_should_resolve_template() {
-		Reader reader = mock(Reader.class);
 		String name = "foo";
-		when(templateLoader.getTemplate(name)).thenReturn(reader);
 
 		Reader result = springMustacheFactory.getReader(name);
 
-		assertThat(result).isNotNull().isEqualTo(reader);
-		verify(templateLoader).getTemplate(name);
+		assertThat(result).isNotNull();
+		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
 	}
 }

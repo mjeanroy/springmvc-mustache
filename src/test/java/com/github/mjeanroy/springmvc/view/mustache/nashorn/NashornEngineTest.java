@@ -25,10 +25,13 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -37,7 +40,6 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornEngineTest {
@@ -46,7 +48,8 @@ public class NashornEngineTest {
 
 	@Before
 	public void setUp() {
-		templateLoader = mock(MustacheTemplateLoader.class);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultTemplateLoader(resourceLoader);
 	}
 
 	@Test

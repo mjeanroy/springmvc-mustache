@@ -25,19 +25,15 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.Reader;
-import java.io.StringReader;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 public class NashornPartialsObjectTest {
@@ -48,32 +44,25 @@ public class NashornPartialsObjectTest {
 
 	@Before
 	public void setUp() {
-		templateLoader = mock(MustacheTemplateLoader.class);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+
+		templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		partials = new NashornPartialsObject(templateLoader);
 	}
 
 	@Test
 	public void it_should_load_template() {
-		String templateValue = "Hello World";
 		String templateName = "foo";
-
-		Reader reader = new StringReader(templateValue);
-		when(templateLoader.getTemplate(templateName)).thenReturn(reader);
-
 		String template = (String) partials.getMember(templateName);
-
-		verify(templateLoader).getTemplate(templateName);
-		assertThat(template)
-				.isNotNull()
-				.isNotEmpty()
-				.isEqualTo(templateValue);
+		assertThat(template).isEqualTo("<div>Hello {{name}}</div>");
 	}
 
 	@Test
 	public void it_should_check_if_member_exist() {
 		boolean hasMember = partials.hasMember("foo");
 		assertThat(hasMember).isTrue();
-		verifyNoMoreInteractions(templateLoader);
 	}
 
 	@Test

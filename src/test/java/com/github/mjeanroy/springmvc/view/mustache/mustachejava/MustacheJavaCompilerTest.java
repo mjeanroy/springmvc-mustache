@@ -57,9 +57,9 @@ public class MustacheJavaCompilerTest {
 		this.model.put("zero", 0);
 		this.model.put("emptyString", "");
 
-		writer = new StringWriter();
-
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+		writer = new StringWriter();
 		templateLoader = new DefaultTemplateLoader(resourceLoader);
 		mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
 	}
