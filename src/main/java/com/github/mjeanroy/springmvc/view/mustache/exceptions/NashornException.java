@@ -29,7 +29,10 @@ import javax.script.ScriptException;
 /**
  * Nashorn exception.
  * Throwed when a problem occurs during nashorn evaluation.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
+@Deprecated
 public class NashornException extends RuntimeException {
 
 	/**

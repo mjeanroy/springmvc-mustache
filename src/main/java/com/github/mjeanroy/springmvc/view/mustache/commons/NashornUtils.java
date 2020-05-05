@@ -35,7 +35,10 @@ import java.util.Collection;
 
 /**
  * Nashorn Utilities.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
+@Deprecated
 public final class NashornUtils {
 
 	private NashornUtils() {
