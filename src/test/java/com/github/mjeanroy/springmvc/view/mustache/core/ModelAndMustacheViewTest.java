@@ -27,12 +27,14 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -49,12 +51,19 @@ public class ModelAndMustacheViewTest {
 		assertThat(partials).isNotNull().isEmpty();
 	}
 
-	@Test(expected = MustachePartialsMappingException.class)
+	@Test
 	public void it_should_failed_if_current_partials_is_not_valid() {
-		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
+		final ModelAndMustacheView view = new ModelAndMustacheView("viewName");
 		view.addObject(MustacheSettings.PARTIALS_KEY, "foo");
 
-		view.getPartials();
+		final ThrowingCallable getPartials = new ThrowingCallable() {
+			@Override
+			public void call() {
+				view.getPartials();
+			}
+		};
+
+		assertThatThrownBy(getPartials).isInstanceOf(MustachePartialsMappingException.class);
 	}
 
 	@Test

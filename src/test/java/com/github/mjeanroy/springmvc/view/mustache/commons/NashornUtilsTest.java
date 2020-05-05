@@ -28,23 +28,21 @@ import com.github.mjeanroy.junit4.runif.RunIf;
 import com.github.mjeanroy.junit4.runif.RunIfRunner;
 import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
-import org.junit.Rule;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import javax.script.ScriptEngine;
+import java.io.InputStream;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.rules.ExpectedException.none;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(RunIfRunner.class)
 @RunIf(AtLeastJava8Condition.class)
 public class NashornUtilsTest {
-
-	@Rule
-	public ExpectedException thrown = none();
 
 	@Test
 	public void it_should_get_nashorn_engine() {
@@ -66,10 +64,17 @@ public class NashornUtilsTest {
 
 	@Test
 	public void it_should_catch_script_exception() {
-		thrown.expect(NashornException.class);
-
-		NashornUtils.getEngine(singletonList(
+		final List<InputStream> scripts = singletonList(
 				getClass().getResourceAsStream("/scripts/test-with-error.js")
-		));
+		);
+
+		final ThrowingCallable getEngine = new ThrowingCallable() {
+			@Override
+			public void call() {
+				NashornUtils.getEngine(scripts);
+			}
+		};
+
+		assertThatThrownBy(getEngine).isInstanceOf(NashornException.class);
 	}
 }

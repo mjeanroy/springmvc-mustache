@@ -25,9 +25,8 @@
 package com.github.mjeanroy.springmvc.view.mustache.commons;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
-import org.junit.Rule;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,14 +35,11 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.rules.ExpectedException.none;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IOUtilsTest {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-	@Rule
-	public ExpectedException thrown = none();
 
 	@Test
 	public void it_should_read_input() {
@@ -78,11 +74,17 @@ public class IOUtilsTest {
 
 	@Test
 	public void it_should_fail_if_stream_does_not_exist() {
-		thrown.expect(MustacheIOException.class);
-		thrown.expectMessage("I/O Error with foo.bar");
+		final String fileName = "foo.bar";
+		final ThrowingCallable getStream = new ThrowingCallable() {
+			@Override
+			public void call() {
+				IOUtils.getStream(fileName);
+			}
+		};
 
-		String fileName = "foo.bar";
-		IOUtils.getStream(fileName);
+		assertThatThrownBy(getStream)
+				.isInstanceOf(MustacheIOException.class)
+				.hasMessage("I/O Error with foo.bar");
 	}
 
 	@Test
@@ -99,14 +101,20 @@ public class IOUtilsTest {
 
 	@Test
 	public void it_should_fail_when_no_stream_is_available() {
-		thrown.expect(MustacheIOException.class);
-		thrown.expectMessage("Unable to locate one of: [/templates/fake1.template.html, /templates/fake1.template.html]");
-
-		List<String> fileNames = asList(
+		final List<String> fileNames = asList(
 				"/templates/fake1.template.html",
 				"/templates/fake1.template.html"
 		);
 
-		IOUtils.getFirstAvailableStream(fileNames);
+		final ThrowingCallable getFirstAvailableStream = new ThrowingCallable() {
+			@Override
+			public void call() {
+				IOUtils.getFirstAvailableStream(fileNames);
+			}
+		};
+
+		assertThatThrownBy(getFirstAvailableStream)
+				.isInstanceOf(MustacheIOException.class)
+				.hasMessage("Unable to locate one of: [/templates/fake1.template.html, /templates/fake1.template.html]");
 	}
 }

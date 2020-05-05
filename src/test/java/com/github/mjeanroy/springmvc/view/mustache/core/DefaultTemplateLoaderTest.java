@@ -25,10 +25,9 @@
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -40,17 +39,14 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
-import static org.junit.rules.ExpectedException.none;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class DefaultTemplateLoaderTest {
-
-	@Rule
-	public final ExpectedException thrown = none();
 
 	private ResourceLoader resourceLoader;
 	private String prefix;
@@ -169,16 +165,22 @@ public class DefaultTemplateLoaderTest {
 
 	@Test
 	public void it_should_throw_exception_when_resource_does_not_exist() {
-		String name = "/templates/does_not_exist.template.html";
+		final String name = "/templates/does_not_exist.template.html";
+		final Resource resource = mock(Resource.class);
 
-		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(false);
 		when(resourceLoader.getResource(name)).thenReturn(resource);
 
-		thrown.expect(MustacheTemplateNotFoundException.class);
-		thrown.expectMessage("Mustache template /templates/does_not_exist.template.html does not exist");
+		final ThrowingCallable getTemplate = new ThrowingCallable() {
+			@Override
+			public void call() {
+				mustacheTemplateLoader.getTemplate(name);
+			}
+		};
 
-		mustacheTemplateLoader.getTemplate(name);
+		assertThatThrownBy(getTemplate)
+				.isInstanceOf(MustacheTemplateNotFoundException.class)
+				.hasMessage("Mustache template /templates/does_not_exist.template.html does not exist");
 	}
 
 	@Test
@@ -198,23 +200,27 @@ public class DefaultTemplateLoaderTest {
 
 	@Test
 	public void it_should_read_template_using_prefix_and_suffix() {
-		String name = "foo";
-		String prefix = "/";
-		String suffix = ".template.html";
-		String templateName = prefix + name + suffix;
-		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		final String name = "foo";
+		final String prefix = "/";
+		final String suffix = ".template.html";
+		final String templateName = prefix + name + suffix;
+		final DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		final Resource resource = mock(Resource.class);
 
-		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(false);
 		when(resourceLoader.getResource(templateName)).thenReturn(resource);
 
-		thrown.expect(MustacheTemplateNotFoundException.class);
-		thrown.expectMessage("Mustache template /foo.template.html does not exist");
+		final ThrowingCallable getTemplate = new ThrowingCallable() {
+			@Override
+			public void call() {
+				mustacheTemplateLoader.getTemplate(name);
+			}
+		};
 
-		Reader reader = mustacheTemplateLoader.getTemplate(name);
+		assertThatThrownBy(getTemplate)
+				.isInstanceOf(MustacheTemplateNotFoundException.class)
+				.hasMessage("Mustache template /foo.template.html does not exist");
 
-		assertThat(reader).isNotNull();
-		verify(resourceLoader).getResource(templateName);
 		verify(resourceLoader, never()).getResource(name);
 	}
 

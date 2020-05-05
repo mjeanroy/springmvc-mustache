@@ -25,10 +25,9 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -46,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.rules.ExpectedException.none;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -55,9 +54,6 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 public class NashornTemplateTest {
-
-	@Rule
-	public ExpectedException thrown = none();
 
 	private String markup;
 
@@ -110,11 +106,17 @@ public class NashornTemplateTest {
 
 	@Test
 	public void it_should_catch_io_exception() throws Exception {
-		thrown.expect(MustacheIOException.class);
+		final Writer writer = mock(Writer.class);
 
-		Writer writer = mock(Writer.class);
 		doThrow(IOException.class).when(writer).write(anyString());
 
-		template.execute(new HashMap<String, Object>(), writer);
+		final ThrowingCallable execute = new ThrowingCallable() {
+			@Override
+			public void call() {
+				template.execute(new HashMap<String, Object>(), writer);
+			}
+		};
+
+		assertThatThrownBy(execute).isInstanceOf(MustacheIOException.class);
 	}
 }

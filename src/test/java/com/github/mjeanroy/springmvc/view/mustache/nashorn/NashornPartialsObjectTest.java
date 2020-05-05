@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -74,18 +76,39 @@ public class NashornPartialsObjectTest {
 		verifyNoMoreInteractions(templateLoader);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void it_should_fail_to_add_member() {
-		partials.setMember("foo", "bar");
+		ThrowingCallable setMember = new ThrowingCallable() {
+			@Override
+			public void call() {
+				partials.setMember("foo", "bar");
+			}
+		};
+
+		assertThatThrownBy(setMember).isInstanceOf(UnsupportedOperationException.class);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void it_should_fail_to_remove_member() {
-		partials.removeMember("foo");
+		ThrowingCallable removeMember = new ThrowingCallable() {
+			@Override
+			public void call() {
+				partials.removeMember("foo");
+			}
+		};
+
+		assertThatThrownBy(removeMember).isInstanceOf(UnsupportedOperationException.class);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test
 	public void it_should_fail_to_set_slot() {
-		partials.setSlot(1, "foo");
+		ThrowingCallable setSlot = new ThrowingCallable() {
+			@Override
+			public void call() {
+				partials.setSlot(1, "foo");
+			}
+		};
+
+		assertThatThrownBy(setSlot).isInstanceOf(UnsupportedOperationException.class);
 	}
 }

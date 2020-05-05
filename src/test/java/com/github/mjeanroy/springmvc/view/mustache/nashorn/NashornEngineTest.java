@@ -26,10 +26,9 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -37,14 +36,11 @@ import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.rules.ExpectedException.none;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornEngineTest {
-
-	@Rule
-	public ExpectedException thrown = none();
 
 	private MustacheTemplateLoader templateLoader;
 
@@ -99,19 +95,29 @@ public class NashornEngineTest {
 
 	@Test
 	public void it_should_execute_mustache_and_catch_script_error() {
-		thrown.expect(NashornException.class);
+		final InputStream stream = getClass().getResourceAsStream("/scripts/render-with-error.js");
+		final MustacheEngine engine = new MustacheEngine(templateLoader, stream);
+		final ThrowingCallable render = new ThrowingCallable() {
+			@Override
+			public void call() {
+				engine.render("<div>Hello {{name}}</div>", new HashMap<String, Object>());
+			}
+		};
 
-		InputStream stream = getClass().getResourceAsStream("/scripts/render-with-error.js");
-		MustacheEngine engine = new MustacheEngine(templateLoader, stream);
-		engine.render("<div>Hello {{name}}</div>", new HashMap<String, Object>());
+		assertThatThrownBy(render).isInstanceOf(NashornException.class);
 	}
 
 	@Test
 	public void it_should_execute_mustache_and_catch_no_method_error() {
-		thrown.expect(NashornException.class);
+		final InputStream stream = getClass().getResourceAsStream("/scripts/test-constant.js");
+		final MustacheEngine engine = new MustacheEngine(templateLoader, stream);
+		final ThrowingCallable render = new ThrowingCallable() {
+			@Override
+			public void call() {
+				engine.render("<div>Hello {{name}}</div>", new HashMap<String, Object>());
+			}
+		};
 
-		InputStream stream = getClass().getResourceAsStream("/scripts/test-constant.js");
-		MustacheEngine engine = new MustacheEngine(templateLoader, stream);
-		engine.render("<div>Hello {{name}}</div>", new HashMap<String, Object>());
+		assertThatThrownBy(render).isInstanceOf(NashornException.class);
 	}
 }
