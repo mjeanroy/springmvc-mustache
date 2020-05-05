@@ -38,6 +38,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("deprecation")
 public class NashornCompilerTest {
 
 	private static final String SEPARATOR = System.getProperty("line.separator");

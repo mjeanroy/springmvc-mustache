@@ -124,7 +124,10 @@ public enum MustacheProvider {
 	/**
 	 * Mustache implementation that use nashorn java as
 	 * internal compiler.
+	 *
+	 * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
 	 */
+	@Deprecated
 	NASHORN {
 		@Override
 		public boolean isAvailable() {

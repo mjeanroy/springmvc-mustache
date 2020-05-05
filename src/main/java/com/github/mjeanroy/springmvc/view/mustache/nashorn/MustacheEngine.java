@@ -41,7 +41,10 @@ import static java.util.Arrays.asList;
 
 /**
  * Nashorn engine that can be used to render Mustache rendering.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
+@Deprecated
 public class MustacheEngine {
 
 	/**

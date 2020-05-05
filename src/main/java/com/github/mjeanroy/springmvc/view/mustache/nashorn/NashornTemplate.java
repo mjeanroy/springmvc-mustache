@@ -39,7 +39,10 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * Template that will be evaluated using Nashorn engine.
  * This template will read once and then, evaluated with given data model.
  * Additional partials will be loaded during script evaluation.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
+@Deprecated
 public class NashornTemplate implements MustacheTemplate {
 
 	/**

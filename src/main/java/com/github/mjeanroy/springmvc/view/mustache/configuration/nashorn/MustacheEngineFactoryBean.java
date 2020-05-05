@@ -31,7 +31,10 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 /**
  * Create Nashorn Engine.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
+@Deprecated
 public class MustacheEngineFactoryBean extends AbstractFactoryBean<MustacheEngine> implements FactoryBean<MustacheEngine> {
 
 	/**

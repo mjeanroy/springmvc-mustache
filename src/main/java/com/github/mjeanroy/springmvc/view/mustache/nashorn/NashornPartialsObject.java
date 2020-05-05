@@ -44,7 +44,10 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * Note that this object is a read-only object (you cannot add entry).
  *
  * This object is thread safe.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
+@Deprecated
 class NashornPartialsObject extends AbstractJSObject {
 
 	/**

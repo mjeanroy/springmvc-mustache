@@ -41,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.rules.ExpectedException.none;
 import static org.mockito.Mockito.mock;
 
+@SuppressWarnings("deprecation")
 public class NashornEngineTest {
 
 	@Rule

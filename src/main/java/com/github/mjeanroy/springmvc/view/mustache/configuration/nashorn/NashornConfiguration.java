@@ -36,12 +36,15 @@ import org.springframework.core.env.Environment;
 
 /**
  * Create Nashorn beans used to render mustache templates.
+ *
+ * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
 @Configuration
 @PropertySource(
 		value = "classpath:mustache.properties",
 		ignoreResourceNotFound = true
 )
+@Deprecated
 public class NashornConfiguration {
 
 	@Autowired
