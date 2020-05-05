@@ -24,16 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
+import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HandlebarsTemplateTest {
 
@@ -43,19 +44,30 @@ public class HandlebarsTemplateTest {
 
 	@Before
 	public void setUp() {
-		template = mock(Template.class);
+		template = createTemplate();
 		handlebarsTemplate = new HandlebarsTemplate(template);
 	}
 
 	@Test
-	public void it_should_execute_template() throws Exception {
+	public void it_should_execute_template() {
+		Writer writer = new StringWriter();
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("foo", "bar");
 
-		Writer writer = mock(Writer.class);
-
 		handlebarsTemplate.execute(model, writer);
 
-		verify(template).apply(model, writer);
+		assertThat(writer.toString()).isEqualTo(
+				"foo :: bar"
+		);
+	}
+
+	private static Template createTemplate() {
+		try {
+			return new Handlebars().compileInline("foo :: {{ foo }}");
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 }

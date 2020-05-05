@@ -26,20 +26,22 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornConfigurationTest {
 
 	@Test
 	public void it_should_create_mustache_compiler() {
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
-		MustacheEngine mustacheEngine = mock(MustacheEngine.class);
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheEngine mustacheEngine = new MustacheEngine(templateLoader);
 		NashornConfiguration nashornConfiguration = new NashornConfiguration();
 
 		MustacheCompiler mustacheCompiler = nashornConfiguration.mustacheCompiler(templateLoader, mustacheEngine);

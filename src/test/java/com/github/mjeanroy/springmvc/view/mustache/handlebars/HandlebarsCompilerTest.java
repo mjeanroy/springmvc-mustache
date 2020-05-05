@@ -25,14 +25,12 @@
 package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -40,14 +38,10 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class HandlebarsCompilerTest {
 
@@ -76,25 +70,20 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_build_a_compiler() throws Exception {
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
-
-		Handlebars handlebars = mock(Handlebars.class);
-		when(handlebars.with(any(TemplateLoader.class))).thenReturn(handlebars);
+	public void it_should_build_a_compiler() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Handlebars handlebars = new Handlebars();
 
 		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
 
-		Handlebars hb = (Handlebars) readField(hbCompiler, "handlebars", true);
-		MustacheTemplateLoader tmplLoader = (MustacheTemplateLoader) readField(hbCompiler, "templateLoader", true);
+		Handlebars hb = readField(hbCompiler, "handlebars");
+		MustacheTemplateLoader tmplLoader = readField(hbCompiler, "templateLoader");
 
 		assertThat(hb).isNotNull().isSameAs(handlebars);
 		assertThat(tmplLoader).isNotNull();
-
-		ArgumentCaptor<HandlebarsTemplateLoader> hbTemplateLoader = ArgumentCaptor.forClass(HandlebarsTemplateLoader.class);
-		verify(handlebars).with(hbTemplateLoader.capture());
-
-		MustacheTemplateLoader hbInternalLoader = (MustacheTemplateLoader) readField(hbTemplateLoader.getValue(), "loader", true);
-		assertThat(hbInternalLoader).isNotNull().isSameAs(tmplLoader);
+		assertThat(handlebars.getLoader()).isInstanceOf(HandlebarsTemplateLoader.class);
+		assertThat(readField(handlebars.getLoader(), "loader")).isSameAs(tmplLoader);
 	}
 
 	@Test

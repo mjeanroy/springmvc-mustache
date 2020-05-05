@@ -26,21 +26,15 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class HandlebarsTemplateLoaderTest {
 
@@ -50,17 +44,12 @@ public class HandlebarsTemplateLoaderTest {
 
 	@Before
 	public void setUp() {
-		mustacheTemplateLoader = mock(MustacheTemplateLoader.class);
-		handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
 
-		when(mustacheTemplateLoader.getTemplate(anyString())).thenAnswer(new Answer<Reader>() {
-			@Override
-			public Reader answer(InvocationOnMock invocation) {
-				String location = invocation.getArguments()[0].toString();
-				InputStream stream = HandlebarsTemplateLoaderTest.class.getResourceAsStream(location);
-				return new InputStreamReader(stream);
-			}
-		});
+		mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
 	}
 
 	@Test
@@ -80,47 +69,35 @@ public class HandlebarsTemplateLoaderTest {
 	public void it_should_resolve_template_location() {
 		String location = "/templates/foo.template.html";
 		String templateName = "foo";
-		when(mustacheTemplateLoader.resolve(templateName)).thenReturn(location);
 
 		String result = handlebarsTemplateLoader.resolve(templateName);
 
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(location);
-		verify(mustacheTemplateLoader).resolve(templateName);
+		assertThat(result).isEqualTo(location);
 	}
 
 	@Test
 	public void it_should_get_prefix() {
-		String prefix = "/templates/";
-		when(mustacheTemplateLoader.getPrefix()).thenReturn(prefix);
-
 		String result = handlebarsTemplateLoader.getPrefix();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(prefix);
-		verify(mustacheTemplateLoader).getPrefix();
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo("/templates/");
 	}
 
 	@Test
 	public void it_should_get_suffix() {
-		String suffix = ".template.html";
-		when(mustacheTemplateLoader.getSuffix()).thenReturn(suffix);
-
 		String result = handlebarsTemplateLoader.getSuffix();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(suffix);
-		verify(mustacheTemplateLoader).getSuffix();
+		assertThat(result).isNotNull().isNotEmpty().isEqualTo(".template.html");
 	}
 
 	@Test
 	public void it_should_set_prefix() {
 		String prefix = "foo";
 		handlebarsTemplateLoader.setPrefix(prefix);
-		verify(mustacheTemplateLoader).setPrefix(prefix);
+		assertThat(mustacheTemplateLoader.getPrefix()).isEqualTo(prefix);
 	}
 
 	@Test
 	public void it_should_set_suffix() {
 		String suffix = "foo";
 		handlebarsTemplateLoader.setSuffix(suffix);
-		verify(mustacheTemplateLoader).setSuffix(suffix);
+		assertThat(mustacheTemplateLoader.getSuffix()).isEqualTo(suffix);
 	}
 }

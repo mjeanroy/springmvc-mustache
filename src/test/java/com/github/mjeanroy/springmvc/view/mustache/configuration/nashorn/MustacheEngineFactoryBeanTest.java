@@ -25,13 +25,14 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
 
-import static org.apache.commons.lang3.reflect.FieldUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class MustacheEngineFactoryBeanTest {
@@ -42,14 +43,15 @@ public class MustacheEngineFactoryBeanTest {
 
 	@Before
 	public void setUp() {
-		templateLoader = mock(MustacheTemplateLoader.class);
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		templateLoader = new DefaultTemplateLoader(resourceLoader);
 		factoryBean = new MustacheEngineFactoryBean(templateLoader);
 	}
 
 	@Test
-	public void it_should_create_factory_bean_with_default_settings() throws Exception {
-		String path = (String) readField(factoryBean, "path", true);
-		MustacheTemplateLoader tmplLoader = (MustacheTemplateLoader) readField(factoryBean, "templateLoader", true);
+	public void it_should_create_factory_bean_with_default_settings() {
+		String path = readField(factoryBean, "path");
+		MustacheTemplateLoader tmplLoader = readField(factoryBean, "templateLoader");
 
 		assertThat(path).isNull();
 		assertThat(tmplLoader).isSameAs(templateLoader);

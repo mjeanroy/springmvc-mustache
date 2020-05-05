@@ -55,9 +55,9 @@ public class HandlebarsCompiler extends AbstractMustacheCompiler implements Must
 	public HandlebarsCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 
-		final HandlebarsTemplateLoader hbTemplateLoader = new HandlebarsTemplateLoader(templateLoader);
-		this.handlebars = notNull(handlebars, "Handlebars compiler must not be null")
-				.with(hbTemplateLoader);
+		this.handlebars = notNull(handlebars, "Handlebars compiler must not be null").with(
+				new HandlebarsTemplateLoader(templateLoader)
+		);
 	}
 
 	@Override

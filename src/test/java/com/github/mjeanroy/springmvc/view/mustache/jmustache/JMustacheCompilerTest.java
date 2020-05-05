@@ -31,7 +31,6 @@ import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -59,14 +58,10 @@ public class JMustacheCompilerTest {
 		this.model.put("zero", 0);
 		this.model.put("emptyString", "");
 
+		Compiler compiler = Mustache.compiler().zeroIsFalse(true).emptyStringIsFalse(true);
+
 		writer = new StringWriter();
-
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		templateLoader = new DefaultTemplateLoader(resourceLoader);
-		Compiler compiler = Mustache.compiler()
-				.zeroIsFalse(true)
-				.emptyStringIsFalse(true);
-
+		templateLoader = new DefaultTemplateLoader(new DefaultResourceLoader());
 		mustacheCompiler = new JMustacheCompiler(compiler, templateLoader);
 	}
 

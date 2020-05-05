@@ -25,37 +25,33 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.Reader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class JMustacheTemplateLoaderTest {
-
-	private MustacheTemplateLoader templateLoader;
 
 	private JMustacheTemplateLoader jMustacheTemplateLoader;
 
 	@Before
 	public void setUp() {
-		templateLoader = mock(MustacheTemplateLoader.class);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		jMustacheTemplateLoader = new JMustacheTemplateLoader(templateLoader);
 	}
 
 	@Test
 	public void it_should_load_template() {
-		String name = "foo";
-		Reader reader = mock(Reader.class);
-		when(templateLoader.getTemplate(name)).thenReturn(reader);
-
+		String name = "/templates/foo.template.html";
 		Reader result = jMustacheTemplateLoader.getTemplate(name);
-
-		assertThat(result).isNotNull().isSameAs(reader);
-		verify(templateLoader).getTemplate(name);
+		assertThat(result).isNotNull();
+		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
 	}
 }

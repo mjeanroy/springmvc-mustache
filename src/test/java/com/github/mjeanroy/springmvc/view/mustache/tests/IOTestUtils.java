@@ -22,31 +22,33 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
+package com.github.mjeanroy.springmvc.view.mustache.tests;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.core.io.DefaultResourceLoader;
+import org.apache.commons.io.IOUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.Reader;
 
-public class MustacheJavaConfigurationTest {
+/**
+ * Static IO Utilities, to use in unit test.
+ */
+public final class IOTestUtils {
 
-	private MustacheJavaConfiguration mustacheJavaConfiguration;
-
-	@Before
-	public void setUp() {
-		mustacheJavaConfiguration = new MustacheJavaConfiguration();
+	// Ensure non instantiation.
+	private IOTestUtils() {
 	}
 
-	@Test
-	public void it_should_instantiate_mustache_compiler() {
-		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
-		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler(templateLoader);
-		assertThat(mustacheCompiler).isNotNull();
+	/**
+	 * Read given reader.
+	 *
+	 * @param reader Reader.
+	 * @return String content.
+	 */
+	public static String read(Reader reader) {
+		try {
+			return IOUtils.toString(reader);
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 }

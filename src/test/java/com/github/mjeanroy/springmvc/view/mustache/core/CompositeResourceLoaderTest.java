@@ -63,7 +63,7 @@ public class CompositeResourceLoaderTest {
 
 		Collection<ResourceLoader> resourceLoaders = readField(compositeResourceLoader, "resourceLoaders");
 
-		assertThat(resourceLoaders).isNotNull().isNotEmpty()
+		assertThat(resourceLoaders).isNotEmpty()
 				.isNotSameAs(collection)
 				.hasSize(2).containsOnly(resourceLoader1, resourceLoader2);
 	}

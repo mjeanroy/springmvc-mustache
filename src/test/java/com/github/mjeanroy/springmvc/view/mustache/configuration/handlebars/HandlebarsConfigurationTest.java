@@ -27,11 +27,12 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class HandlebarsConfigurationTest {
 
@@ -44,8 +45,9 @@ public class HandlebarsConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		Handlebars handlebars = mock(Handlebars.class);
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
+		Handlebars handlebars = new Handlebars();
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheCompiler mustacheCompiler = handlebarConfiguration.mustacheCompiler(handlebars, templateLoader);
 		assertThat(mustacheCompiler).isNotNull();
 	}

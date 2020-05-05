@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
@@ -92,7 +93,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	@Test
 	public void it_should_instantiate_template_loader_using_given_loaders() throws Exception {
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
-		ResourceLoader resourceLoader = mock(ResourceLoader.class);
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 
 		factoryBean.setApplicationContext(applicationContext);
 		factoryBean.setResourceLoader(resourceLoader);

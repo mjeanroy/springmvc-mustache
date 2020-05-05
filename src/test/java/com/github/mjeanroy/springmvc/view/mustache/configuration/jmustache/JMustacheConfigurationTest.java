@@ -26,13 +26,14 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class JMustacheConfigurationTest {
 
@@ -45,8 +46,9 @@ public class JMustacheConfigurationTest {
 
 	@Test
 	public void it_should_instantiate_mustache_compiler() {
-		Mustache.Compiler compiler = mock(Mustache.Compiler.class);
-		MustacheTemplateLoader templateLoader = mock(MustacheTemplateLoader.class);
+		Mustache.Compiler compiler = Mustache.compiler();
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheCompiler mustacheCompiler = jMustacheConfiguration.mustacheCompiler(compiler, templateLoader);
 		assertThat(mustacheCompiler).isNotNull();
 	}
