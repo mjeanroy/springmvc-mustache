@@ -36,11 +36,11 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MustacheJavaCompilerTest {
-
-	private static final String SEPARATOR = System.getProperty("line.separator");
 
 	private StringWriter writer;
 
@@ -73,9 +73,7 @@ public class MustacheJavaCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		String expected = "" +
-				"<div>Hello foo</div>";
-
+		String expected = "<div>Hello foo</div>";
 		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
@@ -89,13 +87,15 @@ public class MustacheJavaCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		String expected = "" +
-				"<div>" + SEPARATOR +
-				"	" + SEPARATOR +
-				"	Zero should be falsy." + SEPARATOR +
-				"</div>";
+		String expected = joinLines(asList(
+				"<div>",
+				"	",
+				"	Zero should be falsy.",
+				"</div>"
+		));
 
 		String result = writer.toString();
+
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -108,13 +108,15 @@ public class MustacheJavaCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		String expected = "" +
-				"<div>" + SEPARATOR +
-				"	" + SEPARATOR +
-				"	An empty string should be falsy." + SEPARATOR +
-				"</div>";
+		String expected = joinLines(asList(
+				"<div>",
+				"	",
+				"	An empty string should be falsy.",
+				"</div>"
+		));
 
 		String result = writer.toString();
+
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -127,12 +129,14 @@ public class MustacheJavaCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		String expected = "" +
-				"<div>" + SEPARATOR +
-				"	<div>Hello foo</div>" + SEPARATOR +
-				"</div>";
+		String expected = joinLines(asList(
+				"<div>",
+				"	<div>Hello foo</div>",
+				"</div>"
+		));
 
 		String result = writer.toString();
+
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -147,12 +151,14 @@ public class MustacheJavaCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		String expected = "" +
-				"<div>" + SEPARATOR +
-				"	<div>Hello foo</div>" + SEPARATOR +
-				"</div>";
+		String expected = joinLines(asList(
+				"<div>",
+				"	<div>Hello foo</div>",
+				"</div>"
+		));
 
 		String result = writer.toString();
+
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -167,12 +173,14 @@ public class MustacheJavaCompilerTest {
 		// Try to execute template to check real result
 		template.execute(model, writer);
 
-		String expected = "" +
-				"<div>" + SEPARATOR +
-				"	<div>Hello foo</div>" + SEPARATOR +
-				"</div>";
+		String expected = joinLines(asList(
+				"<div>",
+				"	<div>Hello foo</div>",
+				"</div>"
+		));
 
 		String result = writer.toString();
+
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
@@ -191,10 +199,11 @@ public class MustacheJavaCompilerTest {
 
 		templateLoader.removeTemporaryPartialAliases();
 
-		String expected = "" +
-				"<div>" + SEPARATOR +
-				"	<div>Hello foo</div>" + SEPARATOR +
-				"</div>";
+		String expected = joinLines(asList(
+				"<div>",
+				"	<div>Hello foo</div>",
+				"</div>"
+		));
 
 		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);

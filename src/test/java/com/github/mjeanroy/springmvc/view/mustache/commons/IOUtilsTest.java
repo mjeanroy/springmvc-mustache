@@ -33,13 +33,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IOUtilsTest {
-
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	@Test
 	public void it_should_read_input() {
@@ -58,11 +57,11 @@ public class IOUtilsTest {
 
 		String content = IOUtils.read(reader);
 
-		assertThat(content).isEqualTo(
-				"<div>" + LINE_SEPARATOR +
-						"	{{> /templates/foo.template.html}}" + LINE_SEPARATOR +
-						"</div>"
-		);
+		assertThat(content).isEqualTo(joinLines(asList(
+				"<div>",
+				"	{{> /templates/foo.template.html}}",
+				"</div>"
+		)));
 	}
 
 	@Test
