@@ -24,9 +24,9 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
+import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
+import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.samskivert.mustache.Mustache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 

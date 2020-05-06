@@ -24,8 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
+import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
 import java.util.HashMap;

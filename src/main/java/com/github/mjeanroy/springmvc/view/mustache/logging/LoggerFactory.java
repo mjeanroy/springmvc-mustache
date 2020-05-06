@@ -22,35 +22,24 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration;
-
-import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
-import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.github.mjeanroy.springmvc.view.mustache.logging;
 
 /**
- * Abstraction that create basic beans to use with
- * mustache template engine.
+ * Factory for {@link Logger}.
  */
-@Configuration
-public class MustacheTemplateLoaderConfiguration {
+public final class LoggerFactory {
+
+	// Ensure non instantiation.
+	private LoggerFactory() {
+	}
 
 	/**
-	 * Class logger.
-	 */
-	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderConfiguration.class);
-
-	/**
-	 * Build mustache template loader.
-	 * This compiler use an instance of {@link org.springframework.core.io.DefaultResourceLoader}
-	 * under the hood.
+	 * Create logger from given class name as logger name.
 	 *
-	 * @return Mustache template loader implementation.
+	 * @param klass Class name.
+	 * @return Logger.
 	 */
-	@Bean
-	public MustacheTemplateLoaderFactoryBean mustacheTemplateLoader() {
-		log.info("Create default mustache template loader");
-		return new MustacheTemplateLoaderFactoryBean();
+	public static Logger getLogger(Class<?> klass) {
+		return new Slf4jLogger(klass);
 	}
 }

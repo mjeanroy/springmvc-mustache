@@ -25,8 +25,8 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
+import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 

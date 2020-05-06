@@ -22,35 +22,61 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.tests;
 
-import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
-import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.junit.rules.ExternalResource;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
- * Abstraction that create basic beans to use with
- * mustache template engine.
+ * Catch System.out logging and store in a buffer.
  */
-@Configuration
-public class MustacheTemplateLoaderConfiguration {
+public class SystemOutRule extends ExternalResource {
 
 	/**
-	 * Class logger.
+	 * Original out stream.
+	 * Will be initialized before each tests.
+	 * Will be restored after each tests.
 	 */
-	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderConfiguration.class);
+	private PrintStream originalOut;
 
 	/**
-	 * Build mustache template loader.
-	 * This compiler use an instance of {@link org.springframework.core.io.DefaultResourceLoader}
-	 * under the hood.
-	 *
-	 * @return Mustache template loader implementation.
+	 * Custom out stream.
+	 * Will be initialized before each tests.
+	 * Will be flushed after each tests.
 	 */
-	@Bean
-	public MustacheTemplateLoaderFactoryBean mustacheTemplateLoader() {
-		log.info("Create default mustache template loader");
-		return new MustacheTemplateLoaderFactoryBean();
+	private ByteArrayOutputStream out;
+
+	@Override
+	public void before() {
+		originalOut = System.out;
+		out = new ByteArrayOutputStream();
+
+		System.setOut(new PrintStream(out));
+	}
+
+	@Override
+	public void after() {
+		try {
+			out.reset();
+			out.flush();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+			// No worries
+		}
+
+		// Restore original out stream
+		System.setOut(originalOut);
+	}
+
+	public String getOut() {
+		if (out == null) {
+			return null;
+		}
+
+		return out.toString();
 	}
 }
