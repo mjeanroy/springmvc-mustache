@@ -95,7 +95,7 @@
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-site-plugin.version>3.9.0</maven-site-plugin.version>
 		<versions-maven-plugin.version>2.7</versions-maven-plugin.version>
-		<animal-sniffer-maven-plugin.version>1.14</animal-sniffer-maven-plugin.version>
+		<animal-sniffer-maven-plugin.version>1.16</animal-sniffer-maven-plugin.version>
 
 		<slf4j.version>1.7.30</slf4j.version>
 		<jmustache.version>1.13</jmustache.version>
