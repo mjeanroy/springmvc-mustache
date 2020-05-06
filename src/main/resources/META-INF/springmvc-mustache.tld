@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  The MIT License (MIT)
+  Copyright (c) 2014-2020 Mickael Jeanroy
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+				version="2.0">
+
+	<description>Tags and utilities to render mustache templates</description>
+	<display-name>springmvc-mustache</display-name>
+	<tlib-version>1.1</tlib-version>
+	<short-name>mustache</short-name>
+	<uri>http://github.com/mjeanroy/springmvc-mustache/jsp/jstl/springmvc-mustache</uri>
+
+	<tag>
+		<description>Renders the given mustache template.</description>
+		<name>render</name>
+		<tag-class>com.github.mjeanroy.springmvc.view.mustache.taglibs.MustacheRenderTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>Path to mustache template.</description>
+			<name>template</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>Mustache compiler to use.</description>
+			<name>compiler</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Mustache template parameter.</description>
+		<name>parameter</name>
+		<tag-class>com.github.mjeanroy.springmvc.view.mustache.taglibs.MustacheParamTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>The name of the property.</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>The value of the property.</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+	</tag>
+</taglib>
