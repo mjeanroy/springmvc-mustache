@@ -166,32 +166,15 @@ public class DefaultTemplateLoader implements MustacheTemplateLoader {
 		return formatName(name);
 	}
 
-	private String resolveTemplateName(String name) {
-		final Map<String, String> partialsAliases = getPartialAliases();
+	@Override
+	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
+		notNull(partialAliases, "Partial aliases must not be null");
+		temporaryPartialAliases.get().putAll(partialAliases);
+	}
 
-		final String realName;
-		if (partialsAliases.containsKey(name)) {
-			realName = partialsAliases.get(name);
-		}
-		else {
-			realName = name;
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Load template: {}", name);
-
-			if (log.isTraceEnabled()) {
-				log.trace("  => Real name: {}", realName);
-				log.trace("  => Template name: {}", realName);
-				log.trace("  => Partials: ");
-
-				for (Map.Entry<String, String> entry : partialsAliases.entrySet()) {
-					log.trace("     {} -> {}", entry.getKey(), entry.getValue());
-				}
-			}
-		}
-
-		return realName;
+	@Override
+	public void removeTemporaryPartialAliases() {
+		temporaryPartialAliases.remove();
 	}
 
 	private String formatName(String name) {
@@ -224,19 +207,29 @@ public class DefaultTemplateLoader implements MustacheTemplateLoader {
 		return name;
 	}
 
-	@Override
-	public void addTemporaryPartialAliases(Map<String, String> partialAliases) {
-		notNull(partialAliases, "Partial aliases must not be null");
-		temporaryPartialAliases.get().putAll(partialAliases);
-	}
+	private String resolveTemplateName(String name) {
+		final Map<String, String> partialsAliases = getPartialAliases();
+		final String realName = partialsAliases.containsKey(name) ? partialsAliases.get(name) : name;
 
-	@Override
-	public void removeTemporaryPartialAliases() {
-		temporaryPartialAliases.remove();
+		if (log.isDebugEnabled()) {
+			log.debug("Load template: {}", name);
+
+			if (log.isTraceEnabled()) {
+				log.trace("  => Real name: {}", realName);
+				log.trace("  => Template name: {}", realName);
+				log.trace("  => Partials: ");
+
+				for (Map.Entry<String, String> entry : partialsAliases.entrySet()) {
+					log.trace("     {} -> {}", entry.getKey(), entry.getValue());
+				}
+			}
+		}
+
+		return realName;
 	}
 
 	private Map<String, String> getPartialAliases() {
-		final Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<String, String>();
 		aliases.putAll(partialAliases);
 		aliases.putAll(temporaryPartialAliases.get());
 		return aliases;
