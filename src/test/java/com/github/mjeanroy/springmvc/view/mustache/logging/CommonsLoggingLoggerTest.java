@@ -24,32 +24,40 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
+import org.apache.commons.logging.impl.SimpleLog;
 
-/**
- * Factory for {@link Logger}.
- */
-public final class LoggerFactory {
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 
-	// Ensure non instantiation.
-	private LoggerFactory() {
+public class CommonsLoggingLoggerTest extends AbstractLoggerTest {
+
+	@Override
+	Logger createLogger() {
+		CommonsLoggingLogger log = new CommonsLoggingLogger(getClass());
+
+		SimpleLog internalLog = readField(log, "log");
+		internalLog.setLevel(Level.TRACE.level);
+
+		return log;
 	}
 
-	/**
-	 * Create logger from given class name as logger name.
-	 *
-	 * @param klass Class name.
-	 * @return Logger.
-	 */
-	public static Logger getLogger(Class<?> klass) {
-		if (ClassUtils.isPresent("org.slf4j.Logger")) {
-			return new Slf4jLogger(klass);
-		}
+	@Override
+	void updateLevel(String level) {
+		SimpleLog internalLog = readField(log, "log");
+		Level lvl = Level.valueOf(level);
+		internalLog.setLevel(lvl.level);
+	}
 
-		if (ClassUtils.isPresent("org.apache.commons.logging.Log")) {
-			return new CommonsLoggingLogger(klass);
-		}
+	private enum Level {
+		TRACE(SimpleLog.LOG_LEVEL_TRACE),
+		DEBUG(SimpleLog.LOG_LEVEL_DEBUG),
+		INFO(SimpleLog.LOG_LEVEL_INFO),
+		WARN(SimpleLog.LOG_LEVEL_WARN),
+		ERROR(SimpleLog.LOG_LEVEL_ERROR);
 
-		return NoopLogger.getInstance();
+		private final int level;
+
+		Level(int level) {
+			this.level = level;
+		}
 	}
 }

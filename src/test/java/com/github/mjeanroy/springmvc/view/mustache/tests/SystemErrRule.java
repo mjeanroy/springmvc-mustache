@@ -22,34 +22,17 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.logging;
+package com.github.mjeanroy.springmvc.view.mustache.tests;
 
-import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
+import java.io.PrintStream;
 
 /**
- * Factory for {@link Logger}.
+ * Catch System.err logging and store in a buffer.
  */
-public final class LoggerFactory {
+public class SystemErrRule extends AbstracrCaptureOutputRule {
 
-	// Ensure non instantiation.
-	private LoggerFactory() {
-	}
-
-	/**
-	 * Create logger from given class name as logger name.
-	 *
-	 * @param klass Class name.
-	 * @return Logger.
-	 */
-	public static Logger getLogger(Class<?> klass) {
-		if (ClassUtils.isPresent("org.slf4j.Logger")) {
-			return new Slf4jLogger(klass);
-		}
-
-		if (ClassUtils.isPresent("org.apache.commons.logging.Log")) {
-			return new CommonsLoggingLogger(klass);
-		}
-
-		return NoopLogger.getInstance();
+	@Override
+	void overrideOutput(PrintStream ps) {
+		System.setErr(ps);
 	}
 }

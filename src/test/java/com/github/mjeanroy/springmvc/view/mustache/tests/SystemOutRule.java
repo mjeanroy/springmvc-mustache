@@ -24,59 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.tests;
 
-import org.junit.rules.ExternalResource;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 /**
  * Catch System.out logging and store in a buffer.
  */
-public class SystemOutRule extends ExternalResource {
-
-	/**
-	 * Original out stream.
-	 * Will be initialized before each tests.
-	 * Will be restored after each tests.
-	 */
-	private PrintStream originalOut;
-
-	/**
-	 * Custom out stream.
-	 * Will be initialized before each tests.
-	 * Will be flushed after each tests.
-	 */
-	private ByteArrayOutputStream out;
+public class SystemOutRule extends AbstracrCaptureOutputRule {
 
 	@Override
-	public void before() {
-		originalOut = System.out;
-		out = new ByteArrayOutputStream();
-
-		System.setOut(new PrintStream(out));
-	}
-
-	@Override
-	public void after() {
-		try {
-			out.reset();
-			out.flush();
-		}
-		catch (IOException ex) {
-			ex.printStackTrace();
-			// No worries
-		}
-
-		// Restore original out stream
-		System.setOut(originalOut);
-	}
-
-	public String getOut() {
-		if (out == null) {
-			return null;
-		}
-
-		return out.toString();
+	void overrideOutput(PrintStream ps) {
+		System.setOut(ps);
 	}
 }

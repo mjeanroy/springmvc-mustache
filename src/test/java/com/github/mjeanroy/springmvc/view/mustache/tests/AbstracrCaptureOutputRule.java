@@ -22,34 +22,61 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.logging;
+package com.github.mjeanroy.springmvc.view.mustache.tests;
 
-import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
+import org.junit.rules.ExternalResource;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
- * Factory for {@link Logger}.
+ * Catch a printable stream and store in a buffer.
  */
-public final class LoggerFactory {
-
-	// Ensure non instantiation.
-	private LoggerFactory() {
-	}
+abstract class AbstracrCaptureOutputRule extends ExternalResource {
 
 	/**
-	 * Create logger from given class name as logger name.
-	 *
-	 * @param klass Class name.
-	 * @return Logger.
+	 * Original out stream.
+	 * Will be initialized before each tests.
+	 * Will be restored after each tests.
 	 */
-	public static Logger getLogger(Class<?> klass) {
-		if (ClassUtils.isPresent("org.slf4j.Logger")) {
-			return new Slf4jLogger(klass);
+	private PrintStream originalOut;
+
+	/**
+	 * Custom out stream.
+	 * Will be initialized before each tests.
+	 * Will be flushed after each tests.
+	 */
+	private ByteArrayOutputStream out;
+
+	@Override
+	public final void before() {
+		originalOut = System.out;
+		out = new ByteArrayOutputStream();
+
+		overrideOutput(
+				new PrintStream(this.out)
+		);
+	}
+
+	@Override
+	public final void after() {
+		try {
+			out.reset();
+			out.flush();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+			// No worries
 		}
 
-		if (ClassUtils.isPresent("org.apache.commons.logging.Log")) {
-			return new CommonsLoggingLogger(klass);
-		}
+		// Restore original out stream
+		overrideOutput(originalOut);
+	}
 
-		return NoopLogger.getInstance();
+	abstract void overrideOutput(PrintStream ps);
+
+	public String getOut() {
+		return out == null ? null : out.toString();
 	}
 }
