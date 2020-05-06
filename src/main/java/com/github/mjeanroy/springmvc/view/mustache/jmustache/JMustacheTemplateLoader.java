@@ -36,7 +36,7 @@ import static com.samskivert.mustache.Mustache.TemplateLoader;
  * Template resolution is delegated to {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader}
  * implementation.
  */
-public class JMustacheTemplateLoader implements TemplateLoader {
+class JMustacheTemplateLoader implements TemplateLoader {
 
 	/**
 	 * Template loader implementation.

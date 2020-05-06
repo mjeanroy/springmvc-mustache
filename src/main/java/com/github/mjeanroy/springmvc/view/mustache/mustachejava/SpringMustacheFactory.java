@@ -39,7 +39,7 @@ import java.io.Reader;
  * implementation will be useless.
  * See: https://github.com/spullara/mustache.java/pull/105
  */
-public class SpringMustacheFactory extends DefaultMustacheFactory {
+class SpringMustacheFactory extends DefaultMustacheFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringMustacheFactory.class);
 

@@ -37,7 +37,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * Implementation of {@link MustacheTemplate} using JMustache
  * as real template implementation.
  */
-public class JMustacheTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
+class JMustacheTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
 	/**
 	 * JMustache template.

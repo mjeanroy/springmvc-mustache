@@ -33,7 +33,7 @@ import java.io.Writer;
  * Reflection Handler that treat number zero as a falsey value.
  * See: https://github.com/spullara/mustache.java/pull/111
  */
-public class SpringMustacheReflectionObjectHandler extends ReflectionObjectHandler {
+class SpringMustacheReflectionObjectHandler extends ReflectionObjectHandler {
 
 	@Override
 	public Writer falsey(Iteration iteration, Writer writer, Object object, Object[] scopes) {

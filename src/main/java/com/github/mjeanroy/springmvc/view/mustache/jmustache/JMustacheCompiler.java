@@ -66,8 +66,6 @@ public class JMustacheCompiler extends AbstractMustacheCompiler implements Musta
 	}
 
 	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
-		return compiler
-				.withLoader(new JMustacheTemplateLoader(templateLoader))
-				.compile(template);
+		return compiler.withLoader(new JMustacheTemplateLoader(templateLoader)).compile(template);
 	}
 }

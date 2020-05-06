@@ -43,7 +43,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
 @Deprecated
-public class NashornTemplate implements MustacheTemplate {
+class NashornTemplate implements MustacheTemplate {
 
 	/**
 	 * Nashorn engine.

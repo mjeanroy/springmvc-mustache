@@ -38,7 +38,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.
  * Implement template loader for use with java handlebar
  * implementation.
  */
-public class HandlebarsTemplateLoader implements TemplateLoader {
+class HandlebarsTemplateLoader implements TemplateLoader {
 
 	/**
 	 * Template loader implementation.
