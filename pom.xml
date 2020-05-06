@@ -356,7 +356,6 @@
 							<ignores>
 								<ignore>jdk.nashorn.api.scripting.AbstractJSObject</ignore>
 							</ignores>
-							<ignoreDependencies>true</ignoreDependencies>
 						</configuration>
 					</execution>
 				</executions>
