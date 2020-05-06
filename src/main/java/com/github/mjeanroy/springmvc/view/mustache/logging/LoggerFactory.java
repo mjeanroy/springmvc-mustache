@@ -24,6 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
+import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
+
 /**
  * Factory for {@link Logger}.
  */
@@ -40,6 +42,10 @@ public final class LoggerFactory {
 	 * @return Logger.
 	 */
 	public static Logger getLogger(Class<?> klass) {
-		return new Slf4jLogger(klass);
+		if (ClassUtils.isPresent("org.slf4j.Logger")) {
+			return new Slf4jLogger(klass);
+		}
+
+		return NoopLogger.getInstance();
 	}
 }
