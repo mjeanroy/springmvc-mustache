@@ -31,15 +31,17 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
@@ -64,12 +66,14 @@ public class MustacheWebConfiguration {
 
 	/**
 	 * Build mustache view resolver.
+	 *
 	 * This view resolver needs an instance of {@link com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler}
 	 * to be created.
 	 *
 	 * @return Mustache view resolver instance.
 	 */
 	@Bean
+	@Conditional(MustacheViewResolverCondition.class)
 	public MustacheViewResolver mustacheViewResolver() {
 		String prefix = getPrefix();
 		String suffix = getSuffix();
@@ -81,14 +85,17 @@ public class MustacheWebConfiguration {
 		Map<String, String> mappings = getLayoutMappings();
 
 		log.info("Create mustache view resolver");
-		log.trace("  => Cache: {}", cache);
-		log.trace("  => Prefix: {}", prefix);
-		log.trace("  => Suffix: {}", suffix);
-		log.trace("  => Order: {}", order);
-		log.trace("  => View Names: {}", viewNames);
-		log.trace("  => Default layout: {}", defaultLayout);
-		log.trace("  => Layout key: {}", layoutKey);
-		log.trace("  => Mappings: {}", mappings);
+
+		if (log.isTraceEnabled()) {
+			log.trace("  => Cache: {}", cache);
+			log.trace("  => Prefix: {}", prefix);
+			log.trace("  => Suffix: {}", suffix);
+			log.trace("  => Order: {}", order);
+			log.trace("  => View Names: {}", viewNames);
+			log.trace("  => Default layout: {}", defaultLayout);
+			log.trace("  => Layout key: {}", layoutKey);
+			log.trace("  => Mappings: {}", mappings);
+		}
 
 		MustacheViewResolver resolver = new MustacheViewResolver(mustacheCompiler);
 		resolver.setCache(cache);
@@ -139,7 +146,7 @@ public class MustacheWebConfiguration {
 	 * @return Order value.
 	 */
 	public int getOrder() {
-		return parseInt(environment.getProperty("mustache.order", valueOf(MustacheSettings.ORDER)).trim());
+		return Integer.parseInt(environment.getProperty("mustache.order", valueOf(MustacheSettings.ORDER)).trim());
 	}
 
 	/**
@@ -150,7 +157,7 @@ public class MustacheWebConfiguration {
 	 * @return Cache settings.
 	 */
 	public boolean getCache() {
-		return parseBoolean(environment.getProperty("mustache.cache", valueOf(MustacheSettings.CACHE)).trim());
+		return Boolean.parseBoolean(environment.getProperty("mustache.cache", valueOf(MustacheSettings.CACHE)).trim());
 	}
 
 	/**
@@ -220,5 +227,22 @@ public class MustacheWebConfiguration {
 		}
 
 		return unmodifiableMap(mappings);
+	}
+
+	private static class MustacheViewResolverCondition implements Condition {
+
+		@Override
+		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+			Environment environment = context.getEnvironment();
+			String viewResolver = environment.getProperty("mustache.viewResolver");
+			String state = viewResolver == null || viewResolver.isEmpty() ? "true" : viewResolver.trim();
+			boolean enabled = state.equalsIgnoreCase("true");
+
+			if (!enabled) {
+				log.info("Mustache view resolver is disabled, if this is a mistake, please check 'mustache.viewResolver' property (current value is: {})", viewResolver);
+			}
+
+			return enabled;
+		}
 	}
 }
