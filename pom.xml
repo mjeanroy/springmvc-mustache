@@ -117,7 +117,6 @@
 		<mockito.version>2.28.2</mockito.version>
 		<commons-lang3.version>3.8.1</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
-		<junit-runif.version>0.2.0</junit-runif.version>
 		<logback.version>1.2.3</logback.version>
 	</properties>
 
@@ -231,12 +230,6 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.mjeanroy</groupId>
-			<artifactId>junit-runif</artifactId>
-			<version>${junit-runif.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -462,38 +455,6 @@
 								</configuration>
 							</execution>
 						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>java7</id>
-			<activation>
-				<jdk>1.7</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>${maven-compiler-plugin.version}</version>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<compilerVersion>${java.version}</compilerVersion>
-							<source>${java.source.version}</source>
-							<target>${java.target.version}</target>
-
-							<!-- These classes uses Nashorn, available with java >= 8 -->
-							<excludes>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/configuration/nashorn/*</exclude>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/nashorn/*</exclude>
-							</excludes>
-							<testExcludes>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/configuration/nashorn/*</exclude>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/nashorn/*</exclude>
-							</testExcludes>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
