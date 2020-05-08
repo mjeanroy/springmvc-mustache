@@ -22,27 +22,51 @@
 # THE SOFTWARE.
 ##
 
-name: Java CI
+########################
+# Compiled source      #
+########################
+*.class
+jsp/
 
-on: [push]
+########################
+# Maven files          #
+########################
+/target
 
-jobs:
-  build:
+########################
+# Eclipse files        #
+########################
+/.buildpath
+/.settings
+/.metadata
+/.classpath
+/.project
 
-    runs-on: ${{ matrix.os }}
+########################
+# Intellij files       #
+########################
+/.externalToolBuilders
+/.idea/
+/overlays/
+/*.iml
 
-    strategy:
-      matrix:
-        os: [ windows-latest, ubuntu-latest, macos-latest ]
-        java: [ 7, 8, 9, 10, 11, 12, 13 ]
+########################
+# Packages             #
+########################
+*.dm
+*.jar
 
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.java }}
-      - name: Build
-        run: mvn -B install --file pom.xml -DskipTests
-      - name: Test
-        run: mvn verify
+########################
+# Logs and databases   #
+########################
+*.log
+mem.properties
+mem.script
+
+########################
+# OS generated files   #
+########################
+.DS_Store*
+ehthumbs.db
+Thumbs.db
+.fuse_hidden*
