@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  The MIT License (MIT)
+  Copyright (c) 2014-2020 Mickael Jeanroy
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:context="http://www.springframework.org/schema/context"
+			 xmlns:mvc="http://www.springframework.org/schema/mvc"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- Create mustache beans -->
+	<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean"/>
+	<bean id="mustacheEngine" class="com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine">
+		<constructor-arg ref="mustacheTemplateLoader"/>
+	</bean>
+	<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean"/>
+
+	<!-- Create view resolver -->
+	<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+		<constructor-arg ref="mustacheCompiler"/>
+		<property name="order" value="1"/>
+		<property name="defaultLayout" value="layout"/>
+		<property name="prefix" value="templates/"/>
+		<property name="suffix" value=".template.html"/>
+	</bean>
+
+	<!-- Activate annotations -->
+	<context:component-scan base-package="com.github.mjeanroy.springmvc.mustache.sample"/>
+	<mvc:annotation-driven/>
+
+</beans>
