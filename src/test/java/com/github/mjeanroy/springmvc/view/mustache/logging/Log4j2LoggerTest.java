@@ -24,10 +24,16 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
+import com.github.mjeanroy.junit4.runif.RunIf;
+import com.github.mjeanroy.junit4.runif.RunIfRunner;
+import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
 import org.apache.logging.log4j.Level;
+import org.junit.runner.RunWith;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 
+@RunWith(RunIfRunner.class)
+@RunIf(AtLeastJava8Condition.class)
 public class Log4j2LoggerTest extends AbstractLoggerTest {
 
 	@Override
