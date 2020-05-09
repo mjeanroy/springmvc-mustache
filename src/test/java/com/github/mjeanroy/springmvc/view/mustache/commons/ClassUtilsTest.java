@@ -56,7 +56,8 @@ public class ClassUtilsTest {
 	public void it_should_invoke_method_on_given_class() {
 		FixtureClass fixtureClass = new FixtureClass();
 		Object[] args = {};
-		Object result = ClassUtils.invoke(fixtureClass, "emptyMethod", args);
+		Class<?>[] argTypes = {};
+		Object result = ClassUtils.invoke(fixtureClass, "emptyMethod", argTypes, args);
 
 		assertThat(result).isNull();
 		assertThat(fixtureClass.calls).contains(
@@ -69,7 +70,9 @@ public class ClassUtilsTest {
 	public void it_should_invoke_method_with_argument_on_given_class() {
 		FixtureClass fixtureClass = new FixtureClass();
 		Object[] args = {"test"};
-		Object result = ClassUtils.invoke(fixtureClass, "methodWithArgument", args);
+		Class<?>[] argTypes = {String.class};
+
+		Object result = ClassUtils.invoke(fixtureClass, "methodWithArgument", argTypes, args);
 
 		assertThat(result).isNull();
 		assertThat(fixtureClass.calls).contains(

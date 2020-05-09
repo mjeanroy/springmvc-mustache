@@ -26,6 +26,8 @@ package com.github.mjeanroy.springmvc.view.mustache.tests;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import java.lang.reflect.Constructor;
+
 /**
  * Static Reflection Utilities, to use in unit test only.
  */
@@ -33,6 +35,18 @@ public final class ReflectionTestUtils {
 
 	// Ensure non instantiation.
 	private ReflectionTestUtils() {
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T instantiate(String className, Class<?>[] argTypes, Object[] args) {
+		try {
+			Class<T> klass = (Class<T>) Class.forName(className);
+			Constructor<T> ctor = klass.getConstructor(argTypes);
+			return ctor.newInstance(args);
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 
 	/**

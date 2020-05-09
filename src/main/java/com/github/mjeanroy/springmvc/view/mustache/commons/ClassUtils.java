@@ -100,13 +100,7 @@ public final class ClassUtils {
 	 * @param <T> Type of given instance.
 	 * @return Method invocation result.
 	 */
-	public static <T> Object invoke(T instance, String methodName, Object[] args) {
-		Class<?>[] parameterTypes = new Class<?>[args.length];
-		int i = 0;
-		for (Object arg : args) {
-			parameterTypes[i++] = arg.getClass();
-		}
-
+	public static <T> Object invoke(T instance, String methodName, Class<?>[] parameterTypes, Object[] args) {
 		Class<?> klass = instance.getClass();
 
 		try {

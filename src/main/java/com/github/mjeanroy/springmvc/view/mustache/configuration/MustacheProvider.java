@@ -156,12 +156,21 @@ public enum MustacheProvider {
 		@Override
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			Object mustacheEngine = applicationContext.getBean(ClassUtils.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine"));
+			Class<?> mustacheEngineClass = ClassUtils.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine");
+			Object mustacheEngine = applicationContext.getBean(mustacheEngineClass);
 			Object instance = newInstance(configurationClass());
-			return (MustacheCompiler) invoke(instance, "mustacheCompiler", new Object[] {
+
+			Object[] args = {
 					templateLoader,
 					mustacheEngine
-			});
+			};
+
+			Class<?>[] argTypes = new Class<?>[] {
+					MustacheTemplateLoader.class,
+					mustacheEngineClass
+			};
+
+			return (MustacheCompiler) invoke(instance, "mustacheCompiler", argTypes, args);
 		}
 	},
 
