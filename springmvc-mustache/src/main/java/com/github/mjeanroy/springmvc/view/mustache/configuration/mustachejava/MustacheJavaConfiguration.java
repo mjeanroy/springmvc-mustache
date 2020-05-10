@@ -39,8 +39,6 @@ public class MustacheJavaConfiguration {
 
 	/**
 	 * Build mustache compiler.
-	 * This compiler use an instance of {@link com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory}
-	 * under the hood.
 	 *
 	 * @param templateLoader Template loader.
 	 * @return Mustache compiler implementation.

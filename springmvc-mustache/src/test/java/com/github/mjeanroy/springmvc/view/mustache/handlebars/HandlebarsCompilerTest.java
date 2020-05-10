@@ -28,13 +28,14 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,32 +43,9 @@ import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUt
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class HandlebarsCompilerTest {
-
-	private MustacheTemplateLoader templateLoader;
-
-	private HandlebarsCompiler hbCompiler;
-
-	private StringWriter writer;
-
-	private Map<String, Object> model;
-
-	@Before
-	public void setUp() {
-		this.model = new HashMap<String, Object>();
-		this.model.put("name", "foo");
-		this.model.put("zero", 0);
-		this.model.put("emptyString", "");
-
-		writer = new StringWriter();
-
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		templateLoader = new DefaultTemplateLoader(resourceLoader);
-		Handlebars hb = new Handlebars();
-
-		hbCompiler = new HandlebarsCompiler(hb, templateLoader);
-	}
 
 	@Test
 	public void it_should_build_a_compiler() {
@@ -88,12 +66,19 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	public void it_should_render_template() {
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
+
 		String name = "/templates/foo.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = "<div>Hello foo</div>";
 		String result = writer.toString();
@@ -102,12 +87,19 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	public void it_should_treat_zero_as_falsy() {
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
+
 		String name = "/templates/zero.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -123,12 +115,19 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	public void it_should_treat_empty_string_as_falsy() {
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
+
 		String name = "/templates/empty-string.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -145,12 +144,19 @@ public class HandlebarsCompilerTest {
 	@Test
 	@Ignore("With Handlebars, partials must not start with '/'")
 	public void it_should_display_template_with_partial() {
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
+
 		String name = "/templates/composite.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -165,14 +171,22 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix() {
-		templateLoader.setPrefix("/templates/");
-		templateLoader.setSuffix(".template.html");
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
+
 		String name = "/templates/composite-aliases.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -188,14 +202,22 @@ public class HandlebarsCompilerTest {
 	@Test
 	@Ignore("With Handlebars, partials must not start with '/'")
 	public void it_should_display_template_with_partial_using_prefix_suffix_even_with_full_name() {
-		templateLoader.setPrefix("/templates/");
-		templateLoader.setSuffix(".template.html");
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
+
 		String name = "/templates/composite.template.html";
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -210,16 +232,27 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial_aliases() {
-		Map<String, String> aliases = new HashMap<String, String>();
-		aliases.put("foo", "/templates/foo.template.html");
-		hbCompiler.addTemporaryPartialAliases(aliases);
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+
+		Handlebars handlebars = new Handlebars();
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(handlebars, templateLoader);
 
 		String name = "/templates/composite-aliases.template.html";
+		Map<String, String> aliases = Collections.singletonMap(
+				"foo", "/templates/foo.template.html"
+		);
+
+		hbCompiler.addTemporaryPartialAliases(aliases);
 
 		MustacheTemplate template = hbCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		hbCompiler.removeTemporaryPartialAliases();
 
@@ -232,5 +265,36 @@ public class HandlebarsCompilerTest {
 		String result = writer.toString();
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Handlebars hb = new Handlebars();
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(hb, templateLoader);
+
+		// @formatter:off
+		assertThat(hbCompiler).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler{" +
+						"handlebars=" + hb + ", " +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=null, " +
+								"suffix=null, " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
+	}
+
+	private static Map<String, Object> model() {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", "foo");
+		model.put("zero", 0);
+		model.put("emptyString", "");
+		return model;
 	}
 }

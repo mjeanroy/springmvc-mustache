@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -35,27 +34,21 @@ import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class SpringMustacheFactoryTest {
-
-	private MustacheTemplateLoader templateLoader;
-
-	private SpringMustacheFactory springMustacheFactory;
-
-	@Before
-	public void setUp() {
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		String prefix = "/templates/";
-		String suffix = ".template.html";
-
-		templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		springMustacheFactory = new SpringMustacheFactory(templateLoader);
-	}
 
 	@Test
 	public void it_should_resolve_template_name_with_template_loader() {
 		String name = "foo";
 		String location = "/templates/foo.template.html";
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(templateLoader);
 
 		String result = springMustacheFactory.resolvePartialPath("dir", name, "extension");
 
@@ -64,11 +57,42 @@ public class SpringMustacheFactoryTest {
 
 	@Test
 	public void it_should_resolve_template() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(templateLoader);
+
 		String name = "foo";
 
 		Reader result = springMustacheFactory.getReader(name);
 
 		assertThat(result).isNotNull();
 		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+
+		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(templateLoader);
+
+		// @formatter:off
+		assertThat(springMustacheFactory).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory{" +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=\"/templates/\", " +
+								"suffix=\".template.html\", " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
 	}
 }

@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -38,28 +37,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HandlebarsTemplateTest {
 
-	private com.github.jknack.handlebars.Template template;
-
-	private HandlebarsTemplate handlebarsTemplate;
-
-	@Before
-	public void setUp() {
-		template = createTemplate();
-		handlebarsTemplate = new HandlebarsTemplate(template);
-	}
-
 	@Test
 	public void it_should_execute_template() {
 		Writer writer = new StringWriter();
-
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("foo", "bar");
 
+		com.github.jknack.handlebars.Template template = createTemplate();
+		HandlebarsTemplate handlebarsTemplate = new HandlebarsTemplate(template);
 		handlebarsTemplate.execute(model, writer);
 
 		assertThat(writer.toString()).isEqualTo(
 				"foo :: bar"
 		);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		com.github.jknack.handlebars.Template template = createTemplate();
+		HandlebarsTemplate handlebarsTemplate = new HandlebarsTemplate(template);
+
+		// @formatter:off
+		assertThat(handlebarsTemplate).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsTemplate{" +
+						"template=[" +
+							"inline@10419a34:1:0, " +
+							"inline@10419a34:1:10" +
+						"]" +
+				"}"
+		);
+		// @formatter:on
 	}
 
 	private static Template createTemplate() {

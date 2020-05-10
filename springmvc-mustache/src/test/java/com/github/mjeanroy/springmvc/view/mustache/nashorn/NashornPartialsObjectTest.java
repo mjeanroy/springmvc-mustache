@@ -27,41 +27,29 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornPartialsObjectTest {
 
-	private MustacheTemplateLoader templateLoader;
-
-	private NashornPartialsObject partials;
-
-	@Before
-	public void setUp() {
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		String prefix = "/templates/";
-		String suffix = ".template.html";
-
-		templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		partials = new NashornPartialsObject(templateLoader);
-	}
-
 	@Test
 	public void it_should_load_template() {
+		NashornPartialsObject nashornPartialsObject = nashornPartialsObject();
 		String templateName = "foo";
-		String template = (String) partials.getMember(templateName);
+		String template = (String) nashornPartialsObject.getMember(templateName);
 		assertThat(template).isEqualTo("<div>Hello {{name}}</div>");
 	}
 
 	@Test
 	public void it_should_check_if_member_exist() {
-		boolean hasMember = partials.hasMember("foo");
+		NashornPartialsObject nashornPartialsObject = nashornPartialsObject();
+		boolean hasMember = nashornPartialsObject.hasMember("foo");
 		assertThat(hasMember).isTrue();
 	}
 
@@ -70,7 +58,7 @@ public class NashornPartialsObjectTest {
 		ThrowingCallable setMember = new ThrowingCallable() {
 			@Override
 			public void call() {
-				partials.setMember("foo", "bar");
+				nashornPartialsObject().setMember("foo", "bar");
 			}
 		};
 
@@ -82,7 +70,7 @@ public class NashornPartialsObjectTest {
 		ThrowingCallable removeMember = new ThrowingCallable() {
 			@Override
 			public void call() {
-				partials.removeMember("foo");
+				nashornPartialsObject().removeMember("foo");
 			}
 		};
 
@@ -94,10 +82,43 @@ public class NashornPartialsObjectTest {
 		ThrowingCallable setSlot = new ThrowingCallable() {
 			@Override
 			public void call() {
-				partials.setSlot(1, "foo");
+				nashornPartialsObject().setSlot(1, "foo");
 			}
 		};
 
 		assertThatThrownBy(setSlot).isInstanceOf(UnsupportedOperationException.class);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		NashornPartialsObject nashornPartialsObject = nashornPartialsObject(resourceLoader);
+
+		// @formatter:off
+		assertThat(nashornPartialsObject).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject{" +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=\"/templates/\", " +
+								"suffix=\".template.html\", " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
+	}
+
+	private static NashornPartialsObject nashornPartialsObject() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		return nashornPartialsObject(resourceLoader);
+	}
+
+	private static NashornPartialsObject nashornPartialsObject(ResourceLoader resourceLoader) {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		return new NashornPartialsObject(templateLoader);
 	}
 }

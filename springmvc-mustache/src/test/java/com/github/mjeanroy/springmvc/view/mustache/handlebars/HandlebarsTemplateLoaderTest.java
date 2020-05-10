@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -35,25 +34,13 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class HandlebarsTemplateLoaderTest {
 
-	private MustacheTemplateLoader mustacheTemplateLoader;
-
-	private HandlebarsTemplateLoader handlebarsTemplateLoader;
-
-	@Before
-	public void setUp() {
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		String prefix = "/templates/";
-		String suffix = ".template.html";
-
-		mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
-	}
-
 	@Test
 	public void it_should_read_template_source() throws IOException {
+		HandlebarsTemplateLoader handlebarsTemplateLoader = handlebarsTemplateLoader();
 		String location = "/templates/foo.template.html";
 
 		TemplateSource source = handlebarsTemplateLoader.sourceAt(location);
@@ -67,6 +54,7 @@ public class HandlebarsTemplateLoaderTest {
 
 	@Test
 	public void it_should_resolve_template_location() {
+		HandlebarsTemplateLoader handlebarsTemplateLoader = handlebarsTemplateLoader();
 		String location = "/templates/foo.template.html";
 		String templateName = "foo";
 
@@ -77,27 +65,71 @@ public class HandlebarsTemplateLoaderTest {
 
 	@Test
 	public void it_should_get_prefix() {
+		HandlebarsTemplateLoader handlebarsTemplateLoader = handlebarsTemplateLoader();
 		String result = handlebarsTemplateLoader.getPrefix();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo("/templates/");
 	}
 
 	@Test
 	public void it_should_get_suffix() {
+		HandlebarsTemplateLoader handlebarsTemplateLoader = handlebarsTemplateLoader();
 		String result = handlebarsTemplateLoader.getSuffix();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(".template.html");
 	}
 
 	@Test
 	public void it_should_set_prefix() {
-		String prefix = "foo";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		HandlebarsTemplateLoader handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
+
+		String prefix = "/templates/";
 		handlebarsTemplateLoader.setPrefix(prefix);
+
 		assertThat(mustacheTemplateLoader.getPrefix()).isEqualTo(prefix);
 	}
 
 	@Test
 	public void it_should_set_suffix() {
-		String suffix = "foo";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		HandlebarsTemplateLoader handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
+
+		String suffix = ".template.html";
 		handlebarsTemplateLoader.setSuffix(suffix);
+
 		assertThat(mustacheTemplateLoader.getSuffix()).isEqualTo(suffix);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		HandlebarsTemplateLoader hbTemplateLoaders = handlebarsTemplateLoader(resourceLoader);
+
+		// @formatter:off
+		assertThat(hbTemplateLoaders).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsTemplateLoader{" +
+						"loader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=\"/templates/\", " +
+								"suffix=\".template.html\", " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
+	}
+
+	private static HandlebarsTemplateLoader handlebarsTemplateLoader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		return handlebarsTemplateLoader(resourceLoader);
+	}
+
+	private static HandlebarsTemplateLoader handlebarsTemplateLoader(ResourceLoader resourceLoader) {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		return new HandlebarsTemplateLoader(mustacheTemplateLoader);
 	}
 }

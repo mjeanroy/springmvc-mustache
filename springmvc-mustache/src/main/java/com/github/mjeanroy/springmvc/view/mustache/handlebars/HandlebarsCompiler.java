@@ -29,6 +29,7 @@ import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
@@ -64,5 +65,13 @@ public class HandlebarsCompiler extends AbstractMustacheCompiler implements Must
 	protected MustacheTemplate doCompile(String name) throws Exception {
 		final Template template = handlebars.compile(name);
 		return new HandlebarsTemplate(template);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("handlebars", handlebars)
+				.append("templateLoader", templateLoader)
+				.build();
 	}
 }

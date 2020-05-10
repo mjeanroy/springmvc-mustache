@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 
 import javax.script.Invocable;
@@ -139,5 +140,13 @@ public class MustacheEngine {
 		catch (NoSuchMethodException ex) {
 			throw new NashornException(ex);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("engine", engine)
+				.append("partials", partials)
+				.build();
 	}
 }

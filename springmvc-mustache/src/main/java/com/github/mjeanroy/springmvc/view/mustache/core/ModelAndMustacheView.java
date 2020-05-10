@@ -185,7 +185,7 @@ public class ModelAndMustacheView extends ModelAndView {
 		notNull(partials);
 
 		View view = this.getView();
-		if (view != null && view instanceof MustacheView) {
+		if (view instanceof MustacheView) {
 			// First try to not pollute model object
 			final MustacheView mustacheView = (MustacheView) view;
 			mustacheView.addAliases(partials);

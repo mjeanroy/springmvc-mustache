@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -35,23 +34,48 @@ import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class JMustacheTemplateLoaderTest {
 
-	private JMustacheTemplateLoader jMustacheTemplateLoader;
+	@Test
+	public void it_should_load_template() {
+		JMustacheTemplateLoader jMustacheTemplateLoader = jMustacheTemplateLoader();
+		String name = "/templates/foo.template.html";
 
-	@Before
-	public void setUp() {
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		jMustacheTemplateLoader = new JMustacheTemplateLoader(templateLoader);
+		Reader result = jMustacheTemplateLoader.getTemplate(name);
+
+		assertThat(result).isNotNull();
+		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
 	}
 
 	@Test
-	public void it_should_load_template() {
-		String name = "/templates/foo.template.html";
-		Reader result = jMustacheTemplateLoader.getTemplate(name);
-		assertThat(result).isNotNull();
-		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		JMustacheTemplateLoader jMustacheTemplateLoader = jMustacheTemplateLoader(resourceLoader);
+
+		// @formatter:off
+		assertThat(jMustacheTemplateLoader).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader{" +
+						"loader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=null, " +
+								"suffix=null, " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
+	}
+
+	private static JMustacheTemplateLoader jMustacheTemplateLoader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		return jMustacheTemplateLoader(resourceLoader);
+	}
+
+	private static JMustacheTemplateLoader jMustacheTemplateLoader(ResourceLoader resourceLoader) {
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		return new JMustacheTemplateLoader(templateLoader);
 	}
 }

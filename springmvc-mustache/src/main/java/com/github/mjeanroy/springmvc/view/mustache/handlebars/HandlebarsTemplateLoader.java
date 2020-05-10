@@ -28,6 +28,7 @@ import com.github.jknack.handlebars.io.StringTemplateSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 
 import java.io.Reader;
 
@@ -91,5 +92,12 @@ class HandlebarsTemplateLoader implements TemplateLoader {
 	public void setSuffix(String suffix) {
 		notNull(suffix, "suffix must not be null");
 		loader.setSuffix(suffix);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("loader", loader)
+				.build();
 	}
 }

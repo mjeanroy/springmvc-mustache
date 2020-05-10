@@ -31,6 +31,7 @@ import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.
 import static com.samskivert.mustache.Mustache.Compiler;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class JMustacheCompilerTest {
 
@@ -207,5 +209,28 @@ public class JMustacheCompilerTest {
 		String result = writer.toString();
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Mustache.Compiler compiler = Mustache.compiler();
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		JMustacheCompiler jMustacheCompiler = new JMustacheCompiler(compiler, templateLoader);
+
+		// @formatter:off
+		assertThat(jMustacheCompiler).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler{" +
+						"compiler=" + compiler + ", " +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=null, " +
+								"suffix=null, " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
 	}
 }

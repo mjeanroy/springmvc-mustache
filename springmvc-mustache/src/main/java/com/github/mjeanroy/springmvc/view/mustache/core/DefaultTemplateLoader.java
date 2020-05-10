@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateException;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
@@ -233,5 +234,16 @@ public class DefaultTemplateLoader implements MustacheTemplateLoader {
 		aliases.putAll(partialAliases);
 		aliases.putAll(temporaryPartialAliases.get());
 		return aliases;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("resourceLoader", resourceLoader)
+				.append("prefix", prefix)
+				.append("suffix", suffix)
+				.append("partialAliases", partialAliases)
+				.append("temporaryPartialAliases", temporaryPartialAliases.get())
+				.build();
 	}
 }

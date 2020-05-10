@@ -27,51 +27,36 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class MustacheJavaCompilerTest {
-
-	private StringWriter writer;
-
-	private Map<String, Object> model;
-
-	private MustacheTemplateLoader templateLoader;
-
-	private MustacheJavaCompiler mustacheJavaCompiler;
-
-	@Before
-	public void setUp() {
-		this.model = new HashMap<String, Object>();
-		this.model.put("name", "foo");
-		this.model.put("zero", 0);
-		this.model.put("emptyString", "");
-
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-
-		writer = new StringWriter();
-		templateLoader = new DefaultTemplateLoader(resourceLoader);
-		mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
-	}
 
 	@Test
 	public void it_should_render_template() {
 		String name = "/templates/foo.template.html";
 
+		Writer writer = new StringWriter();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = "<div>Hello foo</div>";
 		String result = writer.toString();
@@ -82,10 +67,15 @@ public class MustacheJavaCompilerTest {
 	public void it_should_treat_zero_as_falsy() {
 		String name = "/templates/zero.template.html";
 
+		Writer writer = new StringWriter();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -103,10 +93,15 @@ public class MustacheJavaCompilerTest {
 	public void it_should_treat_empty_string_as_falsy() {
 		String name = "/templates/empty-string.template.html";
 
+		Writer writer = new StringWriter();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -124,10 +119,15 @@ public class MustacheJavaCompilerTest {
 	public void it_should_display_template_with_partial() {
 		String name = "/templates/composite.template.html";
 
+		Writer writer = new StringWriter();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -142,14 +142,20 @@ public class MustacheJavaCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix() {
-		templateLoader.setPrefix("/templates/");
-		templateLoader.setSuffix(".template.html");
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
 		String name = "/templates/composite-aliases.template.html";
 
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -164,14 +170,20 @@ public class MustacheJavaCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
-		templateLoader.setPrefix("/templates/");
-		templateLoader.setSuffix(".template.html");
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
 		String name = "/templates/composite.template.html";
 
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		String expected = joinLines(asList(
 				"<div>",
@@ -186,16 +198,25 @@ public class MustacheJavaCompilerTest {
 
 	@Test
 	public void it_should_display_template_with_partial_aliases() {
-		Map<String, String> aliases = new HashMap<String, String>();
-		aliases.put("foo", "/templates/foo.template.html");
-		templateLoader.addTemporaryPartialAliases(aliases);
+		Writer writer = new StringWriter();
+
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
 
 		String name = "/templates/composite-aliases.template.html";
+		Map<String, String> aliases = singletonMap(
+				"foo", "/templates/foo.template.html"
+		);
+
+		templateLoader.addTemporaryPartialAliases(aliases);
 
 		MustacheTemplate template = mustacheJavaCompiler.compile(name);
 
 		// Try to execute template to check real result
-		template.execute(model, writer);
+		template.execute(model(), writer);
 
 		templateLoader.removeTemporaryPartialAliases();
 
@@ -207,5 +228,43 @@ public class MustacheJavaCompilerTest {
 
 		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
+
+		// @formatter:off
+		assertThat(mustacheJavaCompiler).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler{" +
+						"mustacheFactory=com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory{" +
+								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+										"resourceLoader=ResourceLoader, " +
+										"prefix=null, " +
+										"suffix=null, " +
+										"partialAliases={}, " +
+										"temporaryPartialAliases={}" +
+								"}" +
+						"}, " +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"resourceLoader=ResourceLoader, " +
+								"prefix=null, " +
+								"suffix=null, " +
+								"partialAliases={}, " +
+								"temporaryPartialAliases={}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
+	}
+
+	private static Map<String, Object> model() {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", "foo");
+		model.put("zero", 0);
+		model.put("emptyString", "");
+		return model;
 	}
 }

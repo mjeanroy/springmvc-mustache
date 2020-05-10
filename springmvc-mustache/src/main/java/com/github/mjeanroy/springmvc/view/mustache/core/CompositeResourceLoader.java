@@ -24,6 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -91,5 +92,12 @@ public class CompositeResourceLoader implements ResourceLoader {
 	@Override
 	public ClassLoader getClassLoader() {
 		return ClassUtils.getDefaultClassLoader();
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("resourceLoaders", resourceLoaders)
+				.build();
 	}
 }

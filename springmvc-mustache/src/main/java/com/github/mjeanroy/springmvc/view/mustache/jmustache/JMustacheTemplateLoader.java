@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 
 import java.io.Reader;
 
@@ -56,5 +57,12 @@ class JMustacheTemplateLoader implements TemplateLoader {
 	@Override
 	public Reader getTemplate(String name) {
 		return loader.getTemplate(name);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("loader", loader)
+				.build();
 	}
 }

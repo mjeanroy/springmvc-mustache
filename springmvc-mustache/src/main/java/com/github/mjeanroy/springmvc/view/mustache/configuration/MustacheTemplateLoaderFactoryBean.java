@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
@@ -55,9 +56,6 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  */
 public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<MustacheTemplateLoader> implements FactoryBean<MustacheTemplateLoader>, ApplicationContextAware, ResourceLoaderAware {
 
-	/**
-	 * Class logger.
-	 */
 	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderFactoryBean.class);
 
 	/**
@@ -221,5 +219,15 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 		public ClassLoader getClassLoader() {
 			return ClassUtils.getDefaultClassLoader();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("resourceLoader", resourceLoader)
+				.append("prefix", prefix)
+				.append("suffix", suffix)
+				.append("applicationContext", applicationContext)
+				.build();
 	}
 }

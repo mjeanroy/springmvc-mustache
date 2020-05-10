@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import jdk.nashorn.api.scripting.AbstractJSObject;
 
 import java.io.Reader;
@@ -89,5 +90,12 @@ class NashornPartialsObject extends AbstractJSObject {
 	@Override
 	public void setSlot(int index, Object value) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("templateLoader", templateLoader)
+				.build();
 	}
 }

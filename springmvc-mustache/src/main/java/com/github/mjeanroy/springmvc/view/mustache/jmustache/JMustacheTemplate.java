@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 import com.samskivert.mustache.Template;
 
@@ -57,5 +58,12 @@ class JMustacheTemplate extends AbstractMustacheTemplate implements MustacheTemp
 	@Override
 	protected void doExecute(Map<String, Object> model, Writer writer) {
 		template.execute(model, writer);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("template", template)
+				.build();
 	}
 }

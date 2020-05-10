@@ -22,46 +22,51 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.jmustache;
+package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
-import com.samskivert.mustache.Mustache;
-import com.samskivert.mustache.Template;
 import org.junit.Test;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
-public class JMustacheTemplateTest {
-
-	@Test
-	public void it_should_execute_template() {
-		Writer writer = new StringWriter();
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("foo", "bar");
-
-		Template template = Mustache.compiler().compile("foo :: {{ foo }}");
-		JMustacheTemplate jMustacheTemplate = new JMustacheTemplate(template);
-		jMustacheTemplate.execute(model, writer);
-
-		assertThat(writer.toString()).isEqualTo("foo :: bar");
-	}
+public class ToStringBuilderTest {
 
 	@Test
-	public void it_should_implement_to_string() {
-		Template template = mock(Template.class, "JMustacheTemplate");
-		JMustacheTemplate jMustacheTemplate = new JMustacheTemplate(template);
+	public void it_should_create_final_string() {
+		String value = ToStringBuilder.builder(this)
+				.append("field1", "foo")
+				.append("field2", 'T')
+				.append("field3", new Klass1("bar"))
+				.append("field4", null)
+				.build();
 
 		// @formatter:off
-		assertThat(jMustacheTemplate).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplate{" +
-						"template=JMustacheTemplate" +
+		assertThat(value).isEqualTo(
+				"com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilderTest{" +
+						"field1=\"foo\", " +
+						"field2=T, " +
+						"field3=toString: bar, " +
+						"field4=null" +
 				"}"
 		);
 		// @formatter:on
+	}
+
+	@Test
+	public void it_should_create_final_string_without_fields() {
+		String value = ToStringBuilder.builder(this).build();
+		assertThat(value).isEqualTo("com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilderTest{}");
+	}
+
+	private static class Klass1 {
+		private final String value;
+
+		private Klass1(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "toString: " + value;
+		}
 	}
 }

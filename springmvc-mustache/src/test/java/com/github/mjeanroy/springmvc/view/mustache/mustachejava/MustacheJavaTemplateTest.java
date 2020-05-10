@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Reader;
@@ -37,29 +36,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class MustacheJavaTemplateTest {
-
-	private MustacheJavaTemplate mustacheJavaTemplate;
-
-	@Before
-	public void setUp() {
-		Reader reader = new StringReader("foo :: {{ foo }}");
-		Mustache mustache = new DefaultMustacheFactory().compile(reader, "foo");
-		mustacheJavaTemplate = new MustacheJavaTemplate(mustache);
-	}
 
 	@Test
 	public void it_should_execute_template() {
 		Writer writer = new StringWriter();
-
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("foo", "bar");
 
+		Reader reader = new StringReader("foo :: {{ foo }}");
+		Mustache mustache = new DefaultMustacheFactory().compile(reader, "foo");
+		MustacheJavaTemplate mustacheJavaTemplate = new MustacheJavaTemplate(mustache);
 		mustacheJavaTemplate.execute(model, writer);
 
 		assertThat(writer.toString()).isEqualTo(
 				"foo :: bar"
 		);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Mustache mustache = mock(Mustache.class, "MustacheJava");
+		MustacheJavaTemplate mustacheJavaTemplate = new MustacheJavaTemplate(mustache);
+
+		// @formatter:off
+		assertThat(mustacheJavaTemplate).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaTemplate{" +
+						"mustache=MustacheJava" +
+				"}"
+		);
+		// @formatter:on
 	}
 }

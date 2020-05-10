@@ -165,4 +165,24 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isFalse();
 	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
+		factoryBean.setPrefix("/templates/");
+		factoryBean.setSuffix(".template.html");
+		factoryBean.setResourceLoader(mock(ResourceLoader.class, "ResourceLoader"));
+		factoryBean.setApplicationContext(mock(ApplicationContext.class, "ApplicationContext"));
+
+		// @formatter:off
+		assertThat(factoryBean).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean{" +
+						"resourceLoader=ResourceLoader, " +
+						"prefix=\"/templates/\", " +
+						"suffix=\".template.html\", " +
+						"applicationContext=ApplicationContext" +
+				"}"
+		);
+		// @formatter:on
+	}
 }

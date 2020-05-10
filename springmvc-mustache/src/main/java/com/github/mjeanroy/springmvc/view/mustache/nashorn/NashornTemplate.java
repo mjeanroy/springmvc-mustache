@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 
 import java.io.IOException;
@@ -76,5 +77,13 @@ class NashornTemplate implements MustacheTemplate {
 		catch (IOException ex) {
 			throw new MustacheIOException(ex);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("template", template)
+				.append("engine", engine)
+				.build();
 	}
 }

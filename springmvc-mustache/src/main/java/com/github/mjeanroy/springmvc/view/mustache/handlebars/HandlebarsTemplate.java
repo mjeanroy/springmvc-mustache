@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 
 import java.io.Writer;
@@ -57,5 +58,12 @@ class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTem
 	@Override
 	protected void doExecute(Map<String, Object> model, Writer writer) throws Exception {
 		template.apply(model, writer);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("template", template)
+				.build();
 	}
 }

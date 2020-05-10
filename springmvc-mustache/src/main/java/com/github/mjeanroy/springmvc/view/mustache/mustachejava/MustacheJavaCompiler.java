@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
@@ -63,5 +64,13 @@ public class MustacheJavaCompiler extends AbstractMustacheCompiler implements Mu
 	protected MustacheTemplate doCompile(String name) {
 		Mustache mustache = mustacheFactory.compile(name);
 		return new MustacheJavaTemplate(mustache);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("mustacheFactory", mustacheFactory)
+				.append("templateLoader", templateLoader)
+				.build();
 	}
 }

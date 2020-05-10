@@ -26,8 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -35,7 +33,6 @@ import org.springframework.core.io.ResourceLoader;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -44,10 +41,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
@@ -71,8 +66,13 @@ public class NashornTemplateTest {
 
 	@Test
 	public void it_should_execute_template() {
-		Writer writer = new StringWriter();
+		Reader reader = new StringReader("<div>Hello {{name}}</div>");
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheEngine scriptEngine = new MustacheEngine(mustacheTemplateLoader);
+		NashornTemplate template = new NashornTemplate(scriptEngine, reader);
 
+		Writer writer = new StringWriter();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", "World");
 
@@ -82,18 +82,34 @@ public class NashornTemplateTest {
 	}
 
 	@Test
-	public void it_should_catch_io_exception() throws Exception {
-		final Writer writer = mock(Writer.class);
+	public void it_should_implement_to_string() {
+		Reader reader = new StringReader("<div>Hello {{name}}</div>");
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheEngine scriptEngine = new MustacheEngine(mustacheTemplateLoader);
+		NashornTemplate template = new NashornTemplate(scriptEngine, reader);
 
-		doThrow(IOException.class).when(writer).write(anyString());
+		MustacheEngine mustacheEngine = readField(template, "engine");
+		ScriptEngine engine = readField(mustacheEngine, "engine");
 
-		final ThrowingCallable execute = new ThrowingCallable() {
-			@Override
-			public void call() {
-				template.execute(new HashMap<String, Object>(), writer);
-			}
-		};
-
-		assertThatThrownBy(execute).isInstanceOf(MustacheIOException.class);
+		// @formatter:off
+		assertThat(template).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornTemplate{" +
+						"template=\"<div>Hello {{name}}</div>\", " +
+						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine{" +
+								"engine=" + engine + ", " +
+								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject{" +
+										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+												"resourceLoader=ResourceLoader, " +
+												"prefix=null, " +
+												"suffix=null, " +
+												"partialAliases={}, " +
+												"temporaryPartialAliases={}" +
+										"}" +
+								"}" +
+						"}" +
+				"}"
+		);
+		// @formatter:on
 	}
 }

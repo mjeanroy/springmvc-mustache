@@ -40,6 +40,7 @@ import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.mock;
 
 public class DefaultTemplateLoaderTest {
 
@@ -80,8 +81,7 @@ public class DefaultTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
+		DefaultTemplateLoader loader = defaultTemplateLoader();
 		loader.addPartialAliases(aliases);
 
 		Map<String, String> partialsAliases = readField(loader, "partialAliases");
@@ -102,8 +102,7 @@ public class DefaultTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
+		DefaultTemplateLoader loader = defaultTemplateLoader();
 		loader.addTemporaryPartialAliases(aliases);
 
 		ThreadLocal<Map<String, String>> tl = readField(loader, "temporaryPartialAliases");
@@ -125,8 +124,7 @@ public class DefaultTemplateLoaderTest {
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
+		DefaultTemplateLoader loader = defaultTemplateLoader();
 		loader.addTemporaryPartialAliases(aliases);
 
 		ThreadLocal<Map<String, String>> tl = readField(loader, "temporaryPartialAliases");
@@ -146,13 +144,11 @@ public class DefaultTemplateLoaderTest {
 	@Test
 	public void it_should_throw_exception_when_resource_does_not_exist() {
 		final String name = "/templates/does_not_exist.template.html";
-		final ResourceLoader resourceLoader = new DefaultResourceLoader();
-		final DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
-
+		final DefaultTemplateLoader loader = defaultTemplateLoader();
 		final ThrowingCallable getTemplate = new ThrowingCallable() {
 			@Override
 			public void call() {
-				mustacheTemplateLoader.getTemplate(name);
+				loader.getTemplate(name);
 			}
 		};
 
@@ -268,5 +264,35 @@ public class DefaultTemplateLoaderTest {
 		String location = mustacheTemplateLoader.resolve(templateName);
 
 		assertThat(location).isEqualTo(prefix + realName + suffix);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		DefaultTemplateLoader templateLoader = defaultTemplateLoader(resourceLoader);
+
+		// @formatter:off
+		assertThat(templateLoader).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+						"resourceLoader=ResourceLoader, " +
+						"prefix=\"/templates/\", " +
+						"suffix=\".template.html\", " +
+						"partialAliases={}, " +
+						"temporaryPartialAliases={}" +
+				"}"
+		);
+		// @formatter:on
+	}
+
+	private static DefaultTemplateLoader defaultTemplateLoader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		return defaultTemplateLoader(resourceLoader);
+	}
+
+	private static DefaultTemplateLoader defaultTemplateLoader(ResourceLoader resourceLoader) {
+		String prefix = "/templates/";
+		String suffix = ".template.html";
+		String templateName = "foo";
+		return new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 	}
 }

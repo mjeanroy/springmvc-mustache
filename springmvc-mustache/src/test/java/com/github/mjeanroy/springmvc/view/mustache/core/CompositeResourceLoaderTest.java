@@ -115,6 +115,27 @@ public class CompositeResourceLoaderTest {
 		verify(resourceLoader2).getResource(location);
 	}
 
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader r1 = mock(ResourceLoader.class, "ResourceLoader1");
+		ResourceLoader r2 = mock(ResourceLoader.class, "ResourceLoader2");
+		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(asList(
+				r1,
+				r2
+		));
+
+		// @formatter:off
+		assertThat(compositeResourceLoader).hasToString(
+				"com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader{" +
+						"resourceLoaders=[" +
+							"ResourceLoader1, " +
+							"ResourceLoader2" +
+						"]" +
+				"}"
+		);
+		// @formatter:on
+	}
+
 	private static Resource newResource(boolean exists) {
 		Resource resource = mock(Resource.class);
 		when(resource.exists()).thenReturn(exists);

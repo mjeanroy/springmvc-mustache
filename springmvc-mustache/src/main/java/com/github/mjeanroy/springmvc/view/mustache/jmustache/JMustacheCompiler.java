@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.samskivert.mustache.Template;
 
@@ -67,5 +68,13 @@ public class JMustacheCompiler extends AbstractMustacheCompiler implements Musta
 
 	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
 		return compiler.withLoader(new JMustacheTemplateLoader(templateLoader)).compile(template);
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("compiler", compiler)
+				.append("templateLoader", templateLoader)
+				.build();
 	}
 }
