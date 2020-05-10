@@ -22,17 +22,25 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.commons;
+package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
-import org.junit.Test;
+/**
+ * Java Static Utilities.
+ */
+public final class JavaUtils {
 
-import static org.assertj.core.api.Assertions.assertThat;
+	private JavaUtils() {
+	}
 
-public class JavaUtilsTest {
-
-	@Test
-	public void it_should_get_java_version() {
-		double version = JavaUtils.getVersion();
-		assertThat(version).isNotZero().isGreaterThanOrEqualTo(1.7);
+	/**
+	 * Get current Java Version as double value.
+	 *
+	 * @return Java Version.
+	 */
+	public static double getVersion() {
+		String version = System.getProperty("java.version");
+		int pos = version.indexOf('.');
+		pos = version.indexOf('.', pos + 1);
+		return Double.parseDouble(version.substring(0, pos));
 	}
 }

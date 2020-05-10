@@ -31,8 +31,8 @@ import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Mustache View Resolver.

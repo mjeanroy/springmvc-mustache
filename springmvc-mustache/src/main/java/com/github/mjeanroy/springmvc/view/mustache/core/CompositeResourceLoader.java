@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notEmpty;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notEmpty;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Implementation of spring {@link org.springframework.core.io.ResourceLoader}

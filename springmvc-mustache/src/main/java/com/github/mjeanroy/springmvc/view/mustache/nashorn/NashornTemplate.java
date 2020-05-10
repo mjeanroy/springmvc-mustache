@@ -32,8 +32,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.read;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Template that will be evaluated using Nashorn engine.

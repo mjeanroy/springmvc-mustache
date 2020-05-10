@@ -47,8 +47,8 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Factory bean for {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader} instance.

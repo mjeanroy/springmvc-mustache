@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
+import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -62,15 +62,15 @@ public final class LoggerFactory {
 			return loggerProvider.getLogger(klass);
 		}
 
-		if (ClassUtils.isPresent("org.slf4j.Logger")) {
+		if (Classes.isPresent("org.slf4j.Logger")) {
 			return new Slf4jLogger(klass);
 		}
 
-		if (ClassUtils.isPresent("org.apache.logging.log4j.Logger")) {
+		if (Classes.isPresent("org.apache.logging.log4j.Logger")) {
 			return new Log4j2Logger(klass);
 		}
 
-		if (ClassUtils.isPresent("org.apache.commons.logging.Log")) {
+		if (Classes.isPresent("org.apache.commons.logging.Log")) {
 			return new CommonsLoggingLogger(klass);
 		}
 

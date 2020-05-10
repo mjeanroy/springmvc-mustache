@@ -31,7 +31,7 @@ import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler
 
 import java.io.Reader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Mustache compiler using nashorn engine to evaluation templates.

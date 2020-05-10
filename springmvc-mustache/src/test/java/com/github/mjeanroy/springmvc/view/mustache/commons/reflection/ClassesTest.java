@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.commons;
+package com.github.mjeanroy.springmvc.view.mustache.commons.reflection;
 
 import org.junit.Test;
 import org.springframework.core.type.AnnotationMetadata;
@@ -36,18 +36,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ClassUtilsTest {
+public class ClassesTest {
 
 	@Test
 	public void it_should_check_if_class_is_available() {
 		String className = getClass().getCanonicalName();
-		assertThat(ClassUtils.isPresent(className)).isTrue();
-		assertThat(ClassUtils.isPresent(className + "FooBar")).isFalse();
+		assertThat(Classes.isPresent(className)).isTrue();
+		assertThat(Classes.isPresent(className + "FooBar")).isFalse();
 	}
 
 	@Test
 	public void it_should_instantiate_class() {
-		Object instance = ClassUtils.newInstance(FixtureClass.class.getName());
+		Object instance = Classes.newInstance(FixtureClass.class.getName());
 		assertThat(instance).isNotNull();
 		assertThat(instance).isExactlyInstanceOf(FixtureClass.class);
 	}
@@ -57,7 +57,7 @@ public class ClassUtilsTest {
 		FixtureClass fixtureClass = new FixtureClass();
 		Object[] args = {};
 		Class<?>[] argTypes = {};
-		Object result = ClassUtils.invoke(fixtureClass, "emptyMethod", argTypes, args);
+		Object result = Classes.invoke(fixtureClass, "emptyMethod", argTypes, args);
 
 		assertThat(result).isNull();
 		assertThat(fixtureClass.calls).contains(
@@ -72,7 +72,7 @@ public class ClassUtilsTest {
 		Object[] args = {"test"};
 		Class<?>[] argTypes = {String.class};
 
-		Object result = ClassUtils.invoke(fixtureClass, "methodWithArgument", argTypes, args);
+		Object result = Classes.invoke(fixtureClass, "methodWithArgument", argTypes, args);
 
 		assertThat(result).isNull();
 		assertThat(fixtureClass.calls).contains(
@@ -90,7 +90,7 @@ public class ClassUtilsTest {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
 		when(metadata.getAnnotationAttributes(annotationName)).thenReturn(attributes);
 
-		String value = ClassUtils.getAnnotationValue(metadata, Foo.class, "foo", "bar");
+		String value = Classes.getAnnotationValue(metadata, Foo.class, "foo", "bar");
 
 		verify(metadata).getAnnotationAttributes(annotationName);
 		assertThat(value)
@@ -107,7 +107,7 @@ public class ClassUtilsTest {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
 		when(metadata.getAnnotationAttributes(annotationName)).thenReturn(attributes);
 
-		String value = ClassUtils.getAnnotationValue(metadata, Foo.class, "foo", "bar");
+		String value = Classes.getAnnotationValue(metadata, Foo.class, "foo", "bar");
 
 		verify(metadata).getAnnotationAttributes(annotationName);
 		assertThat(value)
@@ -125,7 +125,7 @@ public class ClassUtilsTest {
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
 		when(metadata.getAnnotationAttributes(annotationName)).thenReturn(attributes);
 
-		String value = ClassUtils.getAnnotationValue(metadata, Foo.class, "foo", "bar");
+		String value = Classes.getAnnotationValue(metadata, Foo.class, "foo", "bar");
 
 		verify(metadata).getAnnotationAttributes(annotationName);
 		assertThat(value).isNull();

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.commons;
+package com.github.mjeanroy.springmvc.view.mustache.commons.io;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
@@ -41,12 +41,12 @@ import java.util.Collection;
 /**
  * Common static IO Utilities.
  */
-public final class IOUtils {
+public final class Ios {
 
 	/**
 	 * Class logger.
 	 */
-	private static final Logger log = LoggerFactory.getLogger(IOUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(Ios.class);
 
 	/**
 	 * Buffer size to read files.
@@ -58,7 +58,7 @@ public final class IOUtils {
 	 */
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-	private IOUtils() {
+	private Ios() {
 	}
 
 	/**
@@ -106,7 +106,7 @@ public final class IOUtils {
 	 * @return Input Stream.
 	 */
 	public static InputStream getStream(String name) {
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(IOUtils.class.getClassLoader());
+		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(Ios.class.getClassLoader());
 		InputStream stream = getInputStreamWithResolver(resolver, name);
 
 		// Not Found
@@ -128,7 +128,7 @@ public final class IOUtils {
 	 * @throws MustacheIOException If everything fail.
 	 */
 	public static InputStream getFirstAvailableStream(Collection<String> names) {
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(IOUtils.class.getClassLoader());
+		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(Ios.class.getClassLoader());
 		for (String name : names) {
 			try {
 				InputStream stream = getInputStreamWithResolver(resolver, name);

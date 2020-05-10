@@ -22,11 +22,12 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.commons;
+package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
 import com.github.mjeanroy.junit4.runif.RunIf;
 import com.github.mjeanroy.junit4.runif.RunIfRunner;
 import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;

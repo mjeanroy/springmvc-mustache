@@ -33,10 +33,10 @@ import javax.script.ScriptException;
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.getFirstAvailableStream;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.getStream;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.NashornUtils.getEngine;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.getFirstAvailableStream;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.getStream;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils.getEngine;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static java.util.Arrays.asList;
 
 /**

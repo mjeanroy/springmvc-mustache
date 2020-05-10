@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.commons;
+package com.github.mjeanroy.springmvc.view.mustache.commons.io;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -38,14 +38,14 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class IOUtilsTest {
+public class IosTest {
 
 	@Test
 	public void it_should_read_input() {
 		InputStream stream = getClass().getResourceAsStream("/templates/foo.template.html");
 		Reader reader = new InputStreamReader(stream);
 
-		String content = IOUtils.read(reader);
+		String content = Ios.read(reader);
 
 		assertThat(content).isEqualTo("<div>Hello {{name}}</div>");
 	}
@@ -55,7 +55,7 @@ public class IOUtilsTest {
 		InputStream stream = getClass().getResourceAsStream("/templates/composite.template.html");
 		Reader reader = new InputStreamReader(stream);
 
-		String content = IOUtils.read(reader);
+		String content = Ios.read(reader);
 
 		assertThat(content).isEqualTo(joinLines(asList(
 				"<div>",
@@ -67,7 +67,7 @@ public class IOUtilsTest {
 	@Test
 	public void it_should_get_stream() {
 		String fileName = "/templates/foo.template.html";
-		InputStream stream = IOUtils.getStream(fileName);
+		InputStream stream = Ios.getStream(fileName);
 		assertThat(stream).hasSameContentAs(getClass().getResourceAsStream(fileName));
 	}
 
@@ -77,7 +77,7 @@ public class IOUtilsTest {
 		final ThrowingCallable getStream = new ThrowingCallable() {
 			@Override
 			public void call() {
-				IOUtils.getStream(fileName);
+				Ios.getStream(fileName);
 			}
 		};
 
@@ -94,7 +94,7 @@ public class IOUtilsTest {
 				"/templates/composite.template.html"
 		);
 
-		InputStream stream = IOUtils.getFirstAvailableStream(fileNames);
+		InputStream stream = Ios.getFirstAvailableStream(fileNames);
 		assertThat(stream).hasSameContentAs(getClass().getResourceAsStream(fileNames.get(1)));
 	}
 
@@ -108,7 +108,7 @@ public class IOUtilsTest {
 		final ThrowingCallable getFirstAvailableStream = new ThrowingCallable() {
 			@Override
 			public void call() {
-				IOUtils.getFirstAvailableStream(fileNames);
+				Ios.getFirstAvailableStream(fileNames);
 			}
 		};
 

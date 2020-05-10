@@ -32,7 +32,7 @@ import com.samskivert.mustache.Template;
 
 import java.io.Reader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static com.samskivert.mustache.Mustache.Compiler;
 
 /**

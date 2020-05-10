@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.commons;
+package com.github.mjeanroy.springmvc.view.mustache.commons.reflection;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.ReflectionException;
 import org.springframework.core.type.AnnotationMetadata;
@@ -32,14 +32,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.hasText;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
 
 /**
  * Commons static class utilities.
  */
-public final class ClassUtils {
+public final class Classes {
 
-	private ClassUtils() {
+	private Classes() {
 	}
 
 	/**

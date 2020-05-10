@@ -29,8 +29,8 @@ import jdk.nashorn.api.scripting.AbstractJSObject;
 
 import java.io.Reader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.IOUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.read;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Implementation of dynamic partial object.

@@ -27,9 +27,9 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
-import com.github.mjeanroy.springmvc.view.mustache.commons.JavaUtils;
-import com.github.mjeanroy.springmvc.view.mustache.commons.NashornUtils;
+import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.JavaUtils;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
@@ -41,9 +41,9 @@ import org.springframework.context.ApplicationContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.invoke;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.isPresent;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.newInstance;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.invoke;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.isPresent;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.newInstance;
 import static java.util.Arrays.sort;
 
 /**
@@ -156,7 +156,7 @@ public enum MustacheProvider {
 		@Override
 		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
 			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			Class<?> mustacheEngineClass = ClassUtils.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine");
+			Class<?> mustacheEngineClass = Classes.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine");
 			Object mustacheEngine = applicationContext.getBean(mustacheEngineClass);
 			Object instance = newInstance(configurationClass());
 

@@ -39,7 +39,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Default template loader implementation.

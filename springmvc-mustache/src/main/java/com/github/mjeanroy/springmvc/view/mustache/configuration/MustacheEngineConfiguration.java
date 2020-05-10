@@ -27,7 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils.getAnnotationValue;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.getAnnotationValue;
 
 /**
  * Select mustache configuration to use.

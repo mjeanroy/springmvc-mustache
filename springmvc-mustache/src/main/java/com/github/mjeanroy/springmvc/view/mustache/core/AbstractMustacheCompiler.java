@@ -33,7 +33,7 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Abstraction that define commons code to all mustache

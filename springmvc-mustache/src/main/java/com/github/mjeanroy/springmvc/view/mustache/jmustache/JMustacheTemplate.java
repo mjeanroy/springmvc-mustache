@@ -31,7 +31,7 @@ import com.samskivert.mustache.Template;
 import java.io.Writer;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.PreConditions.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Implementation of {@link MustacheTemplate} using JMustache
