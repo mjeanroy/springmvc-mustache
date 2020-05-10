@@ -33,7 +33,7 @@ import org.springframework.web.servlet.View;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.util.Assert.notNull;
+import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
 /**
  * Extension of {@link org.springframework.web.servlet.ModelAndView} class
@@ -128,7 +128,7 @@ public class ModelAndMustacheView extends ModelAndView {
 	@SuppressWarnings("unchecked")
 	public Map<String, String> getPartials() {
 		final View view = this.getView();
-		if (view != null && view instanceof MustacheView) {
+		if (view instanceof MustacheView) {
 			MustacheView mustacheView = (MustacheView) view;
 			return mustacheView.getAliases();
 		}
@@ -159,11 +159,11 @@ public class ModelAndMustacheView extends ModelAndView {
 	 * @param name Partial path.
 	 */
 	public void addPartial(final String key, final String name) {
-		notNull(key);
-		notNull(name);
+		notNull(key, "Partial key must be defined");
+		notNull(name, "Partials path must be defined");
 
 		View view = this.getView();
-		if (view != null && view instanceof MustacheView) {
+		if (view instanceof MustacheView) {
 			// First try to not pollute view model object
 			final MustacheView mustacheView = (MustacheView) view;
 			mustacheView.addAlias(key, name);
@@ -182,7 +182,7 @@ public class ModelAndMustacheView extends ModelAndView {
 	 * @param partials Partials.
 	 */
 	public void addPartials(final Map<String, String> partials) {
-		notNull(partials);
+		notNull(partials, "Partials mappings must not be null");
 
 		View view = this.getView();
 		if (view instanceof MustacheView) {
@@ -194,8 +194,8 @@ public class ModelAndMustacheView extends ModelAndView {
 			// Otherwise, add partials to model object
 			final Map<String, String> currentPartials = getPartials();
 			for (Map.Entry<String, String> entry : partials.entrySet()) {
-				notNull(entry.getKey());
-				notNull(entry.getValue());
+				notNull(entry.getKey(), "Partial key must be defined");
+				notNull(entry.getValue(), "Partial path must be defined");
 				currentPartials.put(entry.getKey(), entry.getValue());
 			}
 			super.addObject(MustacheSettings.PARTIALS_KEY, currentPartials);
