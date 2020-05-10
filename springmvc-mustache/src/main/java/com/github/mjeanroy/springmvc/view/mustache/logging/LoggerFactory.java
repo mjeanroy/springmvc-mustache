@@ -66,6 +66,10 @@ public final class LoggerFactory {
 			return new Slf4jLogger(klass);
 		}
 
+		if (ClassUtils.isPresent("org.apache.logging.log4j.Logger")) {
+			return new Log4j2Logger(klass);
+		}
+
 		if (ClassUtils.isPresent("org.apache.commons.logging.Log")) {
 			return new CommonsLoggingLogger(klass);
 		}
