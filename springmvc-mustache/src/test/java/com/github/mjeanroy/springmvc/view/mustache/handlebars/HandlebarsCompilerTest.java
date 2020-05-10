@@ -61,7 +61,7 @@ public class HandlebarsCompilerTest {
 		assertThat(hb).isNotNull().isSameAs(handlebars);
 		assertThat(tmplLoader).isNotNull();
 		assertThat(handlebars.getLoader()).isInstanceOf(HandlebarsTemplateLoader.class);
-		assertThat(readField(handlebars.getLoader(), "loader", TemplateLoader.class)).isSameAs(tmplLoader);
+		assertThat(readField(handlebars.getLoader(), "loader", MustacheTemplateLoader.class)).isSameAs(tmplLoader);
 	}
 
 	@Test

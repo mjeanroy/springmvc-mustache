@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
+import javax.script.ScriptEngine;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class NashornEngineTest {
 
 		assertThat(partials).isNotNull();
 		assertThat(readField(partials, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
-		assertThat(readField(engine, "engine", MustacheEngine.class)).isNotNull();
+		assertThat(readField(engine, "engine", ScriptEngine.class)).isNotNull();
 	}
 
 	@Test
@@ -63,7 +64,7 @@ public class NashornEngineTest {
 		NashornPartialsObject partials = readField(engine, "partials");
 		assertThat(partials).isNotNull();
 		assertThat(readField(partials, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
-		assertThat(readField(engine, "engine", MustacheEngine.class)).isNotNull();
+		assertThat(readField(engine, "engine", ScriptEngine.class)).isNotNull();
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class NashornEngineTest {
 
 		assertThat(partials).isNotNull();
 		assertThat(readField(partials, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
-		assertThat(readField(engine, "engine", MustacheEngine.class)).isNotNull();
+		assertThat(readField(engine, "engine", ScriptEngine.class)).isNotNull();
 	}
 
 	@Test

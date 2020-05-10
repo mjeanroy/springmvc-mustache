@@ -50,7 +50,7 @@ public class DefaultTemplateLoaderTest {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
-		assertThat(readField(loader, "resourceLoader", MustacheTemplateLoader.class)).isSameAs(resourceLoader);
+		assertThat(readField(loader, "resourceLoader", ResourceLoader.class)).isSameAs(resourceLoader);
 		assertThat(readField(loader, "prefix", String.class)).isNull();
 		assertThat(readField(loader, "suffix", String.class)).isNull();
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
