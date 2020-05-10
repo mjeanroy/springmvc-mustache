@@ -26,7 +26,6 @@
 # Compiled source      #
 ########################
 *.class
-jsp/
 
 ########################
 # Maven files          #

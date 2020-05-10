@@ -206,6 +206,12 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
+				<groupId>com.github.mjeanroy</groupId>
+				<artifactId>junit-servers-tomcat</artifactId>
+				<version>${junit-servers.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>com.squareup.okhttp3</groupId>
 				<artifactId>okhttp</artifactId>
 				<version>${okhttp.version}</version>
@@ -295,6 +301,7 @@
 				<module>springmvc-mustache-jmustache-xml</module>
 				<module>springmvc-mustache-mustachejava</module>
 				<module>springmvc-mustache-mustachejava-xml</module>
+				<module>springmvc-mustache-jsp</module>
 				<module>springmvc-mustache-springboot</module>
 			</modules>
 		</profile>
@@ -313,6 +320,7 @@
 				<module>springmvc-mustache-mustachejava-xml</module>
 				<module>springmvc-mustache-nashorn</module>
 				<module>springmvc-mustache-nashorn-xml</module>
+				<module>springmvc-mustache-jsp</module>
 				<module>springmvc-mustache-springboot</module>
 			</modules>
 		</profile>
