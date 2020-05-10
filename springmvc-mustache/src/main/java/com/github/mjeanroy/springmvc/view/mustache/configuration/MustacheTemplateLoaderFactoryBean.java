@@ -76,17 +76,17 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 	private ResourceLoader resourceLoader;
 
 	/**
-	 * @see {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getPrefix()}
+	 * @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getPrefix()
 	 */
 	private String prefix;
 
 	/**
-	 * @see {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getSuffix()}
+	 * @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getSuffix()
 	 */
 	private String suffix;
 
 	/**
-	 * @see {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#addPartialAliases(java.util.Map)}
+	 * @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#addPartialAliases(java.util.Map)
 	 */
 	private final Map<String, String> partialAliases;
 

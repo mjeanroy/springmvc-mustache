@@ -96,6 +96,7 @@ public final class ClassUtils {
 	 * Invoke given method on given instance with given arguments.
 	 * @param instance Object instance.
 	 * @param methodName Method to invoke.
+	 * @param parameterTypes Type of parameters.
 	 * @param args Method arguments.
 	 * @param <T> Type of given instance.
 	 * @return Method invocation result.

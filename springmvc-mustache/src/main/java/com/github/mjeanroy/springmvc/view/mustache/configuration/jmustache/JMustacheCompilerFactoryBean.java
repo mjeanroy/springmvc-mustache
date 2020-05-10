@@ -42,37 +42,37 @@ public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.C
 	private static final Logger log = LoggerFactory.getLogger(JMustacheCompilerFactoryBean.class);
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#nullValue}
+	 * @see com.samskivert.mustache.Mustache.Compiler#nullValue
 	 */
 	private String nullValue;
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#defaultValue}
+	 * @see com.samskivert.mustache.Mustache.Compiler#defaultValue
 	 */
 	private String defaultValue;
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#emptyStringIsFalse}
+	 * @see com.samskivert.mustache.Mustache.Compiler#emptyStringIsFalse
 	 */
 	private boolean emptyStringIsFalse;
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#zeroIsFalse}
+	 * @see com.samskivert.mustache.Mustache.Compiler#zeroIsFalse
 	 */
 	private boolean zeroIsFalse;
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#escapeHTML}
+	 * @see com.samskivert.mustache.Mustache.Compiler#escapeHTML
 	 */
 	private boolean escapeHTML;
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#strictSections}
+	 * @see com.samskivert.mustache.Mustache.Compiler#strictSections
 	 */
 	private boolean strictSections;
 
 	/**
-	 * @see {@link com.samskivert.mustache.Mustache.Compiler#standardsMode}
+	 * @see com.samskivert.mustache.Mustache.Compiler#standardsMode
 	 */
 	private boolean standardsMode;
 
