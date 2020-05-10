@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -120,6 +121,28 @@ public class NashornEngineTest {
 		};
 
 		assertThatThrownBy(render).isInstanceOf(NashornException.class);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		String script = "/META-INF/resources/webjars/mustache/**/mustache.js";
+		MustacheTemplateLoader templateLoader = defaultTemplateLoader();
+		MustacheEngine engine = new MustacheEngine(templateLoader, script);
+
+		ScriptEngine scriptEngine = readField(engine, "engine");
+		NashornPartialsObject partials = readField(engine, "partials");
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@%s{" +
+						"engine=%s, " +
+						"partials=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(engine).hasToString(String.format(
+				expectedToString, hexIdentity(engine), scriptEngine, partials
+		));
 	}
 
 	private static DefaultTemplateLoader defaultTemplateLoader() {

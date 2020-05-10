@@ -38,8 +38,11 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readStaticField;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,29 +50,30 @@ import static org.mockito.Mockito.mock;
 
 public class MustacheTemplateLoaderFactoryBeanTest {
 
-	private MustacheTemplateLoaderFactoryBean factoryBean;
-
 	private ResourceLoader classpathResourceLoader;
 
 	@Before
 	public void setUp() {
-		factoryBean = new MustacheTemplateLoaderFactoryBean();
 		classpathResourceLoader = readStaticField(MustacheTemplateLoaderFactoryBean.class, "CLASSPATH_RESOURCE_LOADER");
 	}
 
 	@Test
 	public void it_should_be_a_singleton() {
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		assertThat(factoryBean.isSingleton()).isTrue();
 	}
 
 	@Test
 	public void it_should_have_object_type() {
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		assertThat(factoryBean.getObjectType()).isEqualTo(MustacheTemplateLoader.class);
 	}
 
 	@Test
 	public void it_should_create_template_loader_with_unique_loaders() throws Exception {
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
+
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		factoryBean.setApplicationContext(applicationContext);
 		factoryBean.setResourceLoader(applicationContext);
 		factoryBean.afterPropertiesSet();
@@ -95,6 +99,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		factoryBean.setApplicationContext(applicationContext);
 		factoryBean.setResourceLoader(resourceLoader);
 		factoryBean.afterPropertiesSet();
@@ -118,6 +123,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 
 	@Test
 	public void it_should_instantiate_template_loader_using_default_loaders() throws Exception {
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		factoryBean.setApplicationContext(null);
 		factoryBean.setResourceLoader(null);
 		factoryBean.afterPropertiesSet();
@@ -137,6 +143,42 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		assertThat(list.get(0)).isExactlyInstanceOf(ClassPathXmlApplicationContext.class);
 		assertThat(list.get(1)).isExactlyInstanceOf(FileSystemXmlApplicationContext.class);
 		assertThat(list.get(2)).isSameAs(classpathResourceLoader);
+	}
+
+	@Test
+	public void it_should_set_prefix() {
+		String prefix = "/templates/";
+
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
+		factoryBean.setPrefix(prefix);
+
+		MustacheTemplateLoader templateLoader = factoryBean.createInstance();
+		assertThat(templateLoader.getPrefix()).isEqualTo(prefix);
+	}
+
+	@Test
+	public void it_should_set_suffix() {
+		String suffix = ".template.html";
+
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
+		factoryBean.setSuffix(suffix);
+
+		MustacheTemplateLoader templateLoader = factoryBean.createInstance();
+		assertThat(templateLoader.getSuffix()).isEqualTo(suffix);
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void it_should_set_partial_aliases() {
+		Map<String, String> partialAliases = Collections.singletonMap(
+				"john", "jane"
+		);
+
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
+		factoryBean.setPartialAliases(partialAliases);
+
+		MustacheTemplateLoader templateLoader = factoryBean.createInstance();
+		assertThat(readField(templateLoader, "partialAliases", Map.class)).isNotSameAs(partialAliases).isEqualTo(partialAliases);
 	}
 
 	@Test
@@ -164,5 +206,31 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		Resource resource = classpathResourceLoader.getResource("classpath:/templates/fake.template.html");
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isFalse();
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		ApplicationContext applicationContext = mock(ApplicationContext.class);
+
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
+		factoryBean.setPrefix("/templates");
+		factoryBean.setSuffix(".template.html");
+		factoryBean.setResourceLoader(resourceLoader);
+		factoryBean.setApplicationContext(applicationContext);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean@%s{" +
+						"resourceLoader=%s, " +
+						"prefix=\"/templates\", " +
+						"suffix=\".template.html\", " +
+						"applicationContext=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(factoryBean).hasToString(String.format(
+				expectedToString, hexIdentity(factoryBean), resourceLoader, applicationContext
+		));
 	}
 }

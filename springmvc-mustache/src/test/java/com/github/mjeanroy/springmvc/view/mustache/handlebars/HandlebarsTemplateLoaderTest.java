@@ -33,6 +33,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HandlebarsTemplateLoaderTest {
@@ -98,6 +99,24 @@ public class HandlebarsTemplateLoaderTest {
 		handlebarsTemplateLoader.setSuffix(suffix);
 
 		assertThat(mustacheTemplateLoader.getSuffix()).isEqualTo(suffix);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		HandlebarsTemplateLoader handlebarsTemplateLoader = new HandlebarsTemplateLoader(mustacheTemplateLoader);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsTemplateLoader@%s{" +
+						"loader=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(handlebarsTemplateLoader).hasToString(String.format(
+				expectedToString, hexIdentity(handlebarsTemplateLoader), mustacheTemplateLoader
+		));
 	}
 
 	private static HandlebarsTemplateLoader handlebarsTemplateLoader() {

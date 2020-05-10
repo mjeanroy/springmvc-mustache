@@ -56,6 +56,13 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
+	public void it_should_get_class_loader() {
+		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
+		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(collection);
+		assertThat(compositeResourceLoader.getClassLoader()).isNotNull();
+	}
+
+	@Test
 	public void it_should_create_resource_loader_from_collection() {
 		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
 		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(collection);

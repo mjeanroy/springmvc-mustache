@@ -35,6 +35,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MustacheJavaTemplateTest {
@@ -53,5 +54,23 @@ public class MustacheJavaTemplateTest {
 		assertThat(writer.toString()).isEqualTo(
 				"foo :: bar"
 		);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Reader reader = new StringReader("foo :: {{ foo }}");
+		Mustache mustache = new DefaultMustacheFactory().compile(reader, "foo");
+		MustacheJavaTemplate mustacheJavaTemplate = new MustacheJavaTemplate(mustache);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaTemplate@%s{" +
+						"mustache=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(mustacheJavaTemplate).hasToString(String.format(
+				expectedToString, hexIdentity(mustacheJavaTemplate), mustache
+		));
 	}
 }

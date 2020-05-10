@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -88,6 +89,28 @@ public class NashornPartialsObjectTest {
 		assertThatThrownBy(setSlot).isInstanceOf(UnsupportedOperationException.class);
 	}
 
+	@Test
+	public void it_should_implement_to_string() {
+		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
+		NashornPartialsObject partials = nashornPartialsObject(templateLoader);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@%s{" +
+						"templateLoader=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(partials).hasToString(String.format(
+				expectedToString, hexIdentity(partials), templateLoader
+		));
+	}
+
+	private static MustacheTemplateLoader mustacheTemplateLoader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		return new DefaultTemplateLoader(resourceLoader);
+	}
+
 	private static NashornPartialsObject nashornPartialsObject() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		return nashornPartialsObject(resourceLoader);
@@ -96,8 +119,11 @@ public class NashornPartialsObjectTest {
 	private static NashornPartialsObject nashornPartialsObject(ResourceLoader resourceLoader) {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
-
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		return nashornPartialsObject(templateLoader);
+	}
+
+	private static NashornPartialsObject nashornPartialsObject(MustacheTemplateLoader templateLoader) {
 		return new NashornPartialsObject(templateLoader);
 	}
 }

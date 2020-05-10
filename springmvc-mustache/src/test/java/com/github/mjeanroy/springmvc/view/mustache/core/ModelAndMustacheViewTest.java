@@ -40,11 +40,49 @@ import static org.assertj.core.api.Assertions.entry;
 public class ModelAndMustacheViewTest {
 
 	@Test
+	public void it_should_create_empty_view() {
+		ModelAndMustacheView view = new ModelAndMustacheView();
+		assertThat(view.getView()).isNull();
+		assertThat(view.getModel()).isEmpty();
+		assertThat(view.getPartials()).isEmpty();
+	}
+
+	@Test
+	public void it_should_create_view_with_name_and_model() {
+		String viewName = "view";
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("firstName", "John");
+		model.put("lastName", "Doe");
+
+		ModelAndMustacheView view = new ModelAndMustacheView(viewName, model);
+
+		assertThat(view.getViewName()).isEqualTo(viewName);
+		assertThat(view.getModel()).isEqualTo(model);
+		assertThat(view.getPartials()).isEmpty();
+	}
+
+	@Test
+	public void it_should_create_view_with_name_and_model_with_name() {
+		String viewName = "view";
+		String modelName = "model";
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("firstName", "John");
+		model.put("lastName", "Doe");
+
+		ModelAndMustacheView view = new ModelAndMustacheView(viewName, modelName, model);
+
+		assertThat(view.getViewName()).isEqualTo(viewName);
+		assertThat(view.getModel()).hasSize(1);
+		assertThat(view.getModel().get(modelName)).isEqualTo(model);
+		assertThat(view.getPartials()).isEmpty();
+	}
+
+	@Test
 	public void it_should_get_empty_partials() {
 		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
-
 		Map<String, String> partials = view.getPartials();
-
 		assertThat(partials).isNotNull().isEmpty();
 	}
 

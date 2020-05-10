@@ -24,14 +24,20 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.reflection;
 
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.ReflectionException;
+import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.Assertions.filter;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,6 +56,44 @@ public class ClassesTest {
 		Object instance = Classes.newInstance(FixtureClass.class.getName());
 		assertThat(instance).isNotNull();
 		assertThat(instance).isExactlyInstanceOf(FixtureClass.class);
+	}
+
+	@Test
+	public void it_should_fail_to_instantiate_unknown_class() {
+		final String className = "foo_bar";
+		final ThrowingCallable instantiate = new ThrowingCallable() {
+			@Override
+			public void call() {
+				Classes.newInstance(className);
+			}
+		};
+
+		assertThatThrownBy(instantiate).isInstanceOf(ReflectionException.class)
+				.hasCauseInstanceOf(ClassNotFoundException.class)
+				.hasMessage("java.lang.ClassNotFoundException: foo_bar");
+	}
+
+	@Test
+	public void it_should_get_class_of_given_name() {
+		String className = getClass().getName();
+		Class<?> klass = Classes.getClassOf(className);
+		assertThat(klass).isEqualTo(getClass());
+	}
+
+	@Test
+	public void it_should_not_get_class_of_unknown_name() {
+		final String className = "foo_bar";
+		final ThrowingCallable getClassOf = new ThrowingCallable() {
+			@Override
+			public void call() {
+				Classes.getClassOf(className);
+			}
+		};
+
+		assertThatThrownBy(getClassOf)
+				.isInstanceOf(ReflectionException.class)
+				.hasCauseInstanceOf(ClassNotFoundException.class)
+				.hasMessage("java.lang.ClassNotFoundException: foo_bar");
 	}
 
 	@Test
@@ -79,6 +123,25 @@ public class ClassesTest {
 				entry("emptyMethod", 0),
 				entry("methodWithArgument", 1)
 		);
+	}
+
+	@Test
+	public void it_should_fail_to_invoke_unknown_method() {
+		final FixtureClass fixtureClass = new FixtureClass();
+		final Object[] args = {};
+		final Class<?>[] argTypes = {};
+		final String methodName = "method_does_not_exist";
+		final ThrowingCallable invoke = new ThrowingCallable() {
+			@Override
+			public void call() {
+				Classes.invoke(fixtureClass, methodName, argTypes, args);
+			}
+		};
+
+		assertThatThrownBy(invoke)
+				.isInstanceOf(ReflectionException.class)
+				.hasCauseInstanceOf(NoSuchMethodException.class)
+				.hasMessage("java.lang.NoSuchMethodException: com.github.mjeanroy.springmvc.view.mustache.commons.reflection.ClassesTest$FixtureClass.method_does_not_exist()");
 	}
 
 	@Test

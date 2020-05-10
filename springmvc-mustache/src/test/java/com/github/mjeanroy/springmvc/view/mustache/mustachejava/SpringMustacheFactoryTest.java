@@ -33,6 +33,7 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringMustacheFactoryTest {
@@ -69,5 +70,23 @@ public class SpringMustacheFactoryTest {
 
 		assertThat(result).isNotNull();
 		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(templateLoader);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory@%s{" +
+						"templateLoader=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(springMustacheFactory).hasToString(String.format(
+				expectedToString, hexIdentity(springMustacheFactory), templateLoader
+		));
 	}
 }

@@ -34,6 +34,7 @@ import org.springframework.core.io.ResourceLoader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -232,6 +233,40 @@ public class MustacheViewResolverTest {
 		assertThat(partialsAliases2).hasSize(1).contains(
 				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName2)
 		);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		String layout1 = "index";
+		String layout2 = "admin";
+
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
+		mustacheViewResolver.addLayoutMapping("bar", layout2);
+		mustacheViewResolver.setDefaultLayout(layout1);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver@%s{" +
+						"compiler=%s, " +
+						"defaultLayout=\"index\", " +
+						"layoutKey=\"content\", " +
+						"layoutMappings={bar=admin}, " +
+						"order=2147483647, " +
+						"prefix=\"\", " +
+						"suffix=\"\", " +
+						"contentType=null, " +
+						"exposeContextBeansAsAttributes=null, " +
+						"exposedContextBeanNames=null, " +
+						"exposePathVariables=null, " +
+						"cache=true, " +
+						"cacheLimit=1024" +
+				"}";
+		// @formatter:on
+
+		assertThat(mustacheViewResolver).hasToString(String.format(
+				expectedToString, hexIdentity(mustacheViewResolver), mustacheCompiler
+		));
 	}
 
 	private static MustacheCompiler mustacheCompiler() {

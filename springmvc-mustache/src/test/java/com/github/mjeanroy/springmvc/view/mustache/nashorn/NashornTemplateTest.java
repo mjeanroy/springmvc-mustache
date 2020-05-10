@@ -26,14 +26,10 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -41,26 +37,11 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("deprecation")
 public class NashornTemplateTest {
-
-	private NashornTemplate template;
-
-	@Before
-	public void setUp() throws Exception {
-		Reader reader = new StringReader("<div>Hello {{name}}</div>");
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheEngine scriptEngine = new MustacheEngine(mustacheTemplateLoader);
-
-		template = new NashornTemplate(scriptEngine, reader);
-
-		ScriptEngine nashorn = new ScriptEngineManager().getEngineByName("nashorn");
-		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/META-INF/resources/webjars/mustache/2.3.2/mustache.js")));
-		nashorn.eval(new InputStreamReader(getClass().getResourceAsStream("/mustache/nashorn-bindings.js")));
-	}
 
 	@Test
 	public void it_should_execute_template() {
@@ -77,5 +58,26 @@ public class NashornTemplateTest {
 		template.execute(map, writer);
 
 		assertThat(writer.toString()).isEqualTo("<div>Hello World</div>");
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Reader reader = new StringReader("<div>Hello {{name}}</div>");
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheEngine mustacheEngine = new MustacheEngine(mustacheTemplateLoader);
+		NashornTemplate template = new NashornTemplate(mustacheEngine, reader);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornTemplate@%s{" +
+						"template=\"<div>Hello {{name}}</div>\", " +
+						"engine=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(template).hasToString(String.format(
+				expectedToString, hexIdentity(template), mustacheEngine
+		));
 	}
 }

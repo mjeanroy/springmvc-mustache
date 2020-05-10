@@ -77,6 +77,25 @@ public class MustacheParameterTagTest {
 	}
 
 	@Test
+	public void it_should_render_tag_and_release_it() throws Exception {
+		String parameterName = "fullName";
+		String parameterValue = "John Doe";
+
+		tag.setName(parameterName);
+		tag.setValue(parameterValue);
+
+		int result = tag.doEndTag();
+
+		assertThat(result).isEqualTo(6);
+		assertThat(readField(tag, "name", String.class)).isEqualTo(parameterName);
+		assertThat(readField(tag, "value", Object.class)).isEqualTo(parameterValue);
+
+		tag.release();
+		assertThat(readField(tag, "name", String.class)).isNull();
+		assertThat(readField(tag, "value", Object.class)).isNull();
+	}
+
+	@Test
 	public void it_should_fail_to_render_tag_if_parent_tag_is_null() {
 		tag.setParent(null);
 		tag.setName("fullName");

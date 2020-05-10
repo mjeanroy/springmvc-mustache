@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,143 +47,111 @@ public class NashornCompilerTest {
 
 	@Test
 	public void it_should_render_template() {
-		Writer writer = new StringWriter();
 		NashornCompiler nashornCompiler = nashornCompiler();
+		Writer writer = new StringWriter();
 		String name = "/templates/foo.template.html";
-
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		String expected = "<div>Hello foo</div>";
-		String result = writer.toString();
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+		assertThat(writer.toString()).isNotNull().isNotEmpty().isEqualTo("<div>Hello foo</div>");
 	}
 
 	@Test
 	public void it_should_treat_zero_as_falsy() {
-		Writer writer = new StringWriter();
 		NashornCompiler nashornCompiler = nashornCompiler();
+		Writer writer = new StringWriter();
 		String name = "/templates/zero.template.html";
-
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		String expected = joinLines(asList(
+		assertThat(writer.toString()).isEqualTo(joinLines(asList(
 				"<div>",
 				"	",
 				"	Zero should be falsy.",
 				"</div>"
-		));
-
-		String result = writer.toString();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+		)));
 	}
 
 	@Test
 	public void it_should_treat_empty_string_as_falsy() {
-		Writer writer = new StringWriter();
 		NashornCompiler nashornCompiler = nashornCompiler();
+		Writer writer = new StringWriter();
 		String name = "/templates/empty-string.template.html";
-
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		String expected = joinLines(asList(
+		assertThat(writer.toString()).isEqualTo(joinLines(asList(
 				"<div>",
 				"	",
 				"	An empty string should be falsy.",
 				"</div>"
-		));
-
-		String result = writer.toString();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+		)));
 	}
 
 	@Test
 	public void it_should_display_template_with_partial() {
-		Writer writer = new StringWriter();
 		NashornCompiler nashornCompiler = nashornCompiler();
+		Writer writer = new StringWriter();
 		String name = "/templates/composite.template.html";
-
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		String expected = joinLines(asList(
+		assertThat(writer.toString()).isEqualTo(joinLines(asList(
 				"<div>",
 				"<div>Hello foo</div></div>"
-		));
-
-		String result = writer.toString();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+		)));
 	}
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix() {
-		Writer writer = new StringWriter();
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
-		NashornCompiler nashornCompiler = nashornCompiler(templateLoader);
-
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
-		String name = "/templates/composite-aliases.template.html";
 
+		NashornCompiler nashornCompiler = nashornCompiler(templateLoader);
+
+		Writer writer = new StringWriter();
+		String name = "/templates/composite-aliases.template.html";
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		String expected = joinLines(asList(
+		assertThat(writer.toString()).isEqualTo(joinLines(asList(
 				"<div>",
 				"<div>Hello foo</div></div>"
-		));
-
-		String result = writer.toString();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+		)));
 	}
 
 	@Test
 	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
-		Writer writer = new StringWriter();
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
-		NashornCompiler nashornCompiler = nashornCompiler(templateLoader);
-
 		templateLoader.setPrefix("/templates/");
 		templateLoader.setSuffix(".template.html");
-		String name = "/templates/composite.template.html";
 
+		NashornCompiler nashornCompiler = nashornCompiler(templateLoader);
+
+		Writer writer = new StringWriter();
+		String name = "/templates/composite.template.html";
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		String expected = joinLines(asList(
+		assertThat(writer.toString()).isEqualTo(joinLines(asList(
 				"<div>",
 				"<div>Hello foo</div></div>"
-		));
-
-		String result = writer.toString();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
+		)));
 	}
 
 	@Test
 	public void it_should_display_template_with_partial_aliases() {
-		Writer writer = new StringWriter();
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		NashornCompiler nashornCompiler = nashornCompiler(templateLoader);
 
+		Writer writer = new StringWriter();
 		String name = "/templates/composite-aliases.template.html";
 		Map<String, String> aliases = Collections.singletonMap(
 				"foo", "/templates/foo.template.html"
@@ -192,19 +161,31 @@ public class NashornCompilerTest {
 
 		MustacheTemplate template = nashornCompiler.compile(name);
 
-		// Try to render template to check real result
 		template.execute(model(), writer);
 
-		templateLoader.removeTemporaryPartialAliases();
-
-		String expected = joinLines(asList(
+		assertThat(writer.toString()).isEqualTo(joinLines(asList(
 				"<div>",
 				"<div>Hello foo</div></div>"
+		)));
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
+		MustacheEngine mustacheEngine = mustacheEngine(templateLoader);
+		NashornCompiler nashornCompiler = nashornCompiler(templateLoader, mustacheEngine);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler@%s{" +
+						"engine=%s, " +
+						"templateLoader=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(nashornCompiler).hasToString(String.format(
+				expectedToString, hexIdentity(nashornCompiler), mustacheEngine, templateLoader
 		));
-
-		String result = writer.toString();
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
 	}
 
 	private static NashornCompiler nashornCompiler() {
@@ -220,7 +201,15 @@ public class NashornCompilerTest {
 
 	private static NashornCompiler nashornCompiler(MustacheTemplateLoader templateLoader) {
 		MustacheEngine mustacheEngine = new MustacheEngine(templateLoader);
+		return nashornCompiler(templateLoader, mustacheEngine);
+	}
+
+	private static NashornCompiler nashornCompiler(MustacheTemplateLoader templateLoader, MustacheEngine mustacheEngine) {
 		return new NashornCompiler(templateLoader, mustacheEngine);
+	}
+
+	private static MustacheEngine mustacheEngine(MustacheTemplateLoader templateLoader) {
+		return new MustacheEngine(templateLoader);
 	}
 
 	private static MustacheTemplateLoader mustacheTemplateLoader() {

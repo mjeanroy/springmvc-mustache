@@ -28,18 +28,19 @@ import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.mock;
 
 public class MustacheViewTest {
 
 	@Test
 	public void it_should_create_view() {
 		Mustache.Compiler compiler = Mustache.compiler();
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
 
 		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheCompiler mustacheCompiler = new JMustacheCompiler(compiler, mustacheTemplateLoader);
@@ -52,5 +53,32 @@ public class MustacheViewTest {
 		assertThat(view.getAliases()).hasSize(1).contains(
 				entry("john", "jane")
 		);
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Mustache.Compiler compiler = Mustache.compiler();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheCompiler mustacheCompiler = new JMustacheCompiler(compiler, mustacheTemplateLoader);
+
+		MustacheView view = new MustacheView();
+		view.setCompiler(mustacheCompiler);
+		view.addAlias("john", "jane");
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.MustacheView@%s{" +
+						"compiler=%s, " +
+						"aliases={" +
+								"john=jane" +
+						"}" +
+				"}";
+		// @formatter:on
+
+		assertThat(view).hasToString(String.format(
+				expectedToString, hexIdentity(view), mustacheCompiler
+		));
 	}
 }

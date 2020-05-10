@@ -33,6 +33,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JMustacheTemplateTest {
@@ -48,5 +49,22 @@ public class JMustacheTemplateTest {
 		jMustacheTemplate.execute(model, writer);
 
 		assertThat(writer.toString()).isEqualTo("foo :: bar");
+	}
+
+	@Test
+	public void it_should_implement_to_string() {
+		Template template = Mustache.compiler().compile("foo :: {{ foo }}");
+		JMustacheTemplate jMustacheTemplate = new JMustacheTemplate(template);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplate@%s{" +
+						"template=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(jMustacheTemplate).hasToString(String.format(
+				expectedToString, hexIdentity(jMustacheTemplate), template
+		));
 	}
 }

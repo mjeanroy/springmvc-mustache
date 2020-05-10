@@ -39,6 +39,7 @@ public class ToStringBuilderTest {
 				.append("field2", 'T')
 				.append("field3", new Klass1("bar"))
 				.append("field4", null)
+				.append("field5", true)
 				.build();
 
 		// @formatter:off
@@ -47,7 +48,8 @@ public class ToStringBuilderTest {
 						"field1=\"foo\", " +
 						"field2=T, " +
 						"field3=toString: bar, " +
-						"field4=null" +
+						"field4=null, " +
+						"field5=true" +
 				"}"
 		);
 		// @formatter:on

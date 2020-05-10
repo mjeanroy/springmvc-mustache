@@ -33,6 +33,7 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JMustacheTemplateLoaderTest {
@@ -48,6 +49,28 @@ public class JMustacheTemplateLoaderTest {
 		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
 	}
 
+	@Test
+	public void it_should_implement_to_string() {
+		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
+		JMustacheTemplateLoader jMustacheTemplateLoader = jMustacheTemplateLoader(templateLoader);
+
+		// @formatter:off
+		String expectedToString =
+				"com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheTemplateLoader@%s{" +
+						"loader=%s" +
+				"}";
+		// @formatter:on
+
+		assertThat(jMustacheTemplateLoader).hasToString(String.format(
+				expectedToString, hexIdentity(jMustacheTemplateLoader), templateLoader
+		));
+	}
+
+	private static MustacheTemplateLoader mustacheTemplateLoader() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		return new DefaultTemplateLoader(resourceLoader);
+	}
+
 	private static JMustacheTemplateLoader jMustacheTemplateLoader() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		return jMustacheTemplateLoader(resourceLoader);
@@ -55,6 +78,10 @@ public class JMustacheTemplateLoaderTest {
 
 	private static JMustacheTemplateLoader jMustacheTemplateLoader(ResourceLoader resourceLoader) {
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		return jMustacheTemplateLoader(templateLoader);
+	}
+
+	private static JMustacheTemplateLoader jMustacheTemplateLoader(MustacheTemplateLoader templateLoader) {
 		return new JMustacheTemplateLoader(templateLoader);
 	}
 }

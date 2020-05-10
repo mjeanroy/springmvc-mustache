@@ -28,6 +28,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.junit4.runif.RunIf;
 import com.github.mjeanroy.junit4.runif.RunIfRunner;
 import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
+import com.github.mjeanroy.junit4.runif.conditions.Java7Condition;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
@@ -49,6 +50,11 @@ import static org.mockito.Mockito.when;
 public class MustacheProviderTest {
 
 	@Test
+	public void it_should_check_if_jmustache_is_available() {
+		assertThat(MustacheProvider.JMUSTACHE.isAvailable()).isTrue();
+	}
+
+	@Test
 	public void it_should_get_jmustache_configuration_class() {
 		MustacheProvider provider = MustacheProvider.JMUSTACHE;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration";
@@ -67,6 +73,11 @@ public class MustacheProviderTest {
 	}
 
 	@Test
+	public void it_should_check_if_mustachejava_is_available() {
+		assertThat(MustacheProvider.MUSTACHE_JAVA.isAvailable()).isTrue();
+	}
+
+	@Test
 	public void it_should_get_mustachejava_configuration_class() {
 		MustacheProvider provider = MustacheProvider.MUSTACHE_JAVA;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration";
@@ -79,6 +90,11 @@ public class MustacheProviderTest {
 		MustacheProvider provider = MustacheProvider.MUSTACHE_JAVA;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler";
 		it_should_instantiate_engine_compiler(provider, applicationContext, className);
+	}
+
+	@Test
+	public void it_should_check_if_handlebars_is_available() {
+		assertThat(MustacheProvider.HANDLEBARS.isAvailable()).isTrue();
 	}
 
 	@Test
@@ -115,6 +131,18 @@ public class MustacheProviderTest {
 		MustacheProvider provider = MustacheProvider.JMUSTACHE;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler";
 		it_should_instantiate_engine_compiler(provider, applicationContext, className);
+	}
+
+	@Test
+	@RunIf(AtLeastJava8Condition.class)
+	public void it_should_check_if_nashorn_is_available() {
+		assertThat(MustacheProvider.NASHORN.isAvailable()).isTrue();
+	}
+
+	@Test
+	@RunIf(Java7Condition.class)
+	public void it_should_check_if_nashorn_is_not_available() {
+		assertThat(MustacheProvider.NASHORN.isAvailable()).isFalse();
 	}
 
 	@Test

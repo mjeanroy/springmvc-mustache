@@ -26,6 +26,8 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.env.MockEnvironment;
@@ -33,6 +35,7 @@ import org.springframework.mock.env.MockEnvironment;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.mock;
 
@@ -68,6 +71,42 @@ public class MustacheWebConfigurationTest {
 				entry(admin1, secure),
 				entry(admin2, secure)
 		);
+	}
+
+	@Test
+	public void it_should_parse_layout_mappings_and_skip_empty_parts() {
+		String admin1 = "admin1";
+		String admin2 = "admin2";
+		String secure = "secure";
+		String mappings = admin1 + ":" + secure + ";;" + admin2 + ":" + secure;
+
+		environment.setProperty("mustache.layoutMappings", mappings);
+
+		Map<String, String> map = mustacheWebConfiguration.getLayoutMappings();
+
+		assertThat(map).hasSize(2).containsOnly(
+				entry(admin1, secure),
+				entry(admin2, secure)
+		);
+	}
+
+	@Test
+	public void it_should_parse_layout_mappings_and_fail_with_invalid_format() {
+		String admin1 = "admin1";
+		String mappings = admin1 + ":;";
+
+		environment.setProperty("mustache.layoutMappings", mappings);
+
+		ThrowingCallable getLayoutMappings = new ThrowingCallable() {
+			@Override
+			public void call() {
+				mustacheWebConfiguration.getLayoutMappings();
+			}
+		};
+
+		assertThatThrownBy(getLayoutMappings)
+				.isInstanceOf(IllegalArgumentException.class)
+				.hasMessage("Mapping must use [viewName]:[layout] format!");
 	}
 
 	@Test
