@@ -85,7 +85,7 @@ public class MustacheViewResolverTest {
 
 		mustacheViewResolver.setPrefix(prefix);
 
-		assertThat(readField(mustacheViewResolver, "prefix")).isEqualTo(prefix);
+		assertThat(readField(mustacheViewResolver, "prefix", String.class)).isEqualTo(prefix);
 		assertThat(mustacheCompiler.getPrefix()).isEqualTo(prefix);
 	}
 
@@ -97,7 +97,7 @@ public class MustacheViewResolverTest {
 
 		mustacheViewResolver.setSuffix(suffix);
 
-		assertThat(readField(mustacheViewResolver, "suffix")).isEqualTo(suffix);
+		assertThat(readField(mustacheViewResolver, "suffix", String.class)).isEqualTo(suffix);
 		assertThat(mustacheCompiler.getSuffix()).isEqualTo(suffix);
 	}
 
@@ -106,7 +106,7 @@ public class MustacheViewResolverTest {
 		String defaultLayout = "foo";
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		mustacheViewResolver.setDefaultLayout(defaultLayout);
-		assertThat(readField(mustacheViewResolver, "defaultLayout")).isNotNull().isEqualTo(defaultLayout);
+		assertThat(readField(mustacheViewResolver, "defaultLayout", String.class)).isEqualTo(defaultLayout);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class MustacheViewResolverTest {
 		String layoutKey = "foo";
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		mustacheViewResolver.setLayoutKey(layoutKey);
-		assertThat(readField(mustacheViewResolver, "layoutKey")).isNotNull().isEqualTo(layoutKey);
+		assertThat(readField(mustacheViewResolver, "layoutKey", String.class)).isEqualTo(layoutKey);
 	}
 
 	@Test

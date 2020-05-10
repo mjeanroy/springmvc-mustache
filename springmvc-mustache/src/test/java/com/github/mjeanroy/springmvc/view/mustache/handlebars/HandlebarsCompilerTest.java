@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
@@ -60,7 +61,7 @@ public class HandlebarsCompilerTest {
 		assertThat(hb).isNotNull().isSameAs(handlebars);
 		assertThat(tmplLoader).isNotNull();
 		assertThat(handlebars.getLoader()).isInstanceOf(HandlebarsTemplateLoader.class);
-		assertThat(readField(handlebars.getLoader(), "loader")).isSameAs(tmplLoader);
+		assertThat(readField(handlebars.getLoader(), "loader", TemplateLoader.class)).isSameAs(tmplLoader);
 	}
 
 	@Test

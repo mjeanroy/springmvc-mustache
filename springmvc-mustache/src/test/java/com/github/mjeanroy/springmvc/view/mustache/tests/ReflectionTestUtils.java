@@ -79,6 +79,19 @@ public final class ReflectionTestUtils {
 	}
 
 	/**
+	 * Read field from given object instance.
+	 * @param instance Object instance.
+	 * @param fieldName Field name.
+	 * @param klass The class name.
+	 * @param <T> Type of given field.
+	 * @return The field, may be {@code null}.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T readField(Object instance, String fieldName, Class<T> klass) {
+		return (T) readField(instance, fieldName);
+	}
+
+	/**
 	 * Read static field from given class.
 	 * @param klass Class.
 	 * @param fieldName Field name.

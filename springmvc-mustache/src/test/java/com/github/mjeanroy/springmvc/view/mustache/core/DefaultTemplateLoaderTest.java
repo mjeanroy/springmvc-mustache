@@ -24,6 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
@@ -49,9 +50,9 @@ public class DefaultTemplateLoaderTest {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
-		assertThat(readField(loader, "resourceLoader")).isSameAs(resourceLoader);
-		assertThat(readField(loader, "prefix")).isNull();
-		assertThat(readField(loader, "suffix")).isNull();
+		assertThat(readField(loader, "resourceLoader", MustacheTemplateLoader.class)).isSameAs(resourceLoader);
+		assertThat(readField(loader, "prefix", String.class)).isNull();
+		assertThat(readField(loader, "suffix", String.class)).isNull();
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
@@ -63,9 +64,9 @@ public class DefaultTemplateLoaderTest {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
-		assertThat(readField(loader, "resourceLoader")).isSameAs(resourceLoader);
-		assertThat(readField(loader, "prefix")).isEqualTo(prefix);
-		assertThat(readField(loader, "suffix")).isEqualTo(suffix);
+		assertThat(readField(loader, "resourceLoader", ResourceLoader.class)).isSameAs(resourceLoader);
+		assertThat(readField(loader, "prefix", String.class)).isEqualTo(prefix);
+		assertThat(readField(loader, "suffix", String.class)).isEqualTo(suffix);
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 

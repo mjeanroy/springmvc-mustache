@@ -50,8 +50,8 @@ public class NashornEngineTest {
 		NashornPartialsObject partials = readField(engine, "partials");
 
 		assertThat(partials).isNotNull();
-		assertThat(readField(partials, "templateLoader")).isSameAs(templateLoader);
-		assertThat(readField(engine, "engine")).isNotNull();
+		assertThat(readField(partials, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
+		assertThat(readField(engine, "engine", MustacheEngine.class)).isNotNull();
 	}
 
 	@Test
@@ -62,8 +62,8 @@ public class NashornEngineTest {
 
 		NashornPartialsObject partials = readField(engine, "partials");
 		assertThat(partials).isNotNull();
-		assertThat(readField(partials, "templateLoader")).isSameAs(templateLoader);
-		assertThat(readField(engine, "engine")).isNotNull();
+		assertThat(readField(partials, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
+		assertThat(readField(engine, "engine", MustacheEngine.class)).isNotNull();
 	}
 
 	@Test
@@ -74,8 +74,8 @@ public class NashornEngineTest {
 		NashornPartialsObject partials = readField(engine, "partials");
 
 		assertThat(partials).isNotNull();
-		assertThat(readField(partials, "templateLoader")).isSameAs(templateLoader);
-		assertThat(readField(engine, "engine")).isNotNull();
+		assertThat(readField(partials, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
+		assertThat(readField(engine, "engine", MustacheEngine.class)).isNotNull();
 	}
 
 	@Test
