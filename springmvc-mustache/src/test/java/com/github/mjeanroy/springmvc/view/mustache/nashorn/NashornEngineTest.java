@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -132,12 +133,16 @@ public class NashornEngineTest {
 
 		ScriptEngine scriptEngine = readField(engine, "engine");
 
+		String partialsIdentity = hexIdentity(readField(engine, "partials"));
+		String templateLoaderIdentity = hexIdentity(templateLoader);
+		String identity = hexIdentity(engine);
+
 		// @formatter:off
 		assertThat(engine).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine{" +
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@" + identity + "{" +
 						"engine=" + scriptEngine + ", " +
-						"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject{" +
-								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+						"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + partialsIdentity + "{" +
+								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 										"resourceLoader=ResourceLoader, " +
 										"prefix=null, " +
 										"suffix=null, " +

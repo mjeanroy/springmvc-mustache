@@ -26,12 +26,14 @@ package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
 import org.junit.Test;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToStringBuilderTest {
 
 	@Test
 	public void it_should_create_final_string() {
+		String identity = hexIdentity(this);
 		String value = ToStringBuilder.builder(this)
 				.append("field1", "foo")
 				.append("field2", 'T')
@@ -41,7 +43,7 @@ public class ToStringBuilderTest {
 
 		// @formatter:off
 		assertThat(value).isEqualTo(
-				"com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilderTest{" +
+				"com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilderTest@" + identity + "{" +
 						"field1=\"foo\", " +
 						"field2=T, " +
 						"field3=toString: bar, " +
@@ -53,8 +55,15 @@ public class ToStringBuilderTest {
 
 	@Test
 	public void it_should_create_final_string_without_fields() {
+		String identity = hexIdentity(this);
 		String value = ToStringBuilder.builder(this).build();
-		assertThat(value).isEqualTo("com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilderTest{}");
+
+		// @formatter:off
+		assertThat(value).isEqualTo(
+				"com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilderTest@" + identity + "{" +
+				"}"
+		);
+		// @formatter:on
 	}
 
 	private static class Klass1 {

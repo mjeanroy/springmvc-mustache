@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readStaticField;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -173,10 +174,11 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		factoryBean.setSuffix(".template.html");
 		factoryBean.setResourceLoader(mock(ResourceLoader.class, "ResourceLoader"));
 		factoryBean.setApplicationContext(mock(ApplicationContext.class, "ApplicationContext"));
+		String identity = hexIdentity(factoryBean);
 
 		// @formatter:off
 		assertThat(factoryBean).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean{" +
+				"com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean@" + identity + "{" +
 						"resourceLoader=ResourceLoader, " +
 						"prefix=\"/templates/\", " +
 						"suffix=\".template.html\", " +

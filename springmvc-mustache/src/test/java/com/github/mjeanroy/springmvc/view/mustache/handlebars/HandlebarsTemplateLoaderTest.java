@@ -33,6 +33,8 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -106,10 +108,13 @@ public class HandlebarsTemplateLoaderTest {
 		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
 		HandlebarsTemplateLoader hbTemplateLoaders = handlebarsTemplateLoader(resourceLoader);
 
+		String templateLoaderIdentity = hexIdentity(readField(hbTemplateLoaders, "loader"));
+		String hbTemplateLoaderIdentity = hexIdentity(hbTemplateLoaders);
+
 		// @formatter:off
 		assertThat(hbTemplateLoaders).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsTemplateLoader{" +
-						"loader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsTemplateLoader@" + hbTemplateLoaderIdentity + "{" +
+						"loader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 								"resourceLoader=ResourceLoader, " +
 								"prefix=\"/templates/\", " +
 								"suffix=\".template.html\", " +

@@ -37,6 +37,18 @@ public final class ReflectionTestUtils {
 	private ReflectionTestUtils() {
 	}
 
+	/**
+	 * Get identity id of given instance as an hexadecimal string.
+	 *
+	 * @param object The object instance.
+	 * @return The identity.
+	 */
+	public static String hexIdentity(Object object) {
+		return Integer.toHexString(
+				System.identityHashCode(object)
+		);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> T instantiate(String className, Class<?>[] argTypes, Object[] args) {
 		try {

@@ -35,6 +35,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -60,10 +61,11 @@ public class MustacheJavaTemplateTest {
 	public void it_should_implement_to_string() {
 		Mustache mustache = mock(Mustache.class, "MustacheJava");
 		MustacheJavaTemplate mustacheJavaTemplate = new MustacheJavaTemplate(mustache);
+		String identity = hexIdentity(mustacheJavaTemplate);
 
 		// @formatter:off
 		assertThat(mustacheJavaTemplate).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaTemplate{" +
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaTemplate@" + identity + "{" +
 						"mustache=MustacheJava" +
 				"}"
 		);

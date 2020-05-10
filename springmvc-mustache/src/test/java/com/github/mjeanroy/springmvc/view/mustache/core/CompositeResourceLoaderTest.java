@@ -31,6 +31,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.util.Collection;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -119,14 +120,12 @@ public class CompositeResourceLoaderTest {
 	public void it_should_implement_to_string() {
 		ResourceLoader r1 = mock(ResourceLoader.class, "ResourceLoader1");
 		ResourceLoader r2 = mock(ResourceLoader.class, "ResourceLoader2");
-		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(asList(
-				r1,
-				r2
-		));
+		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(asList(r1, r2));
+		String identity = hexIdentity(compositeResourceLoader);
 
 		// @formatter:off
 		assertThat(compositeResourceLoader).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader{" +
+				"com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader@" + identity + "{" +
 						"resourceLoaders=[" +
 							"ResourceLoader1, " +
 							"ResourceLoader2" +

@@ -32,9 +32,10 @@ import java.util.Map;
  */
 public class ToStringBuilder {
 
-	private static final String OBJECT_PREFIX = "{";
-	private static final String OBJECT_SUFFIX = "}";
-	private static final String FIELD_VALUE_SEPARATOR = "=";
+	private static final char IDENTITY_SEPARATOR = '@';
+	private static final char OBJECT_PREFIX = '{';
+	private static final char OBJECT_SUFFIX = '}';
+	private static final char FIELD_VALUE_SEPARATOR = '=';
 	private static final String FIELD_SEPARATOR = ", ";
 
 	/**
@@ -53,6 +54,11 @@ public class ToStringBuilder {
 	private final String name;
 
 	/**
+	 * The identity instance.
+	 */
+	private final String identity;
+
+	/**
 	 * The list of fields to output.
 	 */
 	private final Map<String, String> fields;
@@ -66,8 +72,9 @@ public class ToStringBuilder {
 
 	private ToStringBuilder(Object object) {
 		this.name = object.getClass().getName();
+		this.identity = Integer.toHexString(System.identityHashCode(object));
 		this.fields = new LinkedHashMap<String, String>();
-		this.size = name.length();
+		this.size = name.length() + identity.length() + 1;
 	}
 
 	/**
@@ -124,10 +131,16 @@ public class ToStringBuilder {
 	 */
 	public String build() {
 		int nbFields = fields.size();
-		int fullSize = this.size + OBJECT_PREFIX.length() + OBJECT_SUFFIX.length() + (FIELD_VALUE_SEPARATOR.length() * nbFields) + (FIELD_SEPARATOR.length() * (nbFields - 1));
-		StringBuilder sb = new StringBuilder(fullSize);
+		int fullSize = this.size
+				+ 1                                          // OBJECT_PREFIX
+				+ 1                                          // OBJECT_SUFFIX
+				+ nbFields                                   // FIELD_VALUE_SEPARATOR
+				+ FIELD_SEPARATOR.length() * (nbFields - 1); // FIELD_SEPARATOR
 
+		StringBuilder sb = new StringBuilder(fullSize);
 		sb.append(name);
+		sb.append(IDENTITY_SEPARATOR);
+		sb.append(identity);
 		sb.append(OBJECT_PREFIX);
 
 		boolean first = true;

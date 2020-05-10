@@ -31,6 +31,8 @@ import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -94,10 +96,13 @@ public class NashornPartialsObjectTest {
 		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
 		NashornPartialsObject nashornPartialsObject = nashornPartialsObject(resourceLoader);
 
+		String templateLoaderIdentity = hexIdentity(readField(nashornPartialsObject, "templateLoader"));
+		String identity = hexIdentity(nashornPartialsObject);
+
 		// @formatter:off
 		assertThat(nashornPartialsObject).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject{" +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + identity + "{" +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 								"resourceLoader=ResourceLoader, " +
 								"prefix=\"/templates/\", " +
 								"suffix=\".template.html\", " +

@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
@@ -218,13 +219,18 @@ public class NashornCompilerTest {
 		MustacheEngine mustacheEngine = readField(nashornCompiler, "engine");
 		ScriptEngine engine = readField(mustacheEngine, "engine");
 
+		String templateLoaderIdentity = hexIdentity(readField(nashornCompiler, "templateLoader"));
+		String mustacheEngineIdentity = hexIdentity(mustacheEngine);
+		String partialsIdentity = hexIdentity(readField(mustacheEngine, "partials"));
+		String identity = hexIdentity(nashornCompiler);
+
 		// @formatter:off
 		assertThat(nashornCompiler).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler{" +
-						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine{" +
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler@" + identity + "{" +
+						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@" + mustacheEngineIdentity + "{" +
 								"engine=" + engine + ", " +
-								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject{" +
-										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + partialsIdentity + "{" +
+										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 												"resourceLoader=ResourceLoader, " +
 												"prefix=null, " +
 												"suffix=null, " +
@@ -233,7 +239,7 @@ public class NashornCompilerTest {
 										"}" +
 								"}" +
 						"}, " +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 								"resourceLoader=ResourceLoader, " +
 								"prefix=null, " +
 								"suffix=null, " +

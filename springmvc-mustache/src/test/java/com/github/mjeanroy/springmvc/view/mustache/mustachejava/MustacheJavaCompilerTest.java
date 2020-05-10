@@ -36,6 +36,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
@@ -236,11 +238,15 @@ public class MustacheJavaCompilerTest {
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
 
+		String templateLoaderIdentity = hexIdentity(templateLoader);
+		String mustacheFactoryIdentity = hexIdentity(readField(mustacheJavaCompiler, "mustacheFactory"));
+		String mustacheJavaCompilerIdentity = hexIdentity(mustacheJavaCompiler);
+
 		// @formatter:off
 		assertThat(mustacheJavaCompiler).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler{" +
-						"mustacheFactory=com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory{" +
-								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler@" + mustacheJavaCompilerIdentity + "{" +
+						"mustacheFactory=com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory@" + mustacheFactoryIdentity + "{" +
+								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 										"resourceLoader=ResourceLoader, " +
 										"prefix=null, " +
 										"suffix=null, " +
@@ -248,7 +254,7 @@ public class MustacheJavaCompilerTest {
 										"temporaryPartialAliases={}" +
 								"}" +
 						"}, " +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 								"resourceLoader=ResourceLoader, " +
 								"prefix=null, " +
 								"suffix=null, " +

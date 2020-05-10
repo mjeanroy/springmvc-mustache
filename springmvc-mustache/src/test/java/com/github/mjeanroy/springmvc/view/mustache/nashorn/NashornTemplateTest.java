@@ -41,6 +41,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -92,14 +93,19 @@ public class NashornTemplateTest {
 		MustacheEngine mustacheEngine = readField(template, "engine");
 		ScriptEngine engine = readField(mustacheEngine, "engine");
 
+		String mustacheTemplateLoaderIdentity = hexIdentity(mustacheTemplateLoader);
+		String mustacheEngineIdentity = hexIdentity(scriptEngine);
+		String partialsIdentity = hexIdentity(readField(scriptEngine, "partials"));
+		String identity = hexIdentity(template);
+
 		// @formatter:off
 		assertThat(template).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornTemplate{" +
+				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornTemplate@" + identity + "{" +
 						"template=\"<div>Hello {{name}}</div>\", " +
-						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine{" +
+						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@" + mustacheEngineIdentity + "{" +
 								"engine=" + engine + ", " +
-								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject{" +
-										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + partialsIdentity + "{" +
+										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + mustacheTemplateLoaderIdentity + "{" +
 												"resourceLoader=ResourceLoader, " +
 												"prefix=null, " +
 												"suffix=null, " +

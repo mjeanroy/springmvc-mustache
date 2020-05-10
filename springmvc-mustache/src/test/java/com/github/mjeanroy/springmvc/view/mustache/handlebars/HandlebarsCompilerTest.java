@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
@@ -274,11 +275,14 @@ public class HandlebarsCompilerTest {
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(hb, templateLoader);
 
+		String hbCompilerIdentity = hexIdentity(hbCompiler);
+		String templateLoaderIdentity = hexIdentity(templateLoader);
+
 		// @formatter:off
 		assertThat(hbCompiler).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler{" +
+				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler@" + hbCompilerIdentity + "{" +
 						"handlebars=" + hb + ", " +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader{" +
+						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
 								"resourceLoader=ResourceLoader, " +
 								"prefix=null, " +
 								"suffix=null, " +
