@@ -24,52 +24,19 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import com.github.mjeanroy.springmvc.view.mustache.commons.ClassUtils;
-
-import java.util.Iterator;
-import java.util.ServiceLoader;
-
 /**
- * Factory for {@link Logger}.
+ * A provider that can build valid {@link Logger} implementation and will be discovered
+ * using Service Provider Interface.
+ *
+ * @see java.util.ServiceLoader
  */
-public final class LoggerFactory {
+public interface LoggerProvider {
 
 	/**
-	 * The custom logger provider provided using the Service Provider Interface.
-	 */
-	private static final LoggerProvider loggerProvider;
-
-	static {
-		// First, discover using the ServiceProvider API.
-		ServiceLoader<LoggerProvider> loggerProviders = ServiceLoader.load(LoggerProvider.class);
-		Iterator<LoggerProvider> it = loggerProviders.iterator();
-		loggerProvider = it.hasNext() ? it.next() : null;
-	}
-
-	// Ensure non instantiation.
-	private LoggerFactory() {
-	}
-
-	/**
-	 * Create logger from given class name as logger name.
+	 * Create the logger.
 	 *
-	 * @param klass Class name.
-	 * @return Logger.
+	 * @param klass The logger name.
+	 * @return The logger instance.
 	 */
-	public static Logger getLogger(Class<?> klass) {
-		// First, discover using the ServiceProvider API.
-		if (loggerProvider != null) {
-			return loggerProvider.getLogger(klass);
-		}
-
-		if (ClassUtils.isPresent("org.slf4j.Logger")) {
-			return new Slf4jLogger(klass);
-		}
-
-		if (ClassUtils.isPresent("org.apache.commons.logging.Log")) {
-			return new CommonsLoggingLogger(klass);
-		}
-
-		return NoopLogger.getInstance();
-	}
+	Logger getLogger(Class<?> klass);
 }
