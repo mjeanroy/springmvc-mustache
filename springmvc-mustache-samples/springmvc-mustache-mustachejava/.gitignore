@@ -1,4 +1,4 @@
-##
+springmvc-mustache-samples/springmvc-mustache-mustachejava/.gitignore##
 # The MIT License (MIT)
 #
 # Copyright (c) 2014-2020 Mickael Jeanroy
@@ -26,7 +26,6 @@
 # Compiled source      #
 ########################
 *.class
-jsp/
 
 ########################
 # Maven files          #

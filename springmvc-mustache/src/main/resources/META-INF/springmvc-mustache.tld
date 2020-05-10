@@ -32,7 +32,7 @@
 	<display-name>springmvc-mustache</display-name>
 	<tlib-version>1.1</tlib-version>
 	<short-name>mustache</short-name>
-	<uri>http://github.com/mjeanroy/springmvc-mustache/jsp/jstl/springmvc-mustache</uri>
+	<uri>https://github.com/mjeanroy/springmvc-mustache/jsp/jstl/springmvc-mustache</uri>
 
 	<tag>
 		<description>Renders the given mustache template.</description>
