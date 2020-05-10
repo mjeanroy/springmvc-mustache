@@ -24,6 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
@@ -167,9 +168,12 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		final String name = useLayout ? layout : viewName;
 
 		log.info("Build view '{}'", viewName);
-		log.trace("  => Use layout: {}", useLayout);
-		log.trace("  => Layout: {}", layout);
-		log.trace("  => Name: {}", name);
+
+		if (log.isTraceEnabled()) {
+			log.trace("  => Use layout: {}", useLayout);
+			log.trace("  => Layout: {}", layout);
+			log.trace("  => Name: {}", name);
+		}
 
 		final MustacheView view = (MustacheView) super.buildView(name);
 		view.setCompiler(compiler);
@@ -179,7 +183,30 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 			view.addAlias(layoutKey, viewName);
 		}
 
+		if (log.isDebugEnabled()) {
+			log.debug("View has been built: {}", view);
+		}
+
 		return view;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("compiler", compiler)
+				.append("defaultLayout", defaultLayout)
+				.append("layoutKey", layoutKey)
+				.append("layoutMappings", layoutMappings)
+				.append("order", getOrder())
+				.append("prefix", getPrefix())
+				.append("suffix", getSuffix())
+				.append("contentType", getContentType())
+				.append("exposeContextBeansAsAttributes", getExposeContextBeansAsAttributes())
+				.append("exposedContextBeanNames", getExposedContextBeanNames())
+				.append("exposePathVariables", getExposePathVariables())
+				.append("cache", isCache())
+				.append("cacheLimit", getCacheLimit())
+				.build();
 	}
 }
 

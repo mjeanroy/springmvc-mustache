@@ -31,19 +31,15 @@ import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import javax.script.ScriptEngine;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornCompilerTest {
@@ -209,46 +205,6 @@ public class NashornCompilerTest {
 		String result = writer.toString();
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		NashornCompiler nashornCompiler = nashornCompiler(resourceLoader);
-
-		MustacheEngine mustacheEngine = readField(nashornCompiler, "engine");
-		ScriptEngine engine = readField(mustacheEngine, "engine");
-
-		String templateLoaderIdentity = hexIdentity(readField(nashornCompiler, "templateLoader"));
-		String mustacheEngineIdentity = hexIdentity(mustacheEngine);
-		String partialsIdentity = hexIdentity(readField(mustacheEngine, "partials"));
-		String identity = hexIdentity(nashornCompiler);
-
-		// @formatter:off
-		assertThat(nashornCompiler).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler@" + identity + "{" +
-						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@" + mustacheEngineIdentity + "{" +
-								"engine=" + engine + ", " +
-								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + partialsIdentity + "{" +
-										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
-												"resourceLoader=ResourceLoader, " +
-												"prefix=null, " +
-												"suffix=null, " +
-												"partialAliases={}, " +
-												"temporaryPartialAliases={}" +
-										"}" +
-								"}" +
-						"}, " +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
-								"resourceLoader=ResourceLoader, " +
-								"prefix=null, " +
-								"suffix=null, " +
-								"partialAliases={}, " +
-								"temporaryPartialAliases={}" +
-						"}" +
-				"}"
-		);
-		// @formatter:on
 	}
 
 	private static NashornCompiler nashornCompiler() {

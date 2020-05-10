@@ -33,7 +33,6 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HandlebarsTemplateTest {
@@ -51,24 +50,6 @@ public class HandlebarsTemplateTest {
 		assertThat(writer.toString()).isEqualTo(
 				"foo :: bar"
 		);
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		com.github.jknack.handlebars.Template template = createTemplate();
-		HandlebarsTemplate handlebarsTemplate = new HandlebarsTemplate(template);
-		String identity = hexIdentity(handlebarsTemplate);
-
-		// @formatter:off
-		assertThat(handlebarsTemplate).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsTemplate@" + identity + "{" +
-						"template=[" +
-							"inline@10419a34:1:0, " +
-							"inline@10419a34:1:10" +
-						"]" +
-				"}"
-		);
-		// @formatter:on
 	}
 
 	private static Template createTemplate() {

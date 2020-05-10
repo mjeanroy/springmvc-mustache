@@ -35,13 +35,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.mock;
 
 public class DefaultTemplateLoaderTest {
 
@@ -265,25 +263,6 @@ public class DefaultTemplateLoaderTest {
 		String location = mustacheTemplateLoader.resolve(templateName);
 
 		assertThat(location).isEqualTo(prefix + realName + suffix);
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		DefaultTemplateLoader templateLoader = defaultTemplateLoader(resourceLoader);
-		String identity = hexIdentity(templateLoader);
-
-		// @formatter:off
-		assertThat(templateLoader).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + identity + "{" +
-						"resourceLoader=ResourceLoader, " +
-						"prefix=\"/templates/\", " +
-						"suffix=\".template.html\", " +
-						"partialAliases={}, " +
-						"temporaryPartialAliases={}" +
-				"}"
-		);
-		// @formatter:on
 	}
 
 	private static DefaultTemplateLoader defaultTemplateLoader() {

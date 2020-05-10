@@ -33,9 +33,7 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.Reader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class SpringMustacheFactoryTest {
 
@@ -71,32 +69,5 @@ public class SpringMustacheFactoryTest {
 
 		assertThat(result).isNotNull();
 		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		String prefix = "/templates/";
-		String suffix = ".template.html";
-		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-
-		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(templateLoader);
-
-		String templateLoaderidentity = hexIdentity(templateLoader);
-		String identity = hexIdentity(springMustacheFactory);
-
-		// @formatter:off
-		assertThat(springMustacheFactory).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory@" + identity + "{" +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderidentity + "{" +
-								"resourceLoader=ResourceLoader, " +
-								"prefix=\"/templates/\", " +
-								"suffix=\".template.html\", " +
-								"partialAliases={}, " +
-								"temporaryPartialAliases={}" +
-						"}" +
-				"}"
-		);
-		// @formatter:on
 	}
 }

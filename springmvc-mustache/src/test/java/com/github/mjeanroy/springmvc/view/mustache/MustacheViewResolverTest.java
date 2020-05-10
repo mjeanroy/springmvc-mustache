@@ -24,8 +24,12 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
-import org.junit.Before;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import com.samskivert.mustache.Mustache;
 import org.junit.Test;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,40 +37,39 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class MustacheViewResolverTest {
 
-	private MustacheCompiler compiler;
+	@Test
+	public void it_should_create_view_resolver() {
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver viewResolver = mustacheViewResolver(mustacheCompiler);
 
-	private MustacheViewResolver mustacheViewResolver;
-
-	@Before
-	public void setUp() {
-		compiler = mock(MustacheCompiler.class);
-		mustacheViewResolver = new MustacheViewResolver(compiler);
+		assertThat(viewResolver.getOrder()).isEqualTo(2147483647);
+		assertThat(viewResolver.isCache()).isTrue();
+		assertThat(viewResolver.getCacheLimit()).isEqualTo(1024);
 	}
 
 	@Test
 	public void it_should_have_required_view_class() {
-		assertThat(mustacheViewResolver.requiredViewClass()).isNotNull().isEqualTo(MustacheView.class);
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
+		Class<?> viewClass = mustacheViewResolver.requiredViewClass();
+		assertThat(viewClass).isNotNull().isEqualTo(MustacheView.class);
 	}
 
 	@Test
 	public void it_should_build_resolver_using_compiler_and_template_loader() {
-		MustacheCompiler compiler = mock(MustacheCompiler.class);
-
+		MustacheCompiler compiler = mustacheCompiler();
 		MustacheViewResolver mustacheViewResolver = new MustacheViewResolver(compiler);
 
-		MustacheCompiler c = readField(mustacheViewResolver, "compiler");
+		MustacheCompiler mustacheCompiler = readField(mustacheViewResolver, "compiler");
 		String prefix = readField(mustacheViewResolver, "prefix");
 		String suffix = readField(mustacheViewResolver, "suffix");
 		String defaultLayout = readField(mustacheViewResolver, "defaultLayout");
 		String layoutKey = readField(mustacheViewResolver, "layoutKey");
 		Map<String, String> mappings = readField(mustacheViewResolver, "layoutMappings");
 
-		assertThat(c).isNotNull().isSameAs(compiler);
+		assertThat(mustacheCompiler).isNotNull().isSameAs(compiler);
 		assertThat(prefix).isNotNull().isEmpty();
 		assertThat(suffix).isNotNull().isEmpty();
 		assertThat(defaultLayout).isNull();
@@ -77,45 +80,41 @@ public class MustacheViewResolverTest {
 	@Test
 	public void it_should_set_prefix() {
 		String prefix = "foo";
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
 
 		mustacheViewResolver.setPrefix(prefix);
 
-		String p = readField(mustacheViewResolver, "prefix");
-		assertThat(p).isNotNull().isEqualTo(prefix);
-
-		verify(compiler).setPrefix(prefix);
+		assertThat(readField(mustacheViewResolver, "prefix")).isEqualTo(prefix);
+		assertThat(mustacheCompiler.getPrefix()).isEqualTo(prefix);
 	}
 
 	@Test
 	public void it_should_set_suffix() {
 		String suffix = "foo";
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
 
 		mustacheViewResolver.setSuffix(suffix);
 
-		String p = readField(mustacheViewResolver, "suffix");
-		assertThat(p).isNotNull().isEqualTo(suffix);
-
-		verify(compiler).setSuffix(suffix);
+		assertThat(readField(mustacheViewResolver, "suffix")).isEqualTo(suffix);
+		assertThat(mustacheCompiler.getSuffix()).isEqualTo(suffix);
 	}
 
 	@Test
-	public void it_should_default_layout() {
+	public void it_should_set_default_layout() {
 		String defaultLayout = "foo";
-
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		mustacheViewResolver.setDefaultLayout(defaultLayout);
-
-		String dl = readField(mustacheViewResolver, "defaultLayout");
-		assertThat(dl).isNotNull().isEqualTo(defaultLayout);
+		assertThat(readField(mustacheViewResolver, "defaultLayout")).isNotNull().isEqualTo(defaultLayout);
 	}
 
 	@Test
-	public void it_should_layout_key() {
+	public void it_should_set_layout_key() {
 		String layoutKey = "foo";
-
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		mustacheViewResolver.setLayoutKey(layoutKey);
-
-		String lk = readField(mustacheViewResolver, "layoutKey");
-		assertThat(lk).isNotNull().isEqualTo(layoutKey);
+		assertThat(readField(mustacheViewResolver, "layoutKey")).isNotNull().isEqualTo(layoutKey);
 	}
 
 	@Test
@@ -123,6 +122,7 @@ public class MustacheViewResolverTest {
 		String viewName = "foo";
 		String layoutName = "bar";
 
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		Map<String, String> mappings = readField(mustacheViewResolver, "layoutMappings");
 		assertThat(mappings).isNotNull().isEmpty();
 
@@ -138,6 +138,7 @@ public class MustacheViewResolverTest {
 	public void it_should_replace_layout_mappings() {
 		String viewName = "foo";
 		String layoutName = "bar";
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 
 		mustacheViewResolver.addLayoutMapping(viewName, layoutName);
 
@@ -162,17 +163,25 @@ public class MustacheViewResolverTest {
 	@Test
 	public void it_should_build_view() throws Exception {
 		String viewName = "foo";
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
 
 		MustacheView mustacheView = mustacheViewResolver.buildView(viewName);
 
 		assertThat(mustacheView).isNotNull();
-		assertThat(mustacheView.getCompiler()).isNotNull().isSameAs(compiler);
-		assertThat(mustacheView.getUrl()).isNotNull().isEqualTo(viewName);
+		assertThat(mustacheView.getCompiler()).isSameAs(mustacheCompiler);
+		assertThat(mustacheView.getAliases()).isEmpty();
+		assertThat(mustacheView.getUrl()).isEqualTo(viewName);
+
+		assertThat(mustacheView.getContentType()).isEqualTo("text/html; charset=utf-8");
+		assertThat(mustacheView.isExposePathVariables()).isTrue();
 	}
 
 	@Test
 	public void it_should_build_view_using_layout() throws Exception {
 		String layout = "index";
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
 		mustacheViewResolver.setDefaultLayout(layout);
 
 		String viewName = "foo";
@@ -180,12 +189,12 @@ public class MustacheViewResolverTest {
 		MustacheView mustacheView = mustacheViewResolver.buildView(viewName);
 
 		assertThat(mustacheView).isNotNull();
-		assertThat(mustacheView.getCompiler()).isNotNull().isSameAs(compiler);
-		assertThat(mustacheView.getUrl()).isNotNull().isEqualTo(layout);
+		assertThat(mustacheView.getCompiler()).isSameAs(mustacheCompiler);
+		assertThat(mustacheView.getUrl()).isEqualTo(layout);
 
 		// Check partials mapping
 		Map<String, String> partialsAliases = readField(mustacheView, "aliases");
-		assertThat(partialsAliases).isNotNull().isNotEmpty().hasSize(1).contains(
+		assertThat(partialsAliases).hasSize(1).contains(
 				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName)
 		);
 	}
@@ -195,6 +204,8 @@ public class MustacheViewResolverTest {
 		String layout1 = "index";
 		String layout2 = "admin";
 
+		MustacheCompiler mustacheCompiler = mustacheCompiler();
+		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
 		mustacheViewResolver.addLayoutMapping("bar", layout2);
 		mustacheViewResolver.setDefaultLayout(layout1);
 
@@ -206,20 +217,35 @@ public class MustacheViewResolverTest {
 
 		// Check first view
 		assertThat(mustacheView1).isNotNull();
-		assertThat(mustacheView1.getCompiler()).isNotNull().isSameAs(compiler);
-		assertThat(mustacheView1.getUrl()).isNotNull().isEqualTo(layout1);
+		assertThat(mustacheView1.getCompiler()).isSameAs(mustacheCompiler);
+		assertThat(mustacheView1.getUrl()).isEqualTo(layout1);
 		Map<String, String> partialsAliases1 = readField(mustacheView1, "aliases");
-		assertThat(partialsAliases1).isNotNull().isNotEmpty().hasSize(1).contains(
+		assertThat(partialsAliases1).hasSize(1).contains(
 				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName1)
 		);
 
 		// Check second view
 		assertThat(mustacheView2).isNotNull();
-		assertThat(mustacheView2.getCompiler()).isNotNull().isSameAs(compiler);
-		assertThat(mustacheView2.getUrl()).isNotNull().isEqualTo(layout2);
+		assertThat(mustacheView2.getCompiler()).isSameAs(mustacheCompiler);
+		assertThat(mustacheView2.getUrl()).isEqualTo(layout2);
 		Map<String, String> partialsAliases2 = readField(mustacheView2, "aliases");
-		assertThat(partialsAliases2).isNotNull().isNotEmpty().hasSize(1).contains(
+		assertThat(partialsAliases2).hasSize(1).contains(
 				entry(MustacheSettings.DEFAULT_LAYOUT_KEY, viewName2)
 		);
+	}
+
+	private static MustacheCompiler mustacheCompiler() {
+		Mustache.Compiler jMustacheCompiler = Mustache.compiler();
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		return new JMustacheCompiler(jMustacheCompiler, templateLoader);
+	}
+
+	private static MustacheViewResolver mustacheViewResolver() {
+		return new MustacheViewResolver(mustacheCompiler());
+	}
+
+	private static MustacheViewResolver mustacheViewResolver(MustacheCompiler mustacheCompiler) {
+		return new MustacheViewResolver(mustacheCompiler);
 	}
 }

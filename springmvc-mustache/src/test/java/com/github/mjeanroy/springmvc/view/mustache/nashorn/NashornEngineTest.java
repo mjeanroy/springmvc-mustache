@@ -32,16 +32,13 @@ import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-import javax.script.ScriptEngine;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornEngineTest {
@@ -122,37 +119,6 @@ public class NashornEngineTest {
 		};
 
 		assertThatThrownBy(render).isInstanceOf(NashornException.class);
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		String script = "/META-INF/resources/webjars/mustache/**/mustache.js";
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		MustacheTemplateLoader templateLoader = defaultTemplateLoader(resourceLoader);
-		MustacheEngine engine = new MustacheEngine(templateLoader, script);
-
-		ScriptEngine scriptEngine = readField(engine, "engine");
-
-		String partialsIdentity = hexIdentity(readField(engine, "partials"));
-		String templateLoaderIdentity = hexIdentity(templateLoader);
-		String identity = hexIdentity(engine);
-
-		// @formatter:off
-		assertThat(engine).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@" + identity + "{" +
-						"engine=" + scriptEngine + ", " +
-						"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + partialsIdentity + "{" +
-								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
-										"resourceLoader=ResourceLoader, " +
-										"prefix=null, " +
-										"suffix=null, " +
-										"partialAliases={}, " +
-										"temporaryPartialAliases={}" +
-								"}" +
-						"}" +
-				"}"
-		);
-		// @formatter:on
 	}
 
 	private static DefaultTemplateLoader defaultTemplateLoader() {

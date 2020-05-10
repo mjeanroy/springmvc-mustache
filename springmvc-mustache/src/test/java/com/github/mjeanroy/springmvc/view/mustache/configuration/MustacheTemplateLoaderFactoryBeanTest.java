@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readStaticField;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -165,26 +164,5 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		Resource resource = classpathResourceLoader.getResource("classpath:/templates/fake.template.html");
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isFalse();
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
-		factoryBean.setPrefix("/templates/");
-		factoryBean.setSuffix(".template.html");
-		factoryBean.setResourceLoader(mock(ResourceLoader.class, "ResourceLoader"));
-		factoryBean.setApplicationContext(mock(ApplicationContext.class, "ApplicationContext"));
-		String identity = hexIdentity(factoryBean);
-
-		// @formatter:off
-		assertThat(factoryBean).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean@" + identity + "{" +
-						"resourceLoader=ResourceLoader, " +
-						"prefix=\"/templates/\", " +
-						"suffix=\".template.html\", " +
-						"applicationContext=ApplicationContext" +
-				"}"
-		);
-		// @formatter:on
 	}
 }

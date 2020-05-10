@@ -41,10 +41,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("deprecation")
 public class NashornTemplateTest {
@@ -80,42 +77,5 @@ public class NashornTemplateTest {
 		template.execute(map, writer);
 
 		assertThat(writer.toString()).isEqualTo("<div>Hello World</div>");
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		Reader reader = new StringReader("<div>Hello {{name}}</div>");
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheEngine scriptEngine = new MustacheEngine(mustacheTemplateLoader);
-		NashornTemplate template = new NashornTemplate(scriptEngine, reader);
-
-		MustacheEngine mustacheEngine = readField(template, "engine");
-		ScriptEngine engine = readField(mustacheEngine, "engine");
-
-		String mustacheTemplateLoaderIdentity = hexIdentity(mustacheTemplateLoader);
-		String mustacheEngineIdentity = hexIdentity(scriptEngine);
-		String partialsIdentity = hexIdentity(readField(scriptEngine, "partials"));
-		String identity = hexIdentity(template);
-
-		// @formatter:off
-		assertThat(template).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornTemplate@" + identity + "{" +
-						"template=\"<div>Hello {{name}}</div>\", " +
-						"engine=com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine@" + mustacheEngineIdentity + "{" +
-								"engine=" + engine + ", " +
-								"partials=com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornPartialsObject@" + partialsIdentity + "{" +
-										"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + mustacheTemplateLoaderIdentity + "{" +
-												"resourceLoader=ResourceLoader, " +
-												"prefix=null, " +
-												"suffix=null, " +
-												"partialAliases={}, " +
-												"temporaryPartialAliases={}" +
-										"}" +
-								"}" +
-						"}" +
-				"}"
-		);
-		// @formatter:on
 	}
 }

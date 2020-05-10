@@ -36,13 +36,10 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class MustacheJavaCompilerTest {
 
@@ -230,40 +227,6 @@ public class MustacheJavaCompilerTest {
 
 		String result = writer.toString();
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheJavaCompiler mustacheJavaCompiler = new MustacheJavaCompiler(templateLoader);
-
-		String templateLoaderIdentity = hexIdentity(templateLoader);
-		String mustacheFactoryIdentity = hexIdentity(readField(mustacheJavaCompiler, "mustacheFactory"));
-		String mustacheJavaCompilerIdentity = hexIdentity(mustacheJavaCompiler);
-
-		// @formatter:off
-		assertThat(mustacheJavaCompiler).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler@" + mustacheJavaCompilerIdentity + "{" +
-						"mustacheFactory=com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory@" + mustacheFactoryIdentity + "{" +
-								"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
-										"resourceLoader=ResourceLoader, " +
-										"prefix=null, " +
-										"suffix=null, " +
-										"partialAliases={}, " +
-										"temporaryPartialAliases={}" +
-								"}" +
-						"}, " +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
-								"resourceLoader=ResourceLoader, " +
-								"prefix=null, " +
-								"suffix=null, " +
-								"partialAliases={}, " +
-								"temporaryPartialAliases={}" +
-						"}" +
-				"}"
-		);
-		// @formatter:on
 	}
 
 	private static Map<String, Object> model() {

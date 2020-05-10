@@ -24,6 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache;
 
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
@@ -166,5 +167,13 @@ public class MustacheView extends AbstractTemplateView {
 
 	private String viewLayoutName() {
 		return getUrl();
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.builder(this)
+				.append("compiler", compiler)
+				.append("aliases", aliases)
+				.build();
 	}
 }

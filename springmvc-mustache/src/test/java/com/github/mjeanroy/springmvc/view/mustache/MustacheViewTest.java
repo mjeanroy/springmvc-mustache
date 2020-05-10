@@ -22,36 +22,35 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
+package com.github.mjeanroy.springmvc.view.mustache;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
+import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import com.samskivert.mustache.Mustache;
 import org.junit.Test;
-
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.core.io.ResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.mock;
 
-public class MustacheJavaTemplateTest {
+public class MustacheViewTest {
 
 	@Test
-	public void it_should_execute_template() {
-		Writer writer = new StringWriter();
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("foo", "bar");
+	public void it_should_create_view() {
+		Mustache.Compiler compiler = Mustache.compiler();
+		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
 
-		Reader reader = new StringReader("foo :: {{ foo }}");
-		Mustache mustache = new DefaultMustacheFactory().compile(reader, "foo");
-		MustacheJavaTemplate mustacheJavaTemplate = new MustacheJavaTemplate(mustache);
-		mustacheJavaTemplate.execute(model, writer);
+		MustacheTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheCompiler mustacheCompiler = new JMustacheCompiler(compiler, mustacheTemplateLoader);
 
-		assertThat(writer.toString()).isEqualTo(
-				"foo :: bar"
+		MustacheView view = new MustacheView();
+		view.setCompiler(mustacheCompiler);
+		view.addAlias("john", "jane");
+
+		assertThat(view.getCompiler()).isEqualTo(mustacheCompiler);
+		assertThat(view.getAliases()).hasSize(1).contains(
+				entry("john", "jane")
 		);
 	}
 }

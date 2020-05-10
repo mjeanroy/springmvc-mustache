@@ -39,12 +39,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class HandlebarsCompilerTest {
 
@@ -266,32 +264,6 @@ public class HandlebarsCompilerTest {
 		String result = writer.toString();
 
 		assertThat(result).isNotNull().isNotEmpty().isEqualTo(expected);
-	}
-
-	@Test
-	public void it_should_implement_to_string() {
-		Handlebars hb = new Handlebars();
-		ResourceLoader resourceLoader = mock(ResourceLoader.class, "ResourceLoader");
-		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		HandlebarsCompiler hbCompiler = new HandlebarsCompiler(hb, templateLoader);
-
-		String hbCompilerIdentity = hexIdentity(hbCompiler);
-		String templateLoaderIdentity = hexIdentity(templateLoader);
-
-		// @formatter:off
-		assertThat(hbCompiler).hasToString(
-				"com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler@" + hbCompilerIdentity + "{" +
-						"handlebars=" + hb + ", " +
-						"templateLoader=com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader@" + templateLoaderIdentity + "{" +
-								"resourceLoader=ResourceLoader, " +
-								"prefix=null, " +
-								"suffix=null, " +
-								"partialAliases={}, " +
-								"temporaryPartialAliases={}" +
-						"}" +
-				"}"
-		);
-		// @formatter:on
 	}
 
 	private static Map<String, Object> model() {
