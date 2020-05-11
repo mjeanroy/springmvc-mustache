@@ -32,6 +32,7 @@ import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.read;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
@@ -93,6 +94,14 @@ final class HandlebarsTemplateLoader implements TemplateLoader {
 	public void setSuffix(String suffix) {
 		notNull(suffix, "suffix must not be null");
 		loader.setSuffix(suffix);
+	}
+
+	void setCharset(Charset charset) {
+		throw new UnsupportedOperationException();
+	}
+
+	Charset getCharset() {
+		return Charset.forName("UTF-8");
 	}
 
 	@Override
