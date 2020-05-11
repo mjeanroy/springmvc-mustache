@@ -27,6 +27,8 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -213,6 +215,13 @@ public class MustacheJavaCompilerTest {
 		assertThat(mustacheJavaCompiler).hasToString(String.format(
 				expectedToString, hexIdentity(mustacheJavaCompiler), factory, templateLoader
 		));
+	}
+
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(MustacheJavaCompiler.class)
+				.suppress(Warning.STRICT_INHERITANCE)
+				.verify();
 	}
 
 	private static MustacheTemplateLoader mustacheTemplateLoader() {

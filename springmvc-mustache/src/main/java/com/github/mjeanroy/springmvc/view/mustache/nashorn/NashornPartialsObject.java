@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import jdk.nashorn.api.scripting.AbstractJSObject;
 
@@ -49,7 +50,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
 @Deprecated
-class NashornPartialsObject extends AbstractJSObject {
+final class NashornPartialsObject extends AbstractJSObject {
 
 	/**
 	 * Internal template loader implementation.
@@ -97,5 +98,24 @@ class NashornPartialsObject extends AbstractJSObject {
 		return ToStringBuilder.builder(this)
 				.append("templateLoader", templateLoader)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof NashornPartialsObject) {
+			NashornPartialsObject p = (NashornPartialsObject) o;
+			return Objects.equals(templateLoader, p.templateLoader);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(templateLoader);
 	}
 }

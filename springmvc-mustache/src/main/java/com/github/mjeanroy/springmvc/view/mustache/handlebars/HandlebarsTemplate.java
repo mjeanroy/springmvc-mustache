@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 
@@ -38,7 +39,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * Implementation of {@link MustacheTemplate} using Java Handlebar
  * as real template implementation.
  */
-class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
+final class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
 	/**
 	 * Original handlebar template that will be used to render
@@ -65,5 +66,24 @@ class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTem
 		return ToStringBuilder.builder(this)
 				.append("template", template)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof HandlebarsTemplate) {
+			HandlebarsTemplate t = (HandlebarsTemplate) o;
+			return Objects.equals(template, t.template);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(template);
 	}
 }

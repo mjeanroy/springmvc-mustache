@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 
 import java.io.Reader;
@@ -37,7 +38,7 @@ import static com.samskivert.mustache.Mustache.TemplateLoader;
  * Template resolution is delegated to {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader}
  * implementation.
  */
-class JMustacheTemplateLoader implements TemplateLoader {
+final class JMustacheTemplateLoader implements TemplateLoader {
 
 	/**
 	 * Template loader implementation.
@@ -64,5 +65,24 @@ class JMustacheTemplateLoader implements TemplateLoader {
 		return ToStringBuilder.builder(this)
 				.append("loader", loader)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof JMustacheTemplateLoader) {
+			JMustacheTemplateLoader tl = (JMustacheTemplateLoader) o;
+			return Objects.equals(loader, tl.loader);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(loader);
 	}
 }

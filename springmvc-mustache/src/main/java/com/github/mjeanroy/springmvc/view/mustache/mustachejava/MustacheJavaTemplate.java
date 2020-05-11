@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 import com.github.mustachejava.Mustache;
@@ -38,7 +39,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * Implementation of {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate} using
  * mustache.java as real template implementation.
  */
-class MustacheJavaTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
+final class MustacheJavaTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
 
 	/**
 	 * Mustache.java template.
@@ -65,5 +66,24 @@ class MustacheJavaTemplate extends AbstractMustacheTemplate implements MustacheT
 		return ToStringBuilder.builder(this)
 				.append("mustache", mustache)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof MustacheJavaTemplate) {
+			MustacheJavaTemplate t = (MustacheJavaTemplate) o;
+			return Objects.equals(mustache, t.mustache);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(mustache);
 	}
 }

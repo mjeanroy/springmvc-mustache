@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 
@@ -44,7 +45,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
 @Deprecated
-class NashornTemplate implements MustacheTemplate {
+final class NashornTemplate implements MustacheTemplate {
 
 	/**
 	 * Nashorn engine.
@@ -85,5 +86,24 @@ class NashornTemplate implements MustacheTemplate {
 				.append("template", template)
 				.append("engine", engine)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof NashornTemplate) {
+			NashornTemplate t = (NashornTemplate) o;
+			return Objects.equals(template, t.template) && Objects.equals(engine, t.engine);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(template, engine);
 	}
 }

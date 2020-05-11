@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -79,5 +80,10 @@ public class NashornTemplateTest {
 		assertThat(template).hasToString(String.format(
 				expectedToString, hexIdentity(template), mustacheEngine
 		));
+	}
+
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(NashornTemplate.class).verify();
 	}
 }

@@ -29,6 +29,7 @@ import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 
@@ -73,5 +74,24 @@ public class HandlebarsCompiler extends AbstractMustacheCompiler implements Must
 				.append("handlebars", handlebars)
 				.append("templateLoader", templateLoader)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof HandlebarsCompiler) {
+			HandlebarsCompiler c = (HandlebarsCompiler) o;
+			return Objects.equals(handlebars, c.handlebars) && Objects.equals(templateLoader, c.templateLoader);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(handlebars, templateLoader);
 	}
 }

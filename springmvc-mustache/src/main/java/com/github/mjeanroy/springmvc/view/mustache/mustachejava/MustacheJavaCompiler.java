@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.github.mustachejava.Mustache;
@@ -72,5 +73,24 @@ public class MustacheJavaCompiler extends AbstractMustacheCompiler implements Mu
 				.append("mustacheFactory", mustacheFactory)
 				.append("templateLoader", templateLoader)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof MustacheJavaCompiler) {
+			MustacheJavaCompiler c = (MustacheJavaCompiler) o;
+			return Objects.equals(mustacheFactory, c.mustacheFactory) && Objects.equals(templateLoader, c.templateLoader);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(mustacheFactory, templateLoader);
 	}
 }

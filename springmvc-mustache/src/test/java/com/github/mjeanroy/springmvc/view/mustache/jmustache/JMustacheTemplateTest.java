@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -66,5 +67,10 @@ public class JMustacheTemplateTest {
 		assertThat(jMustacheTemplate).hasToString(String.format(
 				expectedToString, hexIdentity(jMustacheTemplate), template
 		));
+	}
+
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(JMustacheTemplate.class).verify();
 	}
 }

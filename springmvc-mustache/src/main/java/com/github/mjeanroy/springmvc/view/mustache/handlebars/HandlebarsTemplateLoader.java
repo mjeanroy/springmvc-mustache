@@ -28,6 +28,7 @@ import com.github.jknack.handlebars.io.StringTemplateSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 
 import java.io.Reader;
@@ -39,7 +40,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * Implement template loader for use with java handlebar
  * implementation.
  */
-class HandlebarsTemplateLoader implements TemplateLoader {
+final class HandlebarsTemplateLoader implements TemplateLoader {
 
 	/**
 	 * Template loader implementation.
@@ -99,5 +100,24 @@ class HandlebarsTemplateLoader implements TemplateLoader {
 		return ToStringBuilder.builder(this)
 				.append("loader", loader)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof HandlebarsTemplateLoader) {
+			HandlebarsTemplateLoader tl = (HandlebarsTemplateLoader) o;
+			return Objects.equals(loader, tl.loader);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(loader);
 	}
 }

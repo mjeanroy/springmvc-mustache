@@ -24,8 +24,9 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -266,6 +267,15 @@ public class DefaultTemplateLoaderTest {
 		assertThat(location).isEqualTo(prefix + realName + suffix);
 	}
 
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(DefaultTemplateLoader.class)
+				.suppress(Warning.STRICT_INHERITANCE)
+				.suppress(Warning.NONFINAL_FIELDS)
+				.withIgnoredFields("temporaryPartialAliases")
+				.verify();
+	}
+
 	private static DefaultTemplateLoader defaultTemplateLoader() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		return defaultTemplateLoader(resourceLoader);
@@ -274,7 +284,6 @@ public class DefaultTemplateLoaderTest {
 	private static DefaultTemplateLoader defaultTemplateLoader(ResourceLoader resourceLoader) {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
-		String templateName = "foo";
 		return new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 	}
 }

@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 
@@ -71,5 +72,24 @@ public class NashornCompiler extends AbstractMustacheCompiler implements Mustach
 				.append("engine", engine)
 				.append("templateLoader", templateLoader)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof NashornCompiler) {
+			NashornCompiler c = (NashornCompiler) o;
+			return Objects.equals(engine, c.engine) && Objects.equals(templateLoader, c.templateLoader);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(engine, templateLoader);
 	}
 }

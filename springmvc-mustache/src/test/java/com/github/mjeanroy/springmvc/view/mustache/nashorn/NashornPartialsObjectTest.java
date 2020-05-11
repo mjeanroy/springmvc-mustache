@@ -26,6 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -125,5 +126,10 @@ public class NashornPartialsObjectTest {
 
 	private static NashornPartialsObject nashornPartialsObject(MustacheTemplateLoader templateLoader) {
 		return new NashornPartialsObject(templateLoader);
+	}
+
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(NashornPartialsObject.class).verify();
 	}
 }

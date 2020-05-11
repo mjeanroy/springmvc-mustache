@@ -26,6 +26,8 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
+import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -68,6 +70,11 @@ public class HandlebarsTemplateTest {
 		assertThat(handlebarsTemplate).hasToString(String.format(
 				expectedToString, hexIdentity(handlebarsTemplate), template
 		));
+	}
+
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(HandlebarsTemplate.class).verify();
 	}
 
 	private static Template createTemplate() {

@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -117,6 +118,11 @@ public class HandlebarsTemplateLoaderTest {
 		assertThat(handlebarsTemplateLoader).hasToString(String.format(
 				expectedToString, hexIdentity(handlebarsTemplateLoader), mustacheTemplateLoader
 		));
+	}
+
+	@Test
+	public void it_should_implement_equals_hash_code() {
+		EqualsVerifier.forClass(HandlebarsTemplateLoader.class).verify();
 	}
 
 	private static HandlebarsTemplateLoader handlebarsTemplateLoader() {

@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 
@@ -148,5 +149,24 @@ public class MustacheEngine {
 				.append("engine", engine)
 				.append("partials", partials)
 				.build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof MustacheEngine) {
+			MustacheEngine e = (MustacheEngine) o;
+			return Objects.equals(engine, e.engine) && Objects.equals(partials, e.partials);
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(engine, partials);
 	}
 }
