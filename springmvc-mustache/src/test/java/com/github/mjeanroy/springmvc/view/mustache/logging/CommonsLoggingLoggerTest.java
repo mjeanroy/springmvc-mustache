@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import org.apache.commons.logging.impl.SimpleLog;
+import org.apache.commons.logging.impl.SLF4JLocationAwareLog;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 
@@ -33,31 +33,19 @@ public class CommonsLoggingLoggerTest extends AbstractLoggerTest {
 	@Override
 	Logger createLogger() {
 		CommonsLoggingLogger log = new CommonsLoggingLogger(getClass());
-
-		SimpleLog internalLog = readField(log, "log");
-		internalLog.setLevel(Level.TRACE.level);
-
+		doUpdateLevel(log, "TRACE");
 		return log;
 	}
 
 	@Override
 	void updateLevel(String level) {
-		SimpleLog internalLog = readField(log, "log");
-		Level lvl = Level.valueOf(level);
-		internalLog.setLevel(lvl.level);
+		doUpdateLevel(log, level);
 	}
 
-	private enum Level {
-		TRACE(SimpleLog.LOG_LEVEL_TRACE),
-		DEBUG(SimpleLog.LOG_LEVEL_DEBUG),
-		INFO(SimpleLog.LOG_LEVEL_INFO),
-		WARN(SimpleLog.LOG_LEVEL_WARN),
-		ERROR(SimpleLog.LOG_LEVEL_ERROR);
-
-		private final int level;
-
-		Level(int level) {
-			this.level = level;
-		}
+	private static void doUpdateLevel(Logger log, String level) {
+		// Use jcl-over-slf4
+		SLF4JLocationAwareLog slf4jLogger = readField(log, "log");
+		ch.qos.logback.classic.Logger internalLog = readField(slf4jLogger, "logger");
+		internalLog.setLevel(ch.qos.logback.classic.Level.valueOf(level));
 	}
 }
