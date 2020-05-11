@@ -26,21 +26,41 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mock.env.MockEnvironment;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MustacheTemplateLoaderConfigurationTest {
 
+	private MockEnvironment environment;
 	private MustacheTemplateLoaderConfiguration templateLoaderConfiguration;
 
 	@Before
 	public void setUp() {
-		templateLoaderConfiguration = new MustacheTemplateLoaderConfiguration();
+		environment = new MockEnvironment();
+		templateLoaderConfiguration = new MustacheTemplateLoaderConfiguration(environment);
 	}
 
 	@Test
 	public void it_should_create_template_loader() {
 		MustacheTemplateLoaderFactoryBean factoryBean = templateLoaderConfiguration.mustacheTemplateLoader();
 		assertThat(factoryBean).isNotNull();
+		assertThat(readField(factoryBean, "prefix", String.class)).isEqualTo("/templates/");
+		assertThat(readField(factoryBean, "suffix", String.class)).isEqualTo(".template.html");
+	}
+
+	@Test
+	public void it_should_create_template_loader_with_prefix_and_suffix() {
+		String prefix = "/";
+		String suffix = ".mustache";
+
+		environment.setProperty("mustache.prefix", prefix);
+		environment.setProperty("mustache.suffix", suffix);
+
+		MustacheTemplateLoaderFactoryBean factoryBean = templateLoaderConfiguration.mustacheTemplateLoader();
+		assertThat(factoryBean).isNotNull();
+		assertThat(readField(factoryBean, "prefix", String.class)).isEqualTo(prefix);
+		assertThat(readField(factoryBean, "suffix", String.class)).isEqualTo(suffix);
 	}
 }

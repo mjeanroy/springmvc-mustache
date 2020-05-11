@@ -24,10 +24,13 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
+import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 /**
  * Abstraction that create basic beans to use with
@@ -36,10 +39,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MustacheTemplateLoaderConfiguration {
 
-	/**
-	 * Class logger.
-	 */
 	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderConfiguration.class);
+
+	private final Environment environment;
+
+	@Autowired
+	public MustacheTemplateLoaderConfiguration(Environment environment) {
+		this.environment = environment;
+	}
 
 	/**
 	 * Build mustache template loader.
@@ -51,6 +58,31 @@ public class MustacheTemplateLoaderConfiguration {
 	@Bean
 	public MustacheTemplateLoaderFactoryBean mustacheTemplateLoader() {
 		log.info("Create default mustache template loader");
-		return new MustacheTemplateLoaderFactoryBean();
+		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
+		factoryBean.setPrefix(getPrefix());
+		factoryBean.setSuffix(getSuffix());
+		return factoryBean;
+	}
+
+	/**
+	 * Resolve views prefix value.
+	 * Default is to look for "mustache.prefix" property or use {@link com.github.mjeanroy.springmvc.view.mustache.MustacheSettings#PREFIX} if
+	 * property cannot be resolved.
+	 *
+	 * @return Prefix value.
+	 */
+	public String getPrefix() {
+		return environment.getProperty("mustache.prefix", MustacheSettings.PREFIX).trim();
+	}
+
+	/**
+	 * Resolve views suffix value.
+	 * Default is to look for "mustache.suffix" property or use {@link MustacheSettings#SUFFIX} if
+	 * property cannot be resolved.
+	 *
+	 * @return Suffix value.
+	 */
+	public String getSuffix() {
+		return environment.getProperty("mustache.suffix", MustacheSettings.SUFFIX).trim();
 	}
 }
