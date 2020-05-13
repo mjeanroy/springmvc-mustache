@@ -40,7 +40,7 @@ import static com.samskivert.mustache.Mustache.Compiler;
 /**
  * Mustache Compiler using JMustache as real implementation.
  */
-public class JMustacheCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public final class JMustacheCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Original JMustache compiler.

@@ -49,7 +49,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * This class can be considered as thread safe if internal state is not
  * modified (if prefix and suffix are not modified, or if aliases are not added).
  */
-public class DefaultTemplateLoader implements MustacheTemplateLoader {
+public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(DefaultTemplateLoader.class);
 

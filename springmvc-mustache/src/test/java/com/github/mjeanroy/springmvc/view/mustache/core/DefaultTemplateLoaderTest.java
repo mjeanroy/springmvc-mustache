@@ -270,7 +270,6 @@ public class DefaultTemplateLoaderTest {
 	@Test
 	public void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(DefaultTemplateLoader.class)
-				.suppress(Warning.STRICT_INHERITANCE)
 				.suppress(Warning.NONFINAL_FIELDS)
 				.withIgnoredFields("temporaryPartialAliases")
 				.verify();

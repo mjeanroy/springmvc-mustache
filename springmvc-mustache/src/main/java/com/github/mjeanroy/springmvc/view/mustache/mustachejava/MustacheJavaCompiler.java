@@ -37,7 +37,7 @@ import com.github.mustachejava.MustacheFactory;
  * Mustache compiler.
  * This compiler use internally mustache.java as real implementation.
  */
-public class MustacheJavaCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public final class MustacheJavaCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Implementation of {@link MustacheFactory} used internally

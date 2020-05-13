@@ -38,7 +38,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
 /**
  * Mustache compiler using Java Handlebar as real implementation.
  */
-public class HandlebarsCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public final class HandlebarsCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
 
 	/**
 	 * Handlebar compiler.

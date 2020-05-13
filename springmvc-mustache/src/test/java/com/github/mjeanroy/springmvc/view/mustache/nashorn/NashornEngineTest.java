@@ -28,7 +28,6 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.NashornException;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -149,9 +148,7 @@ public class NashornEngineTest {
 
 	@Test
 	public void it_should_implement_equals_hash_code() {
-		EqualsVerifier.forClass(MustacheEngine.class)
-				.suppress(Warning.STRICT_INHERITANCE)
-				.verify();
+		EqualsVerifier.forClass(MustacheEngine.class).verify();
 	}
 
 	private static DefaultTemplateLoader defaultTemplateLoader() {

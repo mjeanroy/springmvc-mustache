@@ -47,7 +47,7 @@ import static java.util.Arrays.asList;
  * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
 @Deprecated
-public class MustacheEngine {
+public final class MustacheEngine {
 
 	/**
 	 * Get default mustache implementation.

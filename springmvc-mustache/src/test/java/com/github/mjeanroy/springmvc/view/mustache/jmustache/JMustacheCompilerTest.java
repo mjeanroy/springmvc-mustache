@@ -30,7 +30,6 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
@@ -229,9 +228,7 @@ public class JMustacheCompilerTest {
 
 	@Test
 	public void it_should_implement_equals_hash_code() {
-		EqualsVerifier.forClass(JMustacheCompiler.class)
-				.suppress(Warning.STRICT_INHERITANCE)
-				.verify();
+		EqualsVerifier.forClass(JMustacheCompiler.class).verify();
 	}
 
 	private static Compiler compiler() {
