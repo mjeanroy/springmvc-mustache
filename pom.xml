@@ -98,6 +98,7 @@
 					<mavenExecutorId>forked-path</mavenExecutorId>
 					<useReleaseProfile>false</useReleaseProfile>
 					<arguments>-Prelease</arguments>
+					<tagNameFormat>springmvc-mustache-@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 
