@@ -31,13 +31,22 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 @Configuration
 public class MustacheJavaConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(MustacheJavaConfiguration.class);
+
+	private final Environment environment;
+
+	@Autowired
+	public MustacheJavaConfiguration(Environment environment) {
+		this.environment = environment;
+	}
 
 	/**
 	 * Build mustache compiler.
@@ -59,6 +68,17 @@ public class MustacheJavaConfiguration {
 	 */
 	@Bean
 	public MustacheFactory mustacheFactory(MustacheTemplateLoader templateLoader) {
-		return new SpringMustacheFactory(templateLoader);
+		SpringMustacheFactory factory = new SpringMustacheFactory(templateLoader);
+
+		Integer recursionLimit = getRecursionLimit();
+		if (recursionLimit != null) {
+			factory.setRecursionLimit(recursionLimit);
+		}
+
+		return factory;
+	}
+
+	private Integer getRecursionLimit() {
+		return environment.getProperty("mustache.mustachejava.recursionLimit", Integer.class);
 	}
 }

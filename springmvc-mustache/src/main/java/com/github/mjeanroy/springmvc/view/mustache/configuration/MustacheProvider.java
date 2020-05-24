@@ -175,17 +175,17 @@ public enum MustacheProvider {
 
 		@Override
 		MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) {
-			MustacheFactory mustacheFactory = mustacheFactory(applicationContext, templateLoader);
-			return new MustacheJavaConfiguration().mustacheCompiler(mustacheFactory, templateLoader);
+			MustacheFactory mustacheFactory = mustacheFactory(applicationContext, environment, templateLoader);
+			return new MustacheJavaConfiguration(environment).mustacheCompiler(mustacheFactory, templateLoader);
 		}
 
-		private MustacheFactory mustacheFactory(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) {
+		private MustacheFactory mustacheFactory(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) {
 			try {
 				return applicationContext.getBean(MustacheFactory.class);
 			}
 			catch (NoSuchBeanDefinitionException ex) {
 				log.warn(ex.getMessage());
-				return new MustacheJavaConfiguration().mustacheFactory(templateLoader);
+				return new MustacheJavaConfiguration(environment).mustacheFactory(templateLoader);
 			}
 		}
 	},

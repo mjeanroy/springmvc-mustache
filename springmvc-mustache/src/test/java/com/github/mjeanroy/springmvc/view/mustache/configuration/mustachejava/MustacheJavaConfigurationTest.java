@@ -28,19 +28,23 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory;
+import com.github.mustachejava.MustacheFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.mock.env.MockEnvironment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MustacheJavaConfigurationTest {
 
+	private MockEnvironment environment;
 	private MustacheJavaConfiguration mustacheJavaConfiguration;
 
 	@Before
 	public void setUp() {
-		mustacheJavaConfiguration = new MustacheJavaConfiguration();
+		environment = new MockEnvironment();
+		mustacheJavaConfiguration = new MustacheJavaConfiguration(environment);
 	}
 
 	@Test
@@ -50,5 +54,27 @@ public class MustacheJavaConfigurationTest {
 		SpringMustacheFactory mustacheFactory = new SpringMustacheFactory(templateLoader);
 		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler(mustacheFactory, templateLoader);
 		assertThat(mustacheCompiler).isNotNull();
+	}
+
+	@Test
+	public void it_should_instantiate_mustache_factory() {
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(templateLoader);
+
+		assertThat(mustacheFactory).isInstanceOf(SpringMustacheFactory.class);
+		assertThat(((SpringMustacheFactory) mustacheFactory).getRecursionLimit()).isEqualTo(100);
+	}
+
+	@Test
+	public void it_should_instantiate_mustache_factory_with_custom_recursion_limit() {
+		environment.setProperty("mustache.mustachejava.recursionLimit", "10");
+
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(templateLoader);
+
+		assertThat(mustacheFactory).isInstanceOf(SpringMustacheFactory.class);
+		assertThat(((SpringMustacheFactory) mustacheFactory).getRecursionLimit()).isEqualTo(10);
 	}
 }
