@@ -35,6 +35,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.Collection;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableCollection;
+
 /**
  * Configure handlebar template engine.
  */
@@ -45,9 +50,17 @@ public class HandlebarsConfiguration {
 
 	private final Environment environment;
 
+	private Collection<HandlebarsCustomizer> customizers;
+
 	@Autowired
 	public HandlebarsConfiguration(Environment environment) {
 		this.environment = environment;
+		this.customizers = emptyList();
+	}
+
+	@Autowired(required = false)
+	public void setCustomizers(Collection<HandlebarsCustomizer> customizers) {
+		this.customizers = customizers;
 	}
 
 	/**
@@ -108,6 +121,10 @@ public class HandlebarsConfiguration {
 		Boolean prettyPrint = getPrettyPrint();
 		if (prettyPrint != null) {
 			factoryBean.setPrettyPrint(prettyPrint);
+		}
+
+		if (customizers != null) {
+			factoryBean.setCustomizers(unmodifiableCollection(customizers));
 		}
 
 		return factoryBean;

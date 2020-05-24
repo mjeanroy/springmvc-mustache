@@ -28,11 +28,16 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 
 public class HandlebarsFactoryBeanTest {
 
@@ -144,5 +149,25 @@ public class HandlebarsFactoryBeanTest {
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
 		assertThat(handlebars.prettyPrint()).isTrue();
+	}
+
+	@Test
+	public void it_should_create_instance_using_given_customizer() throws Exception {
+		HandlebarsCustomizer c1 = newHandlebarsCustomizer();
+		HandlebarsCustomizer c2 = newHandlebarsCustomizer();
+		List<HandlebarsCustomizer> customizers = asList(c1, c2);
+
+		factoryBean.setCustomizers(customizers);
+		factoryBean.afterPropertiesSet();
+
+		Handlebars handlebars = factoryBean.getObject();
+
+		InOrder inOrder = inOrder(c1, c2);
+		inOrder.verify(c1).customize(handlebars);
+		inOrder.verify(c2).customize(handlebars);
+	}
+
+	private static HandlebarsCustomizer newHandlebarsCustomizer() {
+		return mock(HandlebarsCustomizer.class);
 	}
 }

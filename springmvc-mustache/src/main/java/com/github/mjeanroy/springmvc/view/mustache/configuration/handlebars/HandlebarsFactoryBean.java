@@ -30,6 +30,10 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
+import java.util.Collection;
+
+import static java.util.Collections.emptyList;
+
 /**
  * Factory used to create instance of {@link com.github.jknack.handlebars.Handlebars}.
  */
@@ -88,10 +92,17 @@ public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> imple
 	private Boolean prettyPrint;
 
 	/**
+	 * List of customizers that will be applied on {@link Handlebars} instance
+	 * before creating object instance.
+	 */
+	private Collection<HandlebarsCustomizer> customizers;
+
+	/**
 	 * Create factory with default settings.
 	 */
 	public HandlebarsFactoryBean() {
 		super();
+		this.customizers = emptyList();
 	}
 
 	@Override
@@ -138,6 +149,15 @@ public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> imple
 
 		if (prettyPrint != null) {
 			handlebars.setPrettyPrint(prettyPrint);
+		}
+
+		// Apply customizers one by one
+		if (customizers != null && !customizers.isEmpty()) {
+			log.debug("Applying Handlebars Customizers...");
+			for (HandlebarsCustomizer customizer : customizers) {
+				log.debug(" -> Applying customizer: {}", customizer);
+				customizer.customize(handlebars);
+			}
 		}
 
 		return handlebars;
@@ -204,5 +224,14 @@ public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> imple
 	 */
 	public void setPrettyPrint(boolean prettyPrint) {
 		this.prettyPrint = prettyPrint;
+	}
+
+	/**
+	 * Set {@link #customizers}
+	 *
+	 * @param customizers New {@link #customizers}
+	 */
+	public void setCustomizers(Collection<HandlebarsCustomizer> customizers) {
+		this.customizers = customizers;
 	}
 }

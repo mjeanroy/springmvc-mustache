@@ -31,13 +31,18 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 
 public class HandlebarsConfigurationTest {
 
@@ -147,5 +152,26 @@ public class HandlebarsConfigurationTest {
 		Handlebars handlebars = factoryBean.getObject();
 
 		assertThat(handlebars.prettyPrint()).isTrue();
+	}
+
+	@Test
+	public void it_should_instantiate_with_handlebars_customizers() throws Exception {
+		HandlebarsCustomizer c1 = newHandlebarsCustomizer();
+		HandlebarsCustomizer c2 = newHandlebarsCustomizer();
+		List<HandlebarsCustomizer> customizers = asList(c1, c2);
+
+		handlebarConfiguration.setCustomizers(customizers);
+
+		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+
+		InOrder inOrder = inOrder(c1, c2);
+		inOrder.verify(c1).customize(handlebars);
+		inOrder.verify(c2).customize(handlebars);
+	}
+
+	private static HandlebarsCustomizer newHandlebarsCustomizer() {
+		return mock(HandlebarsCustomizer.class);
 	}
 }

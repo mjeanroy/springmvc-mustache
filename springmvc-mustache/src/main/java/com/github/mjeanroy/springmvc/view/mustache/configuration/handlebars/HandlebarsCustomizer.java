@@ -22,29 +22,19 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.mustache.sample.handlebars.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
-import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import com.github.jknack.handlebars.Handlebars;
 
-@Configuration
-@EnableWebMvc
-@EnableMustache
-@ComponentScan(basePackages = {
-		"com.github.mjeanroy.springmvc.mustache.sample.handlebars",
-})
-public class SpringConfiguration extends WebMvcConfigurationSupport {
+/**
+ * A customizer for {@link Handlebars} instance.
+ */
+public interface HandlebarsCustomizer {
 
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
-		handlerMapping.setAlwaysUseFullPath(true);
-		handlerMapping.setUseSuffixPatternMatch(false);
-		return handlerMapping;
-	}
+	/**
+	 * Customize {@link Handlebars} instance.
+	 *
+	 * @param handlebars Handlebars instance.
+	 */
+	void customize(Handlebars handlebars);
 }

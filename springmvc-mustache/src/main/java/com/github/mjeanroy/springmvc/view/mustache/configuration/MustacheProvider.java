@@ -31,6 +31,7 @@ import com.github.mjeanroy.springmvc.view.mustache.commons.lang.JavaUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsCustomizer;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCompilerFactoryBean;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
@@ -45,6 +46,8 @@ import org.springframework.core.env.Environment;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
+import java.util.Collection;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.invoke;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.isPresent;
@@ -117,24 +120,37 @@ public enum MustacheProvider {
 
 		@Override
 		MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) throws Exception {
-			Handlebars handlebars = handlebars(applicationContext, environment);
-			return new HandlebarsConfiguration(environment).mustacheCompiler(handlebars, templateLoader);
+			Collection<HandlebarsCustomizer> customizers = handlebarsCustomizers(applicationContext);
+			Handlebars handlebars = handlebars(applicationContext, environment, customizers);
+
+			HandlebarsConfiguration configuration = new HandlebarsConfiguration(environment);
+			configuration.setCustomizers(customizers);
+			return configuration.mustacheCompiler(handlebars, templateLoader);
+		}
+
+		private Collection<HandlebarsCustomizer> handlebarsCustomizers(ApplicationContext applicationContext) {
+			return applicationContext.getBeansOfType(HandlebarsCustomizer.class).values();
 		}
 
 		/**
 		 * Create handlebars instance.
 		 *
 		 * @param applicationContext Application context.
+		 * @param environment Application context environment.
+		 * @param customizers Customizers applied on created {@link Handlebars} instance.
 		 * @return Handlebars instance.
 		 * @throws Exception If an error occurred while creating {@link Handlebars} bean.
 		 */
-		private Handlebars handlebars(ApplicationContext applicationContext, Environment environment) throws Exception {
+		private Handlebars handlebars(ApplicationContext applicationContext, Environment environment, Collection<HandlebarsCustomizer> customizers) throws Exception {
 			try {
 				return applicationContext.getBean(Handlebars.class);
 			}
 			catch (NoSuchBeanDefinitionException ex) {
 				log.warn(ex.getMessage());
+
 				HandlebarsConfiguration handlebarsConfiguration = new HandlebarsConfiguration(environment);
+				handlebarsConfiguration.setCustomizers(customizers);
+
 				HandlebarsFactoryBean factoryBean = handlebarsConfiguration.handlebarsCompiler();
 				factoryBean.afterPropertiesSet();
 				return factoryBean.getObject();
