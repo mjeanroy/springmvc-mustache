@@ -82,10 +82,10 @@ public final class Classes {
 	 * @return The new instance.
 	 * @throws ReflectionException If an error occurred during class instantiation.
 	 */
-	public static Object newInstance(String klassName) {
+	public static Object newInstance(String klassName, Class<?>[] argTypes, Object[] args) {
 		try {
 			Class<?> klass = Class.forName(klassName);
-			return newInstance(klass);
+			return newInstance(klass, argTypes, args);
 		}
 		catch (ClassNotFoundException ex) {
 			throw new ReflectionException(ex);
@@ -126,10 +126,10 @@ public final class Classes {
 	 * @return The new instance.
 	 * @throws ReflectionException If an error occurred during class instantiation.
 	 */
-	private static <T> T newInstance(Class<T> klass) {
+	private static <T> T newInstance(Class<T> klass, Class<?>[] argTypes, Object[] args) {
 		try {
-			Constructor<T> ctor = klass.getConstructor();
-			return ctor.newInstance();
+			Constructor<T> ctor = klass.getConstructor(argTypes);
+			return ctor.newInstance(args);
 		}
 		catch (NoSuchMethodException ex) {
 			throw new ReflectionException(ex);

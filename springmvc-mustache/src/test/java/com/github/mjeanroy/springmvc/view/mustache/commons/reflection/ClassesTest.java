@@ -25,19 +25,16 @@
 package com.github.mjeanroy.springmvc.view.mustache.commons.reflection;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.ReflectionException;
-import org.assertj.core.api.ThrowableAssert;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.Assertions.filter;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,7 +50,7 @@ public class ClassesTest {
 
 	@Test
 	public void it_should_instantiate_class() {
-		Object instance = Classes.newInstance(FixtureClass.class.getName());
+		Object instance = Classes.newInstance(FixtureClass.class.getName(), new Class<?>[]{}, new Object[]{});
 		assertThat(instance).isNotNull();
 		assertThat(instance).isExactlyInstanceOf(FixtureClass.class);
 	}
@@ -64,7 +61,7 @@ public class ClassesTest {
 		final ThrowingCallable instantiate = new ThrowingCallable() {
 			@Override
 			public void call() {
-				Classes.newInstance(className);
+				Classes.newInstance(className, new Class<?>[]{}, new Object[]{});
 			}
 		};
 

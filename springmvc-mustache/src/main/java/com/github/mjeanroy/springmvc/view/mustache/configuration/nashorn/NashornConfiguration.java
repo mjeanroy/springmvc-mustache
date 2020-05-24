@@ -26,6 +26,8 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
+import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +42,18 @@ import org.springframework.core.env.Environment;
  * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
  */
 @Configuration
-@PropertySource(
-		value = "classpath:mustache.properties",
-		ignoreResourceNotFound = true
-)
+@PropertySource(value = "classpath:mustache.properties", ignoreResourceNotFound = true)
 @Deprecated
 public class NashornConfiguration {
 
+	private static final Logger log = LoggerFactory.getLogger(NashornConfiguration.class);
+
+	private final Environment environment;
+
 	@Autowired
-	private Environment environment;
+	public NashornConfiguration(Environment environment) {
+		this.environment = environment;
+	}
 
 	@Bean
 	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader templateLoader, MustacheEngine mustacheEngine) {
@@ -60,11 +65,21 @@ public class NashornConfiguration {
 		MustacheEngineFactoryBean factoryBean = new MustacheEngineFactoryBean(templateLoader);
 
 		// Try to get path from environment
-		String path = environment.getProperty("mustache.path");
+		String path = getPath();
 		if (path != null) {
 			factoryBean.setPath(path);
 		}
 
 		return factoryBean;
+	}
+
+	private String getPath() {
+		String deprecatedPath = environment.getProperty("mustache.path");
+		if (deprecatedPath != null) {
+			log.warn("Property `mustache.path` is deprecated, please use `mustache.nashorn.path` instead.");
+			return deprecatedPath;
+		}
+
+		return environment.getProperty("mustache.nashorn.path");
 	}
 }

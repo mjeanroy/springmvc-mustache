@@ -210,14 +210,14 @@ public enum MustacheProvider {
 		MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) {
 			Class<?> mustacheEngineClass = Classes.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine");
 			Object mustacheEngine = applicationContext.getBean(mustacheEngineClass);
-			Object instance = newInstance(configurationClass());
+			Object instance = newInstance(configurationClass(), new Class<?>[]{Environment.class}, new Object[]{environment});
 
 			Object[] args = {
 					templateLoader,
 					mustacheEngine
 			};
 
-			Class<?>[] argTypes = new Class<?>[] {
+			Class<?>[] argTypes = new Class<?>[]{
 					MustacheTemplateLoader.class,
 					mustacheEngineClass
 			};

@@ -29,23 +29,46 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine;
 import com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.mock.env.MockEnvironment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("deprecation")
 public class NashornConfigurationTest {
 
+	private Environment environment;
+	private NashornConfiguration nashornConfiguration;
+
+	@Before
+	public void setUp() {
+		environment = new MockEnvironment();
+		nashornConfiguration = new NashornConfiguration(environment);
+	}
+
 	@Test
 	public void it_should_create_mustache_compiler() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheEngine mustacheEngine = new MustacheEngine(templateLoader);
-		NashornConfiguration nashornConfiguration = new NashornConfiguration();
 
 		MustacheCompiler mustacheCompiler = nashornConfiguration.mustacheCompiler(templateLoader, mustacheEngine);
 
 		assertThat(mustacheCompiler).isExactlyInstanceOf(NashornCompiler.class);
+	}
+
+	@Test
+	public void it_should_create_mustache_engine() throws Exception {
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+
+		MustacheEngineFactoryBean factoryBean = nashornConfiguration.mustacheEngine(templateLoader);
+		factoryBean.afterPropertiesSet();
+		MustacheEngine engine = factoryBean.getObject();
+
+		assertThat(engine).isNotNull();
 	}
 }
