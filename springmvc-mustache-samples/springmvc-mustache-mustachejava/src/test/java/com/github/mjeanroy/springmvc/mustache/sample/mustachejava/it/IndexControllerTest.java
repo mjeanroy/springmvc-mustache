@@ -24,28 +24,33 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.mustachejava.it;
 
-import com.github.mjeanroy.springmvc.view.mustache.core.ModelAndMustacheView;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import com.github.mjeanroy.junit.servers.client.HttpResponse;
+import com.github.mjeanroy.junit.servers.jetty.junit4.JettyServerJunit4Rule;
+import org.junit.ClassRule;
+import org.junit.Test;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@Controller
-public class IndexController {
+public class IndexControllerTest {
 
-	@RequestMapping(value = "/", method = GET)
-	public ModelAndView fooView() {
-		ModelAndView modelAndView = new ModelAndView("john");
-		modelAndView.addObject("name", "John Doe");
-		return modelAndView;
+	@ClassRule
+	public static JettyServerJunit4Rule jetty = new JettyServerJunit4Rule();
+
+	@Test
+	public void it_should_render_handlebars_template() {
+		HttpResponse response = jetty.getClient().prepareGet("/").execute();
+		assertThat(response.status()).isEqualTo(200);
+		assertThat(response.body()).contains(
+				"Hello, my name is John Doe"
+		);
 	}
 
-	@RequestMapping(value = "/jane", method = GET)
-	public ModelAndMustacheView barView() {
-		ModelAndMustacheView modelAndView = new ModelAndMustacheView("jane");
-		modelAndView.addObject("name", "Jane Doe");
-		modelAndView.addPartial("hello", "john");
-		return modelAndView;
+	@Test
+	public void it_should_render_handlebars_template_using_model_and_mustache_view() {
+		HttpResponse response = jetty.getClient().prepareGet("/jane").execute();
+		assertThat(response.status()).isEqualTo(200);
+		assertThat(response.body()).contains(
+				"Hello, my name is Jane Doe"
+		);
 	}
 }

@@ -22,29 +22,19 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.mustache.sample.mustachejava.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 
-import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import com.github.mustachejava.MustacheFactory;
 
-@Configuration
-@EnableWebMvc
-@EnableMustache
-@ComponentScan(basePackages = {
-		"com.github.mjeanroy.springmvc.mustache.sample.mustachejava"
-})
-public class SpringConfiguration extends WebMvcConfigurationSupport {
+/**
+ * A customizer for {@link MustacheFactory} instance.
+ */
+public interface MustacheJavaCustomizer {
 
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
-		handlerMapping.setAlwaysUseFullPath(true);
-		handlerMapping.setUseSuffixPatternMatch(false);
-		return handlerMapping;
-	}
+	/**
+	 * Customize MustacheJava factory.
+	 *
+	 * @param mustacheFactory The initial mustache factory.
+	 */
+	void customize(MustacheFactory mustacheFactory);
 }

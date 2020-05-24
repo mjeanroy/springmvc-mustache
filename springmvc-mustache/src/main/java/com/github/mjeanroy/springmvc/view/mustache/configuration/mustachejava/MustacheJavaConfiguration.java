@@ -38,6 +38,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.Collection;
+
+import static java.util.Collections.emptyList;
+
 @Configuration
 public class MustacheJavaConfiguration {
 
@@ -45,9 +49,17 @@ public class MustacheJavaConfiguration {
 
 	private final Environment environment;
 
+	private Collection<MustacheJavaCustomizer> customizers;
+
 	@Autowired
 	public MustacheJavaConfiguration(Environment environment) {
 		this.environment = environment;
+		this.customizers = emptyList();
+	}
+
+	@Autowired(required = false)
+	public void setCustomizers(Collection<MustacheJavaCustomizer> customizers) {
+		this.customizers = customizers;
 	}
 
 	/**
@@ -82,11 +94,23 @@ public class MustacheJavaConfiguration {
 	 */
 	@Bean
 	public MustacheFactory mustacheFactory(MustacheResolver mustacheResolver, MustacheTemplateLoader templateLoader) {
+		Integer recursionLimit = getRecursionLimit();
+
+		log.debug("Creating mustache factory");
+		log.debug(" - recursionLimit = {}", recursionLimit);
+
 		SpringMustacheFactory factory = new SpringMustacheFactory(mustacheResolver, templateLoader);
 
-		Integer recursionLimit = getRecursionLimit();
 		if (recursionLimit != null) {
 			factory.setRecursionLimit(recursionLimit);
+		}
+
+		if (customizers != null && !customizers.isEmpty()) {
+			log.debug("Applying mustache factory customizers");
+			for (MustacheJavaCustomizer customizer : customizers) {
+				log.debug(" - Applying mustache factory customizer: {}", customizer);
+				customizer.customize(factory);
+			}
 		}
 
 		return factory;

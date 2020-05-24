@@ -33,11 +33,17 @@ import com.github.mustachejava.MustacheFactory;
 import com.github.mustachejava.MustacheResolver;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
+import java.util.Collection;
+
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 
 public class MustacheJavaConfigurationTest {
 
@@ -82,6 +88,23 @@ public class MustacheJavaConfigurationTest {
 	}
 
 	@Test
+	public void it_should_instantiate_mustache_factory_with_customizers() {
+		MustacheJavaCustomizer c1 = newMustacheJavaCustomizer();
+		MustacheJavaCustomizer c2 = newMustacheJavaCustomizer();
+		Collection<MustacheJavaCustomizer> customizers = asList(c1, c2);
+		mustacheJavaConfiguration.setCustomizers(customizers);
+
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
+		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(mustacheResolver, templateLoader);
+
+		InOrder inOrder = inOrder(c1, c2);
+		inOrder.verify(c1).customize(mustacheFactory);
+		inOrder.verify(c2).customize(mustacheFactory);
+	}
+
+	@Test
 	public void it_should_instantiate_mustache_factory_with_custom_recursion_limit() {
 		environment.setProperty("mustache.mustachejava.recursionLimit", "10");
 
@@ -92,5 +115,9 @@ public class MustacheJavaConfigurationTest {
 
 		assertThat(mustacheFactory).isInstanceOf(SpringMustacheFactory.class);
 		assertThat(((SpringMustacheFactory) mustacheFactory).getRecursionLimit()).isEqualTo(10);
+	}
+
+	private static MustacheJavaCustomizer newMustacheJavaCustomizer() {
+		return mock(MustacheJavaCustomizer.class);
 	}
 }
