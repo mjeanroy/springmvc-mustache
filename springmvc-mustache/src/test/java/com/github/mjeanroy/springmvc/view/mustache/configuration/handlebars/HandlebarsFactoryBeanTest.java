@@ -25,8 +25,12 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,5 +72,77 @@ public class HandlebarsFactoryBeanTest {
 		assertThat(h1).isNotNull();
 		assertThat(h2).isNotNull();
 		assertThat(h1).isSameAs(h2);
+	}
+
+	@Test
+	public void it_should_create_instance_with_default_properties() throws Exception {
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+
+		String rawTemplate = "Hello {{name}}";
+		Template template = handlebars.compileInline(rawTemplate);
+		Map<String, String> model = Collections.singletonMap("name", "John Doe");
+
+		assertThat(template.apply(model)).isEqualTo("Hello John Doe");
+		assertThat(handlebars.stringParams()).isFalse();
+		assertThat(handlebars.infiniteLoops()).isFalse();
+		assertThat(handlebars.deletePartialAfterMerge()).isFalse();
+		assertThat(handlebars.parentScopeResolution()).isTrue();
+		assertThat(handlebars.prettyPrint()).isFalse();
+	}
+
+	@Test
+	public void it_should_create_instance_with_start_and_end_delimiter_properties() throws Exception {
+		factoryBean.setStartDelimiter("[[");
+		factoryBean.setEndDelimiter("]]");
+		factoryBean.afterPropertiesSet();
+
+		Handlebars handlebars = factoryBean.getObject();
+
+		String rawTemplate = "Hello [[name]]";
+		Template template = handlebars.compileInline(rawTemplate);
+		Map<String, String> model = Collections.singletonMap("name", "John Doe");
+
+		assertThat(template.apply(model)).isEqualTo("Hello John Doe");
+	}
+
+	@Test
+	public void it_should_create_instance_with_with_string_param_property() throws Exception {
+		factoryBean.setStringParams(true);
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+		assertThat(handlebars.stringParams()).isTrue();
+	}
+
+	@Test
+	public void it_should_create_instance_with_infinite_loop_property() throws Exception {
+		factoryBean.setInfiniteLoops(true);
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+		assertThat(handlebars.infiniteLoops()).isTrue();
+	}
+
+	@Test
+	public void it_should_create_instance_with_delete_partials_after_merge_property() throws Exception {
+		factoryBean.setDeletePartialAfterMerge(true);
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+		assertThat(handlebars.deletePartialAfterMerge()).isTrue();
+	}
+
+	@Test
+	public void it_should_create_instance_with_parent_scope_resolution_property() throws Exception {
+		factoryBean.setParentScopeResolution(false);
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+		assertThat(handlebars.parentScopeResolution()).isFalse();
+	}
+
+	@Test
+	public void it_should_create_instance_with_pretty_print_property() throws Exception {
+		factoryBean.setPrettyPrint(true);
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
+		assertThat(handlebars.prettyPrint()).isTrue();
 	}
 }

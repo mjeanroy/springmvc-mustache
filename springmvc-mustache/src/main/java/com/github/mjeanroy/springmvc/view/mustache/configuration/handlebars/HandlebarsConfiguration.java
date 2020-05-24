@@ -30,8 +30,10 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 /**
  * Configure handlebar template engine.
@@ -40,6 +42,13 @@ import org.springframework.context.annotation.Configuration;
 public class HandlebarsConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(HandlebarsConfiguration.class);
+
+	private final Environment environment;
+
+	@Autowired
+	public HandlebarsConfiguration(Environment environment) {
+		this.environment = environment;
+	}
 
 	/**
 	 * Build mustache compiler.
@@ -64,6 +73,71 @@ public class HandlebarsConfiguration {
 	 */
 	@Bean
 	public HandlebarsFactoryBean handlebarsCompiler() {
-		return new HandlebarsFactoryBean();
+		HandlebarsFactoryBean factoryBean = new HandlebarsFactoryBean();
+
+		String startDelimiter = getStartDelimiter();
+		if (startDelimiter != null) {
+			factoryBean.setStartDelimiter(startDelimiter);
+		}
+
+		String endDelimiter = getEndDelimiter();
+		if (endDelimiter != null) {
+			factoryBean.setEndDelimiter(endDelimiter);
+		}
+
+		Boolean stringParams = getStringParams();
+		if (stringParams != null) {
+			factoryBean.setStringParams(stringParams);
+		}
+
+		Boolean deletePartialAfterMerge = getDeletePartialAfterMerge();
+		if (deletePartialAfterMerge != null) {
+			factoryBean.setDeletePartialAfterMerge(deletePartialAfterMerge);
+		}
+
+		Boolean infiniteLoops = getInfiniteLoops();
+		if (infiniteLoops != null) {
+			factoryBean.setInfiniteLoops(infiniteLoops);
+		}
+
+		Boolean parentScopeResolution = getParentScopeResolution();
+		if (parentScopeResolution != null) {
+			factoryBean.setParentScopeResolution(parentScopeResolution);
+		}
+
+		Boolean prettyPrint = getPrettyPrint();
+		if (prettyPrint != null) {
+			factoryBean.setPrettyPrint(prettyPrint);
+		}
+
+		return factoryBean;
+	}
+
+	private String getStartDelimiter() {
+		return environment.getProperty("mustache.handlebars.startDelimiter", String.class);
+	}
+
+	private String getEndDelimiter() {
+		return environment.getProperty("mustache.handlebars.endDelimiter", String.class);
+	}
+
+	private Boolean getStringParams() {
+		return environment.getProperty("mustache.handlebars.stringParams", Boolean.class);
+	}
+
+	private Boolean getDeletePartialAfterMerge() {
+		return environment.getProperty("mustache.handlebars.deletePartialAfterMerge", Boolean.class);
+	}
+
+	private Boolean getInfiniteLoops() {
+		return environment.getProperty("mustache.handlebars.infiniteLoops", Boolean.class);
+	}
+
+	private Boolean getParentScopeResolution() {
+		return environment.getProperty("mustache.handlebars.parentScopeResolution", Boolean.class);
+	}
+
+	private Boolean getPrettyPrint() {
+		return environment.getProperty("mustache.handlebars.prettyPrint", Boolean.class);
 	}
 }

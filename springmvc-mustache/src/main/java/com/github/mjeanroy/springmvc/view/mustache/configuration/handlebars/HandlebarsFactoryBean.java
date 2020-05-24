@@ -35,10 +35,57 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
  */
 public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> implements FactoryBean<Handlebars> {
 
-	/**
-	 * Class logger.
-	 */
 	private static final Logger log = LoggerFactory.getLogger(HandlebarsFactoryBean.class);
+
+	/**
+	 * Handlebars start delimiter.
+	 *
+	 * @see Handlebars#setStartDelimiter(String)
+	 */
+	private String startDelimiter;
+
+	/**
+	 * Handlebars end delimiter.
+	 *
+	 * @see Handlebars#setEndDelimiter(String)
+	 */
+	private String endDelimiter;
+
+	/**
+	 * If {@code true}, missing helper parameters will be resolve to their names.
+	 *
+	 * @see Handlebars#stringParams()
+	 */
+	private Boolean stringParams;
+
+	/**
+	 * If {@code true}, templates will be deleted once applied.
+	 *
+	 * @see Handlebars#deletePartialAfterMerge()
+	 */
+	private Boolean deletePartialAfterMerge;
+
+	/**
+	 * If {@code true}, templates will be able to call him self directly or indirectly
+	 *
+	 * @see Handlebars#infiniteLoops()
+	 */
+	private Boolean infiniteLoops;
+
+	/**
+	 * Set to {@code true}, if we want to extend lookup to parent scope, like Mustache Spec.
+	 * Or {@code false}, if lookup is restricted to current scope, like handlebars.js.
+	 *
+	 * @see Handlebars#parentScopeResolution()
+	 */
+	private Boolean parentScopeResolution;
+
+	/**
+	 * If {@code true}, unnecessary spaces and new lines will be removed from output.
+	 *
+	 * @see Handlebars#prettyPrint()
+	 */
+	private Boolean prettyPrint;
 
 	/**
 	 * Create factory with default settings.
@@ -55,6 +102,107 @@ public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> imple
 	@Override
 	protected Handlebars createInstance() {
 		log.debug("Create instance of {}", Handlebars.class);
-		return new Handlebars();
+		log.debug(" - stringParams = {}", stringParams);
+		log.debug(" - deletePartialAfterMerge = {}", deletePartialAfterMerge);
+		log.debug(" - startDelimiter = {}", startDelimiter);
+		log.debug(" - endDelimiter = {}", endDelimiter);
+		log.debug(" - infiniteLoops = {}", infiniteLoops);
+		log.debug(" - parentScopeResolution = {}", parentScopeResolution);
+		log.debug(" - prettyPrint = {}", prettyPrint);
+
+		Handlebars handlebars = new Handlebars();
+
+		if (startDelimiter != null) {
+			handlebars.setStartDelimiter(startDelimiter);
+		}
+
+		if (endDelimiter != null) {
+			handlebars.setEndDelimiter(endDelimiter);
+		}
+
+		if (stringParams != null) {
+			handlebars.setStringParams(stringParams);
+		}
+
+		if (deletePartialAfterMerge != null) {
+			handlebars.setDeletePartialAfterMerge(deletePartialAfterMerge);
+		}
+
+		if (infiniteLoops != null) {
+			handlebars.setInfiniteLoops(infiniteLoops);
+		}
+
+		if (parentScopeResolution != null) {
+			handlebars.setParentScopeResolution(parentScopeResolution);
+		}
+
+		if (prettyPrint != null) {
+			handlebars.setPrettyPrint(prettyPrint);
+		}
+
+		return handlebars;
+	}
+
+	/**
+	 * Set {@link #startDelimiter}
+	 *
+	 * @param startDelimiter New {@link #startDelimiter}
+	 */
+	public void setStartDelimiter(String startDelimiter) {
+		this.startDelimiter = startDelimiter;
+	}
+
+	/**
+	 * Set {@link #endDelimiter}
+	 *
+	 * @param endDelimiter New {@link #endDelimiter}
+	 */
+	public void setEndDelimiter(String endDelimiter) {
+		this.endDelimiter = endDelimiter;
+	}
+
+	/**
+	 * Set {@link #stringParams}
+	 *
+	 * @param stringParams New {@link #stringParams}
+	 */
+	public void setStringParams(boolean stringParams) {
+		this.stringParams = stringParams;
+	}
+
+	/**
+	 * Set {@link #deletePartialAfterMerge}
+	 *
+	 * @param deletePartialAfterMerge New {@link #deletePartialAfterMerge}
+	 */
+	public void setDeletePartialAfterMerge(boolean deletePartialAfterMerge) {
+		this.deletePartialAfterMerge = deletePartialAfterMerge;
+	}
+
+	/**
+	 * Set {@link #infiniteLoops}
+	 *
+	 * @param infiniteLoops New {@link #infiniteLoops}
+	 */
+	public void setInfiniteLoops(boolean infiniteLoops) {
+		this.infiniteLoops = infiniteLoops;
+	}
+
+	/**
+	 * Set {@link #parentScopeResolution}
+	 *
+	 * @param parentScopeResolution New {@link #parentScopeResolution}
+	 */
+	public void setParentScopeResolution(boolean parentScopeResolution) {
+		this.parentScopeResolution = parentScopeResolution;
+	}
+
+	/**
+	 * Set {@link #prettyPrint}
+	 *
+	 * @param prettyPrint New {@link #prettyPrint}
+	 */
+	public void setPrettyPrint(boolean prettyPrint) {
+		this.prettyPrint = prettyPrint;
 	}
 }
