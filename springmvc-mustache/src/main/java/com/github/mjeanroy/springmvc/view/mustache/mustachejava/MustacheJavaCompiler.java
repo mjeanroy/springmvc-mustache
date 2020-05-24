@@ -49,16 +49,12 @@ public final class MustacheJavaCompiler extends AbstractMustacheCompiler impleme
 	 * Build new compiler based on mustache.java.
 	 * An instance of {@link SpringMustacheFactory} that used template loader is automatically created.
 	 *
+	 * @param mustacheFactory The Mustache Factory implementation.
 	 * @param templateLoader Template loader.
 	 */
-	public MustacheJavaCompiler(MustacheTemplateLoader templateLoader) {
+	public MustacheJavaCompiler(MustacheFactory mustacheFactory, MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
-		this.mustacheFactory = new SpringMustacheFactory(templateLoader);
-
-		// Use a custom reflection object handler to "see" zero as a falsey value
-		// See: https://github.com/spullara/mustache.java/pull/111
-		SpringMustacheReflectionObjectHandler reflectionObjectHandler = new SpringMustacheReflectionObjectHandler();
-		((SpringMustacheFactory) this.mustacheFactory).setObjectHandler(reflectionObjectHandler);
+		this.mustacheFactory = mustacheFactory;
 	}
 
 	@Override

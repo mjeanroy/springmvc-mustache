@@ -37,7 +37,7 @@ public class IndexControllerTest {
 	public static JettyServerJunit4Rule jetty = new JettyServerJunit4Rule();
 
 	@Test
-	public void it_should_render_handlebars_template() {
+	public void it_should_render_mustache_template() {
 		HttpResponse response = jetty.getClient().prepareGet("/").execute();
 		assertThat(response.status()).isEqualTo(200);
 		assertThat(response.body()).contains(
@@ -46,7 +46,7 @@ public class IndexControllerTest {
 	}
 
 	@Test
-	public void it_should_render_handlebars_template_using_model_and_mustache_view() {
+	public void it_should_render_mustache_template_using_model_and_mustache_view() {
 		HttpResponse response = jetty.getClient().prepareGet("/jane").execute();
 		assertThat(response.status()).isEqualTo(200);
 		assertThat(response.body()).contains(

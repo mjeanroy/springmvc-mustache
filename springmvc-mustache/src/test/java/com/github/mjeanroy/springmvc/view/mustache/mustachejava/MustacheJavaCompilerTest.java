@@ -236,7 +236,8 @@ public class MustacheJavaCompilerTest {
 	}
 
 	private static MustacheJavaCompiler mustacheJavaCompiler(MustacheTemplateLoader templateLoader) {
-		return new MustacheJavaCompiler(templateLoader);
+		SpringMustacheFactory mustacheFactory = new SpringMustacheFactory(templateLoader);
+		return new MustacheJavaCompiler(mustacheFactory, templateLoader);
 	}
 
 	private static Map<String, Object> model() {

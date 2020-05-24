@@ -29,6 +29,8 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory;
+import com.github.mustachejava.MustacheFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,8 +46,19 @@ public class MustacheJavaConfiguration {
 	 * @return Mustache compiler implementation.
 	 */
 	@Bean
-	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader templateLoader) {
+	public MustacheCompiler mustacheCompiler(MustacheFactory mustacheFactory, MustacheTemplateLoader templateLoader) {
 		log.info("Create mustache.java compiler");
-		return new MustacheJavaCompiler(templateLoader);
+		return new MustacheJavaCompiler(mustacheFactory, templateLoader);
+	}
+
+	/**
+	 * The mustache factory used to render mustache templates.
+	 *
+	 * @param templateLoader Template loader.
+	 * @return The mustache factory.
+	 */
+	@Bean
+	public MustacheFactory mustacheFactory(MustacheTemplateLoader templateLoader) {
+		return new SpringMustacheFactory(templateLoader);
 	}
 }

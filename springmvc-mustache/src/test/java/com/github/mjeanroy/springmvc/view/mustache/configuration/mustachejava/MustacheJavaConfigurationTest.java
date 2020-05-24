@@ -27,6 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -46,7 +47,8 @@ public class MustacheJavaConfigurationTest {
 	public void it_should_instantiate_mustache_compiler() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler(templateLoader);
+		SpringMustacheFactory mustacheFactory = new SpringMustacheFactory(templateLoader);
+		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler(mustacheFactory, templateLoader);
 		assertThat(mustacheCompiler).isNotNull();
 	}
 }

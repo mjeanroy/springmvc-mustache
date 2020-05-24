@@ -40,7 +40,7 @@ import java.io.Reader;
  * implementation will be useless.
  * See: https://github.com/spullara/mustache.java/pull/105
  */
-final class SpringMustacheFactory extends DefaultMustacheFactory {
+public final class SpringMustacheFactory extends DefaultMustacheFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringMustacheFactory.class);
 
@@ -59,6 +59,10 @@ final class SpringMustacheFactory extends DefaultMustacheFactory {
 	 */
 	public SpringMustacheFactory(MustacheTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
+
+		// Use a custom reflection object handler to "see" zero as a falsey value
+		// See: https://github.com/spullara/mustache.java/pull/111
+		this.oh = new SpringMustacheReflectionObjectHandler();
 	}
 
 	@Override

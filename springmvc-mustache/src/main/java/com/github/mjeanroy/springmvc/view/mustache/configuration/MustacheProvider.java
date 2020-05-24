@@ -27,15 +27,17 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.JavaUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils;
+import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
+import com.github.mustachejava.MustacheFactory;
 import com.samskivert.mustache.Mustache;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
 import javax.script.ScriptEngine;
@@ -69,10 +71,25 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
-			Mustache.Compiler compiler = applicationContext.getBean(Mustache.Compiler.class);
-			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
+		MustacheCompiler doInstantiate(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) throws Exception {
+			Mustache.Compiler compiler = compiler(applicationContext);
 			return new JMustacheConfiguration().mustacheCompiler(compiler, templateLoader);
+		}
+
+		/**
+		 * The JMustache compiler.
+		 *
+		 * @param applicationContext The application context.
+		 * @return The compiler.
+		 */
+		private Mustache.Compiler compiler(ApplicationContext applicationContext) throws Exception {
+			try {
+				return applicationContext.getBean(Mustache.Compiler.class);
+			}
+			catch (NoSuchBeanDefinitionException ex) {
+				log.warn(ex.getMessage());
+				return new JMustacheConfiguration().jMustacheCompiler().getObject();
+			}
 		}
 	},
 
@@ -92,10 +109,26 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
-			Handlebars handlebars = applicationContext.getBean(Handlebars.class);
-			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
+		MustacheCompiler doInstantiate(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) throws Exception {
+			Handlebars handlebars = handlebars(applicationContext);
 			return new HandlebarsConfiguration().mustacheCompiler(handlebars, templateLoader);
+		}
+
+		/**
+		 * Create handlebars instance.
+		 *
+		 * @param applicationContext Application context.
+		 * @return Handlebars instance.
+		 * @throws Exception If an error occurred while creating {@link Handlebars} bean.
+		 */
+		private Handlebars handlebars(ApplicationContext applicationContext) throws Exception {
+			try {
+				return applicationContext.getBean(Handlebars.class);
+			}
+			catch (NoSuchBeanDefinitionException ex) {
+				log.warn(ex.getMessage());
+				return new HandlebarsConfiguration().handlebarsCompiler().getObject();
+			}
 		}
 	},
 
@@ -115,9 +148,19 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
-			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
-			return new MustacheJavaConfiguration().mustacheCompiler(templateLoader);
+		MustacheCompiler doInstantiate(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) {
+			MustacheFactory mustacheFactory = mustacheFactory(applicationContext, templateLoader);
+			return new MustacheJavaConfiguration().mustacheCompiler(mustacheFactory, templateLoader);
+		}
+
+		private MustacheFactory mustacheFactory(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) {
+			try {
+				return applicationContext.getBean(MustacheFactory.class);
+			}
+			catch (NoSuchBeanDefinitionException ex) {
+				log.warn(ex.getMessage());
+				return new MustacheJavaConfiguration().mustacheFactory(templateLoader);
+			}
 		}
 	},
 
@@ -154,8 +197,7 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
-			MustacheTemplateLoader templateLoader = applicationContext.getBean(MustacheTemplateLoader.class);
+		MustacheCompiler doInstantiate(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) {
 			Class<?> mustacheEngineClass = Classes.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine");
 			Object mustacheEngine = applicationContext.getBean(mustacheEngineClass);
 			Object instance = newInstance(configurationClass());
@@ -196,8 +238,8 @@ public enum MustacheProvider {
 		}
 
 		@Override
-		public MustacheCompiler instantiate(ApplicationContext applicationContext) {
-			return detectProvider().instantiate(applicationContext);
+		MustacheCompiler doInstantiate(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) throws Exception {
+			return detectProvider().doInstantiate(applicationContext, templateLoader);
 		}
 	};
 
@@ -214,7 +256,30 @@ public enum MustacheProvider {
 	 * @param applicationContext Application to retrieve dependent beans.
 	 * @return Mustache compiler.
 	 */
-	public abstract MustacheCompiler instantiate(ApplicationContext applicationContext);
+	public MustacheCompiler instantiate(ApplicationContext applicationContext) throws Exception {
+		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(applicationContext);
+		return doInstantiate(applicationContext, templateLoader);
+	}
+
+	/**
+	 * Create mustache compiler to use application context.
+	 *
+	 * @param applicationContext The application context, used to retrieve dependencies.
+	 * @param templateLoader Template loader.
+	 * @return The mustache compiler.
+	 * @throws Exception If an error occurred while instantiating compiler.
+	 */
+	abstract MustacheCompiler doInstantiate(ApplicationContext applicationContext, MustacheTemplateLoader templateLoader) throws Exception;
+
+	/**
+	 * Get mustache template loader from given application context.
+	 *
+	 * @param applicationContext The application context.
+	 * @return The template loader implementation.
+	 */
+	MustacheTemplateLoader mustacheTemplateLoader(ApplicationContext applicationContext) {
+		return applicationContext.getBean(MustacheTemplateLoader.class);
+	}
 
 	/**
 	 * Check if implementation is available.

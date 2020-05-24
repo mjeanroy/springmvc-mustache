@@ -173,17 +173,26 @@ public class MustacheProviderTest {
 		it_should_instantiate_engine_compiler(provider, applicationContext, className);
 	}
 
-	private void it_should_get_provider_configuration_class(MustacheProvider provider, String className) {
+	private static void it_should_get_provider_configuration_class(MustacheProvider provider, String className) {
 		assertThat(provider.configurationClass()).isEqualTo(className);
 	}
 
-	private void it_should_instantiate_engine_compiler(MustacheProvider provider, ApplicationContext applicationContext, String className) {
+	private static void it_should_instantiate_engine_compiler(MustacheProvider provider, ApplicationContext applicationContext, String className) {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		when(applicationContext.getBean(MustacheTemplateLoader.class)).thenReturn(templateLoader);
 
-		MustacheCompiler mustacheCompiler = provider.instantiate(applicationContext);
+		MustacheCompiler mustacheCompiler = instantiate(provider, applicationContext);
 		assertThat(mustacheCompiler).isNotNull();
 		assertThat(mustacheCompiler.getClass().getName()).isEqualTo(className);
+	}
+
+	private static MustacheCompiler instantiate(MustacheProvider provider, ApplicationContext applicationContext) {
+		try {
+			return provider.instantiate(applicationContext);
+		}
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 }
