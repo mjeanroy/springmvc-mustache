@@ -35,7 +35,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.Collection;
+
 import static com.samskivert.mustache.Mustache.Compiler;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableCollection;
 
 @Configuration
 public class JMustacheConfiguration {
@@ -44,9 +48,17 @@ public class JMustacheConfiguration {
 
 	private final Environment environment;
 
+	private Collection<JMustacheCustomizer> customizers;
+
 	@Autowired
 	public JMustacheConfiguration(Environment environment) {
 		this.environment = environment;
+		this.customizers = emptyList();
+	}
+
+	@Autowired(required = false)
+	public void setCustomizers(Collection<JMustacheCustomizer> customizers) {
+		this.customizers = customizers;
 	}
 
 	/**
@@ -107,6 +119,10 @@ public class JMustacheConfiguration {
 		Boolean standardsMode = getStandardsMode();
 		if (standardsMode != null) {
 			factoryBean.setStandardsMode(standardsMode);
+		}
+
+		if (customizers != null && !customizers.isEmpty()) {
+			factoryBean.setCustomizers(unmodifiableCollection(customizers));
 		}
 
 		return factoryBean;

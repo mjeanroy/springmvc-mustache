@@ -30,6 +30,10 @@ import com.samskivert.mustache.Mustache;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
+import java.util.Collection;
+
+import static java.util.Collections.emptyList;
+
 /**
  * Factory used to create instance of {@link com.samskivert.mustache.Mustache.Compiler}.
  * Bean instance is thread safe.
@@ -92,17 +96,24 @@ public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.C
 	private Boolean standardsMode;
 
 	/**
+	 * List of customizers that will be applied on {@link Mustache.Compiler} instance
+	 * before creating object instance.
+	 */
+	private Collection<JMustacheCustomizer> customizers;
+
+	/**
 	 * Create factory with default settings.
 	 */
 	public JMustacheCompilerFactoryBean() {
 		super();
-		nullValue = "";
-		defaultValue = "";
-		emptyStringIsFalse = true;
-		zeroIsFalse = true;
-		escapeHTML = true;
-		strictSections = false;
-		standardsMode = false;
+		this.customizers = emptyList();
+		this.nullValue = "";
+		this.defaultValue = "";
+		this.emptyStringIsFalse = true;
+		this.zeroIsFalse = true;
+		this.escapeHTML = true;
+		this.strictSections = false;
+		this.standardsMode = false;
 	}
 
 	@Override
@@ -149,6 +160,14 @@ public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.C
 
 		if (standardsMode != null) {
 			compiler = compiler.standardsMode(standardsMode);
+		}
+
+		if (customizers != null && !customizers.isEmpty()) {
+			log.debug("Applying JMustache customizers");
+			for (JMustacheCustomizer customizer : customizers) {
+				log.debug(" - Applying JMustache customizer: {}", customizer);
+				compiler = customizer.customize(compiler);
+			}
 		}
 
 		return compiler;
@@ -215,5 +234,14 @@ public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.C
 	 */
 	public void setStandardsMode(boolean standardsMode) {
 		this.standardsMode = standardsMode;
+	}
+
+	/**
+	 * Set {@link #customizers}
+	 *
+	 * @param customizers {@link #customizers}
+	 */
+	public void setCustomizers(Collection<JMustacheCustomizer> customizers) {
+		this.customizers = customizers;
 	}
 }

@@ -22,29 +22,23 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.mustache.sample.jmustache.configuration;
+package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import com.samskivert.mustache.Mustache;
 
-@Configuration
-@EnableWebMvc
-@EnableMustache
-@ComponentScan(basePackages = {
-		"com.github.mjeanroy.springmvc.mustache.sample.jmustache",
-})
-public class SpringConfiguration extends WebMvcConfigurationSupport {
+/**
+ * A customizer for {@link Mustache.Compiler} instance.
+ */
+public interface JMustacheCustomizer {
 
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
-		handlerMapping.setAlwaysUseFullPath(true);
-		handlerMapping.setUseSuffixPatternMatch(false);
-		return handlerMapping;
-	}
+	/**
+	 * Customize JMustache Compiler and returns new instance.
+	 *
+	 * Since {@link Mustache.Compiler} is immutable, it is required to returns the new
+	 * instance that will be registered in the application context.
+	 *
+	 * @param compiler The initial mustache compiler.
+	 * @return The customized mustache compiler.
+	 */
+	Mustache.Compiler customize(Mustache.Compiler compiler);
 }

@@ -31,11 +31,21 @@ import com.samskivert.mustache.Escapers;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
+import java.util.List;
+
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class JMustacheConfigurationTest {
 
@@ -165,5 +175,33 @@ public class JMustacheConfigurationTest {
 		Mustache.Compiler compiler = factoryBean.getObject();
 
 		assertThat(compiler.nullValue).isEqualTo("default");
+	}
+
+	@Test
+	public void it_should_customize_jmustache_compiler() throws Exception {
+		JMustacheCustomizer c1 = newJMustacheCustomizer();
+		JMustacheCustomizer c2 = newJMustacheCustomizer();
+		List<JMustacheCustomizer> customizers = asList(c1, c2);
+
+		jMustacheConfiguration.setCustomizers(customizers);
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		InOrder inOrder = inOrder(c1, c2);
+		inOrder.verify(c1).customize(compiler);
+		inOrder.verify(c2).customize(compiler);
+	}
+
+	private static JMustacheCustomizer newJMustacheCustomizer() {
+		JMustacheCustomizer customizer = mock(JMustacheCustomizer.class);
+		when(customizer.customize(any(Mustache.Compiler.class))).thenAnswer(new Answer<Mustache.Compiler>() {
+			@Override
+			public Mustache.Compiler answer(InvocationOnMock invocation) {
+				return invocation.getArgument(0);
+			}
+		});
+
+		return customizer;
 	}
 }

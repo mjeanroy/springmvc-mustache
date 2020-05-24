@@ -22,29 +22,27 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.mustache.sample.jmustache.configuration;
+package com.github.mjeanroy.springmvc.mustache.sample.jmustache.jmustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCustomizer;
+import com.samskivert.mustache.Mustache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-@Configuration
-@EnableWebMvc
-@EnableMustache
-@ComponentScan(basePackages = {
-		"com.github.mjeanroy.springmvc.mustache.sample.jmustache",
-})
-public class SpringConfiguration extends WebMvcConfigurationSupport {
+@Component
+class CustomFormatterJMustacheCustomizer implements JMustacheCustomizer {
 
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
-		handlerMapping.setAlwaysUseFullPath(true);
-		handlerMapping.setUseSuffixPatternMatch(false);
-		return handlerMapping;
+	private static final Logger log = LoggerFactory.getLogger(CustomFormatterJMustacheCustomizer.class);
+
+	@Override
+	public Mustache.Compiler customize(Mustache.Compiler compiler) {
+		log.info("Using custom JMustache formatter");
+		return compiler.withFormatter(new Mustache.Formatter() {
+			@Override
+			public String format(Object value) {
+				return value == null ? null : value.toString();
+			}
+		});
 	}
 }
