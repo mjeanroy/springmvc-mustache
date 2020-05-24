@@ -63,7 +63,8 @@ public class HandlebarsConfigurationTest {
 	@Test
 	public void it_should_instantiate_with_default_properties() throws Exception {
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		String rawTemplate = "Hello {{name}}";
 		Template template = handlebars.compileInline(rawTemplate);
@@ -83,7 +84,8 @@ public class HandlebarsConfigurationTest {
 		environment.setProperty("mustache.handlebars.endDelimiter", "]]");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		String rawTemplate = "Hello [[name]]";
 		Template template = handlebars.compileInline(rawTemplate);
@@ -93,51 +95,56 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_string_param_property() {
+	public void it_should_instantiate_with_string_param_property() throws Exception {
 		environment.setProperty("mustache.handlebars.stringParams", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		assertThat(handlebars.stringParams()).isTrue();
 	}
 
 	@Test
-	public void it_should_instantiate_with_infinite_loop_property() {
+	public void it_should_instantiate_with_infinite_loop_property() throws Exception {
 		environment.setProperty("mustache.handlebars.infiniteLoops", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		assertThat(handlebars.infiniteLoops()).isTrue();
 	}
 
 	@Test
-	public void it_should_instantiate_with_delete_partials_after_merge_property() {
+	public void it_should_instantiate_with_delete_partials_after_merge_property() throws Exception {
 		environment.setProperty("mustache.handlebars.deletePartialAfterMerge", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		assertThat(handlebars.deletePartialAfterMerge()).isTrue();
 	}
 
 	@Test
-	public void it_should_instantiate_with_parent_scope_resolution_property() {
+	public void it_should_instantiate_with_parent_scope_resolution_property() throws Exception {
 		environment.setProperty("mustache.handlebars.parentScopeResolution", "false");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		assertThat(handlebars.parentScopeResolution()).isFalse();
 	}
 
 	@Test
-	public void it_should_instantiate_with_pretty_print_property() {
+	public void it_should_instantiate_with_pretty_print_property() throws Exception {
 		environment.setProperty("mustache.handlebars.prettyPrint", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
-		Handlebars handlebars = factoryBean.createInstance();
+		factoryBean.afterPropertiesSet();
+		Handlebars handlebars = factoryBean.getObject();
 
 		assertThat(handlebars.prettyPrint()).isTrue();
 	}

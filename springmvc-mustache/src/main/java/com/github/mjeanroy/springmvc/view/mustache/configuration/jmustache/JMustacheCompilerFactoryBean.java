@@ -36,45 +36,60 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
  */
 public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.Compiler> implements FactoryBean<Mustache.Compiler> {
 
-	/**
-	 * Class logger.
-	 */
 	private static final Logger log = LoggerFactory.getLogger(JMustacheCompilerFactoryBean.class);
 
 	/**
+	 * A value to use when a variable resolves to null. If this value is null (which is the
+	 * default {@code null} value), an exception will be thrown.
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#nullValue
 	 */
 	private String nullValue;
 
 	/**
+	 * Use the given value for any variable that is missing, or otherwise resolves to {@code null}.
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#defaultValue
 	 */
 	private String defaultValue;
 
 	/**
+	 * If this value is {@code true}, empty string will be treated as a {@code} value, as in JavaScript
+	 * mustache implementation.
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#emptyStringIsFalse
 	 */
-	private boolean emptyStringIsFalse;
+	private Boolean emptyStringIsFalse;
 
 	/**
+	 * If this value is {@code true}, zero will be treated as a {@code false} value, as in JavaScript
+	 * mustache implementation.
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#zeroIsFalse
 	 */
-	private boolean zeroIsFalse;
+	private Boolean zeroIsFalse;
 
 	/**
+	 * Does or does not escape HTML by default.
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#escapeHTML
 	 */
-	private boolean escapeHTML;
+	private Boolean escapeHTML;
 
 	/**
+	 * Whether or not to throw an exception when a section resolves to a missing value. If
+	 * {@code false}, the section is simply omitted (or included in the case of inverse sections).
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#strictSections
 	 */
-	private boolean strictSections;
+	private Boolean strictSections;
 
 	/**
+	 * Whether or not standards mode is enabled.
+	 *
 	 * @see com.samskivert.mustache.Mustache.Compiler#standardsMode
 	 */
-	private boolean standardsMode;
+	private Boolean standardsMode;
 
 	/**
 	 * Create factory with default settings.
@@ -98,14 +113,45 @@ public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.C
 	@Override
 	protected Mustache.Compiler createInstance() {
 		log.debug("Create instance of {}", Mustache.Compiler.class);
-		return Mustache.compiler()
-				.nullValue(nullValue)
-				.defaultValue(defaultValue)
-				.emptyStringIsFalse(emptyStringIsFalse)
-				.zeroIsFalse(zeroIsFalse)
-				.escapeHTML(escapeHTML)
-				.strictSections(strictSections)
-				.standardsMode(standardsMode);
+		log.debug(" - nullValue = {}", nullValue);
+		log.debug(" - defaultValue = {}", defaultValue);
+		log.debug(" - emptyStringIsFalse = {}", emptyStringIsFalse);
+		log.debug(" - zeroIsFalse = {}", zeroIsFalse);
+		log.debug(" - escapeHTML = {}", escapeHTML);
+		log.debug(" - strictSections = {}", strictSections);
+		log.debug(" - standardsMode = {}", standardsMode);
+
+		Mustache.Compiler compiler = Mustache.compiler();
+
+		if (nullValue != null) {
+			compiler = compiler.nullValue(nullValue);
+		}
+
+		if (defaultValue != null) {
+			compiler = compiler.defaultValue(defaultValue);
+		}
+
+		if (emptyStringIsFalse != null) {
+			compiler = compiler.emptyStringIsFalse(emptyStringIsFalse);
+		}
+
+		if (zeroIsFalse != null) {
+			compiler = compiler.zeroIsFalse(zeroIsFalse);
+		}
+
+		if (escapeHTML != null) {
+			compiler = compiler.escapeHTML(escapeHTML);
+		}
+
+		if (strictSections != null) {
+			compiler = compiler.strictSections(strictSections);
+		}
+
+		if (standardsMode != null) {
+			compiler = compiler.standardsMode(standardsMode);
+		}
+
+		return compiler;
 	}
 
 	/**

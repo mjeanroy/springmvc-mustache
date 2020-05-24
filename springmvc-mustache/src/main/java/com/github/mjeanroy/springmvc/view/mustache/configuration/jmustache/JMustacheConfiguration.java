@@ -30,8 +30,10 @@ import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.samskivert.mustache.Mustache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import static com.samskivert.mustache.Mustache.Compiler;
 
@@ -39,6 +41,13 @@ import static com.samskivert.mustache.Mustache.Compiler;
 public class JMustacheConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(JMustacheConfiguration.class);
+
+	private final Environment environment;
+
+	@Autowired
+	public JMustacheConfiguration(Environment environment) {
+		this.environment = environment;
+	}
 
 	/**
 	 * Build mustache compiler.
@@ -64,11 +73,70 @@ public class JMustacheConfiguration {
 	@Bean
 	public JMustacheCompilerFactoryBean jMustacheCompiler() {
 		JMustacheCompilerFactoryBean factoryBean = new JMustacheCompilerFactoryBean();
-		factoryBean.setNullValue("");
-		factoryBean.setDefaultValue("");
-		factoryBean.setEmptyStringIsFalse(true);
-		factoryBean.setZeroIsFalse(true);
-		factoryBean.setEscapeHTML(true);
+
+		String nullValue = getNullValue();
+		if (nullValue != null) {
+			factoryBean.setNullValue(nullValue);
+		}
+
+		String defaultValue = getDefaultValue();
+		if (defaultValue != null) {
+			factoryBean.setDefaultValue(defaultValue);
+		}
+
+		Boolean emptyStringIsFalse = getEmptyStringIsFalse();
+		if (emptyStringIsFalse != null) {
+			factoryBean.setEmptyStringIsFalse(emptyStringIsFalse);
+		}
+
+		Boolean zeroIsFalse = getZeroIsFalse();
+		if (zeroIsFalse != null) {
+			factoryBean.setZeroIsFalse(zeroIsFalse);
+		}
+
+		Boolean escapeHTML = getEscapeHTML();
+		if (escapeHTML != null) {
+			factoryBean.setEscapeHTML(escapeHTML);
+		}
+
+		Boolean strictSections = getStrictSections();
+		if (strictSections != null) {
+			factoryBean.setStrictSections(strictSections);
+		}
+
+		Boolean standardsMode = getStandardsMode();
+		if (standardsMode != null) {
+			factoryBean.setStandardsMode(standardsMode);
+		}
+
 		return factoryBean;
+	}
+
+	private String getNullValue() {
+		return environment.getProperty("mustache.jmustache.nullValue", String.class);
+	}
+
+	private String getDefaultValue() {
+		return environment.getProperty("mustache.jmustache.defaultValue", String.class);
+	}
+
+	private Boolean getEmptyStringIsFalse() {
+		return environment.getProperty("mustache.jmustache.emptyStringIsFalse", Boolean.class);
+	}
+
+	private Boolean getZeroIsFalse() {
+		return environment.getProperty("mustache.jmustache.zeroIsFalse", Boolean.class);
+	}
+
+	private Boolean getEscapeHTML() {
+		return environment.getProperty("mustache.jmustache.escapeHTML", Boolean.class);
+	}
+
+	private Boolean getStrictSections() {
+		return environment.getProperty("mustache.jmustache.strictSections", Boolean.class);
+	}
+
+	private Boolean getStandardsMode() {
+		return environment.getProperty("mustache.jmustache.standardsMode", Boolean.class);
 	}
 }

@@ -86,25 +86,60 @@ public class JMustacheCompilerFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_target_object_with_custom_settings() throws Exception {
+	public void it_should_create_target_object_with_empty_string_is_false_property() throws Exception {
 		factoryBean.setEmptyStringIsFalse(false);
-		factoryBean.setZeroIsFalse(false);
-		factoryBean.setEscapeHTML(false);
-		factoryBean.setStandardsMode(true);
-		factoryBean.setStrictSections(true);
-		factoryBean.setNullValue("foo");
-		factoryBean.setDefaultValue("foo");
 		factoryBean.afterPropertiesSet();
-
 		Mustache.Compiler compiler = factoryBean.getObject();
-
-		assertThat(compiler).isNotNull();
-		assertThat(compiler.nullValue).isEqualTo("foo");
 		assertThat(compiler.emptyStringIsFalse).isFalse();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_zero_is_false_property() throws Exception {
+		factoryBean.setZeroIsFalse(false);
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
 		assertThat(compiler.zeroIsFalse).isFalse();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_escape_HTML_property() throws Exception {
+		factoryBean.setEscapeHTML(false);
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
 		assertThat(compiler.escaper).isEqualTo(Escapers.NONE);
+	}
+
+	@Test
+	public void it_should_create_target_object_with_standards_mode_property() throws Exception {
+		factoryBean.setStandardsMode(true);
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
 		assertThat(compiler.standardsMode).isTrue();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_strict_section_property() throws Exception {
+		factoryBean.setStrictSections(true);
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
 		assertThat(compiler.strictSections).isTrue();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_null_value_property() throws Exception {
+		factoryBean.setDefaultValue("null");
+		factoryBean.setNullValue("null");
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+		assertThat(compiler.nullValue).isEqualTo("null");
+	}
+
+	@Test
+	public void it_should_create_target_object_with_default_value_property() throws Exception {
+		factoryBean.setDefaultValue("default");
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+		assertThat(compiler.nullValue).isEqualTo("default");
 	}
 
 	@Test

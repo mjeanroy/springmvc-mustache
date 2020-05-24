@@ -27,21 +27,25 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
+import com.samskivert.mustache.Escapers;
 import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.mock.env.MockEnvironment;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JMustacheConfigurationTest {
 
+	private MockEnvironment environment;
 	private JMustacheConfiguration jMustacheConfiguration;
 
 	@Before
 	public void setUp() {
-		jMustacheConfiguration = new JMustacheConfiguration();
+		environment = new MockEnvironment();
+		jMustacheConfiguration = new JMustacheConfiguration(environment);
 	}
 
 	@Test
@@ -68,5 +72,98 @@ public class JMustacheConfigurationTest {
 		assertThat(emptyStringIsFalse).isTrue();
 		assertThat(zeroIsFalse).isTrue();
 		assertThat(escapeHTML).isTrue();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_default_settings() throws Exception {
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler).isNotNull();
+		assertThat(compiler.nullValue).isEqualTo("");
+		assertThat(compiler.emptyStringIsFalse).isTrue();
+		assertThat(compiler.zeroIsFalse).isTrue();
+		assertThat(compiler.escaper).isEqualTo(Escapers.HTML);
+		assertThat(compiler.standardsMode).isFalse();
+		assertThat(compiler.strictSections).isFalse();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_empty_string_is_false_property() throws Exception {
+		environment.setProperty("mustache.jmustache.emptyStringIsFalse", "false");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.emptyStringIsFalse).isFalse();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_zero_is_false_property() throws Exception {
+		environment.setProperty("mustache.jmustache.zeroIsFalse", "false");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.zeroIsFalse).isFalse();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_escape_HTML_property() throws Exception {
+		environment.setProperty("mustache.jmustache.escapeHTML", "false");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.escaper).isEqualTo(Escapers.NONE);
+	}
+
+	@Test
+	public void it_should_create_target_object_with_standards_mode_property() throws Exception {
+		environment.setProperty("mustache.jmustache.standardsMode", "true");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.standardsMode).isTrue();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_strict_section_property() throws Exception {
+		environment.setProperty("mustache.jmustache.strictSections", "true");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.strictSections).isTrue();
+	}
+
+	@Test
+	public void it_should_create_target_object_with_null_value_property() throws Exception {
+		environment.setProperty("mustache.jmustache.defaultValue", "null");
+		environment.setProperty("mustache.jmustache.nullValue", "null");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.nullValue).isEqualTo("null");
+	}
+
+	@Test
+	public void it_should_create_target_object_with_default_value_property() throws Exception {
+		environment.setProperty("mustache.jmustache.defaultValue", "default");
+
+		JMustacheCompilerFactoryBean factoryBean = jMustacheConfiguration.jMustacheCompiler();
+		factoryBean.afterPropertiesSet();
+		Mustache.Compiler compiler = factoryBean.getObject();
+
+		assertThat(compiler.nullValue).isEqualTo("default");
 	}
 }

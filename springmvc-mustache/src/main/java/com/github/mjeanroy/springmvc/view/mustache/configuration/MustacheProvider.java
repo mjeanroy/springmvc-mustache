@@ -31,6 +31,8 @@ import com.github.mjeanroy.springmvc.view.mustache.commons.lang.JavaUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils;
 import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCompilerFactoryBean;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
@@ -73,23 +75,27 @@ public enum MustacheProvider {
 
 		@Override
 		MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) throws Exception {
-			Mustache.Compiler compiler = compiler(applicationContext);
-			return new JMustacheConfiguration().mustacheCompiler(compiler, templateLoader);
+			Mustache.Compiler compiler = compiler(applicationContext, environment);
+			return new JMustacheConfiguration(environment).mustacheCompiler(compiler, templateLoader);
 		}
 
 		/**
 		 * The JMustache compiler.
 		 *
 		 * @param applicationContext The application context.
+		 * @param environment Application context environment.
 		 * @return The compiler.
 		 */
-		private Mustache.Compiler compiler(ApplicationContext applicationContext) throws Exception {
+		private Mustache.Compiler compiler(ApplicationContext applicationContext, Environment environment) throws Exception {
 			try {
 				return applicationContext.getBean(Mustache.Compiler.class);
 			}
 			catch (NoSuchBeanDefinitionException ex) {
 				log.warn(ex.getMessage());
-				return new JMustacheConfiguration().jMustacheCompiler().getObject();
+				JMustacheConfiguration jMustacheConfiguration = new JMustacheConfiguration(environment);
+				JMustacheCompilerFactoryBean jMustacheCompilerFactoryBean = jMustacheConfiguration.jMustacheCompiler();
+				jMustacheCompilerFactoryBean.afterPropertiesSet();
+				return jMustacheCompilerFactoryBean.getObject();
 			}
 		}
 	},
@@ -128,7 +134,10 @@ public enum MustacheProvider {
 			}
 			catch (NoSuchBeanDefinitionException ex) {
 				log.warn(ex.getMessage());
-				return new HandlebarsConfiguration(environment).handlebarsCompiler().getObject();
+				HandlebarsConfiguration handlebarsConfiguration = new HandlebarsConfiguration(environment);
+				HandlebarsFactoryBean factoryBean = handlebarsConfiguration.handlebarsCompiler();
+				factoryBean.afterPropertiesSet();
+				return factoryBean.getObject();
 			}
 		}
 	},
