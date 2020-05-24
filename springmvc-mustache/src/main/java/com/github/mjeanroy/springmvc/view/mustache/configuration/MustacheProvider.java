@@ -39,6 +39,7 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.Mu
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mustachejava.MustacheFactory;
+import com.github.mustachejava.MustacheResolver;
 import com.samskivert.mustache.Mustache;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -184,8 +185,9 @@ public enum MustacheProvider {
 				return applicationContext.getBean(MustacheFactory.class);
 			}
 			catch (NoSuchBeanDefinitionException ex) {
-				log.warn(ex.getMessage());
-				return new MustacheJavaConfiguration(environment).mustacheFactory(templateLoader);
+				MustacheJavaConfiguration mustacheJavaConfiguration = new MustacheJavaConfiguration(environment);
+				MustacheResolver mustacheResolver = mustacheJavaConfiguration.mustacheResolver(templateLoader);
+				return mustacheJavaConfiguration.mustacheFactory(mustacheResolver, templateLoader);
 			}
 		}
 	},

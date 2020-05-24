@@ -118,7 +118,12 @@ If you prefer XML configuration, you may want to use one of these (depends on th
 ```xml
 <!-- Create mustache beans -->
 <bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+
 <bean id="mustacheFactory" class="com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory">
+    <constructor-arg ref="mustacheTemplateLoader"/>
+</bean>
+
+<bean id="mustacheResolver" class="com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver">
     <constructor-arg ref="mustacheTemplateLoader"/>
 </bean>
 

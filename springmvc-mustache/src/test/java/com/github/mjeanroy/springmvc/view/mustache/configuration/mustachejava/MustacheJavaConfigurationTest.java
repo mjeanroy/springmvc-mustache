@@ -28,12 +28,15 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory;
+import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver;
 import com.github.mustachejava.MustacheFactory;
+import com.github.mustachejava.MustacheResolver;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
+import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MustacheJavaConfigurationTest {
@@ -51,16 +54,28 @@ public class MustacheJavaConfigurationTest {
 	public void it_should_instantiate_mustache_compiler() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		SpringMustacheFactory mustacheFactory = new SpringMustacheFactory(templateLoader);
+		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
+		SpringMustacheFactory mustacheFactory = new SpringMustacheFactory(mustacheResolver, templateLoader);
 		MustacheCompiler mustacheCompiler = mustacheJavaConfiguration.mustacheCompiler(mustacheFactory, templateLoader);
 		assertThat(mustacheCompiler).isNotNull();
+	}
+
+	@Test
+	public void it_should_instantiate_mustache_resolver() {
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
+		MustacheResolver mustacheResolver = mustacheJavaConfiguration.mustacheResolver(templateLoader);
+
+		assertThat(mustacheResolver).isInstanceOf(SpringMustacheResolver.class);
+		assertThat(readField(mustacheResolver, "templateLoader", MustacheTemplateLoader.class)).isSameAs(templateLoader);
 	}
 
 	@Test
 	public void it_should_instantiate_mustache_factory() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(templateLoader);
+		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
+		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(mustacheResolver, templateLoader);
 
 		assertThat(mustacheFactory).isInstanceOf(SpringMustacheFactory.class);
 		assertThat(((SpringMustacheFactory) mustacheFactory).getRecursionLimit()).isEqualTo(100);
@@ -72,7 +87,8 @@ public class MustacheJavaConfigurationTest {
 
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(templateLoader);
+		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
+		MustacheFactory mustacheFactory = mustacheJavaConfiguration.mustacheFactory(mustacheResolver, templateLoader);
 
 		assertThat(mustacheFactory).isInstanceOf(SpringMustacheFactory.class);
 		assertThat(((SpringMustacheFactory) mustacheFactory).getRecursionLimit()).isEqualTo(10);

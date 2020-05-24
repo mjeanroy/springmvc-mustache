@@ -26,22 +26,17 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
-import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheResolver;
+import com.github.mustachejava.resolver.DefaultResolver;
 
-/**
- * Implementation of mustache factory that use a template loader
- * internally.
- *
- * Future release of mustache.java will support custom template resolver, this
- * implementation will be useless.
- * See: https://github.com/spullara/mustache.java/pull/105
- */
-public final class SpringMustacheFactory extends DefaultMustacheFactory {
+import java.io.Reader;
 
-	private static final Logger log = LoggerFactory.getLogger(SpringMustacheFactory.class);
+public final class SpringMustacheResolver extends DefaultResolver implements MustacheResolver {
+
+	private static final Logger log = LoggerFactory.getLogger(SpringMustacheResolver.class);
 
 	/**
 	 * Mustache template loader that will load
@@ -52,27 +47,24 @@ public final class SpringMustacheFactory extends DefaultMustacheFactory {
 	private final MustacheTemplateLoader templateLoader;
 
 	/**
-	 * Build new mustache factory.
+	 * Build new mustache resolver.
 	 *
 	 * @param templateLoader Template loader to use.
 	 */
-	public SpringMustacheFactory(MustacheResolver mustacheResolver, MustacheTemplateLoader templateLoader) {
-		super(mustacheResolver);
+	public SpringMustacheResolver(MustacheTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
-
-		// Use a custom reflection object handler to "see" zero as a falsey value
-		// See: https://github.com/spullara/mustache.java/pull/111
-		this.oh = new SpringMustacheReflectionObjectHandler();
 	}
 
 	@Override
-	public String resolvePartialPath(String dir, String name, String extension) {
-		// Future release of mustache.java will be prevent dir and extension being
-		// always added to template name
-		// See: https://github.com/spullara/mustache.java/pull/110
-		// For now, this method has to be overridden
-		log.debug("Resolve partial path for name: {}", name);
-		return templateLoader.resolve(name);
+	public Reader getReader(String resourceName) {
+		log.debug("Load template associated to resource: {}", resourceName);
+
+		try {
+			return templateLoader.getTemplate(resourceName);
+		}
+		catch (MustacheTemplateNotFoundException ex) {
+			return super.getReader(resourceName);
+		}
 	}
 
 	@Override

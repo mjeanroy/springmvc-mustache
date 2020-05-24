@@ -37,25 +37,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read
 import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpringMustacheFactoryTest {
-
-	@Test
-	public void it_should_resolve_template_name_with_template_loader() {
-		String name = "foo";
-		String location = "/templates/foo.template.html";
-
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		String prefix = "/templates/";
-		String suffix = ".template.html";
-
-		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
-		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
-		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(mustacheResolver, templateLoader);
-
-		String result = springMustacheFactory.resolvePartialPath("dir", name, "extension");
-
-		assertThat(result).isNotNull().isNotEmpty().isEqualTo(location);
-	}
+public class SpringMustacheResolverTest {
 
 	@Test
 	public void it_should_resolve_template() {
@@ -65,11 +47,10 @@ public class SpringMustacheFactoryTest {
 
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
-		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(mustacheResolver, templateLoader);
 
 		String name = "foo";
 
-		Reader result = springMustacheFactory.getReader(name);
+		Reader result = mustacheResolver.getReader(name);
 
 		assertThat(result).isNotNull();
 		assertThat(read(result)).isEqualTo("<div>Hello {{name}}</div>");
@@ -80,17 +61,16 @@ public class SpringMustacheFactoryTest {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
-		SpringMustacheFactory springMustacheFactory = new SpringMustacheFactory(mustacheResolver, templateLoader);
 
 		// @formatter:off
 		String expectedToString =
-				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory@%s{" +
+				"com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver@%s{" +
 						"templateLoader=%s" +
 				"}";
 		// @formatter:on
 
-		assertThat(springMustacheFactory).hasToString(String.format(
-				expectedToString, hexIdentity(springMustacheFactory), templateLoader
+		assertThat(mustacheResolver).hasToString(String.format(
+				expectedToString, hexIdentity(mustacheResolver), templateLoader
 		));
 	}
 }

@@ -30,7 +30,9 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory;
+import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver;
 import com.github.mustachejava.MustacheFactory;
+import com.github.mustachejava.MustacheResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,14 +63,26 @@ public class MustacheJavaConfiguration {
 	}
 
 	/**
+	 * The mustache template resolver, use {@link MustacheTemplateLoader}.
+	 *
+	 * @param templateLoader Template loader.
+	 * @return The template resolver.
+	 */
+	@Bean
+	public MustacheResolver mustacheResolver(MustacheTemplateLoader templateLoader) {
+		return new SpringMustacheResolver(templateLoader);
+	}
+
+	/**
 	 * The mustache factory used to render mustache templates.
 	 *
+	 * @param mustacheResolver Template resolver.
 	 * @param templateLoader Template loader.
 	 * @return The mustache factory.
 	 */
 	@Bean
-	public MustacheFactory mustacheFactory(MustacheTemplateLoader templateLoader) {
-		SpringMustacheFactory factory = new SpringMustacheFactory(templateLoader);
+	public MustacheFactory mustacheFactory(MustacheResolver mustacheResolver, MustacheTemplateLoader templateLoader) {
+		SpringMustacheFactory factory = new SpringMustacheFactory(mustacheResolver, templateLoader);
 
 		Integer recursionLimit = getRecursionLimit();
 		if (recursionLimit != null) {
