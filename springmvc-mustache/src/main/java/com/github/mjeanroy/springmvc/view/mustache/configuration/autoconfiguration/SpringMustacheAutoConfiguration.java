@@ -24,7 +24,14 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration.autoconfiguration;
 
+import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
+import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheEngineConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheWebConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -36,14 +43,23 @@ public class SpringMustacheAutoConfiguration {
 
 	@Configuration
 	@AutoConfigureBefore(MustacheAutoConfiguration.class)
-	@Import(com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheEngineConfiguration.class)
-	public static class MustacheEngineConfiguration {
+	@ConditionalOnMissingBean(MustacheTemplateLoader.class)
+	@Import(MustacheTemplateLoaderConfiguration.class)
+	public static class MustacheTemplateLoaderAutoConfiguration {
+	}
+
+	@Configuration
+	@AutoConfigureBefore(MustacheAutoConfiguration.class)
+	@ConditionalOnMissingBean(MustacheCompiler.class)
+	@Import(MustacheEngineConfiguration.class)
+	public static class MustacheEngineAutoConfiguration {
 	}
 
 	@Configuration
 	@AutoConfigureBefore(MustacheAutoConfiguration.class)
 	@ConditionalOnWebApplication
-	@Import(com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheWebConfiguration.class)
-	public static class MustacheWebConfiguration {
+	@ConditionalOnMissingBean(MustacheViewResolver.class)
+	@Import(MustacheWebConfiguration.class)
+	public static class MustacheWebAutoConfiguration {
 	}
 }

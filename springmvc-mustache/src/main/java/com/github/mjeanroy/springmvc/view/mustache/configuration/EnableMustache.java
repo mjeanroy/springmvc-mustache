@@ -38,6 +38,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.configuration.Mustache
 @Target(ElementType.TYPE)
 @Documented
 @Import(value = {
+		MustacheTemplateLoaderConfiguration.class,
 		MustacheEngineConfiguration.class,
 		MustacheWebConfiguration.class
 })

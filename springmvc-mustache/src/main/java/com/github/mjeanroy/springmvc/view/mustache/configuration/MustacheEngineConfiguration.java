@@ -38,10 +38,6 @@ public class MustacheEngineConfiguration implements ImportSelector {
 	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);
 		return new String[]{
-				// This one is required: it load template loader bean
-				MustacheTemplateLoaderConfiguration.class.getName(),
-
-				// This one is dynamic and depend on chosen provider
 				provider.configurationClass()
 		};
 	}
