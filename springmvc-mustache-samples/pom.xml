@@ -34,6 +34,18 @@
 	<packaging>pom</packaging>
 	<url>https://github.com/mjeanroy/springmvc-mustache</url>
 
+	<modules>
+		<module>springmvc-mustache-samples-handlebars</module>
+		<module>springmvc-mustache-samples-handlebars-xml</module>
+		<module>springmvc-mustache-samples-jmustache</module>
+		<module>springmvc-mustache-samples-jmustache-xml</module>
+		<module>springmvc-mustache-samples-mustachejava</module>
+		<module>springmvc-mustache-samples-mustachejava-xml</module>
+		<module>springmvc-mustache-samples-jsp</module>
+		<module>springmvc-mustache-samples-spi</module>
+		<module>springmvc-mustache-samples-springboot</module>
+	</modules>
+
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -91,7 +103,6 @@
 		<jetty.version>9.4.28.v20200408</jetty.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 
-		<mustache.version>2.2.1</mustache.version>
 		<junit.version>4.13</junit.version>
 		<assertj.version>2.9.1</assertj.version>
 		<junit-servers.version>1.0.0</junit-servers.version>
@@ -169,11 +180,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
 				<version>${spring-boot.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.webjars.bower</groupId>
-				<artifactId>mustache</artifactId>
-				<version>${mustache.version}</version>
 			</dependency>
 
 			<dependency>
@@ -285,44 +291,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>java7</id>
-			<activation>
-				<jdk>1.7</jdk>
-			</activation>
-			<modules>
-				<module>springmvc-mustache-samples-handlebars</module>
-				<module>springmvc-mustache-samples-handlebars-xml</module>
-				<module>springmvc-mustache-samples-jmustache</module>
-				<module>springmvc-mustache-samples-jmustache-xml</module>
-				<module>springmvc-mustache-samples-mustachejava</module>
-				<module>springmvc-mustache-samples-mustachejava-xml</module>
-				<module>springmvc-mustache-samples-jsp</module>
-				<module>springmvc-mustache-samples-spi</module>
-				<module>springmvc-mustache-samples-springboot</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>java8+</id>
-			<activation>
-				<jdk>[1.8,)</jdk>
-			</activation>
-			<modules>
-				<module>springmvc-mustache-samples-handlebars</module>
-				<module>springmvc-mustache-samples-handlebars-xml</module>
-				<module>springmvc-mustache-samples-jmustache</module>
-				<module>springmvc-mustache-samples-jmustache-xml</module>
-				<module>springmvc-mustache-samples-mustachejava</module>
-				<module>springmvc-mustache-samples-mustachejava-xml</module>
-				<module>springmvc-mustache-samples-nashorn</module>
-				<module>springmvc-mustache-samples-nashorn-xml</module>
-				<module>springmvc-mustache-samples-jsp</module>
-				<module>springmvc-mustache-samples-spi</module>
-				<module>springmvc-mustache-samples-springboot</module>
-			</modules>
-		</profile>
-
 		<profile>
 			<id>java9+</id>
 			<activation>

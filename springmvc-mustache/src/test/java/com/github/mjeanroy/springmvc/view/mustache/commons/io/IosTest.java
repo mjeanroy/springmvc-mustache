@@ -24,19 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.io;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class IosTest {
 
@@ -62,58 +58,5 @@ public class IosTest {
 				"	{{> /templates/foo.template.html}}",
 				"</div>"
 		)));
-	}
-
-	@Test
-	public void it_should_get_stream() {
-		String fileName = "/templates/foo.template.html";
-		InputStream stream = Ios.getStream(fileName);
-		assertThat(stream).hasSameContentAs(getClass().getResourceAsStream(fileName));
-	}
-
-	@Test
-	public void it_should_fail_if_stream_does_not_exist() {
-		final String fileName = "foo.bar";
-		final ThrowingCallable getStream = new ThrowingCallable() {
-			@Override
-			public void call() {
-				Ios.getStream(fileName);
-			}
-		};
-
-		assertThatThrownBy(getStream)
-				.isInstanceOf(MustacheIOException.class)
-				.hasMessage("I/O Error with foo.bar");
-	}
-
-	@Test
-	public void it_should_get_first_available_stream() {
-		List<String> fileNames = asList(
-				"/templates/fake.template.html",
-				"/templates/zero.template.html",
-				"/templates/composite.template.html"
-		);
-
-		InputStream stream = Ios.getFirstAvailableStream(fileNames);
-		assertThat(stream).hasSameContentAs(getClass().getResourceAsStream(fileNames.get(1)));
-	}
-
-	@Test
-	public void it_should_fail_when_no_stream_is_available() {
-		final List<String> fileNames = asList(
-				"/templates/fake1.template.html",
-				"/templates/fake1.template.html"
-		);
-
-		final ThrowingCallable getFirstAvailableStream = new ThrowingCallable() {
-			@Override
-			public void call() {
-				Ios.getFirstAvailableStream(fileNames);
-			}
-		};
-
-		assertThatThrownBy(getFirstAvailableStream)
-				.isInstanceOf(MustacheIOException.class)
-				.hasMessage("Unable to locate one of: [/templates/fake1.template.html, /templates/fake1.template.html]");
 	}
 }

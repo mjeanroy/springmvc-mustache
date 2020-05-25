@@ -22,7 +22,6 @@ If you clone the repository, you will find samples using:
 - JMustache (Java Config & XML  Config).
 - Mustache.java (Java Config & XML  Config).
 - Handlebars (Java Config & XML  Config).
-- Nashorn (Java Config & XML  Config).
 - Spring boot with JMustache implementation.
 
 These samples are really simple (render a really simple template with partial). Do not hesitate to submit your sample if you want.
