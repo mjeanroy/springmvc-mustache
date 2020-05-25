@@ -27,16 +27,11 @@ package com.github.mjeanroy.springmvc.view.mustache.commons.io;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
-import java.util.Collection;
 
 /**
  * Common static IO Utilities.
@@ -94,78 +89,6 @@ public final class Ios {
 		}
 		finally {
 			closeQuietly(buffer);
-		}
-	}
-
-	/**
-	 * Return an input stream from given name.
-	 * Name is searched into the classpath.
-	 * Name can contains ant style pattern.
-	 *
-	 * @param name Name.
-	 * @return Input Stream.
-	 */
-	public static InputStream getStream(String name) {
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(Ios.class.getClassLoader());
-		InputStream stream = getInputStreamWithResolver(resolver, name);
-
-		// Not Found
-		if (stream == null) {
-			throw new MustacheIOException("Unable to locate {}" + name);
-		}
-
-		return stream;
-	}
-
-	/**
-	 * Return an input stream from given names.
-	 * First result returning a valid stream is returned.
-	 * Names are searched into the classpath.
-	 * Names can contains ant style pattern.
-	 *
-	 * @param names Names collection.
-	 * @return Input Stream.
-	 * @throws MustacheIOException If everything fail.
-	 */
-	public static InputStream getFirstAvailableStream(Collection<String> names) {
-		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(Ios.class.getClassLoader());
-		for (String name : names) {
-			try {
-				InputStream stream = getInputStreamWithResolver(resolver, name);
-				if (stream != null) {
-					return stream;
-				}
-			}
-			catch (MustacheIOException ex) {
-				// Go to the next test
-			}
-		}
-
-		throw new MustacheIOException("Unable to locate one of: " + names);
-	}
-
-	private static InputStream getInputStreamWithResolver(ResourcePatternResolver resolver, String name) {
-		try {
-			Resource[] resources = resolver.getResources(name);
-
-			// Not Found
-			if (resources.length == 0) {
-				log.debug("Found zero results with pattern: {}", name);
-				return null;
-			}
-
-			log.debug("Found {} results with pattern: {}", resources.length, name);
-
-			if (log.isTraceEnabled()) {
-				for (Resource resource : resources) {
-					log.trace("  -> Found: {}", resource.getFilename());
-				}
-			}
-
-			return resources[0].getInputStream();
-		}
-		catch (IOException ex) {
-			throw new MustacheIOException("I/O Error with " + name, ex);
 		}
 	}
 

@@ -24,12 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.reflection;
 
-import com.github.mjeanroy.springmvc.view.mustache.exceptions.ReflectionException;
 import org.springframework.core.type.AnnotationMetadata;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
@@ -57,93 +53,6 @@ public final class Classes {
 		}
 		catch (Exception ex) {
 			return false;
-		}
-	}
-
-	/**
-	 * Get class object related to given class name.
-	 *
-	 * @param klass Class name.
-	 * @return The class object.
-	 */
-	public static Class<?> getClassOf(String klass) {
-		hasText(klass, "Class name must not be empty");
-		try {
-			return Class.forName(klass);
-		}
-		catch (ClassNotFoundException ex) {
-			throw new ReflectionException(ex);
-		}
-	}
-
-	/**
-	 * Create new class instance.
-	 * @param klassName The class name.
-	 * @param argTypes Argument types, used to retrieve appropriate constructor.
-	 * @param args Arguments.
-	 * @return The new instance.
-	 * @throws ReflectionException If an error occurred during class instantiation.
-	 */
-	public static Object newInstance(String klassName, Class<?>[] argTypes, Object[] args) {
-		try {
-			Class<?> klass = Class.forName(klassName);
-			return newInstance(klass, argTypes, args);
-		}
-		catch (ClassNotFoundException ex) {
-			throw new ReflectionException(ex);
-		}
-	}
-
-	/**
-	 * Invoke given method on given instance with given arguments.
-	 * @param instance Object instance.
-	 * @param methodName Method to invoke.
-	 * @param parameterTypes Type of parameters.
-	 * @param args Method arguments.
-	 * @param <T> Type of given instance.
-	 * @return Method invocation result.
-	 */
-	public static <T> Object invoke(T instance, String methodName, Class<?>[] parameterTypes, Object[] args) {
-		Class<?> klass = instance.getClass();
-
-		try {
-			Method method = klass.getMethod(methodName, parameterTypes);
-			return method.invoke(instance, args);
-		}
-		catch (NoSuchMethodException ex) {
-			throw new ReflectionException(ex);
-		}
-		catch (IllegalAccessException ex) {
-			throw new ReflectionException(ex);
-		}
-		catch (InvocationTargetException ex) {
-			throw new ReflectionException(ex);
-		}
-	}
-
-	/**
-	 * Create new class instance.
-	 * @param klass The class.
-	 * @param <T> The created type instance.
-	 * @return The new instance.
-	 * @throws ReflectionException If an error occurred during class instantiation.
-	 */
-	private static <T> T newInstance(Class<T> klass, Class<?>[] argTypes, Object[] args) {
-		try {
-			Constructor<T> ctor = klass.getConstructor(argTypes);
-			return ctor.newInstance(args);
-		}
-		catch (NoSuchMethodException ex) {
-			throw new ReflectionException(ex);
-		}
-		catch (IllegalAccessException ex) {
-			throw new ReflectionException(ex);
-		}
-		catch (InvocationTargetException ex) {
-			throw new ReflectionException(ex);
-		}
-		catch (InstantiationException ex) {
-			throw new ReflectionException(ex);
 		}
 	}
 

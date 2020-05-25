@@ -25,19 +25,11 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.jknack.handlebars.Handlebars;
-import com.github.mjeanroy.junit4.runif.RunIf;
-import com.github.mjeanroy.junit4.runif.RunIfRunner;
-import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
-import com.github.mjeanroy.junit4.runif.conditions.Java7Condition;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils;
 import com.samskivert.mustache.Mustache;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -46,7 +38,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RunIfRunner.class)
 public class MustacheProviderTest {
 
 	@Test
@@ -130,46 +121,6 @@ public class MustacheProviderTest {
 
 		MustacheProvider provider = MustacheProvider.JMUSTACHE;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler";
-		it_should_instantiate_engine_compiler(provider, applicationContext, className);
-	}
-
-	@Test
-	@RunIf(AtLeastJava8Condition.class)
-	public void it_should_check_if_nashorn_is_available() {
-		assertThat(MustacheProvider.NASHORN.isAvailable()).isTrue();
-	}
-
-	@Test
-	@RunIf(Java7Condition.class)
-	public void it_should_check_if_nashorn_is_not_available() {
-		assertThat(MustacheProvider.NASHORN.isAvailable()).isFalse();
-	}
-
-	@Test
-	@RunIf(AtLeastJava8Condition.class)
-	public void it_should_get_nashorn_configuration_class() {
-		MustacheProvider provider = MustacheProvider.NASHORN;
-		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.NashornConfiguration";
-		it_should_get_provider_configuration_class(provider, className);
-	}
-
-	@Test
-	@RunIf(AtLeastJava8Condition.class)
-	public void it_should_instantiate_nashorn_engine_compiler() {
-		final ResourceLoader resourceLoader = new DefaultResourceLoader();
-		final MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
-		final Object compiler = ReflectionTestUtils.instantiate("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine", new Class<?>[]{MustacheTemplateLoader.class}, new Object[]{templateLoader});
-		final ApplicationContext applicationContext = mock(ApplicationContext.class);
-
-		when(applicationContext.getBean(compiler.getClass())).thenAnswer(new Answer<Object>() {
-			@Override
-			public Object answer(InvocationOnMock invocation) {
-				return compiler;
-			}
-		});
-
-		MustacheProvider provider = MustacheProvider.NASHORN;
-		String className = "com.github.mjeanroy.springmvc.view.mustache.nashorn.NashornCompiler";
 		it_should_instantiate_engine_compiler(provider, applicationContext, className);
 	}
 

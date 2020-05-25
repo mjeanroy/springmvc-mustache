@@ -27,9 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.JavaUtils;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.NashornUtils;
-import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsCustomizer;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean;
@@ -47,14 +44,10 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 import java.util.Collection;
 import java.util.ServiceLoader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.invoke;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.isPresent;
-import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.newInstance;
 import static java.util.Arrays.sort;
 
 /**
@@ -217,58 +210,6 @@ public enum MustacheProvider {
 	},
 
 	/**
-	 * Mustache implementation that use nashorn java as
-	 * internal compiler.
-	 *
-	 * @deprecated Nashorn will be removed after jdk 11, so nashorn engine ill be removed in the next major version.
-	 */
-	@Deprecated
-	NASHORN {
-		@Override
-		public boolean isAvailable() {
-			// Nashorn is available since Java 1.8.
-			if (JavaUtils.getVersion() < 1.8) {
-				return false;
-			}
-
-			// Otherwise, we should check for nashorn script engine.
-			try {
-				ScriptEngine engine = NashornUtils.getEngine();
-				engine.eval("var test = true;");
-				return true;
-			}
-			catch (ScriptException ex) {
-				// Something strange happens...
-				return false;
-			}
-		}
-
-		@Override
-		public String configurationClass() {
-			return "com.github.mjeanroy.springmvc.view.mustache.configuration.nashorn.NashornConfiguration";
-		}
-
-		@Override
-		MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) {
-			Class<?> mustacheEngineClass = Classes.getClassOf("com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine");
-			Object mustacheEngine = applicationContext.getBean(mustacheEngineClass);
-			Object instance = newInstance(configurationClass(), new Class<?>[]{Environment.class}, new Object[]{environment});
-
-			Object[] args = {
-					templateLoader,
-					mustacheEngine
-			};
-
-			Class<?>[] argTypes = new Class<?>[]{
-					MustacheTemplateLoader.class,
-					mustacheEngineClass
-			};
-
-			return (MustacheCompiler) invoke(instance, "mustacheCompiler", argTypes, args);
-		}
-	},
-
-	/**
 	 * Option that detect class available on classpath
 	 * and select the best implementation.
 	 */
@@ -372,6 +313,6 @@ public enum MustacheProvider {
 
 		// No implementation detected, throw exception
 		log.error("Mustache implementation is missing, please add one of following dependency to your classpath: {}", MustacheProvider.values());
-		throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache, handlebars, mustacheJava to classpath or use Java8 with Nashorn");
+		throw new IllegalArgumentException("Mustache implementation is missing, please add jmustache, handlebars, mustacheJava to classpath");
 	}
 }

@@ -53,7 +53,6 @@ which implementation you want to use:
 |          | JMUSTACHE     | Use jmustache implementation. JMustache dependency must be available.                                 |
 |          | HANDLEBARS    | Use handlebars implementation. Handlebars dependency must be available.                               |
 |          | MUSTACHE_JAVA | Use mustache.java implementation. Mustache.java dependency must be available.                         |
-|          | NASHORN       | Use nashorn engine to execute mustache javascript implementation (javascript file must be available). |
 
 ```java
 package com.myApp;
@@ -73,23 +72,6 @@ public class SpringConfiguration {
 ```
 
 If you are using Spring Boot, then configuration will be automatically detected. Note that if you choose to use jmustache as implementation, then you will probably have to disable native spring boot mustache configuration.
-
-**Notes for Nashorn:**
-
-Nashorn, the javascript engine available with Java 8 can be used to execute javascript implementation of mustache. Note that mustache javascript file must be available and will be auto-detected if appropriate webjar is added to your project dependencies:
-
-```xml
-    <dependency>
-        <groupId>org.webjars.bower</groupId>
-        <artifactId>mustache</artifactId>
-        <version>2.2.0</version>
-    </dependency>
-```
-
-Alternatively, mustache file will be auto-detected if it is available in one of the following directories:
-- /bower_components/mustache
-- /vendors/mustache
-- /js/mustache
 
 ### XML Configuration
 
@@ -145,26 +127,6 @@ If you prefer XML configuration, you may want to use one of these (depends on th
 <!-- Create mustache beans -->
 <bean id="handlebars" class="com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean" />
 <bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
-<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
-
-<!-- Create view resolver -->
-<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
-    <constructor-arg ref="mustacheCompiler" />
-    <property name="order" value="1" />
-    <property name="defaultLayout" value="layout" />
-    <property name="prefix" value="templates/" />
-    <property name="suffix" value=".template.html" />
-</bean>
-```
-
-- Nashorn :
-
-```xml
-<!-- Create mustache beans -->
-<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
-<bean id="mustacheEngine" class="com.github.mjeanroy.springmvc.view.mustache.nashorn.MustacheEngine">
-    <constructor-arg ref="mustacheTemplateLoader"/>
-</bean>
 <bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
 
 <!-- Create view resolver -->
@@ -447,7 +409,6 @@ If you clone the repository, you will find samples using:
 - JMustache (Java Config & XML  Config).
 - Mustache.java (Java Config & XML  Config).
 - Handlebars (Java Config & XML  Config).
-- Nashorn (Java Config & XML  Config).
 - Spring boot with JMustache implementation.
 
 These samples are really simple (render a really simple template with partial). Do not hesitate to submit your sample if you want.

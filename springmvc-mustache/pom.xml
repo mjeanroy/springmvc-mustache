@@ -103,7 +103,6 @@
 		<jmustache.version>1.13</jmustache.version>
 		<handlebars-version>4.0.6</handlebars-version>
 		<mustache.java.version>0.8.17</mustache.java.version>
-		<mustache-bower.version>2.3.2</mustache-bower.version>
 		<spring.version>4.3.27.RELEASE</spring.version>
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
@@ -183,12 +182,6 @@
 			<groupId>com.github.spullara.mustache.java</groupId>
 			<artifactId>compiler</artifactId>
 			<version>${mustache.java.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>mustache</artifactId>
-			<version>${mustache-bower.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -385,9 +378,6 @@
 								<artifactId>${java.signature.version}</artifactId>
 								<version>1.0</version>
 							</signature>
-							<ignores>
-								<ignore>jdk.nashorn.api.scripting.AbstractJSObject</ignore>
-							</ignores>
 						</configuration>
 					</execution>
 				</executions>
@@ -495,57 +485,6 @@
 								</configuration>
 							</execution>
 						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>java7</id>
-			<activation>
-				<jdk>1.7</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>${maven-compiler-plugin.version}</version>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<compilerVersion>${java.version}</compilerVersion>
-							<source>${java.source.version}</source>
-							<target>${java.target.version}</target>
-
-							<!-- These classes uses Nashorn, available with java >= 8 -->
-							<excludes>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/configuration/nashorn/*</exclude>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/nashorn/*</exclude>
-							</excludes>
-							<testExcludes>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/configuration/nashorn/*</exclude>
-								<exclude>com/github/mjeanroy/springmvc/view/mustache/nashorn/*</exclude>
-							</testExcludes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>java11+</id>
-			<activation>
-				<jdk>[11,)</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>${maven-surefire-plugin.version}</version>
-						<configuration>
-							<argLine>-Dnashorn.args=--no-deprecation-warning</argLine>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
