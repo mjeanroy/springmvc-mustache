@@ -79,6 +79,8 @@ public final class Classes {
 	/**
 	 * Create new class instance.
 	 * @param klassName The class name.
+	 * @param argTypes Argument types, used to retrieve appropriate constructor.
+	 * @param args Arguments.
 	 * @return The new instance.
 	 * @throws ReflectionException If an error occurred during class instantiation.
 	 */

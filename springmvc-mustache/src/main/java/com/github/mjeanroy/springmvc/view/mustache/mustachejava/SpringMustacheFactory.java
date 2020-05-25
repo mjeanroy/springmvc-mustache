@@ -54,6 +54,7 @@ public final class SpringMustacheFactory extends DefaultMustacheFactory {
 	/**
 	 * Build new mustache factory.
 	 *
+	 * @param mustacheResolver The mustache template resolver.
 	 * @param templateLoader Template loader to use.
 	 */
 	public SpringMustacheFactory(MustacheResolver mustacheResolver, MustacheTemplateLoader templateLoader) {

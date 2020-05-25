@@ -65,6 +65,7 @@ public class MustacheJavaConfiguration {
 	/**
 	 * Build mustache compiler.
 	 *
+	 * @param mustacheFactory The mustache factory to use.
 	 * @param templateLoader Template loader.
 	 * @return Mustache compiler implementation.
 	 */

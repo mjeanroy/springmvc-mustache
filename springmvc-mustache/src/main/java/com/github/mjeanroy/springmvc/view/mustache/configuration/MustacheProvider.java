@@ -283,6 +283,7 @@ public enum MustacheProvider {
 	 *
 	 * @param applicationContext Application to retrieve dependent beans.
 	 * @return Mustache compiler.
+	 * @throws Exception If an error occurred while instantiating bean.
 	 */
 	public MustacheCompiler instantiate(ApplicationContext applicationContext) throws Exception {
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(applicationContext);
