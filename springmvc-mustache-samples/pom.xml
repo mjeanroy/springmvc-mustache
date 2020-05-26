@@ -302,6 +302,7 @@
 				<module>springmvc-mustache-mustachejava</module>
 				<module>springmvc-mustache-mustachejava-xml</module>
 				<module>springmvc-mustache-jsp</module>
+				<module>springmvc-mustache-spi</module>
 				<module>springmvc-mustache-springboot</module>
 			</modules>
 		</profile>
@@ -321,6 +322,7 @@
 				<module>springmvc-mustache-nashorn</module>
 				<module>springmvc-mustache-nashorn-xml</module>
 				<module>springmvc-mustache-jsp</module>
+				<module>springmvc-mustache-spi</module>
 				<module>springmvc-mustache-springboot</module>
 			</modules>
 		</profile>

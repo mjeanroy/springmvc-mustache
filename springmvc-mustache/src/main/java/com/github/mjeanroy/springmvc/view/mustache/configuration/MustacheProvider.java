@@ -36,6 +36,8 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.Hand
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCompilerFactoryBean;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.spi.MustacheCompilerProvider;
+import com.github.mjeanroy.springmvc.view.mustache.configuration.spi.SpiConfiguration;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mustachejava.MustacheFactory;
@@ -47,8 +49,8 @@ import org.springframework.core.env.Environment;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-
 import java.util.Collection;
+import java.util.ServiceLoader;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.invoke;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.isPresent;
@@ -57,10 +59,32 @@ import static java.util.Arrays.sort;
 
 /**
  * Set of mustache provider.
+ *
  * A mustache provider is an implementation that can be used
  * to render mustache templates.
  */
 public enum MustacheProvider {
+
+	/**
+	 * Mustache implementation that use implementation registered using the ServiceProvider Interface added
+	 * with jdk 1.6.
+	 */
+	SPI {
+		@Override
+		public boolean isAvailable() {
+			return ServiceLoader.load(MustacheCompilerProvider.class).iterator().hasNext();
+		}
+
+		@Override
+		public String configurationClass() {
+			return SpiConfiguration.class.getName();
+		}
+
+		@Override
+		MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) {
+			return new SpiConfiguration().mustacheCompiler(templateLoader);
+		}
+	},
 
 	/**
 	 * Mustache implementation that use jmustache as
