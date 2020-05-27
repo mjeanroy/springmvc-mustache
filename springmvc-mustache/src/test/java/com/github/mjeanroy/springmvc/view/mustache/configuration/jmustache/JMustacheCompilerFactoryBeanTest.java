@@ -29,8 +29,6 @@ import com.samskivert.mustache.Mustache;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.util.List;
 
@@ -182,12 +180,9 @@ public class JMustacheCompilerFactoryBeanTest {
 
 	private static JMustacheCustomizer newJMustacheCustomizer() {
 		JMustacheCustomizer customizer = mock(JMustacheCustomizer.class);
-		when(customizer.customize(any(Mustache.Compiler.class))).thenAnswer(new Answer<Mustache.Compiler>() {
-			@Override
-			public Mustache.Compiler answer(InvocationOnMock invocation) {
-				return invocation.getArgument(0);
-			}
-		});
+		when(customizer.customize(any(Mustache.Compiler.class))).thenAnswer((invocation) ->
+				invocation.getArgument(0)
+		);
 
 		return customizer;
 	}

@@ -32,7 +32,6 @@ branches:
     - gh-pages
 
 jdk:
-  - openjdk7
   - oraclejdk8
   - oraclejdk9
   - openjdk10

@@ -43,7 +43,7 @@ public class SpiConfiguration {
 
 	@Bean
 	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader templateLoader) {
-		List<MustacheCompilerProvider> providers = new ArrayList<MustacheCompilerProvider>();
+		List<MustacheCompilerProvider> providers = new ArrayList<>();
 		for (MustacheCompilerProvider provider : ServiceLoader.load(MustacheCompilerProvider.class)) {
 			providers.add(provider);
 		}

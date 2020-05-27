@@ -85,7 +85,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 		this.compiler = notNull(compiler, "Compiler must not be null");
 		this.layoutKey = MustacheSettings.DEFAULT_LAYOUT_KEY;
-		this.layoutMappings = new HashMap<String, String>();
+		this.layoutMappings = new HashMap<>();
 	}
 
 	@Override

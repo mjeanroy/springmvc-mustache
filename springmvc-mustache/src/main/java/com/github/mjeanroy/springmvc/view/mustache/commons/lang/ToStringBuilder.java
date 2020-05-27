@@ -73,7 +73,7 @@ public class ToStringBuilder {
 	private ToStringBuilder(Object object) {
 		this.name = object.getClass().getName();
 		this.identity = Integer.toHexString(System.identityHashCode(object));
-		this.fields = new LinkedHashMap<String, String>();
+		this.fields = new LinkedHashMap<>();
 		this.size = name.length() + identity.length() + 1;
 	}
 

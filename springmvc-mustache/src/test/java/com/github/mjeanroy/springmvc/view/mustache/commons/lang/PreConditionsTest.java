@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -45,15 +44,8 @@ public class PreConditionsTest {
 
 	@Test
 	public void it_should_throw_null_pointer_exception() {
-		final String message = "foo must not be null";
-		final ThrowingCallable notNull = new ThrowingCallable() {
-			@Override
-			public void call() {
-				PreConditions.notNull(null, message);
-			}
-		};
-
-		assertThatThrownBy(notNull)
+		String message = "foo must not be null";
+		assertThatThrownBy(() -> PreConditions.notNull(null, message))
 				.isInstanceOf(NullPointerException.class)
 				.hasMessage(message);
 	}
@@ -67,15 +59,8 @@ public class PreConditionsTest {
 
 	@Test
 	public void it_should_throw_illegal_argument_exception_if_array_is_not_empty() {
-		final String message = "Array must not be empty";
-		final ThrowingCallable notEmpty = new ThrowingCallable() {
-			@Override
-			public void call() {
-				PreConditions.notEmpty(new String[]{}, message);
-			}
-		};
-
-		assertThatThrownBy(notEmpty)
+		String message = "Array must not be empty";
+		assertThatThrownBy(() -> PreConditions.notEmpty(new String[]{}, message))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage(message);
 	}
@@ -89,15 +74,8 @@ public class PreConditionsTest {
 
 	@Test
 	public void it_should_throw_illegal_argument_exception_if_collection_is_not_empty() {
-		final String message = "Collection must not be empty";
-		final ThrowingCallable notEmpty = new ThrowingCallable() {
-			@Override
-			public void call() {
-				PreConditions.notEmpty(emptyList(), message);
-			}
-		};
-
-		assertThatThrownBy(notEmpty)
+		String message = "Collection must not be empty";
+		assertThatThrownBy(() -> PreConditions.notEmpty(emptyList(), message))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage(message);
 	}
@@ -111,15 +89,8 @@ public class PreConditionsTest {
 
 	@Test
 	public void it_should_throw_illegal_argument_exception_if_string_does_not_have_text() {
-		final String message = "String must have text";
-		final ThrowingCallable hasText = new ThrowingCallable() {
-			@Override
-			public void call() throws Throwable {
-				PreConditions.hasText("  ", message);
-			}
-		};
-
-		assertThatThrownBy(hasText)
+		String message = "String must have text";
+		assertThatThrownBy(() -> PreConditions.hasText("  ", message))
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage(message);
 	}

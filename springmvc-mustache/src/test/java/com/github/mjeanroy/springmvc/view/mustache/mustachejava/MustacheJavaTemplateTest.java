@@ -44,7 +44,7 @@ public class MustacheJavaTemplateTest {
 	@Test
 	public void it_should_execute_template() {
 		Writer writer = new StringWriter();
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		model.put("foo", "bar");
 
 		Reader reader = new StringReader("foo :: {{ foo }}");

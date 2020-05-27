@@ -142,7 +142,7 @@ public class ModelAndMustacheView extends ModelAndView {
 			final Map<String, String> map;
 
 			if (object == null) {
-				map = new HashMap<String, String>();
+				map = new HashMap<>();
 			}
 			else {
 				map = (Map<String, String>) object;

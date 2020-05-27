@@ -38,11 +38,8 @@ class CustomFormatterJMustacheCustomizer implements JMustacheCustomizer {
 	@Override
 	public Mustache.Compiler customize(Mustache.Compiler compiler) {
 		log.info("Using custom JMustache formatter");
-		return compiler.withFormatter(new Mustache.Formatter() {
-			@Override
-			public String format(Object value) {
-				return value == null ? null : value.toString();
-			}
-		});
+		return compiler.withFormatter(value ->
+				value == null ? null : value.toString()
+		);
 	}
 }

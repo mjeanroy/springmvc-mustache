@@ -253,7 +253,7 @@ public class JMustacheCompilerTest {
 	}
 
 	private static Map<String, Object> model() {
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		model.put("name", "foo");
 		model.put("zero", 0);
 		model.put("emptyString", "");

@@ -93,7 +93,7 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 	 */
 	public MustacheTemplateLoaderFactoryBean() {
 		super();
-		this.partialAliases = new HashMap<String, String>();
+		this.partialAliases = new HashMap<>();
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 
 	protected ResourceLoader computeResourceLoader() {
 		log.debug("Build composite resource loader");
-		Collection<ResourceLoader> resourceLoaders = new LinkedHashSet<ResourceLoader>();
+		Collection<ResourceLoader> resourceLoaders = new LinkedHashSet<>();
 
 		if (resourceLoader != null) {
 			log.trace(" => Add custom resource loader: {}", resourceLoader);

@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
@@ -43,7 +42,7 @@ public class HandlebarsTemplateTest {
 	@Test
 	public void it_should_execute_template() {
 		Writer writer = new StringWriter();
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		model.put("foo", "bar");
 
 		com.github.jknack.handlebars.Template template = createTemplate();

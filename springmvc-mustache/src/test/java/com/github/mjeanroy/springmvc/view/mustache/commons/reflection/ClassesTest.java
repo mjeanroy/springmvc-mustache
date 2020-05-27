@@ -46,7 +46,7 @@ public class ClassesTest {
 
 	@Test
 	public void it_should_get_annotation_values() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("foo", "qux");
 
 		String annotationName = Foo.class.getName();
@@ -64,7 +64,7 @@ public class ClassesTest {
 
 	@Test
 	public void it_should_get_default_annotation_values() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Object> attributes = new HashMap<>();
 
 		String annotationName = Foo.class.getName();
 		AnnotationMetadata metadata = mock(AnnotationMetadata.class);
@@ -81,7 +81,7 @@ public class ClassesTest {
 
 	@Test
 	public void it_should_get_null_value() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("foo", null);
 
 		String annotationName = Foo.class.getName();

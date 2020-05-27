@@ -28,11 +28,15 @@ import com.github.jknack.handlebars.io.StringTemplateSource;
 import com.github.jknack.handlebars.io.TemplateLoader;
 import com.github.jknack.handlebars.io.TemplateSource;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
+import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
+import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.read;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
@@ -42,6 +46,8 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * implementation.
  */
 final class HandlebarsTemplateLoader implements TemplateLoader {
+
+	private static final Logger log = LoggerFactory.getLogger(HandlebarsTemplateLoader.class);
 
 	/**
 	 * Template loader implementation.
@@ -63,9 +69,14 @@ final class HandlebarsTemplateLoader implements TemplateLoader {
 	@Override
 	public TemplateSource sourceAt(String location) {
 		notNull(location, "location must not be null");
-		Reader reader = loader.getTemplate(location);
-		String content = read(reader);
-		return new StringTemplateSource(location, content);
+		try (Reader reader = loader.getTemplate(location)) {
+			String content = read(reader);
+			return new StringTemplateSource(location, content);
+		}
+		catch (IOException ex) {
+			log.error(ex.getMessage(), ex);
+			throw new MustacheIOException(ex);
+		}
 	}
 
 	@Override
@@ -127,6 +138,6 @@ final class HandlebarsTemplateLoader implements TemplateLoader {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(loader);
+		return Objects.hash(loader);
 	}
 }

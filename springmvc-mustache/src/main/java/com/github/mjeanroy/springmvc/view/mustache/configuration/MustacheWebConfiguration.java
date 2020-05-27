@@ -208,7 +208,7 @@ public class MustacheWebConfiguration {
 			return emptyMap();
 		}
 
-		Map<String, String> mappings = new HashMap<String, String>();
+		Map<String, String> mappings = new HashMap<>();
 		String[] values = mappingsValues.split(";");
 		if (values.length > 0) {
 			for (String value : values) {

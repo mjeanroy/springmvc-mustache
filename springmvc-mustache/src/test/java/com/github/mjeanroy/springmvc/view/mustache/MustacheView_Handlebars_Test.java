@@ -60,7 +60,7 @@ public class MustacheView_Handlebars_Test {
 
 	@Before
 	public void setUp() {
-		this.model = new HashMap<String, Object>();
+		this.model = new HashMap<>();
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
 		this.model.put("emptyString", "");
@@ -82,7 +82,7 @@ public class MustacheView_Handlebars_Test {
 		String k2 = "foo2";
 		String v2 = "bar2";
 
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 

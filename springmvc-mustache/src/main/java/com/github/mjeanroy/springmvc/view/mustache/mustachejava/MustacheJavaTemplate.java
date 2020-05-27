@@ -25,13 +25,13 @@
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 import com.github.mustachejava.Mustache;
 
 import java.io.Writer;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
@@ -84,6 +84,6 @@ final class MustacheJavaTemplate extends AbstractMustacheTemplate implements Mus
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(mustache);
+		return Objects.hash(mustache);
 	}
 }
