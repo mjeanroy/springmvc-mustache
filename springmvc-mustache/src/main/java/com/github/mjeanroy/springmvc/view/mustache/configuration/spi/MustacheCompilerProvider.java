@@ -29,7 +29,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 
 /**
  * Provider a mustache compiler, need to be registered using the Service Provider Interface
- * available with java >= 6 (see: https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html).
+ * available since java 6 (see: https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html).
  */
 public interface MustacheCompilerProvider {
 
