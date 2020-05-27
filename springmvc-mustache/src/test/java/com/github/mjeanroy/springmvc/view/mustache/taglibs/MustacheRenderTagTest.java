@@ -29,7 +29,6 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -154,14 +153,7 @@ public class MustacheRenderTagTest {
 
 		tag.doStartTag();
 
-		ThrowingCallable doEndTag = new ThrowingCallable() {
-			@Override
-			public void call() throws Throwable {
-				tag.doEndTag();
-			}
-		};
-
-		assertThatThrownBy(doEndTag)
+		assertThatThrownBy(tag::doEndTag)
 				.isInstanceOf(JspException.class)
 				.hasMessage("The template parameter of mustache:render tag is mandatory and must not be empty");
 	}
@@ -170,14 +162,7 @@ public class MustacheRenderTagTest {
 	public void it_should_fail_to_render_tag_without_any_compiler() {
 		tag.doStartTag();
 
-		ThrowingCallable doEndTag = new ThrowingCallable() {
-			@Override
-			public void call() throws Throwable {
-				tag.doEndTag();
-			}
-		};
-
-		assertThatThrownBy(doEndTag)
+		assertThatThrownBy(tag::doEndTag)
 				.isInstanceOf(JspException.class)
 				.hasMessage("Cannot locate mustache compiler, please specify it as a parameter or register an instance of MustacheCompiler to the spring context");
 	}

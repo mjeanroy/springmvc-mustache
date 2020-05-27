@@ -31,6 +31,7 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
 import java.io.Reader;
 
 class CustomMustacheCompiler extends AbstractMustacheCompiler {
@@ -42,8 +43,12 @@ class CustomMustacheCompiler extends AbstractMustacheCompiler {
 	}
 
 	@Override
-	protected MustacheTemplate doCompile(String name) throws Exception {
-		Reader reader = templateLoader.getTemplate(name);
-		return new CustomMustacheTemplate(IOUtils.toString(reader));
+	protected MustacheTemplate doCompile(String name) {
+		try(Reader reader = templateLoader.getTemplate(name)) {
+			return new CustomMustacheTemplate(IOUtils.toString(reader));
+		}
+		catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 }

@@ -25,13 +25,13 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
 import com.samskivert.mustache.Template;
 
 import java.io.Writer;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
@@ -84,6 +84,6 @@ final class JMustacheTemplate extends AbstractMustacheTemplate implements Mustac
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(template);
+		return Objects.hash(template);
 	}
 }

@@ -84,8 +84,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.source.version>1.6</java.source.version>
-		<java.target.version>1.6</java.target.version>
+		<java.source.version>1.8</java.source.version>
+		<java.target.version>1.8</java.target.version>
 
 		<!-- Default plugin version -->
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -310,17 +310,6 @@
 					</plugins>
 				</pluginManagement>
 			</build>
-		</profile>
-
-		<profile>
-			<id>java12+</id>
-			<activation>
-				<jdk>[12,)</jdk>
-			</activation>
-			<properties>
-				<java.source.version>1.7</java.source.version>
-				<java.target.version>1.7</java.target.version>
-			</properties>
 		</profile>
 	</profiles>
 </project>

@@ -26,8 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
-import org.assertj.core.api.ThrowableAssert;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.env.MockEnvironment;
@@ -97,14 +95,7 @@ public class MustacheWebConfigurationTest {
 
 		environment.setProperty("mustache.layoutMappings", mappings);
 
-		ThrowingCallable getLayoutMappings = new ThrowingCallable() {
-			@Override
-			public void call() {
-				mustacheWebConfiguration.getLayoutMappings();
-			}
-		};
-
-		assertThatThrownBy(getLayoutMappings)
+		assertThatThrownBy(mustacheWebConfiguration::getLayoutMappings)
 				.isInstanceOf(IllegalArgumentException.class)
 				.hasMessage("Mapping must use [viewName]:[layout] format!");
 	}

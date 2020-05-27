@@ -25,10 +25,10 @@
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 
 import java.io.Reader;
+import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static com.samskivert.mustache.Mustache.TemplateLoader;
@@ -83,6 +83,6 @@ final class JMustacheTemplateLoader implements TemplateLoader {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(loader);
+		return Objects.hash(loader);
 	}
 }

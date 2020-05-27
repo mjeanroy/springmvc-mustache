@@ -65,7 +65,7 @@ public class CompositeResourceLoader implements ResourceLoader {
 	public CompositeResourceLoader(Collection<ResourceLoader> resourceLoaders) {
 		notNull(resourceLoaders, "Resource loaders must not be null");
 		notEmpty(resourceLoaders, "Resource loaders must not be empty");
-		this.resourceLoaders = new ArrayList<ResourceLoader>(resourceLoaders);
+		this.resourceLoaders = new ArrayList<>(resourceLoaders);
 	}
 
 	@Override

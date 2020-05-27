@@ -139,7 +139,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 		Collection<ResourceLoader> loaders = readField(compositeResourceLoader, "resourceLoaders");
 		assertThat(loaders).hasSize(3);
 
-		List<ResourceLoader> list = new ArrayList<ResourceLoader>(loaders);
+		List<ResourceLoader> list = new ArrayList<>(loaders);
 		assertThat(list.get(0)).isExactlyInstanceOf(ClassPathXmlApplicationContext.class);
 		assertThat(list.get(1)).isExactlyInstanceOf(FileSystemXmlApplicationContext.class);
 		assertThat(list.get(2)).isSameAs(classpathResourceLoader);

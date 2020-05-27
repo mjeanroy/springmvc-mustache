@@ -29,7 +29,6 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 
 import java.io.BufferedReader;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -65,9 +64,7 @@ public final class Ios {
 	 * @throws MustacheIOException If an IO exception occurs during reading operation.
 	 */
 	public static String read(final Reader reader) {
-		final BufferedReader buffer = new BufferedReader(reader, BUFFER_SIZE);
-
-		try {
+		try (BufferedReader buffer = new BufferedReader(reader, BUFFER_SIZE)) {
 			StringBuilder sb = new StringBuilder();
 			String line;
 			boolean started = false;
@@ -86,25 +83,6 @@ public final class Ios {
 		}
 		catch (IOException ex) {
 			throw new MustacheIOException(ex);
-		}
-		finally {
-			closeQuietly(buffer);
-		}
-	}
-
-	/**
-	 * Close a {@link java.io.Closeable} object and do not throws a Checked Exception
-	 * if an exception occurs.
-	 *
-	 * @param stream Closeable stream.
-	 */
-	private static void closeQuietly(Closeable stream) {
-		try {
-			stream.close();
-		}
-		catch (IOException ex) {
-			// Just log.
-			log.debug(ex.getMessage(), ex);
 		}
 	}
 }

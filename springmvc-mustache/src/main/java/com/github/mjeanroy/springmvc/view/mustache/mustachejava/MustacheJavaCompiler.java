@@ -27,11 +27,12 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
+
+import java.util.Objects;
 
 /**
  * Mustache compiler.
@@ -87,6 +88,6 @@ public final class MustacheJavaCompiler extends AbstractMustacheCompiler impleme
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(mustacheFactory, templateLoader);
+		return Objects.hash(mustacheFactory, templateLoader);
 	}
 }

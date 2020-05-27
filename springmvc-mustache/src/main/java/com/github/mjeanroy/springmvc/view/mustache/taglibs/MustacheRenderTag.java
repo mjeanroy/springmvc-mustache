@@ -133,6 +133,6 @@ public class MustacheRenderTag extends TagSupport {
 
 	private void reset() {
 		this.compiler = null;
-		this.parameters = new LinkedHashMap<String, Object>();
+		this.parameters = new LinkedHashMap<>();
 	}
 }

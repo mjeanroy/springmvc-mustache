@@ -60,7 +60,7 @@ public class MustacheView extends AbstractTemplateView {
 	 */
 	public MustacheView() {
 		setContentType("text/html; charset=utf-8");
-		this.aliases = new HashMap<String, String>();
+		this.aliases = new HashMap<>();
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class MustacheView extends AbstractTemplateView {
 
 	@SuppressWarnings("unchecked")
 	private void renderTemplate(Map<String, Object> model, Writer writer) {
-		final Map<String, String> viewPartials = new HashMap<String, String>(aliases);
+		final Map<String, String> viewPartials = new HashMap<>(aliases);
 		final Object object = model.get(MustacheSettings.PARTIALS_KEY);
 
 		if (object != null) {

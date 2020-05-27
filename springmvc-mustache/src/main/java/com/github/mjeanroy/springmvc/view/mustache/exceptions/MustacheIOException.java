@@ -39,23 +39,4 @@ public final class MustacheIOException extends RuntimeException {
 	public MustacheIOException(IOException ex) {
 		super(ex);
 	}
-
-	/**
-	 * Build new exception using given message.
-	 *
-	 * @param message Error message.
-	 */
-	public MustacheIOException(String message) {
-		super(message);
-	}
-
-	/**
-	 * Build new exception using given message.
-	 *
-	 * @param message Error message.
-	 * @param ex Original exception.
-	 */
-	public MustacheIOException(String message, IOException ex) {
-		super(message, ex);
-	}
 }

@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class ModelAndMustacheViewTest {
 	public void it_should_create_view_with_name_and_model() {
 		String viewName = "view";
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		model.put("firstName", "John");
 		model.put("lastName", "Doe");
 
@@ -67,7 +66,7 @@ public class ModelAndMustacheViewTest {
 		String viewName = "view";
 		String modelName = "model";
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		model.put("firstName", "John");
 		model.put("lastName", "Doe");
 
@@ -88,18 +87,10 @@ public class ModelAndMustacheViewTest {
 
 	@Test
 	public void it_should_failed_if_current_partials_is_not_valid() {
-		final ModelAndMustacheView view = new ModelAndMustacheView("viewName");
-
+		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
 		view.addObject(MustacheSettings.PARTIALS_KEY, "foo");
 
-		final ThrowingCallable getPartials = new ThrowingCallable() {
-			@Override
-			public void call() {
-				view.getPartials();
-			}
-		};
-
-		assertThatThrownBy(getPartials).isInstanceOf(MustachePartialsMappingException.class);
+		assertThatThrownBy(view::getPartials).isInstanceOf(MustachePartialsMappingException.class);
 	}
 
 	@Test
@@ -122,7 +113,7 @@ public class ModelAndMustacheViewTest {
 		String p2 = "bar";
 		String v2 = "foo";
 
-		Map<String, String> partials = new HashMap<String, String>();
+		Map<String, String> partials = new HashMap<>();
 		partials.put(p1, v1);
 		partials.put(p2, v2);
 
@@ -152,7 +143,7 @@ public class ModelAndMustacheViewTest {
 
 	@Test
 	public void it_should_add_partials_to_view() {
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.put("foo", "bar");
 		aliases.put("bar", "foo");
 
@@ -167,7 +158,7 @@ public class ModelAndMustacheViewTest {
 
 	@Test
 	public void it_should_get_partials_from_view() {
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.put("foo", "bar");
 		aliases.put("bar", "foo");
 

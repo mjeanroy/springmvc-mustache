@@ -27,13 +27,13 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +55,7 @@ public class DefaultTemplateLoaderTest {
 		assertThat(readField(loader, "resourceLoader", ResourceLoader.class)).isSameAs(resourceLoader);
 		assertThat(loader.getPrefix()).isNull();
 		assertThat(loader.getSuffix()).isNull();
-		assertThat(loader.getCharset()).isEqualTo(Charset.forName("UTF-8"));
+		assertThat(loader.getCharset()).isEqualTo(StandardCharsets.UTF_8);
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
@@ -70,7 +70,7 @@ public class DefaultTemplateLoaderTest {
 		assertThat(readField(loader, "resourceLoader", ResourceLoader.class)).isSameAs(resourceLoader);
 		assertThat(loader.getPrefix()).isEqualTo(prefix);
 		assertThat(loader.getSuffix()).isEqualTo(suffix);
-		assertThat(loader.getCharset()).isEqualTo(Charset.forName("UTF-8"));
+		assertThat(loader.getCharset()).isEqualTo(StandardCharsets.UTF_8);
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
@@ -81,7 +81,7 @@ public class DefaultTemplateLoaderTest {
 		String k2 = "bar";
 		String v2 = "foo";
 
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
@@ -102,7 +102,7 @@ public class DefaultTemplateLoaderTest {
 		String k2 = "bar";
 		String v2 = "foo";
 
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
@@ -124,7 +124,7 @@ public class DefaultTemplateLoaderTest {
 		String k2 = "bar";
 		String v2 = "foo";
 
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.put(k1, v1);
 		aliases.put(k2, v2);
 
@@ -147,16 +147,10 @@ public class DefaultTemplateLoaderTest {
 
 	@Test
 	public void it_should_throw_exception_when_resource_does_not_exist() {
-		final String name = "/templates/does_not_exist.template.html";
-		final DefaultTemplateLoader loader = defaultTemplateLoader();
-		final ThrowingCallable getTemplate = new ThrowingCallable() {
-			@Override
-			public void call() {
-				loader.getTemplate(name);
-			}
-		};
+		String name = "/templates/does_not_exist.template.html";
+		DefaultTemplateLoader loader = defaultTemplateLoader();
 
-		assertThatThrownBy(getTemplate)
+		assertThatThrownBy(() -> loader.getTemplate(name))
 				.isInstanceOf(MustacheTemplateNotFoundException.class)
 				.hasMessage("Mustache template /templates/does_not_exist.template.html does not exist");
 	}
@@ -189,20 +183,13 @@ public class DefaultTemplateLoaderTest {
 
 	@Test
 	public void it_should_read_template_using_prefix_and_suffix() {
-		final String name = "foo";
-		final String prefix = "/";
-		final String suffix = ".template.html";
-		final ResourceLoader resourceLoader = new DefaultResourceLoader();
-		final DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
+		String name = "foo";
+		String prefix = "/";
+		String suffix = ".template.html";
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
-		final ThrowingCallable getTemplate = new ThrowingCallable() {
-			@Override
-			public void call() {
-				mustacheTemplateLoader.getTemplate(name);
-			}
-		};
-
-		assertThatThrownBy(getTemplate)
+		assertThatThrownBy(() -> mustacheTemplateLoader.getTemplate(name))
 				.isInstanceOf(MustacheTemplateNotFoundException.class)
 				.hasMessage("Mustache template /foo.template.html does not exist");
 	}
@@ -237,9 +224,9 @@ public class DefaultTemplateLoaderTest {
 	public void it_should_get_and_set_charset() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
-		assertThat(mustacheTemplateLoader.getCharset()).isEqualTo(Charset.forName("UTF-8"));
+		assertThat(mustacheTemplateLoader.getCharset()).isEqualTo(StandardCharsets.UTF_8);
 
-		Charset charset = Charset.forName("UTF-16");
+		Charset charset = StandardCharsets.UTF_16;
 		mustacheTemplateLoader.setCharset(charset);
 		assertThat(mustacheTemplateLoader.getCharset()).isEqualTo(charset);
 	}
@@ -286,7 +273,7 @@ public class DefaultTemplateLoaderTest {
 		EqualsVerifier.forClass(DefaultTemplateLoader.class)
 				.suppress(Warning.NONFINAL_FIELDS)
 				.withIgnoredFields("temporaryPartialAliases")
-				.withPrefabValues(Charset.class, Charset.forName("UTF-8"), Charset.forName("UTF-16"))
+				.withPrefabValues(Charset.class, StandardCharsets.UTF_8, StandardCharsets.UTF_16)
 				.verify();
 	}
 

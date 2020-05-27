@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.taglibs;
 
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -101,14 +100,7 @@ public class MustacheParameterTagTest {
 		tag.setName("fullName");
 		tag.setValue("John Doe");
 
-		ThrowingCallable doEndTag = new ThrowingCallable() {
-			@Override
-			public void call() throws Exception {
-				tag.doEndTag();
-			}
-		};
-
-		assertThatThrownBy(doEndTag)
+		assertThatThrownBy(tag::doEndTag)
 				.isInstanceOf(JspException.class)
 				.hasMessage("The mustache:param tag must be a descendant of mustache:render tag");
 	}
@@ -118,14 +110,7 @@ public class MustacheParameterTagTest {
 		tag.setName(null);
 		tag.setValue("John Doe");
 
-		ThrowingCallable doEndTag = new ThrowingCallable() {
-			@Override
-			public void call() throws Exception {
-				tag.doEndTag();
-			}
-		};
-
-		assertThatThrownBy(doEndTag)
+		assertThatThrownBy(tag::doEndTag)
 				.isInstanceOf(JspException.class)
 				.hasMessage("The name parameter of mustache:param tag is mandatory and must not be empty");
 	}
@@ -135,14 +120,7 @@ public class MustacheParameterTagTest {
 		tag.setName("");
 		tag.setValue("John Doe");
 
-		ThrowingCallable doEndTag = new ThrowingCallable() {
-			@Override
-			public void call() throws Exception {
-				tag.doEndTag();
-			}
-		};
-
-		assertThatThrownBy(doEndTag)
+		assertThatThrownBy(tag::doEndTag)
 				.isInstanceOf(JspException.class)
 				.hasMessage("The name parameter of mustache:param tag is mandatory and must not be empty");
 	}

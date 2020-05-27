@@ -25,7 +25,6 @@
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateException;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
@@ -39,8 +38,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
@@ -81,7 +82,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	/**
 	 * Partial aliases.
 	 */
-	private final Map<String, String> partialAliases = new HashMap<String, String>();
+	private final Map<String, String> partialAliases = new HashMap<>();
 
 	/**
 	 * Temporary partial aliases: i.e. aliases that can be added
@@ -89,12 +90,9 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	 * removed after compilation with {@link #removeTemporaryPartialAliases()} method.
 	 * This implementation use a thread local object to be thread safe.
 	 */
-	private final ThreadLocal<Map<String, String>> temporaryPartialAliases = new ThreadLocal<Map<String, String>>() {
-		@Override
-		public Map<String, String> initialValue() {
-			return new HashMap<String, String>();
-		}
-	};
+	private final ThreadLocal<Map<String, String>> temporaryPartialAliases = ThreadLocal.withInitial(
+			HashMap::new
+	);
 
 	/**
 	 * Build new template loader.
@@ -103,7 +101,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	 */
 	public DefaultTemplateLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = notNull(resourceLoader, "Resource loader must not be null");
-		this.charset = Charset.forName("UTF-8");
+		this.charset = StandardCharsets.UTF_8;
 		this.prefix = null;
 		this.suffix = null;
 	}
@@ -230,7 +228,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 	private String resolveTemplateName(String name) {
 		final Map<String, String> partialsAliases = getPartialAliases();
-		final String realName = partialsAliases.containsKey(name) ? partialsAliases.get(name) : name;
+		final String realName = partialsAliases.getOrDefault(name, name);
 
 		if (log.isDebugEnabled()) {
 			log.debug("Load template: {}", name);
@@ -250,7 +248,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	}
 
 	private Map<String, String> getPartialAliases() {
-		Map<String, String> aliases = new HashMap<String, String>();
+		Map<String, String> aliases = new HashMap<>();
 		aliases.putAll(partialAliases);
 		aliases.putAll(temporaryPartialAliases.get());
 		return aliases;
@@ -288,6 +286,6 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(resourceLoader, prefix, suffix, charset, partialAliases);
+		return Objects.hash(resourceLoader, prefix, suffix, charset, partialAliases);
 	}
 }

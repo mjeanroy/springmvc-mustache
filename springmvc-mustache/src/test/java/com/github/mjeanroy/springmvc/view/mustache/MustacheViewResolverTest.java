@@ -150,7 +150,7 @@ public class MustacheViewResolverTest {
 
 		String newViewName = "foo1";
 		String newLayoutName = "bar1";
-		Map<String, String> newMappings = new HashMap<String, String>();
+		Map<String, String> newMappings = new HashMap<>();
 		newMappings.put(newViewName, newLayoutName);
 
 		mustacheViewResolver.setLayoutMappings(newMappings);

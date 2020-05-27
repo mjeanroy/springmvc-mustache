@@ -27,12 +27,16 @@ package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
-import com.github.mjeanroy.springmvc.view.mustache.commons.lang.Objects;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
+import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
+import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
+import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.samskivert.mustache.Template;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static com.samskivert.mustache.Mustache.Compiler;
@@ -41,6 +45,8 @@ import static com.samskivert.mustache.Mustache.Compiler;
  * Mustache Compiler using JMustache as real implementation.
  */
 public final class JMustacheCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+
+	private static final Logger log = LoggerFactory.getLogger(JMustacheCompiler.class);
 
 	/**
 	 * Original JMustache compiler.
@@ -62,9 +68,14 @@ public final class JMustacheCompiler extends AbstractMustacheCompiler implements
 
 	@Override
 	protected MustacheTemplate doCompile(String name) {
-		final Reader template = templateLoader.getTemplate(name);
-		final Template result = getTemplate(template, templateLoader);
-		return new JMustacheTemplate(result);
+		try(Reader template = templateLoader.getTemplate(name)) {
+			final Template result = getTemplate(template, templateLoader);
+			return new JMustacheTemplate(result);
+		}
+		catch (IOException ex) {
+			log.error(ex.getMessage());
+			throw new MustacheIOException(ex);
+		}
 	}
 
 	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
@@ -95,6 +106,6 @@ public final class JMustacheCompiler extends AbstractMustacheCompiler implements
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(compiler, templateLoader);
+		return Objects.hash(compiler, templateLoader);
 	}
 }

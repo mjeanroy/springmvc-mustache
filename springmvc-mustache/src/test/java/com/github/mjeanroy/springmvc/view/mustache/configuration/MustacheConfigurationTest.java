@@ -47,7 +47,7 @@ public class MustacheConfigurationTest {
 	@Test
 	public void it_should_select_configuration_class() {
 		MustacheProvider provider = MustacheProvider.JMUSTACHE;
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("provider", provider);
 
 		AnnotationMetadata annotationMetadata = mock(AnnotationMetadata.class);
