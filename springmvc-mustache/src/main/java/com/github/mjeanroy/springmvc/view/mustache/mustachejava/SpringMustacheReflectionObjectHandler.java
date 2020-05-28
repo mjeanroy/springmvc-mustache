@@ -28,6 +28,7 @@ import com.github.mustachejava.Iteration;
 import com.github.mustachejava.reflect.ReflectionObjectHandler;
 
 import java.io.Writer;
+import java.util.List;
 
 /**
  * Reflection Handler that treat number zero as a falsey value.
@@ -36,12 +37,12 @@ import java.io.Writer;
 class SpringMustacheReflectionObjectHandler extends ReflectionObjectHandler {
 
 	@Override
-	public Writer falsey(Iteration iteration, Writer writer, Object object, Object[] scopes) {
+	public Writer falsey(Iteration iteration, Writer writer, Object object, List<Object> scopes) {
 		return isZero(object) ? iteration.next(writer, object, scopes) : super.falsey(iteration, writer, object, scopes);
 	}
 
 	@Override
-	public Writer iterate(Iteration iteration, Writer writer, Object object, Object[] scopes) {
+	public Writer iterate(Iteration iteration, Writer writer, Object object, List<Object> scopes) {
 		return isZero(object) ? writer : super.iterate(iteration, writer, object, scopes);
 	}
 
