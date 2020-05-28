@@ -26,12 +26,12 @@ package com.github.mjeanroy.springmvc.mustache.sample.jmustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.configuration.EnableMustache;
 import com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvider;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.UrlPathHelper;
 
 @Configuration
 @EnableWebMvc
@@ -39,13 +39,12 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @ComponentScan(basePackages = {
 		"com.github.mjeanroy.springmvc.mustache.sample.jmustache",
 })
-public class SpringConfiguration extends WebMvcConfigurationSupport {
+public class SpringConfiguration implements WebMvcConfigurer {
 
-	@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
-		handlerMapping.setAlwaysUseFullPath(true);
-		handlerMapping.setUseSuffixPatternMatch(false);
-		return handlerMapping;
+	@Override
+	public void configurePathMatch(PathMatchConfigurer configurer) {
+		UrlPathHelper urlPathHelper = new UrlPathHelper();
+		urlPathHelper.setAlwaysUseFullPath(true);
+		configurer.setUrlPathHelper(urlPathHelper);
 	}
 }

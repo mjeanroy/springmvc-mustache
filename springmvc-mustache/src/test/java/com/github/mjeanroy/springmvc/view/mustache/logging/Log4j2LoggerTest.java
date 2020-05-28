@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.logging;
 import com.github.mjeanroy.junit4.runif.RunIf;
 import com.github.mjeanroy.junit4.runif.RunIfRunner;
 import com.github.mjeanroy.junit4.runif.conditions.AtLeastJava8Condition;
-import org.apache.logging.log4j.Level;
 import org.junit.runner.RunWith;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
@@ -39,18 +38,17 @@ public class Log4j2LoggerTest extends AbstractLoggerTest {
 	@Override
 	Logger createLogger() {
 		Log4j2Logger log = new Log4j2Logger(getClass());
-
-		org.apache.logging.log4j.core.Logger log4j = readField(log, "log");
-		log4j.setAdditive(true);
-		log4j.setLevel(Level.TRACE);
-
+		doUpdateLevel(log, "TRACE");
 		return log;
 	}
 
 	@Override
 	void updateLevel(String level) {
-		org.apache.logging.log4j.core.Logger log4j = readField(log, "log");
-		log4j.setLevel(Level.valueOf(level));
-		log4j.setAdditive(true);
+		doUpdateLevel(log, level);
+	}
+
+	private static void doUpdateLevel(Logger log, String level) {
+		ch.qos.logback.classic.Logger logback = readField(readField(log, "log"), "logger");
+		logback.setLevel(ch.qos.logback.classic.Level.valueOf(level));
 	}
 }

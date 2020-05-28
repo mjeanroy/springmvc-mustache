@@ -43,7 +43,7 @@ class CommonsLoggingLogger implements Logger {
 	private final Log log;
 
 	CommonsLoggingLogger(Class<?> klass) {
-		this.log = LogFactory.getFactory().getInstance(klass);
+		this.log = LogFactory.getLog(klass);
 	}
 
 	@Override
