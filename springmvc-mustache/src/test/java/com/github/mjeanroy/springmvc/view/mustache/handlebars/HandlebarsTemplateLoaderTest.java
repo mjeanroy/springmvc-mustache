@@ -33,6 +33,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +51,7 @@ public class HandlebarsTemplateLoaderTest {
 		assertThat(source).isNotNull();
 		assertThat(source.filename()).isNotNull().isNotEmpty().isEqualTo(location);
 		assertThat(source.lastModified()).isNotNull().isEqualTo(expectedContent.hashCode());
-		assertThat(source.content()).isNotNull().isNotEmpty().isEqualTo(expectedContent);
+		assertThat(source.content(StandardCharsets.UTF_8)).isNotNull().isNotEmpty().isEqualTo(expectedContent);
 	}
 
 	@Test

@@ -36,6 +36,8 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -209,7 +211,9 @@ public class HandlebarsCompilerTest {
 
 	@Test
 	public void it_should_implement_equals_hash_code() {
-		EqualsVerifier.forClass(HandlebarsCompiler.class).verify();
+		EqualsVerifier.forClass(HandlebarsCompiler.class)
+				.withPrefabValues(Charset.class, StandardCharsets.UTF_8, StandardCharsets.UTF_16)
+				.verify();
 	}
 
 	private static MustacheTemplateLoader mustacheTemplateLoader() {
