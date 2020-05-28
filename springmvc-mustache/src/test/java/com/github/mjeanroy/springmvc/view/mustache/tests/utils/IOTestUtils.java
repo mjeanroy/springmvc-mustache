@@ -22,43 +22,33 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.tests;
+package com.github.mjeanroy.springmvc.view.mustache.tests.utils;
 
-import java.util.Collection;
+import org.apache.commons.io.IOUtils;
+
+import java.io.Reader;
 
 /**
- * Static String Utilities, to use in unit test only.
+ * Static IO Utilities, to use in unit test.
  */
-public final class StringTestUtils {
-
-	/**
-	 * The OS dependant line separator.
-	 */
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+public final class IOTestUtils {
 
 	// Ensure non instantiation.
-	private StringTestUtils() {
+	private IOTestUtils() {
 	}
 
 	/**
-	 * Join given lines to a single string using the line separator character as
-	 * join character.
+	 * Read given reader.
 	 *
-	 * @param lines Lines to join.
-	 * @return The entire text.
+	 * @param reader Reader.
+	 * @return String content.
 	 */
-	public static String joinLines(Collection<String> lines) {
-		StringBuilder sb = new StringBuilder();
-		boolean firstLine = true;
-		for (String line : lines) {
-			if (!firstLine) {
-				sb.append(LINE_SEPARATOR);
-			}
-
-			sb.append(line);
-			firstLine = false;
+	public static String read(Reader reader) {
+		try {
+			return IOUtils.toString(reader);
 		}
-
-		return sb.toString();
+		catch (Exception ex) {
+			throw new AssertionError(ex);
+		}
 	}
 }

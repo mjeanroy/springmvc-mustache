@@ -30,8 +30,8 @@ import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFa
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver;
 import com.github.mustachejava.MustacheFactory;
 import com.github.mustachejava.MustacheResolver;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -43,8 +43,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -52,7 +52,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MustacheView_MustacheJava_Test {
+class MustacheView_MustacheJava_Test {
 
 	private Map<String, Object> model;
 
@@ -60,8 +60,8 @@ public class MustacheView_MustacheJava_Test {
 
 	private MustacheView mustacheView;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		this.model = new HashMap<>();
 		this.model.put("name", "foo");
 		this.model.put("zero", 0);
@@ -78,7 +78,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_add_partial_aliases() {
+	void it_should_add_partial_aliases() {
 		String k1 = "foo1";
 		String v1 = "bar1";
 
@@ -102,7 +102,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_add_partial_alias() {
+	void it_should_add_partial_alias() {
 		String key = "foo";
 		String value = "bar";
 
@@ -118,7 +118,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_render_template() throws Exception {
+	void it_should_render_template() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);
@@ -134,7 +134,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_treat_zero_as_falsy() throws Exception {
+	void it_should_treat_zero_as_falsy() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);
@@ -157,7 +157,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_treat_empty_string_as_falsy() throws Exception {
+	void it_should_treat_empty_string_as_falsy() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);
@@ -180,7 +180,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial() throws Exception {
+	void it_should_display_template_with_partial() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);
@@ -202,7 +202,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix() throws Exception {
+	void it_should_display_template_with_partial_using_prefix_suffix() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);
@@ -226,7 +226,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() throws Exception {
+	void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);
@@ -250,7 +250,7 @@ public class MustacheView_MustacheJava_Test {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_aliases() throws Exception {
+	void it_should_display_template_with_partial_aliases() throws Exception {
 		Writer writer = givenWriter();
 		HttpServletRequest request = givenHttpServletRequest();
 		HttpServletResponse response = givenHttpServletResponse(writer);

@@ -30,7 +30,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import java.io.StringWriter;
@@ -39,16 +39,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.StringTestUtils.joinLines;
 import static com.samskivert.mustache.Mustache.Compiler;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JMustacheCompilerTest {
+class JMustacheCompilerTest {
 
 	@Test
-	public void it_should_render_template() {
+	void it_should_render_template() {
 		Writer writer = new StringWriter();
 		String name = "/templates/foo.template.html";
 		JMustacheCompiler mustacheCompiler = jMustacheCompiler();
@@ -63,7 +63,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_zero_as_falsy() {
+	void it_should_treat_zero_as_falsy() {
 		Writer writer = new StringWriter();
 		String name = "/templates/zero.template.html";
 		JMustacheCompiler mustacheCompiler = jMustacheCompiler();
@@ -84,7 +84,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_empty_string_as_falsy() {
+	void it_should_treat_empty_string_as_falsy() {
 		Writer writer = new StringWriter();
 		String name = "/templates/empty-string.template.html";
 		JMustacheCompiler mustacheCompiler = jMustacheCompiler();
@@ -105,7 +105,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial() {
+	void it_should_display_template_with_partial() {
 		Writer writer = new StringWriter();
 		String name = "/templates/composite.template.html";
 		JMustacheCompiler mustacheCompiler = jMustacheCompiler();
@@ -126,7 +126,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix() {
+	void it_should_display_template_with_partial_using_prefix_suffix() {
 		Writer writer = new StringWriter();
 		String name = "/templates/composite-aliases.template.html";
 
@@ -152,7 +152,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
+	void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
 		Writer writer = new StringWriter();
 		String name = "/templates/composite.template.html";
 
@@ -178,7 +178,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_aliases() {
+	void it_should_display_template_with_partial_aliases() {
 		Writer writer = new StringWriter();
 		String name = "/templates/composite-aliases.template.html";
 		Map<String, String> aliases = Collections.singletonMap(
@@ -208,7 +208,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		Compiler compiler = compiler();
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		MustacheCompiler mustacheCompiler = jMustacheCompiler(compiler, templateLoader);
@@ -227,7 +227,7 @@ public class JMustacheCompilerTest {
 	}
 
 	@Test
-	public void it_should_implement_equals_hash_code() {
+	void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(JMustacheCompiler.class).verify();
 	}
 

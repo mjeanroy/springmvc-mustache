@@ -24,14 +24,14 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LoggerFactoryTest {
+class LoggerFactoryTest {
 
 	@Test
-	public void it_should_create_logger() {
+	void it_should_create_logger() {
 		Logger logger = LoggerFactory.getLogger(getClass());
 		assertThat(logger).isExactlyInstanceOf(Slf4jLogger.class);
 	}

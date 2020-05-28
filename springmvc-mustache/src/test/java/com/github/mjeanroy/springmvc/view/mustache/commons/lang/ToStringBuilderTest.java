@@ -24,15 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ToStringBuilderTest {
+class ToStringBuilderTest {
 
 	@Test
-	public void it_should_create_final_string() {
+	void it_should_create_final_string() {
 		String identity = hexIdentity(this);
 		String value = ToStringBuilder.builder(this)
 				.append("field1", "foo")
@@ -56,7 +56,7 @@ public class ToStringBuilderTest {
 	}
 
 	@Test
-	public void it_should_create_final_string_without_fields() {
+	void it_should_create_final_string_without_fields() {
 		String identity = hexIdentity(this);
 		String value = ToStringBuilder.builder(this).build();
 

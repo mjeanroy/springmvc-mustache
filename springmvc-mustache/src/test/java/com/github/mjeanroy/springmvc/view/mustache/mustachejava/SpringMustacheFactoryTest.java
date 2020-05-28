@@ -27,20 +27,20 @@ package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mustachejava.MustacheResolver;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.Reader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.IOTestUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.TestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpringMustacheFactoryTest {
+class SpringMustacheFactoryTest {
 
 	@Test
-	public void it_should_resolve_template_name_with_template_loader() {
+	void it_should_resolve_template_name_with_template_loader() {
 		String name = "foo";
 		String location = "/templates/foo.template.html";
 
@@ -58,7 +58,7 @@ public class SpringMustacheFactoryTest {
 	}
 
 	@Test
-	public void it_should_resolve_template() {
+	void it_should_resolve_template() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		String prefix = "/templates/";
 		String suffix = ".template.html";
@@ -76,7 +76,7 @@ public class SpringMustacheFactoryTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);

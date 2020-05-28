@@ -29,7 +29,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mustachejava.MustacheResolver;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -38,17 +38,17 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.TestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.StringTestUtils.joinLines;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.TestUtils.hexIdentity;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MustacheJavaCompilerTest {
+class MustacheJavaCompilerTest {
 
 	@Test
-	public void it_should_create_compiler() {
+	void it_should_create_compiler() {
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		MustacheJavaCompiler mustacheJavaCompiler = mustacheJavaCompiler(templateLoader);
 		SpringMustacheFactory factory = readField(mustacheJavaCompiler, "mustacheFactory");
@@ -60,7 +60,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_create_compiler_with_prefix_suffix() {
+	void it_should_create_compiler_with_prefix_suffix() {
 		String prefix = "/templates";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -74,7 +74,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_render_template() {
+	void it_should_render_template() {
 		String name = "/templates/foo.template.html";
 		Writer writer = new StringWriter();
 		MustacheJavaCompiler mustacheJavaCompiler = mustacheJavaCompiler();
@@ -86,7 +86,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_zero_as_falsy() {
+	void it_should_treat_zero_as_falsy() {
 		String name = "/templates/zero.template.html";
 		Writer writer = new StringWriter();
 		MustacheJavaCompiler mustacheJavaCompiler = mustacheJavaCompiler();
@@ -103,7 +103,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_empty_string_as_falsy() {
+	void it_should_treat_empty_string_as_falsy() {
 		String name = "/templates/empty-string.template.html";
 		Writer writer = new StringWriter();
 		MustacheJavaCompiler mustacheJavaCompiler = mustacheJavaCompiler();
@@ -120,7 +120,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial() {
+	void it_should_display_template_with_partial() {
 		String name = "/templates/composite.template.html";
 		Writer writer = new StringWriter();
 		MustacheJavaCompiler mustacheJavaCompiler = mustacheJavaCompiler();
@@ -136,7 +136,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix() {
+	void it_should_display_template_with_partial_using_prefix_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -156,7 +156,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
+	void it_should_display_template_with_partial_using_prefix_suffix_event_with_full_name() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -176,7 +176,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_aliases() {
+	void it_should_display_template_with_partial_aliases() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -199,7 +199,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		MustacheJavaCompiler mustacheJavaCompiler = mustacheJavaCompiler(templateLoader);
 		SpringMustacheFactory factory = readField(mustacheJavaCompiler, "mustacheFactory");
@@ -218,7 +218,7 @@ public class MustacheJavaCompilerTest {
 	}
 
 	@Test
-	public void it_should_implement_equals_hash_code() {
+	void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(MustacheJavaCompiler.class).verify();
 	}
 

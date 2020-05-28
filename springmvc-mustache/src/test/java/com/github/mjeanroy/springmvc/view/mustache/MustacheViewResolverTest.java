@@ -27,22 +27,22 @@ package com.github.mjeanroy.springmvc.view.mustache;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-public class MustacheViewResolverTest {
+class MustacheViewResolverTest {
 
 	@Test
-	public void it_should_create_view_resolver() {
+	void it_should_create_view_resolver() {
 		MustacheCompiler mustacheCompiler = mustacheCompiler();
 		MustacheViewResolver viewResolver = mustacheViewResolver(mustacheCompiler);
 
@@ -52,14 +52,14 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_have_required_view_class() {
+	void it_should_have_required_view_class() {
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		Class<?> viewClass = mustacheViewResolver.requiredViewClass();
 		assertThat(viewClass).isNotNull().isEqualTo(MustacheView.class);
 	}
 
 	@Test
-	public void it_should_build_resolver_using_compiler_and_template_loader() {
+	void it_should_build_resolver_using_compiler_and_template_loader() {
 		MustacheCompiler compiler = mustacheCompiler();
 		MustacheViewResolver mustacheViewResolver = new MustacheViewResolver(compiler);
 
@@ -79,7 +79,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_set_prefix() {
+	void it_should_set_prefix() {
 		String prefix = "foo";
 		MustacheCompiler mustacheCompiler = mustacheCompiler();
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
@@ -91,7 +91,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_set_suffix() {
+	void it_should_set_suffix() {
 		String suffix = "foo";
 		MustacheCompiler mustacheCompiler = mustacheCompiler();
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
@@ -103,7 +103,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_set_default_layout() {
+	void it_should_set_default_layout() {
 		String defaultLayout = "foo";
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		mustacheViewResolver.setDefaultLayout(defaultLayout);
@@ -111,7 +111,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_set_layout_key() {
+	void it_should_set_layout_key() {
 		String layoutKey = "foo";
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
 		mustacheViewResolver.setLayoutKey(layoutKey);
@@ -119,7 +119,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_add_layout_mappings() {
+	void it_should_add_layout_mappings() {
 		String viewName = "foo";
 		String layoutName = "bar";
 
@@ -136,7 +136,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_replace_layout_mappings() {
+	void it_should_replace_layout_mappings() {
 		String viewName = "foo";
 		String layoutName = "bar";
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver();
@@ -162,7 +162,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_build_view() throws Exception {
+	void it_should_build_view() throws Exception {
 		String viewName = "foo";
 		MustacheCompiler mustacheCompiler = mustacheCompiler();
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
@@ -179,7 +179,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_build_view_using_layout() throws Exception {
+	void it_should_build_view_using_layout() throws Exception {
 		String layout = "index";
 		MustacheCompiler mustacheCompiler = mustacheCompiler();
 		MustacheViewResolver mustacheViewResolver = mustacheViewResolver(mustacheCompiler);
@@ -201,7 +201,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_build_view_using_layout_mappings() throws Exception {
+	void it_should_build_view_using_layout_mappings() throws Exception {
 		String layout1 = "index";
 		String layout2 = "admin";
 
@@ -236,7 +236,7 @@ public class MustacheViewResolverTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		String layout1 = "index";
 		String layout2 = "admin";
 

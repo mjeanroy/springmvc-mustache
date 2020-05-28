@@ -29,7 +29,7 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -38,22 +38,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MustacheProviderTest {
+class MustacheProviderTest {
 
 	@Test
-	public void it_should_check_if_jmustache_is_available() {
+	void it_should_check_if_jmustache_is_available() {
 		assertThat(MustacheProvider.JMUSTACHE.isAvailable()).isTrue();
 	}
 
 	@Test
-	public void it_should_get_jmustache_configuration_class() {
+	void it_should_get_jmustache_configuration_class() {
 		MustacheProvider provider = MustacheProvider.JMUSTACHE;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration";
 		it_should_get_provider_configuration_class(provider, className);
 	}
 
 	@Test
-	public void it_should_instantiate_jmustache_engine_compiler() {
+	void it_should_instantiate_jmustache_engine_compiler() {
 		Mustache.Compiler compiler = Mustache.compiler();
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 		when(applicationContext.getBean(Mustache.Compiler.class)).thenReturn(compiler);
@@ -64,19 +64,19 @@ public class MustacheProviderTest {
 	}
 
 	@Test
-	public void it_should_check_if_mustachejava_is_available() {
+	void it_should_check_if_mustachejava_is_available() {
 		assertThat(MustacheProvider.MUSTACHE_JAVA.isAvailable()).isTrue();
 	}
 
 	@Test
-	public void it_should_get_mustachejava_configuration_class() {
+	void it_should_get_mustachejava_configuration_class() {
 		MustacheProvider provider = MustacheProvider.MUSTACHE_JAVA;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava.MustacheJavaConfiguration";
 		it_should_get_provider_configuration_class(provider, className);
 	}
 
 	@Test
-	public void it_should_instantiate_mustachejava_engine_compiler() {
+	void it_should_instantiate_mustachejava_engine_compiler() {
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 		MustacheProvider provider = MustacheProvider.MUSTACHE_JAVA;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.mustachejava.MustacheJavaCompiler";
@@ -84,19 +84,19 @@ public class MustacheProviderTest {
 	}
 
 	@Test
-	public void it_should_check_if_handlebars_is_available() {
+	void it_should_check_if_handlebars_is_available() {
 		assertThat(MustacheProvider.HANDLEBARS.isAvailable()).isTrue();
 	}
 
 	@Test
-	public void it_should_get_handlebars_configuration_class() {
+	void it_should_get_handlebars_configuration_class() {
 		MustacheProvider provider = MustacheProvider.HANDLEBARS;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsConfiguration";
 		it_should_get_provider_configuration_class(provider, className);
 	}
 
 	@Test
-	public void it_should_instantiate_handlebars_engine_compiler() {
+	void it_should_instantiate_handlebars_engine_compiler() {
 		Handlebars handlebars = new Handlebars();
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 		when(applicationContext.getBean(Handlebars.class)).thenReturn(handlebars);
@@ -107,14 +107,14 @@ public class MustacheProviderTest {
 	}
 
 	@Test
-	public void it_should_get_auto_configuration_class() {
+	void it_should_get_auto_configuration_class() {
 		MustacheProvider provider = MustacheProvider.AUTO;
 		String className = "com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration";
 		it_should_get_provider_configuration_class(provider, className);
 	}
 
 	@Test
-	public void it_should_instantiate_auto_engine_compiler() {
+	void it_should_instantiate_auto_engine_compiler() {
 		Mustache.Compiler compiler = Mustache.compiler();
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 		when(applicationContext.getBean(Mustache.Compiler.class)).thenReturn(compiler);

@@ -29,8 +29,8 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -42,16 +42,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HandlebarsCompilerTest {
+class HandlebarsCompilerTest {
 
 	@Test
-	public void it_should_build_a_compiler() {
+	void it_should_build_a_compiler() {
 		Handlebars handlebars = handlebars();
 		HandlebarsCompiler hbCompiler = handlebarsCompiler(handlebars);
 
@@ -65,7 +65,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_render_template() {
+	void it_should_render_template() {
 		Writer writer = new StringWriter();
 		HandlebarsCompiler hbCompiler = handlebarsCompiler();
 		String name = "/templates/foo.template.html";
@@ -77,7 +77,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_zero_as_falsy() {
+	void it_should_treat_zero_as_falsy() {
 		Writer writer = new StringWriter();
 		HandlebarsCompiler hbCompiler = handlebarsCompiler();
 		String name = "/templates/zero.template.html";
@@ -94,7 +94,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_treat_empty_string_as_falsy() {
+	void it_should_treat_empty_string_as_falsy() {
 		Writer writer = new StringWriter();
 		HandlebarsCompiler hbCompiler = handlebarsCompiler();
 		String name = "/templates/empty-string.template.html";
@@ -111,8 +111,8 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	@Ignore("With Handlebars, partials must not start with '/'")
-	public void it_should_display_template_with_partial() {
+	@Disabled("With Handlebars, partials must not start with '/'")
+	void it_should_display_template_with_partial() {
 		Writer writer = new StringWriter();
 		HandlebarsCompiler hbCompiler = handlebarsCompiler();
 		String name = "/templates/composite.template.html";
@@ -128,7 +128,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_using_prefix_suffix() {
+	void it_should_display_template_with_partial_using_prefix_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -148,8 +148,8 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	@Ignore("With Handlebars, partials must not start with '/'")
-	public void it_should_display_template_with_partial_using_prefix_suffix_even_with_full_name() {
+	@Disabled("With Handlebars, partials must not start with '/'")
+	void it_should_display_template_with_partial_using_prefix_suffix_even_with_full_name() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -169,7 +169,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_display_template_with_partial_aliases() {
+	void it_should_display_template_with_partial_aliases() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(prefix, suffix);
@@ -191,7 +191,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		Handlebars handlebars = handlebars();
 		HandlebarsCompiler hbCompiler = handlebarsCompiler(handlebars, templateLoader);
@@ -210,7 +210,7 @@ public class HandlebarsCompilerTest {
 	}
 
 	@Test
-	public void it_should_implement_equals_hash_code() {
+	void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(HandlebarsCompiler.class)
 				.withPrefabValues(Charset.class, StandardCharsets.UTF_8, StandardCharsets.UTF_16)
 				.verify();

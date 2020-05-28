@@ -31,33 +31,33 @@ import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFa
 import com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver;
 import com.github.mustachejava.MustacheFactory;
 import com.github.mustachejava.MustacheResolver;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 
 import java.util.Collection;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
-public class MustacheJavaConfigurationTest {
+class MustacheJavaConfigurationTest {
 
 	private MockEnvironment environment;
 	private MustacheJavaConfiguration mustacheJavaConfiguration;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		environment = new MockEnvironment();
 		mustacheJavaConfiguration = new MustacheJavaConfiguration(environment);
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_compiler() {
+	void it_should_instantiate_mustache_compiler() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
@@ -67,7 +67,7 @@ public class MustacheJavaConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_resolver() {
+	void it_should_instantiate_mustache_resolver() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheResolver mustacheResolver = mustacheJavaConfiguration.mustacheResolver(templateLoader);
@@ -77,7 +77,7 @@ public class MustacheJavaConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_factory() {
+	void it_should_instantiate_mustache_factory() {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		MustacheResolver mustacheResolver = new SpringMustacheResolver(templateLoader);
@@ -88,7 +88,7 @@ public class MustacheJavaConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_factory_with_customizers() {
+	void it_should_instantiate_mustache_factory_with_customizers() {
 		MustacheJavaCustomizer c1 = newMustacheJavaCustomizer();
 		MustacheJavaCustomizer c2 = newMustacheJavaCustomizer();
 		Collection<MustacheJavaCustomizer> customizers = asList(c1, c2);
@@ -105,7 +105,7 @@ public class MustacheJavaConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_factory_with_custom_recursion_limit() {
+	void it_should_instantiate_mustache_factory_with_custom_recursion_limit() {
 		environment.setProperty("mustache.mustachejava.recursionLimit", "10");
 
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();

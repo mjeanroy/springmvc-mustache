@@ -29,8 +29,8 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.samskivert.mustache.Mustache;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 
@@ -39,14 +39,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MustacheCompilerFactoryBeanTest {
+class MustacheCompilerFactoryBeanTest {
 
 	private MustacheCompilerFactoryBean factoryBean;
 
 	private ApplicationContext applicationContext;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		applicationContext = mock(ApplicationContext.class);
 
 		factoryBean = new MustacheCompilerFactoryBean();
@@ -54,17 +54,17 @@ public class MustacheCompilerFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_be_a_singleton() {
+	void it_should_be_a_singleton() {
 		assertThat(factoryBean.isSingleton()).isTrue();
 	}
 
 	@Test
-	public void it_should_have_object_type() {
+	void it_should_have_object_type() {
 		assertThat(factoryBean.getObjectType()).isEqualTo(MustacheCompiler.class);
 	}
 
 	@Test
-	public void it_should_create_object() throws Exception {
+	void it_should_create_object() throws Exception {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		Mustache.Compiler compiler = Mustache.compiler();
@@ -84,7 +84,7 @@ public class MustacheCompilerFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_not_create_twice() throws Exception {
+	void it_should_not_create_twice() throws Exception {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
 		Mustache.Compiler compiler = Mustache.compiler();

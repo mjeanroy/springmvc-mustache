@@ -24,21 +24,19 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.jsp.it;
 
+import com.github.mjeanroy.junit.servers.client.HttpClient;
 import com.github.mjeanroy.junit.servers.client.HttpResponse;
-import com.github.mjeanroy.junit.servers.tomcat.junit4.TomcatServerJunit4Rule;
-import org.junit.ClassRule;
-import org.junit.Test;
+import com.github.mjeanroy.junit.servers.tomcat.jupiter.TomcatTest;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IndexControllerTest {
-
-	@ClassRule
-	public static TomcatServerJunit4Rule jetty = new TomcatServerJunit4Rule();
+@TomcatTest
+class IndexControllerTest {
 
 	@Test
-	public void it_should_render_template() {
-		HttpResponse response = jetty.getClient().prepareGet("/").execute();
+	void it_should_render_template(HttpClient client) {
+		HttpResponse response = client.prepareGet("/").execute();
 		assertThat(response.status()).isEqualTo(200);
 		assertThat(response.body()).contains(
 				"Hello, my name is John Doe"

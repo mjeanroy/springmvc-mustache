@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.tests;
+package com.github.mjeanroy.springmvc.view.mustache.tests.utils;
 
 /**
  * Static Test Utilities.

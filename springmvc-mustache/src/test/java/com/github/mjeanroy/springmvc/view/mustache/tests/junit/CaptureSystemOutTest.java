@@ -22,33 +22,23 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.tests;
+package com.github.mjeanroy.springmvc.view.mustache.tests.junit;
 
-import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.Reader;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Static IO Utilities, to use in unit test.
+ * An annotation to capture {@code System.out} stream during test, and allow to retrieve what
+ * has been printed by injecting {@link CaptureSystemOut} into tests.
  */
-public final class IOTestUtils {
-
-	// Ensure non instantiation.
-	private IOTestUtils() {
-	}
-
-	/**
-	 * Read given reader.
-	 *
-	 * @param reader Reader.
-	 * @return String content.
-	 */
-	public static String read(Reader reader) {
-		try {
-			return IOUtils.toString(reader);
-		}
-		catch (Exception ex) {
-			throw new AssertionError(ex);
-		}
-	}
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@ExtendWith(CaptureSystemOutExtension.class)
+@Documented
+public @interface CaptureSystemOutTest {
 }

@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
@@ -33,17 +33,17 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class PreConditionsTest {
+class PreConditionsTest {
 
 	@Test
-	public void it_should_not_throw_null_pointer_exception() {
+	void it_should_not_throw_null_pointer_exception() {
 		String param = "foo";
 		String result = PreConditions.notNull(param, "bar");
 		assertThat(result).isSameAs(param);
 	}
 
 	@Test
-	public void it_should_throw_null_pointer_exception() {
+	void it_should_throw_null_pointer_exception() {
 		String message = "foo must not be null";
 		assertThatThrownBy(() -> PreConditions.notNull(null, message))
 				.isInstanceOf(NullPointerException.class)
@@ -51,14 +51,14 @@ public class PreConditionsTest {
 	}
 
 	@Test
-	public void it_should_not_throw_illegal_argument_exception_if_array_is_not_empty() {
+	void it_should_not_throw_illegal_argument_exception_if_array_is_not_empty() {
 		String[] array = new String[]{"foo", "bar"};
 		String[] result = PreConditions.notEmpty(array, "Array must not be empty");
 		assertThat(result).isSameAs(array);
 	}
 
 	@Test
-	public void it_should_throw_illegal_argument_exception_if_array_is_not_empty() {
+	void it_should_throw_illegal_argument_exception_if_array_is_not_empty() {
 		String message = "Array must not be empty";
 		assertThatThrownBy(() -> PreConditions.notEmpty(new String[]{}, message))
 				.isInstanceOf(IllegalArgumentException.class)
@@ -66,14 +66,14 @@ public class PreConditionsTest {
 	}
 
 	@Test
-	public void it_should_not_throw_illegal_argument_exception_if_collection_is_not_empty() {
+	void it_should_not_throw_illegal_argument_exception_if_collection_is_not_empty() {
 		Collection<String> collection = asList("foo", "bar");
 		Collection<String> result = PreConditions.notEmpty(collection, "Collection must not be empty");
 		assertThat(result).isSameAs(collection);
 	}
 
 	@Test
-	public void it_should_throw_illegal_argument_exception_if_collection_is_not_empty() {
+	void it_should_throw_illegal_argument_exception_if_collection_is_not_empty() {
 		String message = "Collection must not be empty";
 		assertThatThrownBy(() -> PreConditions.notEmpty(emptyList(), message))
 				.isInstanceOf(IllegalArgumentException.class)
@@ -81,14 +81,14 @@ public class PreConditionsTest {
 	}
 
 	@Test
-	public void it_should_not_throw_illegal_argument_exception_if_string_has_text() {
+	void it_should_not_throw_illegal_argument_exception_if_string_has_text() {
 		String param = "foo";
 		String result = PreConditions.hasText(param, "bar");
 		assertThat(result).isSameAs(param);
 	}
 
 	@Test
-	public void it_should_throw_illegal_argument_exception_if_string_does_not_have_text() {
+	void it_should_throw_illegal_argument_exception_if_string_does_not_have_text() {
 		String message = "String must have text";
 		assertThatThrownBy(() -> PreConditions.hasText("  ", message))
 				.isInstanceOf(IllegalArgumentException.class)
