@@ -103,12 +103,12 @@
 		<jmustache.version>1.15</jmustache.version>
 		<handlebars.version>4.2.0</handlebars.version>
 		<mustache.java.version>0.9.6</mustache.java.version>
-		<spring.version>4.3.27.RELEASE</spring.version>
+		<spring.version>5.2.6.RELEASE</spring.version>
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
 		<spring-webmvc.version>${spring.version}</spring-webmvc.version>
 		<spring-test.version>${spring.version}</spring-test.version>
-		<spring-boot.version>1.5.22.RELEASE</spring-boot.version>
+		<spring-boot.version>2.3.0.RELEASE</spring-boot.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<jsp-api.version>2.0</jsp-api.version>
 
@@ -120,6 +120,7 @@
 		<junit-runif.version>0.2.0</junit-runif.version>
 		<equalsverifier.version>3.3</equalsverifier.version>
 		<logback.version>1.2.3</logback.version>
+		<log4j-to-slf4j.version>2.13.3</log4j-to-slf4j.version>
 	</properties>
 
 	<dependencies>
@@ -252,6 +253,12 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-to-slf4j</artifactId>
+			<version>${log4j-to-slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

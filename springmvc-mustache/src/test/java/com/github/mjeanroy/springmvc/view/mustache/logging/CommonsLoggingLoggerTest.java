@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import org.apache.commons.logging.impl.SLF4JLocationAwareLog;
+import ch.qos.logback.classic.Level;
 
 import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
 
@@ -43,9 +43,7 @@ public class CommonsLoggingLoggerTest extends AbstractLoggerTest {
 	}
 
 	private static void doUpdateLevel(Logger log, String level) {
-		// Use jcl-over-slf4
-		SLF4JLocationAwareLog slf4jLogger = readField(log, "log");
-		ch.qos.logback.classic.Logger internalLog = readField(slf4jLogger, "logger");
-		internalLog.setLevel(ch.qos.logback.classic.Level.valueOf(level));
+		ch.qos.logback.classic.Logger logback = readField(readField(log, "log"), "logger");
+		logback.setLevel(Level.valueOf(level));
 	}
 }
