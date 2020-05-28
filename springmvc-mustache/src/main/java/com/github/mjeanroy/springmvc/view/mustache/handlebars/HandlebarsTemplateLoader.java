@@ -96,11 +96,11 @@ final class HandlebarsTemplateLoader implements TemplateLoader {
 		loader.setSuffix(suffix);
 	}
 
-	void setCharset(Charset charset) {
+	public void setCharset(Charset charset) {
 		throw new UnsupportedOperationException();
 	}
 
-	Charset getCharset() {
+	public Charset getCharset() {
 		return Charset.forName("UTF-8");
 	}
 
