@@ -53,8 +53,9 @@ public class DefaultTemplateLoaderTest {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
 		assertThat(readField(loader, "resourceLoader", ResourceLoader.class)).isSameAs(resourceLoader);
-		assertThat(readField(loader, "prefix", String.class)).isNull();
-		assertThat(readField(loader, "suffix", String.class)).isNull();
+		assertThat(loader.getPrefix()).isNull();
+		assertThat(loader.getSuffix()).isNull();
+		assertThat(loader.getCharset()).isEqualTo(Charset.forName("UTF-8"));
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
@@ -67,8 +68,9 @@ public class DefaultTemplateLoaderTest {
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader, prefix, suffix);
 
 		assertThat(readField(loader, "resourceLoader", ResourceLoader.class)).isSameAs(resourceLoader);
-		assertThat(readField(loader, "prefix", String.class)).isEqualTo(prefix);
-		assertThat(readField(loader, "suffix", String.class)).isEqualTo(suffix);
+		assertThat(loader.getPrefix()).isEqualTo(prefix);
+		assertThat(loader.getSuffix()).isEqualTo(suffix);
+		assertThat(loader.getCharset()).isEqualTo(Charset.forName("UTF-8"));
 		assertThat((Map<String, String>) readField(loader, "partialAliases")).isNotNull().isEmpty();
 	}
 
