@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +73,12 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	private volatile String suffix;
 
 	/**
+	 * The charset to use.
+	 */
+	// Volatile because it can be accessed by more than one thread
+	private volatile Charset charset;
+
+	/**
 	 * Partial aliases.
 	 */
 	private final Map<String, String> partialAliases = new HashMap<String, String>();
@@ -96,6 +103,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	 */
 	public DefaultTemplateLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = notNull(resourceLoader, "Resource loader must not be null");
+		this.charset = Charset.forName("UTF-8");
 		this.prefix = null;
 		this.suffix = null;
 	}
@@ -136,6 +144,17 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 	}
 
 	@Override
+	public Charset getCharset() {
+		return charset;
+	}
+
+	@Override
+	public void setCharset(Charset charset) {
+		log.trace("Set charset: {}", charset);
+		this.charset = charset;
+	}
+
+	@Override
 	public void addPartialAliases(Map<String, String> partialAliases) {
 		log.trace("Add new partial aliases: {}", partialAliases);
 		notNull(partialAliases, "Partial aliases must not be null");
@@ -154,7 +173,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 		try {
 			final InputStream inputStream = resource.getInputStream();
-			return new InputStreamReader(inputStream);
+			return charset == null ? new InputStreamReader(inputStream) : new InputStreamReader(inputStream, charset);
 		}
 		catch (IOException ex) {
 			log.error(ex.getMessage(), ex);
@@ -243,6 +262,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 				.append("resourceLoader", resourceLoader)
 				.append("prefix", prefix)
 				.append("suffix", suffix)
+				.append("charset", charset)
 				.append("partialAliases", partialAliases)
 				.append("temporaryPartialAliases", temporaryPartialAliases.get())
 				.build();
@@ -259,6 +279,7 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 			return Objects.equals(resourceLoader, tl.resourceLoader)
 					&& Objects.equals(prefix, tl.prefix)
 					&& Objects.equals(suffix, tl.suffix)
+					&& Objects.equals(charset, tl.charset)
 					&& Objects.equals(partialAliases, tl.partialAliases);
 		}
 
@@ -267,6 +288,6 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(resourceLoader, prefix, suffix, partialAliases);
+		return Objects.hashCode(resourceLoader, prefix, suffix, charset, partialAliases);
 	}
 }

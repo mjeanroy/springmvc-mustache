@@ -33,6 +33,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -231,6 +232,17 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
+	public void it_should_get_and_set_charset() {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
+		assertThat(mustacheTemplateLoader.getCharset()).isEqualTo(Charset.forName("UTF-8"));
+
+		Charset charset = Charset.forName("UTF-16");
+		mustacheTemplateLoader.setCharset(charset);
+		assertThat(mustacheTemplateLoader.getCharset()).isEqualTo(charset);
+	}
+
+	@Test
 	public void it_should_resolve_template_location_without_prefix_suffix() {
 		String templateName = "foo";
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -272,6 +284,7 @@ public class DefaultTemplateLoaderTest {
 		EqualsVerifier.forClass(DefaultTemplateLoader.class)
 				.suppress(Warning.NONFINAL_FIELDS)
 				.withIgnoredFields("temporaryPartialAliases")
+				.withPrefabValues(Charset.class, Charset.forName("UTF-8"), Charset.forName("UTF-16"))
 				.verify();
 	}
 

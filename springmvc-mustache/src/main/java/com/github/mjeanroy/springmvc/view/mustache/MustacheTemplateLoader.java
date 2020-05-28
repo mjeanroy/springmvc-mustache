@@ -25,6 +25,7 @@
 package com.github.mjeanroy.springmvc.view.mustache;
 
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -77,6 +78,20 @@ public interface MustacheTemplateLoader {
 	 * @param suffix New suffix.
 	 */
 	void setSuffix(String suffix);
+
+	/**
+	 * The charset that will be used to read templates.
+	 *
+	 * @return Charset.
+	 */
+	Charset getCharset();
+
+	/**
+	 * Set the charset to use to read templates.
+	 *
+	 * @param charset New charset.
+	 */
+	void setCharset(Charset charset);
 
 	/**
 	 * Get prefix used on template names.

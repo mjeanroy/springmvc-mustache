@@ -97,11 +97,11 @@ final class HandlebarsTemplateLoader implements TemplateLoader {
 	}
 
 	public void setCharset(Charset charset) {
-		throw new UnsupportedOperationException();
+		loader.setCharset(charset);
 	}
 
 	public Charset getCharset() {
-		return Charset.forName("UTF-8");
+		return loader.getCharset();
 	}
 
 	@Override
