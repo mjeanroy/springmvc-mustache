@@ -22,17 +22,34 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.tests;
+package com.github.mjeanroy.springmvc.view.mustache.tests.junit;
 
-import java.io.PrintStream;
+import java.io.ByteArrayOutputStream;
 
 /**
- * Catch System.err logging and store in a buffer.
+ * A wrapper around out stream, that allow to retrieve it as a string.
  */
-public class SystemErrRule extends AbstracrCaptureOutputRule {
+public class CaptureSystemOut {
+	/**
+	 * The out stream.
+	 */
+	private final ByteArrayOutputStream out;
 
-	@Override
-	void overrideOutput(PrintStream ps) {
-		System.setErr(ps);
+	/**
+	 * Create the out stream wrapper.
+	 *
+	 * @param out The out stream.
+	 */
+	CaptureSystemOut(ByteArrayOutputStream out) {
+		this.out = out;
+	}
+
+	/**
+	 * Get out stream as a string.
+	 *
+	 * @return The out string.
+	 */
+	public String getOut() {
+		return out.toString();
 	}
 }

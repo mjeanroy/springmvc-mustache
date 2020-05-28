@@ -27,7 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheSettings;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheView;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustachePartialsMappingException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,10 +36,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 
-public class ModelAndMustacheViewTest {
+class ModelAndMustacheViewTest {
 
 	@Test
-	public void it_should_create_empty_view() {
+	void it_should_create_empty_view() {
 		ModelAndMustacheView view = new ModelAndMustacheView();
 		assertThat(view.getView()).isNull();
 		assertThat(view.getModel()).isEmpty();
@@ -47,7 +47,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_create_view_with_name_and_model() {
+	void it_should_create_view_with_name_and_model() {
 		String viewName = "view";
 
 		Map<String, Object> model = new HashMap<>();
@@ -62,7 +62,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_create_view_with_name_and_model_with_name() {
+	void it_should_create_view_with_name_and_model_with_name() {
 		String viewName = "view";
 		String modelName = "model";
 
@@ -79,14 +79,14 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_get_empty_partials() {
+	void it_should_get_empty_partials() {
 		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
 		Map<String, String> partials = view.getPartials();
 		assertThat(partials).isNotNull().isEmpty();
 	}
 
 	@Test
-	public void it_should_failed_if_current_partials_is_not_valid() {
+	void it_should_failed_if_current_partials_is_not_valid() {
 		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
 		view.addObject(MustacheSettings.PARTIALS_KEY, "foo");
 
@@ -94,7 +94,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_add_partial() {
+	void it_should_add_partial() {
 		String p1 = "foo";
 		String v1 = "bar";
 		ModelAndMustacheView view = new ModelAndMustacheView("viewName");
@@ -107,7 +107,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_add_partials() {
+	void it_should_add_partials() {
 		String p1 = "foo";
 		String v1 = "bar";
 		String p2 = "bar";
@@ -128,7 +128,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_add_partial_to_view() {
+	void it_should_add_partial_to_view() {
 		String p1 = "foo";
 		String v1 = "bar";
 
@@ -142,7 +142,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_add_partials_to_view() {
+	void it_should_add_partials_to_view() {
 		Map<String, String> aliases = new HashMap<>();
 		aliases.put("foo", "bar");
 		aliases.put("bar", "foo");
@@ -157,7 +157,7 @@ public class ModelAndMustacheViewTest {
 	}
 
 	@Test
-	public void it_should_get_partials_from_view() {
+	void it_should_get_partials_from_view() {
 		Map<String, String> aliases = new HashMap<>();
 		aliases.put("foo", "bar");
 		aliases.put("bar", "foo");

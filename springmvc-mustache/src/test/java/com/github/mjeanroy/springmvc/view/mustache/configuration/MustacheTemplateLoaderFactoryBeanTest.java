@@ -27,8 +27,8 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.CompositeResourceLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -42,35 +42,35 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readStaticField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readStaticField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class MustacheTemplateLoaderFactoryBeanTest {
+class MustacheTemplateLoaderFactoryBeanTest {
 
 	private ResourceLoader classpathResourceLoader;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		classpathResourceLoader = readStaticField(MustacheTemplateLoaderFactoryBean.class, "CLASSPATH_RESOURCE_LOADER");
 	}
 
 	@Test
-	public void it_should_be_a_singleton() {
+	void it_should_be_a_singleton() {
 		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		assertThat(factoryBean.isSingleton()).isTrue();
 	}
 
 	@Test
-	public void it_should_have_object_type() {
+	void it_should_have_object_type() {
 		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		assertThat(factoryBean.getObjectType()).isEqualTo(MustacheTemplateLoader.class);
 	}
 
 	@Test
-	public void it_should_create_template_loader_with_unique_loaders() throws Exception {
+	void it_should_create_template_loader_with_unique_loaders() throws Exception {
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 
 		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
@@ -95,7 +95,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_instantiate_template_loader_using_given_loaders() throws Exception {
+	void it_should_instantiate_template_loader_using_given_loaders() throws Exception {
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 
@@ -122,7 +122,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_instantiate_template_loader_using_default_loaders() throws Exception {
+	void it_should_instantiate_template_loader_using_default_loaders() throws Exception {
 		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
 		factoryBean.setApplicationContext(null);
 		factoryBean.setResourceLoader(null);
@@ -146,7 +146,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_set_prefix() {
+	void it_should_set_prefix() {
 		String prefix = "/templates/";
 
 		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
@@ -157,7 +157,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_set_suffix() {
+	void it_should_set_suffix() {
 		String suffix = ".template.html";
 
 		MustacheTemplateLoaderFactoryBean factoryBean = new MustacheTemplateLoaderFactoryBean();
@@ -169,7 +169,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void it_should_set_partial_aliases() {
+	void it_should_set_partial_aliases() {
 		Map<String, String> partialAliases = Collections.singletonMap(
 				"john", "jane"
 		);
@@ -182,7 +182,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void classpath_resource_loader_should_load_resource_from_classpath() throws Exception {
+	void classpath_resource_loader_should_load_resource_from_classpath() throws Exception {
 		Resource resource = classpathResourceLoader.getResource("/templates/foo.template.html");
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isTrue();
@@ -192,7 +192,7 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void classpath_resource_loader_should_load_resource_from_classpath_and_remove_prefix() throws Exception {
+	void classpath_resource_loader_should_load_resource_from_classpath_and_remove_prefix() throws Exception {
 		Resource resource = classpathResourceLoader.getResource("classpath:/templates/foo.template.html");
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isTrue();
@@ -202,14 +202,14 @@ public class MustacheTemplateLoaderFactoryBeanTest {
 	}
 
 	@Test
-	public void classpath_resource_loader_should_load_resource_from_classpath_and_return_resource_if_it_does_not_exist() {
+	void classpath_resource_loader_should_load_resource_from_classpath_and_return_resource_if_it_does_not_exist() {
 		Resource resource = classpathResourceLoader.getResource("classpath:/templates/fake.template.html");
 		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isFalse();
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		ApplicationContext applicationContext = mock(ApplicationContext.class);
 

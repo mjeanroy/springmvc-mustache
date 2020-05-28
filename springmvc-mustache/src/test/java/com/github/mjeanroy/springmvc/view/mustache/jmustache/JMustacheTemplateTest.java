@@ -27,20 +27,20 @@ package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JMustacheTemplateTest {
+class JMustacheTemplateTest {
 
 	@Test
-	public void it_should_execute_template() {
+	void it_should_execute_template() {
 		Writer writer = new StringWriter();
 		Map<String, Object> model = new HashMap<>();
 		model.put("foo", "bar");
@@ -53,7 +53,7 @@ public class JMustacheTemplateTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		Template template = Mustache.compiler().compile("foo :: {{ foo }}");
 		JMustacheTemplate jMustacheTemplate = new JMustacheTemplate(template);
 
@@ -70,7 +70,7 @@ public class JMustacheTemplateTest {
 	}
 
 	@Test
-	public void it_should_implement_equals_hash_code() {
+	void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(JMustacheTemplate.class).verify();
 	}
 }

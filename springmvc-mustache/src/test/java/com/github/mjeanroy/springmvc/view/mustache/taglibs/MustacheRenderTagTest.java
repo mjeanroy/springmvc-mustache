@@ -29,8 +29,8 @@ import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.jmustache.JMustacheCompiler;
 import com.samskivert.mustache.Mustache;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -41,20 +41,20 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.jsp.JspException;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MustacheRenderTagTest {
+class MustacheRenderTagTest {
 
 	private WebApplicationContext applicationContext;
 	private MockHttpServletResponse response;
 	private MustacheRenderTag tag;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		applicationContext = mock(WebApplicationContext.class);
 
 		MockServletContext servletContext = new MockServletContext();
@@ -68,7 +68,7 @@ public class MustacheRenderTagTest {
 	}
 
 	@Test
-	public void it_should_render_tag() throws Exception {
+	void it_should_render_tag() throws Exception {
 		Mustache.Compiler compiler = Mustache.compiler();
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 
@@ -95,7 +95,7 @@ public class MustacheRenderTagTest {
 	}
 
 	@Test
-	public void it_should_render_tag_using_specific_compiler() throws Exception {
+	void it_should_render_tag_using_specific_compiler() throws Exception {
 		Mustache.Compiler compiler = Mustache.compiler();
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader customTemplateLoader = new DefaultTemplateLoader(resourceLoader);
@@ -118,7 +118,7 @@ public class MustacheRenderTagTest {
 	}
 
 	@Test
-	public void it_should_render_tag_and_release() throws Exception {
+	void it_should_render_tag_and_release() throws Exception {
 		Mustache.Compiler compiler = Mustache.compiler();
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader customTemplateLoader = new DefaultTemplateLoader(resourceLoader);
@@ -141,7 +141,7 @@ public class MustacheRenderTagTest {
 	}
 
 	@Test
-	public void it_should_fail_to_render_tag_without_template() {
+	void it_should_fail_to_render_tag_without_template() {
 		Mustache.Compiler compiler = Mustache.compiler();
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 
@@ -159,7 +159,7 @@ public class MustacheRenderTagTest {
 	}
 
 	@Test
-	public void it_should_fail_to_render_tag_without_any_compiler() {
+	void it_should_fail_to_render_tag_without_any_compiler() {
 		tag.doStartTag();
 
 		assertThatThrownBy(tag::doEndTag)

@@ -24,26 +24,26 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MustacheTemplateLoaderConfigurationTest {
+class MustacheTemplateLoaderConfigurationTest {
 
 	private MockEnvironment environment;
 	private MustacheTemplateLoaderConfiguration templateLoaderConfiguration;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		environment = new MockEnvironment();
 		templateLoaderConfiguration = new MustacheTemplateLoaderConfiguration(environment);
 	}
 
 	@Test
-	public void it_should_create_template_loader() {
+	void it_should_create_template_loader() {
 		MustacheTemplateLoaderFactoryBean factoryBean = templateLoaderConfiguration.mustacheTemplateLoader();
 		assertThat(factoryBean).isNotNull();
 		assertThat(readField(factoryBean, "prefix", String.class)).isEqualTo("/templates/");
@@ -51,7 +51,7 @@ public class MustacheTemplateLoaderConfigurationTest {
 	}
 
 	@Test
-	public void it_should_create_template_loader_with_prefix_and_suffix() {
+	void it_should_create_template_loader_with_prefix_and_suffix() {
 		String prefix = "/";
 		String suffix = ".mustache";
 

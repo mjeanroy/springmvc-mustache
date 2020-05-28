@@ -25,31 +25,31 @@
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheConfiguration;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
 		MustacheViewResolverConditionTest.Configuration.class
 })
 @TestPropertySource(locations = {
 		"/disable-mustache-view-resolver.properties",
 })
-public class MustacheViewResolverConditionTest {
+class MustacheViewResolverConditionTest {
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@Test
-	public void it_should_not_add_mustache_view_resolver() {
+	void it_should_not_add_mustache_view_resolver() {
 		assertThat(applicationContext.containsBean("mustacheViewResolver")).isFalse();
 	}
 

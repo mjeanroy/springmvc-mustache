@@ -26,8 +26,8 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import java.util.Collections;
@@ -39,27 +39,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
-public class HandlebarsFactoryBeanTest {
+class HandlebarsFactoryBeanTest {
 
 	private HandlebarsFactoryBean factoryBean;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		factoryBean = new HandlebarsFactoryBean();
 	}
 
 	@Test
-	public void it_should_create_factory_bean_as_singleton() {
+	void it_should_create_factory_bean_as_singleton() {
 		assertThat(factoryBean.isSingleton()).isTrue();
 	}
 
 	@Test
-	public void it_should_create_factory_bean_with_target_class() {
+	void it_should_create_factory_bean_with_target_class() {
 		assertThat(factoryBean.getObjectType()).isEqualTo(Handlebars.class);
 	}
 
 	@Test
-	public void it_should_create_target_object_with_default_settings() throws Exception {
+	void it_should_create_target_object_with_default_settings() throws Exception {
 		factoryBean.afterPropertiesSet();
 
 		Handlebars handlebars = factoryBean.getObject();
@@ -68,7 +68,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_not_create_target_object_twice() throws Exception {
+	void it_should_not_create_target_object_twice() throws Exception {
 		factoryBean.afterPropertiesSet();
 
 		Handlebars h1 = factoryBean.getObject();
@@ -80,7 +80,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_default_properties() throws Exception {
+	void it_should_create_instance_with_default_properties() throws Exception {
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
 
@@ -97,7 +97,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_start_and_end_delimiter_properties() throws Exception {
+	void it_should_create_instance_with_start_and_end_delimiter_properties() throws Exception {
 		factoryBean.setStartDelimiter("[[");
 		factoryBean.setEndDelimiter("]]");
 		factoryBean.afterPropertiesSet();
@@ -112,7 +112,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_with_string_param_property() throws Exception {
+	void it_should_create_instance_with_with_string_param_property() throws Exception {
 		factoryBean.setStringParams(true);
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
@@ -120,7 +120,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_infinite_loop_property() throws Exception {
+	void it_should_create_instance_with_infinite_loop_property() throws Exception {
 		factoryBean.setInfiniteLoops(true);
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
@@ -128,7 +128,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_delete_partials_after_merge_property() throws Exception {
+	void it_should_create_instance_with_delete_partials_after_merge_property() throws Exception {
 		factoryBean.setDeletePartialAfterMerge(true);
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
@@ -136,7 +136,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_parent_scope_resolution_property() throws Exception {
+	void it_should_create_instance_with_parent_scope_resolution_property() throws Exception {
 		factoryBean.setParentScopeResolution(false);
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
@@ -144,7 +144,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_with_pretty_print_property() throws Exception {
+	void it_should_create_instance_with_pretty_print_property() throws Exception {
 		factoryBean.setPrettyPrint(true);
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
@@ -152,7 +152,7 @@ public class HandlebarsFactoryBeanTest {
 	}
 
 	@Test
-	public void it_should_create_instance_using_given_customizer() throws Exception {
+	void it_should_create_instance_using_given_customizer() throws Exception {
 		HandlebarsCustomizer c1 = newHandlebarsCustomizer();
 		HandlebarsCustomizer c2 = newHandlebarsCustomizer();
 		List<HandlebarsCustomizer> customizers = asList(c1, c2);

@@ -24,58 +24,52 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-import com.github.mjeanroy.springmvc.view.mustache.tests.SystemErrRule;
-import com.github.mjeanroy.springmvc.view.mustache.tests.SystemOutRule;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import com.github.mjeanroy.springmvc.view.mustache.tests.junit.CaptureSystemOut;
+import com.github.mjeanroy.springmvc.view.mustache.tests.junit.CaptureSystemOutTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@CaptureSystemOutTest
 public abstract class AbstractLoggerTest {
-
-	@Rule
-	public SystemOutRule systemOutRule = new SystemOutRule();
-
-	@Rule
-	public SystemErrRule systemErrRule = new SystemErrRule();
 
 	Logger log;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		log = createLogger();
 	}
 
 	@Test
-	public void it_should_log_trace_message_without_argument() {
+	void it_should_log_trace_message_without_argument(CaptureSystemOut sysOut) {
 		log.trace("Message with placeholder");
-		verifyOutput("TRACE", "Message with placeholder");
+		verifyOutput(sysOut, "TRACE", "Message with placeholder");
 	}
 
 	@Test
-	public void it_should_log_trace_message_with_one_argument() {
+	void it_should_log_trace_message_with_one_argument(CaptureSystemOut sysOut) {
 		log.trace("Message with placeholder: {}", "arg1");
-		verifyOutput("TRACE", "Message with placeholder: arg1");
+		verifyOutput(sysOut, "TRACE", "Message with placeholder: arg1");
 	}
 
 	@Test
-	public void it_should_log_trace_message_with_two_arguments() {
+	void it_should_log_trace_message_with_two_arguments(CaptureSystemOut sysOut) {
 		log.trace("Message with placeholder: {} {}", "arg1", "arg2");
-		verifyOutput("TRACE", "Message with placeholder: arg1 arg2");
+		verifyOutput(sysOut, "TRACE", "Message with placeholder: arg1 arg2");
 	}
 
 	@Test
-	public void it_should_log_throwable_using_trace_level() {
+	void it_should_log_throwable_using_trace_level(CaptureSystemOut sysOut) {
 		Exception ex = new RuntimeException("A runtime exception");
 		String message = "error message";
 		log.trace(message, ex);
 
-		verifyOutput("TRACE", ex.getMessage());
+		verifyOutput(sysOut, "TRACE", ex.getMessage());
 	}
 
 	@Test
-	public void it_should_check_if_trace_level_is_enabled() {
+	void it_should_check_if_trace_level_is_enabled() {
 		updateLevel("TRACE");
 		assertThat(log.isTraceEnabled()).isTrue();
 
@@ -93,34 +87,34 @@ public abstract class AbstractLoggerTest {
 	}
 
 	@Test
-	public void it_should_log_debug_message_with_one_argument() {
+	void it_should_log_debug_message_with_one_argument(CaptureSystemOut sysOut) {
 		log.debug("Message with placeholder: {}", "arg1");
-		verifyOutput("DEBUG", "Message with placeholder: arg1");
+		verifyOutput(sysOut, "DEBUG", "Message with placeholder: arg1");
 	}
 
 	@Test
-	public void it_should_log_debug_message_without_argument() {
+	void it_should_log_debug_message_without_argument(CaptureSystemOut sysOut) {
 		log.debug("Message with placeholder");
-		verifyOutput("DEBUG", "Message with placeholder");
+		verifyOutput(sysOut, "DEBUG", "Message with placeholder");
 	}
 
 	@Test
-	public void it_should_log_debug_message_with_two_arguments() {
+	void it_should_log_debug_message_with_two_arguments(CaptureSystemOut sysOut) {
 		log.debug("Message with placeholder: {} {}", "arg1", "arg2");
-		verifyOutput("DEBUG", "Message with placeholder: arg1 arg2");
+		verifyOutput(sysOut, "DEBUG", "Message with placeholder: arg1 arg2");
 	}
 
 	@Test
-	public void it_should_log_throwable_using_debug_level() {
+	void it_should_log_throwable_using_debug_level(CaptureSystemOut sysOut) {
 		Exception ex = new RuntimeException("A runtime exception");
 		String message = "error message";
 		log.debug(message, ex);
 
-		verifyOutput("DEBUG", ex.getMessage());
+		verifyOutput(sysOut, "DEBUG", ex.getMessage());
 	}
 
 	@Test
-	public void it_should_check_if_debug_level_is_enabled() {
+	void it_should_check_if_debug_level_is_enabled() {
 		updateLevel("TRACE");
 		assertThat(log.isDebugEnabled()).isTrue();
 
@@ -138,34 +132,34 @@ public abstract class AbstractLoggerTest {
 	}
 
 	@Test
-	public void it_should_log_info_message_with_one_argument() {
+	void it_should_log_info_message_with_one_argument(CaptureSystemOut sysOut) {
 		log.info("Message with placeholder: {}", "arg1");
-		verifyOutput("INFO", "Message with placeholder: arg1");
+		verifyOutput(sysOut, "INFO", "Message with placeholder: arg1");
 	}
 
 	@Test
-	public void it_should_log_info_message_without_argument() {
+	void it_should_log_info_message_without_argument(CaptureSystemOut sysOut) {
 		log.info("Message with placeholder");
-		verifyOutput("INFO", "Message with placeholder");
+		verifyOutput(sysOut, "INFO", "Message with placeholder");
 	}
 
 	@Test
-	public void it_should_log_info_message_with_two_arguments() {
+	void it_should_log_info_message_with_two_arguments(CaptureSystemOut sysOut) {
 		log.info("Message with placeholder: {} {}", "arg1", "arg2");
-		verifyOutput("INFO", "Message with placeholder: arg1 arg2");
+		verifyOutput(sysOut, "INFO", "Message with placeholder: arg1 arg2");
 	}
 
 	@Test
-	public void it_should_log_throwable_using_info_level() {
+	void it_should_log_throwable_using_info_level(CaptureSystemOut sysOut) {
 		Exception ex = new RuntimeException("A runtime exception");
 		String message = "error message";
 		log.info(message, ex);
 
-		verifyOutput("INFO", ex.getMessage());
+		verifyOutput(sysOut, "INFO", ex.getMessage());
 	}
 
 	@Test
-	public void it_should_check_if_info_level_is_enabled() {
+	void it_should_check_if_info_level_is_enabled() {
 		updateLevel("TRACE");
 		assertThat(log.isInfoEnabled()).isTrue();
 
@@ -183,34 +177,34 @@ public abstract class AbstractLoggerTest {
 	}
 
 	@Test
-	public void it_should_log_warn_message_without_argument() {
+	void it_should_log_warn_message_without_argument(CaptureSystemOut sysOut) {
 		log.warn("Message with placeholder");
-		verifyOutput("WARN", "Message with placeholder");
+		verifyOutput(sysOut, "WARN", "Message with placeholder");
 	}
 
 	@Test
-	public void it_should_log_warn_message_with_one_argument() {
+	void it_should_log_warn_message_with_one_argument(CaptureSystemOut sysOut) {
 		log.warn("Message with placeholder: {}", "arg1");
-		verifyOutput("WARN", "Message with placeholder: arg1");
+		verifyOutput(sysOut, "WARN", "Message with placeholder: arg1");
 	}
 
 	@Test
-	public void it_should_log_warn_message_with_two_arguments() {
+	void it_should_log_warn_message_with_two_arguments(CaptureSystemOut sysOut) {
 		log.warn("Message with placeholder: {} {}", "arg1", "arg2");
-		verifyOutput("WARN", "Message with placeholder: arg1 arg2");
+		verifyOutput(sysOut, "WARN", "Message with placeholder: arg1 arg2");
 	}
 
 	@Test
-	public void it_should_log_throwable_using_warn_level() {
+	void it_should_log_throwable_using_warn_level(CaptureSystemOut sysOut) {
 		Exception ex = new RuntimeException("A runtime exception");
 		String message = "error message";
 		log.warn(message, ex);
 
-		verifyOutput("WARN", ex.getMessage());
+		verifyOutput(sysOut, "WARN", ex.getMessage());
 	}
 
 	@Test
-	public void it_should_check_if_warn_level_is_enabled() {
+	void it_should_check_if_warn_level_is_enabled() {
 		updateLevel("TRACE");
 		assertThat(log.isWarnEnabled()).isTrue();
 
@@ -228,34 +222,34 @@ public abstract class AbstractLoggerTest {
 	}
 
 	@Test
-	public void it_should_log_error_message_without_argument() {
+	void it_should_log_error_message_without_argument(CaptureSystemOut sysOut) {
 		log.error("Message with placeholder");
-		verifyOutput("ERROR", "Message with placeholder");
+		verifyOutput(sysOut, "ERROR", "Message with placeholder");
 	}
 
 	@Test
-	public void it_should_log_error_message_with_one_argument() {
+	void it_should_log_error_message_with_one_argument(CaptureSystemOut sysOut) {
 		log.error("Message with placeholder: {}", "arg1");
-		verifyOutput("ERROR", "Message with placeholder: arg1");
+		verifyOutput(sysOut, "ERROR", "Message with placeholder: arg1");
 	}
 
 	@Test
-	public void it_should_log_error_message_with_two_arguments() {
+	void it_should_log_error_message_with_two_arguments(CaptureSystemOut sysOut) {
 		log.error("Message with placeholder: {} {}", "arg1", "arg2");
-		verifyOutput("ERROR", "Message with placeholder: arg1 arg2");
+		verifyOutput(sysOut, "ERROR", "Message with placeholder: arg1 arg2");
 	}
 
 	@Test
-	public void it_should_log_throwable_using_error_level() {
+	void it_should_log_throwable_using_error_level(CaptureSystemOut sysOut) {
 		Exception ex = new RuntimeException("A runtime exception");
 		String message = "error message";
 		log.error(message, ex);
 
-		verifyOutput("ERROR", ex.getMessage());
+		verifyOutput(sysOut, "ERROR", ex.getMessage());
 	}
 
 	@Test
-	public void it_should_check_if_error_level_is_enabled() {
+	void it_should_check_if_error_level_is_enabled() {
 		updateLevel("TRACE");
 		assertThat(log.isErrorEnabled()).isTrue();
 
@@ -272,15 +266,8 @@ public abstract class AbstractLoggerTest {
 		assertThat(log.isErrorEnabled()).isTrue();
 	}
 
-	private void verifyOutput(String logLevel, String message) {
-		// Try System.put
-		String out = systemOutRule.getOut();
-
-		// Fallback to System.err
-		if (out == null || out.isEmpty()) {
-			out = systemErrRule.getOut();
-		}
-
+	private void verifyOutput(CaptureSystemOut sysOut, String logLevel, String message) {
+		String out = sysOut.getOut();
 		assertThat(out).contains(logLevel);
 		assertThat(out).contains(message);
 	}

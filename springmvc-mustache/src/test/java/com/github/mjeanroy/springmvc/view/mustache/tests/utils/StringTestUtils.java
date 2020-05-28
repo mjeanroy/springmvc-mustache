@@ -22,17 +22,43 @@
  * THE SOFTWARE.
  */
 
-package com.github.mjeanroy.springmvc.view.mustache.tests;
+package com.github.mjeanroy.springmvc.view.mustache.tests.utils;
 
-import java.io.PrintStream;
+import java.util.Collection;
 
 /**
- * Catch System.out logging and store in a buffer.
+ * Static String Utilities, to use in unit test only.
  */
-public class SystemOutRule extends AbstracrCaptureOutputRule {
+public final class StringTestUtils {
 
-	@Override
-	void overrideOutput(PrintStream ps) {
-		System.setOut(ps);
+	/**
+	 * The OS dependant line separator.
+	 */
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+	// Ensure non instantiation.
+	private StringTestUtils() {
+	}
+
+	/**
+	 * Join given lines to a single string using the line separator character as
+	 * join character.
+	 *
+	 * @param lines Lines to join.
+	 * @return The entire text.
+	 */
+	public static String joinLines(Collection<String> lines) {
+		StringBuilder sb = new StringBuilder();
+		boolean firstLine = true;
+		for (String line : lines) {
+			if (!firstLine) {
+				sb.append(LINE_SEPARATOR);
+			}
+
+			sb.append(line);
+			firstLine = false;
+		}
+
+		return sb.toString();
 	}
 }

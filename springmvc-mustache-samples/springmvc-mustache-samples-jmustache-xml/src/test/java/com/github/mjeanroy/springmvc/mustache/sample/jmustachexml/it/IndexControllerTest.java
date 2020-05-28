@@ -24,21 +24,19 @@
 
 package com.github.mjeanroy.springmvc.mustache.sample.jmustachexml.it;
 
+import com.github.mjeanroy.junit.servers.client.HttpClient;
 import com.github.mjeanroy.junit.servers.client.HttpResponse;
-import com.github.mjeanroy.junit.servers.jetty.junit4.JettyServerJunit4Rule;
-import org.junit.ClassRule;
-import org.junit.Test;
+import com.github.mjeanroy.junit.servers.jetty.jupiter.JettyTest;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IndexControllerTest {
-
-	@ClassRule
-	public static JettyServerJunit4Rule jetty = new JettyServerJunit4Rule();
+@JettyTest
+class IndexControllerTest {
 
 	@Test
-	public void it_should_render_handlebars_template() {
-		HttpResponse response = jetty.getClient().prepareGet("/").execute();
+	void it_should_render_handlebars_template(HttpClient client) {
+		HttpResponse response = client.prepareGet("/").execute();
 		assertThat(response.status()).isEqualTo(200);
 		assertThat(response.body()).contains(
 				"Hello, my name is John Doe"
@@ -47,8 +45,8 @@ public class IndexControllerTest {
 
 
 	@Test
-	public void it_should_render_handlebars_template_using_model_and_mustache_view() {
-		HttpResponse response = jetty.getClient().prepareGet("/jane").execute();
+	void it_should_render_handlebars_template_using_model_and_mustache_view(HttpClient client) {
+		HttpResponse response = client.prepareGet("/jane").execute();
 		assertThat(response.status()).isEqualTo(200);
 		assertThat(response.body()).contains(
 				"Hello, my name is Jane Doe"

@@ -24,20 +24,20 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.io;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.StringTestUtils.joinLines;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.StringTestUtils.joinLines;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IosTest {
+class IosTest {
 
 	@Test
-	public void it_should_read_input() {
+	void it_should_read_input() {
 		InputStream stream = getClass().getResourceAsStream("/templates/foo.template.html");
 		Reader reader = new InputStreamReader(stream);
 
@@ -47,7 +47,7 @@ public class IosTest {
 	}
 
 	@Test
-	public void it_should_read_multiline_input() {
+	void it_should_read_multiline_input() {
 		InputStream stream = getClass().getResourceAsStream("/templates/composite.template.html");
 		Reader reader = new InputStreamReader(stream);
 

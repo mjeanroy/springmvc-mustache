@@ -29,8 +29,8 @@ import com.github.jknack.handlebars.Template;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
@@ -44,19 +44,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
-public class HandlebarsConfigurationTest {
+class HandlebarsConfigurationTest {
 
 	private MockEnvironment environment;
 	private HandlebarsConfiguration handlebarConfiguration;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		environment = new MockEnvironment();
 		handlebarConfiguration = new HandlebarsConfiguration(environment);
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_compiler() {
+	void it_should_instantiate_mustache_compiler() {
 		Handlebars handlebars = new Handlebars();
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
 		MustacheTemplateLoader templateLoader = new DefaultTemplateLoader(resourceLoader);
@@ -66,7 +66,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_default_properties() throws Exception {
+	void it_should_instantiate_with_default_properties() throws Exception {
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
 		factoryBean.afterPropertiesSet();
 		Handlebars handlebars = factoryBean.getObject();
@@ -84,7 +84,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_start_and_end_delimiter_properties() throws Exception {
+	void it_should_instantiate_with_start_and_end_delimiter_properties() throws Exception {
 		environment.setProperty("mustache.handlebars.startDelimiter", "[[");
 		environment.setProperty("mustache.handlebars.endDelimiter", "]]");
 
@@ -100,7 +100,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_string_param_property() throws Exception {
+	void it_should_instantiate_with_string_param_property() throws Exception {
 		environment.setProperty("mustache.handlebars.stringParams", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
@@ -111,7 +111,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_infinite_loop_property() throws Exception {
+	void it_should_instantiate_with_infinite_loop_property() throws Exception {
 		environment.setProperty("mustache.handlebars.infiniteLoops", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
@@ -122,7 +122,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_delete_partials_after_merge_property() throws Exception {
+	void it_should_instantiate_with_delete_partials_after_merge_property() throws Exception {
 		environment.setProperty("mustache.handlebars.deletePartialAfterMerge", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
@@ -133,7 +133,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_parent_scope_resolution_property() throws Exception {
+	void it_should_instantiate_with_parent_scope_resolution_property() throws Exception {
 		environment.setProperty("mustache.handlebars.parentScopeResolution", "false");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
@@ -144,7 +144,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_pretty_print_property() throws Exception {
+	void it_should_instantiate_with_pretty_print_property() throws Exception {
 		environment.setProperty("mustache.handlebars.prettyPrint", "true");
 
 		HandlebarsFactoryBean factoryBean = handlebarConfiguration.handlebarsCompiler();
@@ -155,7 +155,7 @@ public class HandlebarsConfigurationTest {
 	}
 
 	@Test
-	public void it_should_instantiate_with_handlebars_customizers() throws Exception {
+	void it_should_instantiate_with_handlebars_customizers() throws Exception {
 		HandlebarsCustomizer c1 = newHandlebarsCustomizer();
 		HandlebarsCustomizer c2 = newHandlebarsCustomizer();
 		List<HandlebarsCustomizer> customizers = asList(c1, c2);

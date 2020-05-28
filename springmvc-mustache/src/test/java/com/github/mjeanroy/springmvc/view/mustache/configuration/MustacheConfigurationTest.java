@@ -24,8 +24,8 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.HashMap;
@@ -35,17 +35,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MustacheConfigurationTest {
+class MustacheConfigurationTest {
 
 	private MustacheEngineConfiguration mustacheConfiguration;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		mustacheConfiguration = new MustacheEngineConfiguration();
 	}
 
 	@Test
-	public void it_should_select_configuration_class() {
+	void it_should_select_configuration_class() {
 		MustacheProvider provider = MustacheProvider.JMUSTACHE;
 		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("provider", provider);

@@ -24,14 +24,14 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.core;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import java.util.Collection;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -39,14 +39,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CompositeResourceLoaderTest {
+class CompositeResourceLoaderTest {
 
 	private ResourceLoader resourceLoader1;
 	private ResourceLoader resourceLoader2;
 	private CompositeResourceLoader compositeResourceLoader;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		resourceLoader1 = mock(ResourceLoader.class);
 		resourceLoader2 = mock(ResourceLoader.class);
 		compositeResourceLoader = new CompositeResourceLoader(asList(
@@ -56,14 +56,14 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_get_class_loader() {
+	void it_should_get_class_loader() {
 		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
 		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(collection);
 		assertThat(compositeResourceLoader.getClassLoader()).isNotNull();
 	}
 
 	@Test
-	public void it_should_create_resource_loader_from_collection() {
+	void it_should_create_resource_loader_from_collection() {
 		Collection<ResourceLoader> collection = asList(resourceLoader1, resourceLoader2);
 		CompositeResourceLoader compositeResourceLoader = new CompositeResourceLoader(collection);
 
@@ -75,7 +75,7 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_find_first_resource() {
+	void it_should_find_first_resource() {
 		Resource r1 = newResource(true);
 		Resource r2 = newResource(false);
 
@@ -91,7 +91,7 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_find_second_resource() {
+	void it_should_find_second_resource() {
 		Resource r1 = newResource(false);
 		Resource r2 = newResource(true);
 
@@ -107,7 +107,7 @@ public class CompositeResourceLoaderTest {
 	}
 
 	@Test
-	public void it_should_not_find_resource() {
+	void it_should_not_find_resource() {
 		Resource r1 = newResource(false);
 		Resource r2 = newResource(false);
 

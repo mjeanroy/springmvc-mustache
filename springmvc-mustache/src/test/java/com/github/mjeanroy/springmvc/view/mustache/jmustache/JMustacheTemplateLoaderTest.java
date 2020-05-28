@@ -27,20 +27,20 @@ package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.Reader;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.hexIdentity;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.IOTestUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.hexIdentity;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JMustacheTemplateLoaderTest {
+class JMustacheTemplateLoaderTest {
 
 	@Test
-	public void it_should_load_template() {
+	void it_should_load_template() {
 		JMustacheTemplateLoader jMustacheTemplateLoader = jMustacheTemplateLoader();
 		String name = "/templates/foo.template.html";
 
@@ -51,7 +51,7 @@ public class JMustacheTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_implement_to_string() {
+	void it_should_implement_to_string() {
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader();
 		JMustacheTemplateLoader jMustacheTemplateLoader = jMustacheTemplateLoader(templateLoader);
 
@@ -68,7 +68,7 @@ public class JMustacheTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_implement_equals_hash_code() {
+	void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(JMustacheTemplateLoader.class).verify();
 	}
 

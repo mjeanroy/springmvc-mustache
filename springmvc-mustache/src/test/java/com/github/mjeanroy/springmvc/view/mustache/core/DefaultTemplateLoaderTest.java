@@ -27,7 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.core;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
@@ -37,18 +37,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.IOTestUtils.read;
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.IOTestUtils.read;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 
-public class DefaultTemplateLoaderTest {
+class DefaultTemplateLoaderTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void it_should_build_template_loader_using_custom_resource_loader() {
+	void it_should_build_template_loader_using_custom_resource_loader() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader loader = new DefaultTemplateLoader(resourceLoader);
 
@@ -61,7 +61,7 @@ public class DefaultTemplateLoaderTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void it_should_build_template_loader_using_custom_resource_loader_with_prefix_and_suffix() {
+	void it_should_build_template_loader_using_custom_resource_loader_with_prefix_and_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -75,7 +75,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_add_partial_aliases() {
+	void it_should_add_partial_aliases() {
 		String k1 = "foo";
 		String v1 = "bar";
 		String k2 = "bar";
@@ -96,7 +96,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_add_temporary_partial_aliases() {
+	void it_should_add_temporary_partial_aliases() {
 		String k1 = "foo";
 		String v1 = "bar";
 		String k2 = "bar";
@@ -118,7 +118,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_remove_temporary_partial_aliases() {
+	void it_should_remove_temporary_partial_aliases() {
 		String k1 = "foo";
 		String v1 = "bar";
 		String k2 = "bar";
@@ -146,7 +146,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_throw_exception_when_resource_does_not_exist() {
+	void it_should_throw_exception_when_resource_does_not_exist() {
 		String name = "/templates/does_not_exist.template.html";
 		DefaultTemplateLoader loader = defaultTemplateLoader();
 
@@ -156,7 +156,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_return_reader_when_resource_exist() {
+	void it_should_return_reader_when_resource_exist() {
 		String name = "/templates/foo.template.html";
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
@@ -168,7 +168,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_return_reader_when_resource_exist_using_prefix_suffix() {
+	void it_should_return_reader_when_resource_exist_using_prefix_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		String name = "foo";
@@ -182,7 +182,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_read_template_using_prefix_and_suffix() {
+	void it_should_read_template_using_prefix_and_suffix() {
 		String name = "foo";
 		String prefix = "/";
 		String suffix = ".template.html";
@@ -195,7 +195,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_get_and_set_prefix() {
+	void it_should_get_and_set_prefix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -208,7 +208,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_get_and_set_suffix() {
+	void it_should_get_and_set_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -221,7 +221,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_get_and_set_charset() {
+	void it_should_get_and_set_charset() {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
 		assertThat(mustacheTemplateLoader.getCharset()).isEqualTo(StandardCharsets.UTF_8);
@@ -232,7 +232,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_resolve_template_location_without_prefix_suffix() {
+	void it_should_resolve_template_location_without_prefix_suffix() {
 		String templateName = "foo";
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		DefaultTemplateLoader mustacheTemplateLoader = new DefaultTemplateLoader(resourceLoader);
@@ -241,7 +241,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_resolve_template_location_with_prefix_suffix() {
+	void it_should_resolve_template_location_with_prefix_suffix() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		String templateName = "foo";
@@ -254,7 +254,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_resolve_template_location_with_prefix_suffix_and_aliases() {
+	void it_should_resolve_template_location_with_prefix_suffix_and_aliases() {
 		String prefix = "/templates/";
 		String suffix = ".template.html";
 		String templateName = "foo";
@@ -269,7 +269,7 @@ public class DefaultTemplateLoaderTest {
 	}
 
 	@Test
-	public void it_should_implement_equals_hash_code() {
+	void it_should_implement_equals_hash_code() {
 		EqualsVerifier.forClass(DefaultTemplateLoader.class)
 				.suppress(Warning.NONFINAL_FIELDS)
 				.withIgnoredFields("temporaryPartialAliases")

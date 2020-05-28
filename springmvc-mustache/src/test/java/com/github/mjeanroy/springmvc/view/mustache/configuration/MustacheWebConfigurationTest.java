@@ -26,8 +26,8 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;
 
 import java.util.Map;
@@ -37,25 +37,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.mock;
 
-public class MustacheWebConfigurationTest {
+class MustacheWebConfigurationTest {
 
 	private MockEnvironment environment;
 	private MustacheWebConfiguration mustacheWebConfiguration;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		environment = new MockEnvironment();
 		mustacheWebConfiguration = new MustacheWebConfiguration(environment, mock(MustacheCompiler.class));
 	}
 
 	@Test
-	public void it_should_instantiate_mustache_view_resolver() {
+	void it_should_instantiate_mustache_view_resolver() {
 		MustacheViewResolver mustacheViewResolver = mustacheWebConfiguration.mustacheViewResolver();
 		assertThat(mustacheViewResolver).isNotNull();
 	}
 
 	@Test
-	public void it_should_parse_layout_mappings() {
+	void it_should_parse_layout_mappings() {
 		String admin1 = "admin1";
 		String admin2 = "admin2";
 		String secure = "secure";
@@ -72,7 +72,7 @@ public class MustacheWebConfigurationTest {
 	}
 
 	@Test
-	public void it_should_parse_layout_mappings_and_skip_empty_parts() {
+	void it_should_parse_layout_mappings_and_skip_empty_parts() {
 		String admin1 = "admin1";
 		String admin2 = "admin2";
 		String secure = "secure";
@@ -89,7 +89,7 @@ public class MustacheWebConfigurationTest {
 	}
 
 	@Test
-	public void it_should_parse_layout_mappings_and_fail_with_invalid_format() {
+	void it_should_parse_layout_mappings_and_fail_with_invalid_format() {
 		String admin1 = "admin1";
 		String mappings = admin1 + ":;";
 
@@ -101,7 +101,7 @@ public class MustacheWebConfigurationTest {
 	}
 
 	@Test
-	public void it_should_parse_view_names() {
+	void it_should_parse_view_names() {
 		String n1 = "*.template.html";
 		String n2 = "*.mustache";
 		String viewNames = n1 + ", " + n2;

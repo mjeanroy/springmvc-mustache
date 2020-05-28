@@ -31,7 +31,7 @@ import com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.Hand
 import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.handlebars.HandlebarsCompiler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
@@ -40,35 +40,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MustacheProviderTest {
+class MustacheProviderTest {
 
 	@Test
-	public void it_should_support_handlebars() {
+	void it_should_support_handlebars() {
 		assertThat(MustacheProvider.HANDLEBARS.isAvailable()).isTrue();
 	}
 
 	@Test
-	public void it_should_get_handlebars_configuration() {
+	void it_should_get_handlebars_configuration() {
 		assertThat(MustacheProvider.HANDLEBARS.configurationClass()).isEqualTo(HandlebarsConfiguration.class.getName());
 	}
 
 	@Test
-	public void it_should_instantiate_handlebars_compiler() throws Exception {
+	void it_should_instantiate_handlebars_compiler() throws Exception {
 		verifyProvider(MustacheProvider.HANDLEBARS);
 	}
 
 	@Test
-	public void it_should_support_auto_configuration() {
+	void it_should_support_auto_configuration() {
 		assertThat(MustacheProvider.AUTO.isAvailable()).isTrue();
 	}
 
 	@Test
-	public void it_should_get_auto_configuration() {
+	void it_should_get_auto_configuration() {
 		assertThat(MustacheProvider.AUTO.configurationClass()).isEqualTo(HandlebarsConfiguration.class.getName());
 	}
 
 	@Test
-	public void it_should_instantiate_auto_compiler() throws Exception {
+	void it_should_instantiate_auto_compiler() throws Exception {
 		verifyProvider(MustacheProvider.AUTO);
 	}
 
@@ -86,12 +86,12 @@ public class MustacheProviderTest {
 	}
 
 	@Test
-	public void it_should_not_support_mustachejava() {
+	void it_should_not_support_mustachejava() {
 		assertThat(MustacheProvider.MUSTACHE_JAVA.isAvailable()).isFalse();
 	}
 
 	@Test
-	public void it_should_support_jmustache() {
+	void it_should_support_jmustache() {
 		assertThat(MustacheProvider.JMUSTACHE.isAvailable()).isFalse();
 	}
 }

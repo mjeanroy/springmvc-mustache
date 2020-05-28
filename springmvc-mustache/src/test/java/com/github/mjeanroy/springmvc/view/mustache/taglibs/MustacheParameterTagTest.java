@@ -24,29 +24,27 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.taglibs;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockPageContext;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import java.util.Map;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 
-public class MustacheParameterTagTest {
+class MustacheParameterTagTest {
 
 	private MustacheRenderTag parentTag;
 	private MustacheParamTag tag;
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		PageContext pageContext = new MockPageContext();
-		MockHttpServletResponse response = (MockHttpServletResponse) pageContext.getResponse();
 
 		parentTag = new MustacheRenderTag();
 		parentTag.setPageContext(pageContext);
@@ -58,7 +56,7 @@ public class MustacheParameterTagTest {
 	}
 
 	@Test
-	public void it_should_render_tag() throws Exception {
+	void it_should_render_tag() throws Exception {
 		String parameterName = "fullName";
 		String parameterValue = "John Doe";
 
@@ -76,7 +74,7 @@ public class MustacheParameterTagTest {
 	}
 
 	@Test
-	public void it_should_render_tag_and_release_it() throws Exception {
+	void it_should_render_tag_and_release_it() throws Exception {
 		String parameterName = "fullName";
 		String parameterValue = "John Doe";
 
@@ -95,7 +93,7 @@ public class MustacheParameterTagTest {
 	}
 
 	@Test
-	public void it_should_fail_to_render_tag_if_parent_tag_is_null() {
+	void it_should_fail_to_render_tag_if_parent_tag_is_null() {
 		tag.setParent(null);
 		tag.setName("fullName");
 		tag.setValue("John Doe");
@@ -106,7 +104,7 @@ public class MustacheParameterTagTest {
 	}
 
 	@Test
-	public void it_should_fail_to_render_tag_if_parameter_name_is_null() {
+	void it_should_fail_to_render_tag_if_parameter_name_is_null() {
 		tag.setName(null);
 		tag.setValue("John Doe");
 
@@ -116,7 +114,7 @@ public class MustacheParameterTagTest {
 	}
 
 	@Test
-	public void it_should_fail_to_render_tag_if_parameter_name_is_empty() {
+	void it_should_fail_to_render_tag_if_parameter_name_is_empty() {
 		tag.setName("");
 		tag.setValue("John Doe");
 

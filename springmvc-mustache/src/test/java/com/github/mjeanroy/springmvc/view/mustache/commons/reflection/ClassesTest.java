@@ -24,7 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.commons.reflection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.HashMap;
@@ -35,17 +35,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ClassesTest {
+class ClassesTest {
 
 	@Test
-	public void it_should_check_if_class_is_available() {
+	void it_should_check_if_class_is_available() {
 		String className = getClass().getCanonicalName();
 		assertThat(Classes.isPresent(className)).isTrue();
 		assertThat(Classes.isPresent(className + "FooBar")).isFalse();
 	}
 
 	@Test
-	public void it_should_get_annotation_values() {
+	void it_should_get_annotation_values() {
 		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("foo", "qux");
 
@@ -63,7 +63,7 @@ public class ClassesTest {
 	}
 
 	@Test
-	public void it_should_get_default_annotation_values() {
+	void it_should_get_default_annotation_values() {
 		Map<String, Object> attributes = new HashMap<>();
 
 		String annotationName = Foo.class.getName();
@@ -80,7 +80,7 @@ public class ClassesTest {
 	}
 
 	@Test
-	public void it_should_get_null_value() {
+	void it_should_get_null_value() {
 		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("foo", null);
 

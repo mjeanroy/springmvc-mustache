@@ -26,7 +26,7 @@ package com.github.mjeanroy.springmvc.view.mustache.logging;
 
 import ch.qos.logback.classic.Level;
 
-import static com.github.mjeanroy.springmvc.view.mustache.tests.ReflectionTestUtils.readField;
+import static com.github.mjeanroy.springmvc.view.mustache.tests.utils.ReflectionTestUtils.readField;
 
 public class CommonsLoggingLoggerTest extends AbstractLoggerTest {
 
