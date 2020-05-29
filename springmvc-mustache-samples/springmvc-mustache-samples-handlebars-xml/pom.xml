@@ -58,12 +58,7 @@
 
 		<dependency>
 			<groupId>com.github.mjeanroy</groupId>
-			<artifactId>springmvc-mustache</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars</artifactId>
+			<artifactId>springmvc-mustache-handlebars</artifactId>
 		</dependency>
 
 		<dependency>

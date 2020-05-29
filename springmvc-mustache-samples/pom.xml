@@ -91,9 +91,6 @@
 		<jetty.version>9.4.28.v20200408</jetty.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 
-		<jmustache.version>1.13</jmustache.version>
-		<mustache.java.version>0.8.17</mustache.java.version>
-		<handlebars-version>4.0.6</handlebars-version>
 		<mustache.version>2.2.1</mustache.version>
 		<junit.version>4.13</junit.version>
 		<assertj.version>2.9.1</assertj.version>
@@ -106,6 +103,21 @@
 			<dependency>
 				<groupId>com.github.mjeanroy</groupId>
 				<artifactId>springmvc-mustache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.mjeanroy</groupId>
+				<artifactId>springmvc-mustache-jmustache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.mjeanroy</groupId>
+				<artifactId>springmvc-mustache-handlebars</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.mjeanroy</groupId>
+				<artifactId>springmvc-mustache-mustachejava</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -157,22 +169,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
 				<version>${spring-boot.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.github.jknack</groupId>
-				<artifactId>handlebars</artifactId>
-				<version>${handlebars-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.samskivert</groupId>
-				<artifactId>jmustache</artifactId>
-				<version>${jmustache.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.spullara.mustache.java</groupId>
-				<artifactId>compiler</artifactId>
-				<version>${mustache.java.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.webjars.bower</groupId>

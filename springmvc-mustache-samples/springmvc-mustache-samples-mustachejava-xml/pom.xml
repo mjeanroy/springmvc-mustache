@@ -57,12 +57,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.mjeanroy</groupId>
-			<artifactId>springmvc-mustache</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.spullara.mustache.java</groupId>
-			<artifactId>compiler</artifactId>
+			<artifactId>springmvc-mustache-mustachejava</artifactId>
 		</dependency>
 
 		<dependency>

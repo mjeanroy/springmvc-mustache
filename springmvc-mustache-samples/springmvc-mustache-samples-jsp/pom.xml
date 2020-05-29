@@ -58,12 +58,7 @@
 
 		<dependency>
 			<groupId>com.github.mjeanroy</groupId>
-			<artifactId>springmvc-mustache</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.samskivert</groupId>
-			<artifactId>jmustache</artifactId>
+			<artifactId>springmvc-mustache-jmustache</artifactId>
 		</dependency>
 
 		<dependency>
