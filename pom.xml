@@ -36,6 +36,10 @@
 
 	<modules>
 		<module>springmvc-mustache</module>
+		<module>springmvc-mustache-jmustache</module>
+		<module>springmvc-mustache-handlebars</module>
+		<module>springmvc-mustache-mustachejava</module>
+
 		<module>springmvc-mustache-samples</module>
 	</modules>
 
