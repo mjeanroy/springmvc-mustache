@@ -33,7 +33,8 @@
 		<version>0.9.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>springmvc-mustache-springboot</artifactId>
+	<artifactId>springmvc-mustache-samples-springboot</artifactId>
+	<name>springmvc-mustache-samples-springboot</name>
 	<packaging>jar</packaging>
 
 	<dependencyManagement>

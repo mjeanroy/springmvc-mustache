@@ -33,8 +33,8 @@
 		<version>0.9.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>springmvc-mustache-handlebars-xml</artifactId>
-	<name>springmvc-mustache-handlebars-xml</name>
+	<artifactId>springmvc-mustache-samples-nashorn-xml</artifactId>
+	<name>springmvc-mustache-samples-nashorn-xml</name>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -55,15 +55,14 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.mjeanroy</groupId>
 			<artifactId>springmvc-mustache</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars</artifactId>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>mustache</artifactId>
 		</dependency>
 
 		<dependency>
@@ -94,4 +93,25 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>java11+</id>
+			<activation>
+				<jdk>[11,)</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<argLine>-Dnashorn.args=--no-deprecation-warning</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

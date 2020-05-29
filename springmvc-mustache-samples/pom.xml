@@ -295,15 +295,15 @@
 				<jdk>1.7</jdk>
 			</activation>
 			<modules>
-				<module>springmvc-mustache-handlebars</module>
-				<module>springmvc-mustache-handlebars-xml</module>
-				<module>springmvc-mustache-jmustache</module>
-				<module>springmvc-mustache-jmustache-xml</module>
-				<module>springmvc-mustache-mustachejava</module>
-				<module>springmvc-mustache-mustachejava-xml</module>
-				<module>springmvc-mustache-jsp</module>
-				<module>springmvc-mustache-spi</module>
-				<module>springmvc-mustache-springboot</module>
+				<module>springmvc-mustache-samples-handlebars</module>
+				<module>springmvc-mustache-samples-handlebars-xml</module>
+				<module>springmvc-mustache-samples-jmustache</module>
+				<module>springmvc-mustache-samples-jmustache-xml</module>
+				<module>springmvc-mustache-samples-mustachejava</module>
+				<module>springmvc-mustache-samples-mustachejava-xml</module>
+				<module>springmvc-mustache-samples-jsp</module>
+				<module>springmvc-mustache-samples-spi</module>
+				<module>springmvc-mustache-samples-springboot</module>
 			</modules>
 		</profile>
 
@@ -313,17 +313,17 @@
 				<jdk>[1.8,)</jdk>
 			</activation>
 			<modules>
-				<module>springmvc-mustache-handlebars</module>
-				<module>springmvc-mustache-handlebars-xml</module>
-				<module>springmvc-mustache-jmustache</module>
-				<module>springmvc-mustache-jmustache-xml</module>
-				<module>springmvc-mustache-mustachejava</module>
-				<module>springmvc-mustache-mustachejava-xml</module>
-				<module>springmvc-mustache-nashorn</module>
-				<module>springmvc-mustache-nashorn-xml</module>
-				<module>springmvc-mustache-jsp</module>
-				<module>springmvc-mustache-spi</module>
-				<module>springmvc-mustache-springboot</module>
+				<module>springmvc-mustache-samples-handlebars</module>
+				<module>springmvc-mustache-samples-handlebars-xml</module>
+				<module>springmvc-mustache-samples-jmustache</module>
+				<module>springmvc-mustache-samples-jmustache-xml</module>
+				<module>springmvc-mustache-samples-mustachejava</module>
+				<module>springmvc-mustache-samples-mustachejava-xml</module>
+				<module>springmvc-mustache-samples-nashorn</module>
+				<module>springmvc-mustache-samples-nashorn-xml</module>
+				<module>springmvc-mustache-samples-jsp</module>
+				<module>springmvc-mustache-samples-spi</module>
+				<module>springmvc-mustache-samples-springboot</module>
 			</modules>
 		</profile>
 

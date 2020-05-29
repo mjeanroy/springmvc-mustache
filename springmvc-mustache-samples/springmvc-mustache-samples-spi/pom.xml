@@ -33,7 +33,8 @@
 		<version>0.9.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>springmvc-mustache-spi</artifactId>
+	<artifactId>springmvc-mustache-samples-spi</artifactId>
+	<name>springmvc-mustache-samples-spi</name>
 	<packaging>war</packaging>
 
 	<properties>

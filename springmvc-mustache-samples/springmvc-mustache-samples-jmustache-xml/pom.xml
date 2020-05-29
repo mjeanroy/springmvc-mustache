@@ -33,7 +33,8 @@
 		<version>0.9.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>springmvc-mustache-mustachejava-xml</artifactId>
+	<artifactId>springmvc-mustache-samples-jmustache-xml</artifactId>
+	<name>springmvc-mustache-samples-jmustache-xml</name>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -54,14 +55,15 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.github.mjeanroy</groupId>
 			<artifactId>springmvc-mustache</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.spullara.mustache.java</groupId>
-			<artifactId>compiler</artifactId>
+			<groupId>com.samskivert</groupId>
+			<artifactId>jmustache</artifactId>
 		</dependency>
 
 		<dependency>
