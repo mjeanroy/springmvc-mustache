@@ -30,7 +30,7 @@
 	<parent>
 		<groupId>com.github.mjeanroy</groupId>
 		<artifactId>springmvc-mustache-samples</artifactId>
-		<version>0.10.0</version>
+		<version>0.10.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>springmvc-mustache-samples-jmustache</artifactId>
