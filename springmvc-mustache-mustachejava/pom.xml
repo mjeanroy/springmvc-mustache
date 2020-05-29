@@ -31,8 +31,47 @@
 
 	<groupId>com.github.mjeanroy</groupId>
 	<artifactId>springmvc-mustache-mustachejava</artifactId>
-	<name>springmvc-mustache-mustachejava</name>
 	<version>0.9.1-SNAPSHOT</version>
+	<name>springmvc-mustache-mustachejava</name>
+	<description>Mustache templating with SpringMVC and MustacheJava</description>
+	<packaging>jar</packaging>
+	<url>https://github.com/mjeanroy/springmvc-mustache</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>mjeanroy</id>
+			<name>Mickael Jeanroy</name>
+			<email>mickael.jeanroy@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:mjeanroy/springmvc-mustache.git</connection>
+		<developerConnection>scm:git:git@github.com:mjeanroy/springmvc-mustache.git</developerConnection>
+		<url>https://github.com/mjeanroy/springmvc-mustache</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
 		<java-module-name>com.github.mjeanroy.springmvc.mustache.mustachejava</java-module-name>
