@@ -89,6 +89,8 @@ public class SpringConfiguration {
 }
 ```
 
+Note that if you are using SpringBoot, **automatic configuration will be registered, you have nothing to do!**
+
 By default, following configuration will be used:
 
 - Prefix: `/templates`. This is the prefix used by spring view resolver to resolve view url.
@@ -107,13 +109,64 @@ mustache.prefix = /mustache
 mustache.suffix = .mustache
 mustache.cache = false
 mustache.viewNames = *
-
-# --
-# See later what are these properties
-mustache.defaultLayout = index
-mustache.layoutKey = content
-mustache.layoutMappings = admin1:secure ; admin2:secure
 ```
+
+SpringMVC also supports layout: define one layout and apply it accross your views.
+
+For example, suppose this layout:
+
+```html
+<html>
+  <head>
+    <title>My Awesome Application</title>
+  </head>
+  <body>
+    <div class="header">
+      {{> header}}
+    </div>
+    <div class="content">
+      {{> content}}
+    </div>
+    <div class="footer">
+      {{> footer}}
+    </div>
+  </body>
+</html>
+```
+
+Here, we define three partials:
+- `header` and `footer`: it will be automatically loaded during rendering.
+- `content` which is a special key used to render the "current" view (the view name set in your spring controller).
+
+And now, this is how I will render the home page:
+
+```java
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class FooController {
+
+  @GetMapping("/")
+  public ModelAndView fooView() {
+    // Just render foo template, and view resolver will automatically replace content partials
+    // by foo content
+    ModelAndView view = new ModelAndView("home");
+    view.addObject("name", "John Doe");
+    return view;
+  }
+}
+```
+
+You can configure following properties:
+
+| Property             | Type      | Default          | Description        |
+| -------------------- | --------- | ---------------- | ------------------ |
+| `mustache.prefix`    | `String`  | `/templates/`    | View prefix.       |
+| `mustache.suffix`    | `String`  | `.template.html` | View suffix.       |
+| `mustache.cache`     | `Boolean` | `true`           | View cache.        |
+| `mustache.viewNames` | `String`  | `*`              | View name matcher. |
 
 #### Rendering
 
