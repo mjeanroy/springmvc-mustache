@@ -23,7 +23,14 @@
 ##
 
 language: java
+
 dist: trusty
+
+# https://docs.travis-ci.com/user/customizing-the-build#safelisting-or-blocklisting-branches
+branches:
+  except:
+    - gh-pages
+
 jdk:
   - openjdk7
   - oraclejdk8
@@ -32,5 +39,6 @@ jdk:
   - openjdk11
   - openjdk12
   - openjdk13
+
 os:
   - linux

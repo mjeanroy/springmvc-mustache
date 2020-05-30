@@ -24,7 +24,10 @@
 
 name: Java CI
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - gh-pages
 
 jobs:
   build:
