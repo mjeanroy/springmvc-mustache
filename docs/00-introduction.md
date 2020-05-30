@@ -235,3 +235,35 @@ public class FooController {
 }
 ```
 {% endraw %}
+
+#### SpringBoot
+
+Finally, here is an exemple using Spring Boot:
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@EnableAutoConfiguration(exclude = MustacheAutoConfiguration.class)
+@Controller
+public class Application {
+
+    // Render a simple template
+    @GetMapping("/")
+    public ModelAndView fooView() {
+        ModelAndView modelAndView = new ModelAndView("foo");
+        modelAndView.addObject("name", "foo");
+        return modelAndView;
+    }
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+Note that since `Spring-Boot` provide autoconfiguration for `JMustache`, you will need to excluce this one explicitly to avoid conflict (but this is not needed you are using Handlebars or MustacheJava implementation).
