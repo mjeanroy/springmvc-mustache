@@ -50,6 +50,16 @@ public class SpringConfiguration {
 
 Note that if you are using SpringBoot, **automatic configuration will be registered, you have nothing to do!**
 
+Note that you can configure following properties (not specific to MustacheJava implementation):
+
+| Property                 | Type      | Default          | Description                                           |
+| ------------------------ | --------- | ---------------- | ----------------------------------------------------- |
+| `mustache.prefix`        | `String`  | `/templates/`    | View prefix.                                          |
+| `mustache.suffix`        | `String`  | `.template.html` | View suffix.                                          |
+| `mustache.cache`         | `Boolean` | `true`           | View cache.                                           |
+| `mustache.viewNames`     | `String`  | `*`              | View name matcher.                                    |
+| `mustache.defaultLayout` | `String`  |                  | The default template to used with the default layout. |
+
 ### MustacheJava customization
 
 If you want to configure MustacheJava compiler, you can add the following properties to your configuration:
