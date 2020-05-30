@@ -52,15 +52,15 @@ Note that if you are using SpringBoot, **automatic configuration will be registe
 
 If you want to configure JMustache compiler, you can add the following properties to your configuration:
 
-| Property                                | Type | Description |
-| --------------------------------------- | ---- | ----------- |
-| `mustache.jmustache.nullValue`          | `String`  | A value to use when a variable resolves to `null`. |
-| `mustache.jmustache.defaultValue`       | `String`  | Use the given value for any variable that is missing, or otherwise resolves to `null`.
+| Property                                | Type      | Description                                                                                                 |
+| --------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------- |
+| `mustache.jmustache.nullValue`          | `String`  | A value to use when a variable resolves to `null`.                                                          |
+| `mustache.jmustache.defaultValue`       | `String`  | Use the given value for any variable that is missing, or otherwise resolves to `null`.                      |
 | `mustache.jmustache.emptyStringIsFalse` | `Boolean` | If this value is `true`, empty string will be treated as a falsy, as in JavaScript mustache implementation. |
-| `mustache.jmustache.zeroIsFalse`        | `Boolean` | If this value is `true`, zero will be treated as a falsy value, as in JavaScript mustache implementation. |
-| `mustache.jmustache.escapeHTML`         | `Boolean` |  Does or does not escape HTML by default. |
-| `mustache.jmustache.strictSections`     | `Boolean` | Whether or not to throw an exception when a section resolves to a missing value. |
-| `mustache.jmustache.standardsMode`      | `Boolean` | Whether or not standards mode is enabled. |
+| `mustache.jmustache.zeroIsFalse`        | `Boolean` | If this value is `true`, zero will be treated as a falsy value, as in JavaScript mustache implementation.   |
+| `mustache.jmustache.escapeHTML`         | `Boolean` | Does or does not escape HTML by default.                                                                    |
+| `mustache.jmustache.strictSections`     | `Boolean` | Whether or not to throw an exception when a section resolves to a missing value.                            |
+| `mustache.jmustache.standardsMode`      | `Boolean` | Whether or not standards mode is enabled.                                                                   |
 
 Otherwise, you can register a bean implementing `com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCustomizer`, it will be automatically executed when mustache compiler is created.
 
