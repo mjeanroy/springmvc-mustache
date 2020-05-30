@@ -83,8 +83,6 @@ import java.util.concurrent.Executors;
 @Component
 class ExecutorServiceMustacheJavaCustomizer implements MustacheJavaCustomizer {
 
-  private static final Logger log = LoggerFactory.getLogger(ExecutorServiceMustacheJavaCustomizer.class);
-
   @Override
   public void customize(MustacheFactory mustacheFactory) {
     if (mustacheFactory instanceof DefaultMustacheFactory) {
