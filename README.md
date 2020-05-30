@@ -8,6 +8,9 @@ Simple library that will allow you to use a mustache templates with your SpringM
 
 Note: this library use jmustache, handlebars or mustache.java under the hood.
 
+[Documentation](https://mjeanroy.github.io/springmvc-mustache/) - [Javadoc](http://javadoc.io/doc/com.github.mjeanroy/springmvc-mustache/) - [Changelog](https://mjeanroy.github.io/springmvc-mustache/changelogs)
+
+
 ## Installation
 
 With Maven, add explicit dependency:
