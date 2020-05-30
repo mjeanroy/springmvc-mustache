@@ -1,5 +1,7 @@
 JMustache is a 100% java implementation of mustache templating and is supported out of the box by SpringMVC Mustache.
 
+The documentation and source code can be found here: [https://github.com/samskivert/jmustache](https://github.com/samskivert/jmustache)
+
 ### Installation
 
 If you are using springmvc-mustache >= 0.10.0, the recommended way is to add `springmvc-mustache-jmustache` dependency:

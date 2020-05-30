@@ -1,6 +1,8 @@
 Handlebars is a 100% java implementation of mustache templating and is supported out of the box by SpringMVC Mustache. Note that handlebars can do more than
 strict mustache templating and it is your choice to use it or not.
 
+The documentation and source code can be found here: [https://github.com/jknack/handlebars.java](https://github.com/jknack/handlebars.java)
+
 ### Installation
 
 If you are using springmvc-mustache >= 0.10.0, the recommended way is to add `springmvc-mustache-handlebars` dependency:
