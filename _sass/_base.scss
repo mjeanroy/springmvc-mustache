@@ -90,3 +90,35 @@ footer {
         font-weight: bold;
     }
 }
+
+table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border: 1px solid #dee2e6;
+
+    > tbody {
+        > tr {
+            &:nth-of-type(odd) {
+                background-color: rgba(0,0,0,.05);
+            }
+
+            &:hover {
+                background-color: rgba(0,0,0,.075);
+            }
+        }
+    }
+
+    th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+        padding: .75rem;
+        border-top: 1px solid #dee2e6;
+    }
+
+    td {
+        border: 1px solid #dee2e6;
+        padding: .75rem;
+        vertical-align: top;
+    }
+}
