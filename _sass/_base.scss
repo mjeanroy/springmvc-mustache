@@ -97,6 +97,10 @@ table {
     background-color: transparent;
     border: 1px solid #dee2e6;
 
+    .code {
+        word-break: normal;
+    }
+
     > tbody {
         > tr {
             &:nth-of-type(odd) {
