@@ -1,0 +1,8 @@
+---
+  layout: default
+  permalink: /jmustache
+  title: Home
+---
+
+{% capture content %}{% include_relative docs/03-mustachejava.md %}{% endcapture %}
+{{ content  | markdownify }}
