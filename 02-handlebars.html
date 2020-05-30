@@ -4,5 +4,23 @@
   title: Handlebars
 ---
 
-{% capture content %}{% include_relative docs/02-handlebars.md %}{% endcapture %}
-{{ content  | markdownify }}
+<div class="row">
+  <div class="col-2">
+    <ul class="nav flex-column sticky-top sticky-offset">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ '/handlebars#installation' | prepend: site.baseurl }}">Installation</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ '/handlebars#configuration' | prepend: site.baseurl }}">Configuration</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ '/handlebars#handlebars-customization' | prepend: site.baseurl }}">Customization</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col">
+    {% capture content %}{% include_relative docs/02-handlebars.md %}{% endcapture %}
+    {{ content  | markdownify }}
+  </div>
+</div>
+

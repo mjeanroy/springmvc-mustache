@@ -87,7 +87,7 @@ import org.springframework.stereotype.Component;
 class StringHelpersHandlebarsCustomizer implements HandlebarsCustomizer {
 
   @Override
-	public void customize(Handlebars handlebars) {
+  public void customize(Handlebars handlebars) {
     StringHelpers.register(handlebars);
   }
 }
