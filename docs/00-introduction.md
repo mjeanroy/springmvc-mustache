@@ -267,3 +267,69 @@ public class Application {
 ```
 
 Note that since `Spring-Boot` provide autoconfiguration for `JMustache`, you will need to excluce this one explicitly to avoid conflict (but this is not needed you are using Handlebars or MustacheJava implementation).
+
+#### XML Configuration
+
+If you prefer XML configuration, you may want to use one of these (depends on the underlying implementation) :
+
+**JMustache:**
+
+```xml
+<!-- Create mustache beans -->
+<bean id="jmustache" class="com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache.JMustacheCompilerFactoryBean" />
+<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
+
+<!-- Create view resolver -->
+<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+    <constructor-arg ref="mustacheCompiler" />
+    <property name="order" value="1" />
+    <property name="defaultLayout" value="layout" />
+    <property name="prefix" value="templates/" />
+    <property name="suffix" value=".template.html" />
+</bean>
+```
+
+**Handlebars:**
+
+```xml
+<!-- Create mustache beans -->
+<bean id="handlebars" class="com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars.HandlebarsFactoryBean" />
+<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
+
+<!-- Create view resolver -->
+<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+    <constructor-arg ref="mustacheCompiler" />
+    <property name="order" value="1" />
+    <property name="defaultLayout" value="layout" />
+    <property name="prefix" value="templates/" />
+    <property name="suffix" value=".template.html" />
+</bean>
+```
+
+**MustacheJava:**
+
+```xml
+<!-- Create mustache beans -->
+<bean id="mustacheTemplateLoader" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheTemplateLoaderFactoryBean" />
+
+<bean id="mustacheFactory" class="com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheFactory">
+    <constructor-arg ref="mustacheTemplateLoader"/>
+</bean>
+
+<bean id="mustacheResolver" class="com.github.mjeanroy.springmvc.view.mustache.mustachejava.SpringMustacheResolver">
+    <constructor-arg ref="mustacheTemplateLoader"/>
+</bean>
+
+<bean id="mustacheCompiler" class="com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheCompilerFactoryBean" />
+
+<!-- Create view resolver -->
+<bean class="com.github.mjeanroy.springmvc.view.mustache.MustacheViewResolver">
+    <constructor-arg ref="mustacheCompiler" />
+    <property name="order" value="1" />
+    <property name="defaultLayout" value="layout" />
+    <property name="prefix" value="templates/" />
+    <property name="suffix" value=".template.html" />
+</bean>
+```

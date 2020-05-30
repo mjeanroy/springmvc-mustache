@@ -22,9 +22,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{{ '/#springboot' | prepend: site.baseurl }}">Spring Boot</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ '/#xml-configuration' | prepend: site.baseurl }}">XML Configuration</a>
+      </li>
     </ul>
   </div>
-  <div class="col">
+  <div class="col-10">
     {% capture content %}{% include_relative docs/00-introduction.md %}{% endcapture %}
     {{ content | markdownify }}
   </div>
