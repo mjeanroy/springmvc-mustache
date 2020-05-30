@@ -1,0 +1,92 @@
+// Main CSS
+
+$black: #222;
+$bg: darken(#fff, 2%);
+$headerHeight: 50px;
+$bottomHeight: 20px;
+
+html,
+body {
+    background-color: $bg;
+    font-size: 14px;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+h5 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    font-weight: 300;
+    font-size: 24px;
+}
+
+h6 {
+    padding: 8px 0;
+    font-weight: bold;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+.banner {
+    padding: 20px 0;
+    background-color: $black;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 100;
+
+    .head {
+        font-size: 20px;
+    }
+
+    .subhead {
+        font-size: 14px;
+    }
+
+    .actions {
+        padding: 15px 0 0 0;
+    }
+}
+
+pre.highlight {
+    border: 1px solid #ccc;
+    padding: 5px 2px;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color: #fff;
+}
+
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.content {
+    margin-top: $headerHeight;
+    margin-bottom: $bottomHeight + 20px;
+}
+
+.main-content {
+    padding: 20px 0;
+}
+
+.sticky-offset {
+    top: $headerHeight + 10px;
+}
+
+footer {
+    background-color: $bg;
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.nav-link {
+    &.active {
+        font-weight: bold;
+    }
+}

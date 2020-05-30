@@ -1,0 +1,7 @@
+title: SpringMVC Mustache
+description: Add some mustache to SpringMVC!
+baseurl: /springmvc-mustache
+markdown: kramdown
+sass:
+    sass_dir: _sass
+    style: compressed
