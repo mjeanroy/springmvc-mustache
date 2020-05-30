@@ -5,6 +5,11 @@ $bg: darken(#fff, 2%);
 $headerHeight: 50px;
 $bottomHeight: 20px;
 
+html {
+    scroll-padding-top: 50px;
+    scroll-behavior: smooth;
+}
+
 html,
 body {
     background-color: $bg;

@@ -111,10 +111,23 @@ mustache.cache = false
 mustache.viewNames = *
 ```
 
+You can configure following properties:
+
+| Property                 | Type      | Default          | Description                                           |
+| ------------------------ | --------- | ---------------- | ----------------------------------------------------- |
+| `mustache.prefix`        | `String`  | `/templates/`    | View prefix.                                          |
+| `mustache.suffix`        | `String`  | `.template.html` | View suffix.                                          |
+| `mustache.cache`         | `Boolean` | `true`           | View cache.                                           |
+| `mustache.viewNames`     | `String`  | `*`              | View name matcher.                                    |
+| `mustache.defaultLayout` | `String`  |                  | The default template to used with the default layout. |
+
+#### Layout & Partials
+
 SpringMVC also supports layout: define one layout and apply it accross your views.
 
 For example, suppose this layout:
 
+{% raw %}
 ```html
 <html>
   <head>
@@ -133,6 +146,7 @@ For example, suppose this layout:
   </body>
 </html>
 ```
+{% endraw %}
 
 Here, we define three partials:
 - `header` and `footer`: it will be automatically loaded during rendering.
@@ -159,14 +173,35 @@ public class FooController {
 }
 ```
 
-You can configure following properties:
+If you want to have different layouts for your views, just define some mappings that can be used to map view to layout templates:
 
-| Property             | Type      | Default          | Description        |
-| -------------------- | --------- | ---------------- | ------------------ |
-| `mustache.prefix`    | `String`  | `/templates/`    | View prefix.       |
-| `mustache.suffix`    | `String`  | `.template.html` | View suffix.       |
-| `mustache.cache`     | `Boolean` | `true`           | View cache.        |
-| `mustache.viewNames` | `String`  | `*`              | View name matcher. |
+```
+# Define some layout mappings
+# If mapping is define for a view, it will be used, otherwise default layout will be used
+# Format is: [viewName]:[layoutName]
+mustache.layoutMappings = admin1:secure ; admin2:secure
+
+# Use default layout for other views
+mustache.defaultLayout = index
+```
+
+And here is how I can render `admin1` view (using the `secure` layout template):
+
+```java
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class FooController {
+
+  @GetMapping("/")
+  public ModelAndView admin1View() {
+    // Just render foo template, and view resolver will automatically used "secure" template
+    return new ModelAndView("admin1");
+  }
+}
+```
 
 #### Rendering
 
@@ -174,11 +209,15 @@ Now, you can easily render your templates:
 
 Suppose you have this templates (say: `/templates/index.template.html`):
 
+{% raw %}
 ```
 Hello, my name is {{name}}
-You can render your template with Spring MVC:
 ```
+{% endraw %}
 
+You can render your template with Spring MVC:
+
+{% raw %}
 ```java
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -194,4 +233,5 @@ public class FooController {
     return view;
   }
 }
-````
+```
+{% endraw %}
