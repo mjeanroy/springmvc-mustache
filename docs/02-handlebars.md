@@ -8,25 +8,29 @@ The documentation and source code can be found here: [https://github.com/jknack/
 If you are using springmvc-mustache >= 0.10.0, the recommended way is to add `springmvc-mustache-handlebars` dependency:
 
 ```xml
+<!-- Use version 1.0.0 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-handlebars</artifactId>
-  <version>0.10.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
 Otherwise, add required dependency:
 
 ```xml
+<!-- Use version 1.0.0 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache</artifactId>
-  <version>0.9.0</version>
+  <version>2.0.0</version>
 </dependency>
+
+<!-- Use version 4.0.6 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.jknack</groupId>
   <artifactId>handlebars</artifactId>
-  <version>4.0.6</version>
+  <version>4.2.0</version>
 </dependency>
 ```
 
