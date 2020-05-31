@@ -7,21 +7,25 @@ The documentation and source code can be found here: [https://github.com/samskiv
 If you are using springmvc-mustache >= 0.10.0, the recommended way is to add `springmvc-mustache-jmustache` dependency:
 
 ```xml
+<!-- Use version 1.0.0 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-jmustache</artifactId>
-  <version>0.10.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
 Otherwise, add required dependency:
 
 ```xml
+<!-- Use version 1.0.0 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache</artifactId>
-  <version>0.9.0</version>
+  <version>2.0.0</version>
 </dependency>
+
+<!-- Use version 1.13 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.samskivert</groupId>
   <artifactId>jmustache</artifactId>
