@@ -12,7 +12,8 @@ Note: this library use jmustache, handlebars or mustache.java under the hood.
 
 ## Documentation
 
-Full documentation can be found [Documentation](https://mjeanroy.github.io/springmvc-mustache/)
+- Full documentation can be found [here](https://mjeanroy.github.io/springmvc-mustache/)
+- Javadoc can be found [here](http://javadoc.io/doc/com.github.mjeanroy/springmvc-mustache/)
 
 ## Samples
 
