@@ -1,3 +1,12 @@
+##### 2.0.0
+
+- Drop java < 8 support ([#1468133](https://github.com/mjeanroy/springmvc-mustache/commit/14681330911969e63d864f4fae04f277e2ec1e23))
+- Dependency Updates.
+
+##### 1.0.0
+
+- Drop nashorn support ([#e2729e4](https://github.com/mjeanroy/springmvc-mustache/commit/e2729e4e6bc7b1e4f092445d147f3e5c1a25b770))
+
 ##### 0.10.0
 
 - Add specific artifact with dependencies:
