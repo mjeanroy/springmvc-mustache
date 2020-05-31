@@ -22,38 +22,4 @@
 # THE SOFTWARE.
 ##
 
-# Compiled
-*.class
-
-# Maven
-/target
-
-# Eclipse
-/.buildpath
-/.settings
-/.metadata
-/.classpath
-/.project
-
-# IDEA
-/.externalToolBuilders
-/.idea
-/overlays
-/*.iml
-
-# Binaries
-*.dm
-*.jar
-
-# OS
-*.log
-mem.properties
-mem.script
-
-########################
-# OS generated files   #
-########################
-.DS_Store*
-ehthumbs.db
-Thumbs.db
-.fuse_hidden*
+com.github.mjeanroy.springmvc.mustache.sample.jsp.utils.TomcatLogger
