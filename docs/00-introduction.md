@@ -15,7 +15,7 @@ Rendering your mustache templates can now be done in two steps:
 
 #### Required dependencies
 
-##### Java >= 8
+**Java >= 8**
 
 If you are using java < 8, please use version 2.0.0:
 
@@ -46,7 +46,7 @@ If you are using java < 8, please use version 2.0.0:
 </dependency>
 ```
 
-##### Java <= 7
+**Java <= 7**
 
 If you are using java <= 7, please use version 1.0.0:
 
