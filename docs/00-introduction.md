@@ -46,9 +46,9 @@ If you are using java < 8, please use version 2.0.0:
 </dependency>
 ```
 
-##### Java < 8
+##### Java <= 7
 
-If you are using java < 8, please use version 1.0.0:
+If you are using java <= 7, please use version 1.0.0:
 
 ```xml
 <dependency>
@@ -88,7 +88,7 @@ For example:
 <!-- Add one of these dependencies. -->
 <!-- This is the mustache implementation to use -->
 <!-- You can add one of the following: -->
-<!-- Use version 1.0.0 if you need java < 8 compatibility -->
+<!-- Use version 1.0.0 if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-jmustache</artifactId>
