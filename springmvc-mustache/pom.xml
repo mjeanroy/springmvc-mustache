@@ -28,7 +28,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.mjeanroy</groupId>
 	<artifactId>springmvc-mustache</artifactId>
-	<version>0.10.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>springmvc-mustache</name>
 	<description>Mustache templating with spring mvc</description>
 	<packaging>jar</packaging>
@@ -54,7 +54,7 @@
 		<connection>scm:git:git@github.com:mjeanroy/springmvc-mustache.git</connection>
 		<developerConnection>scm:git:git@github.com:mjeanroy/springmvc-mustache.git</developerConnection>
 		<url>https://github.com/mjeanroy/springmvc-mustache</url>
-	  <tag>HEAD</tag>
+	  <tag>springmvc-mustache-1.0.0</tag>
   </scm>
 
 	<distributionManagement>
