@@ -7,27 +7,33 @@ The documentation and source code can be found here: [https://github.com/spullar
 If you are using springmvc-mustache >= 0.10.0, the recommended way is to add `springmvc-mustache-mustachejava` dependency:
 
 ```xml
+<!-- Use version 1.0.0 if you need java < 8 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-mustachejava</artifactId>
-  <version>0.10.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
 Otherwise, add required dependency:
 
 ```xml
+<!-- Use version 1.x.x if you need java <= 7 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache</artifactId>
-  <version>0.9.0</version>
+  <version>2.0.0</version>
 </dependency>
+
+<!-- Use version 0.8.17 if you use springmvc-mustache <= 1.x.x -->
 <dependency>
   <groupId>com.github.spullara.mustache.java</groupId>
   <artifactId>compiler</artifactId>
-  <version>0.8.17</version>
+  <version>0.9.6</version>
 </dependency>
 ```
+
+**Note that springmvc-mustache <= 1.x.x is compatible with mustachejava@0.8.x and springmvc-mustache >= 2.x.x is compatible with mustachejava@0.9.x.**
 
 ### Configuration
 
