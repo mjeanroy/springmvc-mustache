@@ -15,13 +15,46 @@ Rendering your mustache templates can now be done in two steps:
 
 #### Required dependencies
 
-Add `springmvc-mustache` and your favorite implementation to your `pom.xml`:
+##### Java >= 8
+
+If you are using java < 8, please use version 2.0.0:
 
 ```xml
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache</artifactId>
-  <version>0.10.0</version>
+  <version>1.0.0</version>
+</dependency>
+
+<!-- Add one of these dependencies. -->
+<!-- This is the mustache implementation to use -->
+<!-- You can add one of the following: -->
+<dependency>
+  <groupId>com.samskivert</groupId>
+  <artifactId>jmustache</artifactId>
+  <version>1.15</version>
+</dependency>
+<dependency>
+  <groupId>com.github.jknack</groupId>
+  <artifactId>handlebars</artifactId>
+  <version>4.2.0</version>
+</dependency>
+<dependency>
+  <groupId>com.github.spullara.mustache.java</groupId>
+  <artifactId>compiler</artifactId>
+  <version>0.9.6</version>
+</dependency>
+```
+
+##### Java < 8
+
+If you are using java < 8, please use version 1.0.0:
+
+```xml
+<dependency>
+  <groupId>com.github.mjeanroy</groupId>
+  <artifactId>springmvc-mustache</artifactId>
+  <version>1.0.0</version>
 </dependency>
 
 <!-- Add one of these dependencies. -->
@@ -44,6 +77,8 @@ Add `springmvc-mustache` and your favorite implementation to your `pom.xml`:
 </dependency>
 ```
 
+----
+
 Starting with version `0.10.0`, it is recommended to only add `springmvc-mustache-[impl]` dependency, it add automatically the compatible
 version of your favorite implementation.
 
@@ -53,20 +88,21 @@ For example:
 <!-- Add one of these dependencies. -->
 <!-- This is the mustache implementation to use -->
 <!-- You can add one of the following: -->
+<!-- Use version 1.0.0 if you need java < 8 compatibility -->
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-jmustache</artifactId>
-  <version>0.10.0</version>
+  <version>2.0.0</version>
 </dependency>
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-handlebars</artifactId>
-  <version>0.10.0</version>
+  <version>2.0.0</version>
 </dependency>
 <dependency>
   <groupId>com.github.mjeanroy</groupId>
   <artifactId>springmvc-mustache-mustachejava</artifactId>
-  <version>0.10.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
