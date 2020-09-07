@@ -101,7 +101,7 @@
 
 		<handlebars.version>4.2.0</handlebars.version>
 		<junit.version>5.6.2</junit.version>
-		<assertj.version>3.17.1</assertj.version>
+		<assertj.version>3.17.2</assertj.version>
 		<mockito.version>3.5.10</mockito.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<logback.version>1.2.3</logback.version>
