@@ -100,7 +100,7 @@
 		<logback.version>1.2.3</logback.version>
 		<spring.version>5.2.6.RELEASE</spring.version>
 		<spring-boot.version>2.3.5.RELEASE</spring-boot.version>
-		<jetty.version>9.4.33.v20201020</jetty.version>
+		<jetty.version>9.4.34.v20201102</jetty.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 
 		<junit.version>5.7.0</junit.version>
