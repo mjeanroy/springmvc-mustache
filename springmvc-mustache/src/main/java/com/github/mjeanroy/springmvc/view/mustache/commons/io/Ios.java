@@ -25,8 +25,6 @@
 package com.github.mjeanroy.springmvc.view.mustache.commons.io;
 
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheIOException;
-import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
-import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,11 +34,6 @@ import java.io.Reader;
  * Common static IO Utilities.
  */
 public final class Ios {
-
-	/**
-	 * Class logger.
-	 */
-	private static final Logger log = LoggerFactory.getLogger(Ios.class);
 
 	/**
 	 * Buffer size to read files.

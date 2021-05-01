@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.mustachejava;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
@@ -38,7 +37,7 @@ import java.util.Objects;
  * Mustache compiler.
  * This compiler use internally mustache.java as real implementation.
  */
-public final class MustacheJavaCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public final class MustacheJavaCompiler extends AbstractMustacheCompiler {
 
 	/**
 	 * Implementation of {@link MustacheFactory} used internally

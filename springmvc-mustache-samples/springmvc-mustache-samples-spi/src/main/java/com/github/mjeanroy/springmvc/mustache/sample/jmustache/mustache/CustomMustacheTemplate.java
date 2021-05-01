@@ -25,15 +25,11 @@
 package com.github.mjeanroy.springmvc.mustache.sample.jmustache.mustache;
 
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheTemplate;
-import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
-import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 
 import java.io.Writer;
 import java.util.Map;
 
 class CustomMustacheTemplate extends AbstractMustacheTemplate {
-
-	private static final Logger log = LoggerFactory.getLogger(CustomMustacheTemplate.class);
 
 	private final String input;
 

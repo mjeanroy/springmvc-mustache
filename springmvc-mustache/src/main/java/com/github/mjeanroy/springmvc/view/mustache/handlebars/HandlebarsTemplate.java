@@ -39,7 +39,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
  * Implementation of {@link MustacheTemplate} using Java Handlebar
  * as real template implementation.
  */
-final class HandlebarsTemplate extends AbstractMustacheTemplate implements MustacheTemplate {
+final class HandlebarsTemplate extends AbstractMustacheTemplate {
 
 	/**
 	 * Original handlebar template that will be used to render

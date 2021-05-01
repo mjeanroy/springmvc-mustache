@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
@@ -39,7 +38,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
 /**
  * Mustache compiler using Java Handlebar as real implementation.
  */
-public final class HandlebarsCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public final class HandlebarsCompiler extends AbstractMustacheCompiler {
 
 	/**
 	 * Handlebar compiler.

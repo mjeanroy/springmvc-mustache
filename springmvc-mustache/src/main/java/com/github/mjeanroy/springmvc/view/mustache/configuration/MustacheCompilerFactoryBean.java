@@ -26,7 +26,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration;
 
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -36,7 +35,7 @@ import org.springframework.context.ApplicationContextAware;
  * Use classpath detection to instantiate appropriate implementation.
  * Beans are retrieved using application context.
  */
-public class MustacheCompilerFactoryBean extends AbstractFactoryBean<MustacheCompiler> implements FactoryBean<MustacheCompiler>, ApplicationContextAware {
+public class MustacheCompilerFactoryBean extends AbstractFactoryBean<MustacheCompiler> implements ApplicationContextAware {
 
 	/**
 	 * Current application context.

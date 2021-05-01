@@ -29,12 +29,11 @@ import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
 import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheTemplateNotFoundException;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
-import com.github.mustachejava.MustacheResolver;
 import com.github.mustachejava.resolver.DefaultResolver;
 
 import java.io.Reader;
 
-public final class SpringMustacheResolver extends DefaultResolver implements MustacheResolver {
+public final class SpringMustacheResolver extends DefaultResolver {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringMustacheResolver.class);
 

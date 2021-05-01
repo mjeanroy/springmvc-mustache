@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import java.util.Collection;
@@ -37,7 +36,7 @@ import static java.util.Collections.emptyList;
 /**
  * Factory used to create instance of {@link com.github.jknack.handlebars.Handlebars}.
  */
-public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> implements FactoryBean<Handlebars> {
+public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> {
 
 	private static final Logger log = LoggerFactory.getLogger(HandlebarsFactoryBean.class);
 

@@ -24,7 +24,6 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.jmustache;
 
-import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.commons.lang.ToStringBuilder;
@@ -44,7 +43,7 @@ import static com.samskivert.mustache.Mustache.Compiler;
 /**
  * Mustache Compiler using JMustache as real implementation.
  */
-public final class JMustacheCompiler extends AbstractMustacheCompiler implements MustacheCompiler {
+public final class JMustacheCompiler extends AbstractMustacheCompiler {
 
 	private static final Logger log = LoggerFactory.getLogger(JMustacheCompiler.class);
 

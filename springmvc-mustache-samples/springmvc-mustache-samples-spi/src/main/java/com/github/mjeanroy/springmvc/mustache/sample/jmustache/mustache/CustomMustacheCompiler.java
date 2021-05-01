@@ -27,16 +27,12 @@ package com.github.mjeanroy.springmvc.mustache.sample.jmustache.mustache;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.core.AbstractMustacheCompiler;
-import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
-import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.Reader;
 
 class CustomMustacheCompiler extends AbstractMustacheCompiler {
-
-	private static final Logger log = LoggerFactory.getLogger(CustomMustacheCompiler.class);
 
 	CustomMustacheCompiler(MustacheTemplateLoader templateLoader) {
 		super(templateLoader);

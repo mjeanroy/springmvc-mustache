@@ -27,7 +27,6 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.samskivert.mustache.Mustache;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 import java.util.Collection;
@@ -38,7 +37,7 @@ import static java.util.Collections.emptyList;
  * Factory used to create instance of {@link com.samskivert.mustache.Mustache.Compiler}.
  * Bean instance is thread safe.
  */
-public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.Compiler> implements FactoryBean<Mustache.Compiler> {
+public class JMustacheCompilerFactoryBean extends AbstractFactoryBean<Mustache.Compiler> {
 
 	private static final Logger log = LoggerFactory.getLogger(JMustacheCompilerFactoryBean.class);
 

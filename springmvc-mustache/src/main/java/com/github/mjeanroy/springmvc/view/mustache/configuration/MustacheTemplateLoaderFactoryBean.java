@@ -31,7 +31,6 @@ import com.github.mjeanroy.springmvc.view.mustache.core.DefaultTemplateLoader;
 import com.github.mjeanroy.springmvc.view.mustache.logging.Logger;
 import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -54,7 +53,7 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreCondit
 /**
  * Factory bean for {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader} instance.
  */
-public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<MustacheTemplateLoader> implements FactoryBean<MustacheTemplateLoader>, ApplicationContextAware, ResourceLoaderAware {
+public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<MustacheTemplateLoader> implements ApplicationContextAware, ResourceLoaderAware {
 
 	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderFactoryBean.class);
 
