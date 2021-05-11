@@ -120,6 +120,10 @@
 		<equalsverifier.version>3.6</equalsverifier.version>
 		<logback.version>1.2.3</logback.version>
 		<log4j-to-slf4j.version>2.14.1</log4j-to-slf4j.version>
+
+		<maven-surefire-plugin.argLine>
+			<!-- Nothing here, overridden by java >= 9 profile -->
+		</maven-surefire-plugin.argLine>
 	</properties>
 
 	<dependencies>
@@ -284,6 +288,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<argLine>${maven-surefire-plugin.argLine}</argLine>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -386,6 +393,18 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>java-9</id>
+			<activation>
+				<jdk>[9,)</jdk>
+			</activation>
+			<properties>
+				<maven-surefire-plugin.argLine>
+					--add-opens java.base/java.util=ALL-UNNAMED --illegal-access=permit
+				</maven-surefire-plugin.argLine>
+			</properties>
+		</profile>
+
 		<!-- Profile activated with mvn release tasks -->
 		<profile>
 			<id>release</id>
