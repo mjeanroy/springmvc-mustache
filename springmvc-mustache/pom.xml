@@ -104,7 +104,7 @@
 		<handlebars.version>4.3.0</handlebars.version>
 		<mustache.java.version>0.9.10</mustache.java.version>
 		<spring.version>5.3.6</spring.version>
-		<spring-context.version>5.3.11</spring-context.version>
+		<spring-context.version>5.3.12</spring-context.version>
 		<spring-web.version>5.3.11</spring-web.version>
 		<spring-webmvc.version>5.3.11</spring-webmvc.version>
 		<spring-test.version>5.3.11</spring-test.version>
