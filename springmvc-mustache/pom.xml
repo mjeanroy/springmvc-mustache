@@ -107,7 +107,7 @@
 		<spring-context.version>5.3.16</spring-context.version>
 		<spring-web.version>5.3.15</spring-web.version>
 		<spring-webmvc.version>5.3.16</spring-webmvc.version>
-		<spring-test.version>5.3.15</spring-test.version>
+		<spring-test.version>5.3.16</spring-test.version>
 		<spring-boot.version>2.6.3</spring-boot.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
