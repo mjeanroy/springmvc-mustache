@@ -107,7 +107,7 @@
 		<junit.version>5.6.0</junit.version>
 		<assertj.version>3.23.1</assertj.version>
 		<junit-servers.version>2.1.0</junit-servers.version>
-		<okhttp.version>4.9.3</okhttp.version>
+		<okhttp.version>4.10.0</okhttp.version>
 	</properties>
 
 	<dependencyManagement>
