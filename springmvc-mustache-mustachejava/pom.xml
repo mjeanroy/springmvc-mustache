@@ -97,7 +97,7 @@
 		<maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
 		<maven-site-plugin.version>3.12.1</maven-site-plugin.version>
 		<versions-maven-plugin.version>2.11.0</versions-maven-plugin.version>
-		<animal-sniffer-maven-plugin.version>1.21</animal-sniffer-maven-plugin.version>
+		<animal-sniffer-maven-plugin.version>1.22</animal-sniffer-maven-plugin.version>
 
 		<mustache.java.version>0.9.10</mustache.java.version>
 		<junit.version>5.9.0</junit.version>
