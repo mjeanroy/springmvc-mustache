@@ -108,7 +108,7 @@
 		<spring-web.version>5.3.23</spring-web.version>
 		<spring-webmvc.version>5.3.23</spring-webmvc.version>
 		<spring-test.version>5.3.23</spring-test.version>
-		<spring-boot.version>2.7.4</spring-boot.version>
+		<spring-boot.version>2.7.5</spring-boot.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
 
