@@ -103,7 +103,7 @@
 		<jetty.version>11.0.13</jetty.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 
-		<junit.version>5.9.1</junit.version>
+		<junit.version>5.9.2</junit.version>
 		<assertj.version>3.24.2</assertj.version>
 		<junit-servers.version>2.1.0</junit-servers.version>
 		<okhttp.version>4.10.0</okhttp.version>
