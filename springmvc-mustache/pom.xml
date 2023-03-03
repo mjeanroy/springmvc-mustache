@@ -105,7 +105,7 @@
 		<mustache.java.version>0.9.10</mustache.java.version>
 		<spring.version>5.3.23</spring.version>
 		<spring-context.version>5.3.23</spring-context.version>
-		<spring-web.version>5.3.23</spring-web.version>
+		<spring-web.version>6.0.6</spring-web.version>
 		<spring-webmvc.version>5.3.23</spring-webmvc.version>
 		<spring-test.version>5.3.23</spring-test.version>
 		<spring-boot.version>2.7.4</spring-boot.version>
