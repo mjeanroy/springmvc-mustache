@@ -96,7 +96,7 @@
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
 		<maven-site-plugin.version>3.12.1</maven-site-plugin.version>
-		<versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
+		<versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
 		<animal-sniffer-maven-plugin.version>1.23</animal-sniffer-maven-plugin.version>
 
 		<handlebars.version>4.3.1</handlebars.version>
