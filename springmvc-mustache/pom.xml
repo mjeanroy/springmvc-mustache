@@ -120,11 +120,31 @@
 		<equalsverifier.version>3.15.3</equalsverifier.version>
 		<logback.version>1.3.11</logback.version>
 		<log4j-to-slf4j.version>2.22.0</log4j-to-slf4j.version>
+		<byte-buddy.version>1.14.10</byte-buddy.version>
 
 		<maven-surefire-plugin.argLine>
 			<!-- Nothing here, overridden by java >= 9 profile -->
 		</maven-surefire-plugin.argLine>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Ensure byte-buddy version compatible with java 21 are used -->
+			<!-- Dependencies using byte-buddy as a transitive dependencies: mockito, equalsverfier, assertj -->
+			<dependency>
+				<groupId>net.bytebuddy</groupId>
+				<artifactId>byte-buddy</artifactId>
+				<version>${byte-buddy.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.bytebuddy</groupId>
+				<artifactId>byte-buddy-agent</artifactId>
+				<version>${byte-buddy.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
