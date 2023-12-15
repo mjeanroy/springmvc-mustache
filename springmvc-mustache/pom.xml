@@ -107,7 +107,7 @@
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
 		<spring-webmvc.version>${spring.version}</spring-webmvc.version>
-		<spring-test.version>${spring.version}</spring-test.version>
+		<spring-test.version>6.1.2</spring-test.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
