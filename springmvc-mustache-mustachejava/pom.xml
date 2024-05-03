@@ -99,7 +99,7 @@
 		<versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 		<animal-sniffer-maven-plugin.version>1.23</animal-sniffer-maven-plugin.version>
 
-		<mustache.java.version>0.9.11</mustache.java.version>
+		<mustache.java.version>0.9.13</mustache.java.version>
 		<junit.version>5.10.2</junit.version>
 		<assertj.version>3.25.3</assertj.version>
 		<mockito.version>4.11.0</mockito.version>

@@ -102,7 +102,7 @@
 		<log4j.version>2.23.1</log4j.version>
 		<jmustache.version>1.15</jmustache.version>
 		<handlebars.version>4.3.1</handlebars.version>
-		<mustache.java.version>0.9.11</mustache.java.version>
+		<mustache.java.version>0.9.13</mustache.java.version>
 		<spring.version>5.3.31</spring.version>
 		<spring-context.version>${spring.version}</spring-context.version>
 		<spring-web.version>${spring.version}</spring-web.version>
