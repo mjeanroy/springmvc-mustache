@@ -119,7 +119,7 @@
 		<commons-io.version>2.17.0</commons-io.version>
 		<equalsverifier.version>3.17</equalsverifier.version>
 		<logback.version>1.3.14</logback.version>
-		<log4j-to-slf4j.version>2.24.0</log4j-to-slf4j.version>
+		<log4j-to-slf4j.version>2.24.1</log4j-to-slf4j.version>
 		<byte-buddy.version>1.15.3</byte-buddy.version>
 
 		<maven-surefire-plugin.argLine>
