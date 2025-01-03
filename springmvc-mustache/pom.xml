@@ -114,7 +114,7 @@
 
 		<junit.version>5.11.4</junit.version>
 		<assertj.version>3.27.1</assertj.version>
-		<mockito.version>4.11.0</mockito.version>
+		<mockito.version>5.15.2</mockito.version>
 		<commons-lang3.version>3.17.0</commons-lang3.version>
 		<commons-io.version>2.18.0</commons-io.version>
 		<equalsverifier.version>3.18</equalsverifier.version>
