@@ -113,7 +113,7 @@
 		<jsp-api.version>2.2</jsp-api.version>
 
 		<junit.version>5.11.4</junit.version>
-		<assertj.version>3.27.2</assertj.version>
+		<assertj.version>3.27.3</assertj.version>
 		<mockito.version>4.11.0</mockito.version>
 		<commons-lang3.version>3.17.0</commons-lang3.version>
 		<commons-io.version>2.18.0</commons-io.version>
