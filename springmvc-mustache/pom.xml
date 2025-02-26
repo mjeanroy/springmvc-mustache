@@ -98,7 +98,7 @@
 		<versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 		<animal-sniffer-maven-plugin.version>1.24</animal-sniffer-maven-plugin.version>
 
-		<slf4j.version>2.0.16</slf4j.version>
+		<slf4j.version>2.0.17</slf4j.version>
 		<log4j.version>2.24.3</log4j.version>
 		<jmustache.version>1.15</jmustache.version>
 		<handlebars.version>4.3.1</handlebars.version>
