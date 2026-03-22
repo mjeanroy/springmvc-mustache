@@ -60,11 +60,13 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
           cache: 'maven'
-      - name: java -version
-        run: java -version
-      - name: mvn -version
-        run: ./mvnw -version
+
       - name: Build
-        run: ./mvnw -B install -DskipTests
+        run: |
+          ./mvnw -version
+          ./mvnw -B --color always install -DskipTests
+
       - name: Test
-        run: ./mvnw verify
+        run: |
+          ./mvnw -version
+          ./mvnw -B --color always verify
