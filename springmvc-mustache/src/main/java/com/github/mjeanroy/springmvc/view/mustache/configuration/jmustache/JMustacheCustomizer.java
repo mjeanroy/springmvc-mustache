@@ -26,19 +26,15 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.jmustache;
 
 import com.samskivert.mustache.Mustache;
 
-/**
- * A customizer for {@link Mustache.Compiler} instance.
- */
+/// A customizer for [Mustache.Compiler] instance.
 public interface JMustacheCustomizer {
 
-	/**
-	 * Customize JMustache Compiler and returns new instance.
-	 *
-	 * Since {@link Mustache.Compiler} is immutable, it is required to returns the new
-	 * instance that will be registered in the application context.
-	 *
-	 * @param compiler The initial mustache compiler.
-	 * @return The customized mustache compiler.
-	 */
+	/// Customize JMustache Compiler and returns new instance.
+	///
+	/// Since [Mustache.Compiler] is immutable, it is required to returns the new
+	/// instance that will be registered in the application context.
+	///
+	/// @param compiler The initial mustache compiler.
+	/// @return The customized mustache compiler.
 	Mustache.Compiler customize(Mustache.Compiler compiler);
 }

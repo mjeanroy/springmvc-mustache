@@ -33,72 +33,52 @@ import java.util.Collection;
 
 import static java.util.Collections.emptyList;
 
-/**
- * Factory used to create instance of {@link com.github.jknack.handlebars.Handlebars}.
- */
+/// Factory used to create instance of [com.github.jknack.handlebars.Handlebars].
 public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> {
 
 	private static final Logger log = LoggerFactory.getLogger(HandlebarsFactoryBean.class);
 
-	/**
-	 * Handlebars start delimiter.
-	 *
-	 * @see Handlebars#setStartDelimiter(String)
-	 */
+	/// Handlebars start delimiter.
+	///
+	/// @see Handlebars#setStartDelimiter(String)
 	private String startDelimiter;
 
-	/**
-	 * Handlebars end delimiter.
-	 *
-	 * @see Handlebars#setEndDelimiter(String)
-	 */
+	/// Handlebars end delimiter.
+	///
+	/// @see Handlebars#setEndDelimiter(String)
 	private String endDelimiter;
 
-	/**
-	 * If {@code true}, missing helper parameters will be resolve to their names.
-	 *
-	 * @see Handlebars#stringParams()
-	 */
+	/// If `true`, missing helper parameters will be resolve to their names.
+	///
+	/// @see Handlebars#stringParams()
 	private Boolean stringParams;
 
-	/**
-	 * If {@code true}, templates will be deleted once applied.
-	 *
-	 * @see Handlebars#deletePartialAfterMerge()
-	 */
+	/// If `true`, templates will be deleted once applied.
+	///
+	/// @see Handlebars#deletePartialAfterMerge()
 	private Boolean deletePartialAfterMerge;
 
-	/**
-	 * If {@code true}, templates will be able to call him self directly or indirectly
-	 *
-	 * @see Handlebars#infiniteLoops()
-	 */
+	/// If `true`, templates will be able to call him self directly or indirectly
+	///
+	/// @see Handlebars#infiniteLoops()
 	private Boolean infiniteLoops;
 
-	/**
-	 * Set to {@code true}, if we want to extend lookup to parent scope, like Mustache Spec.
-	 * Or {@code false}, if lookup is restricted to current scope, like handlebars.js.
-	 *
-	 * @see Handlebars#parentScopeResolution()
-	 */
+	/// Set to `true`, if we want to extend lookup to parent scope, like Mustache Spec.
+	/// Or `false`, if lookup is restricted to current scope, like handlebars.js.
+	///
+	/// @see Handlebars#parentScopeResolution()
 	private Boolean parentScopeResolution;
 
-	/**
-	 * If {@code true}, unnecessary spaces and new lines will be removed from output.
-	 *
-	 * @see Handlebars#prettyPrint()
-	 */
+	/// If `true`, unnecessary spaces and new lines will be removed from output.
+	///
+	/// @see Handlebars#prettyPrint()
 	private Boolean prettyPrint;
 
-	/**
-	 * List of customizers that will be applied on {@link Handlebars} instance
-	 * before creating object instance.
-	 */
+	/// List of customizers that will be applied on [Handlebars] instance
+	/// before creating object instance.
 	private Collection<HandlebarsCustomizer> customizers;
 
-	/**
-	 * Create factory with default settings.
-	 */
+	/// Create factory with default settings.
 	public HandlebarsFactoryBean() {
 		super();
 		this.customizers = emptyList();
@@ -162,74 +142,58 @@ public class HandlebarsFactoryBean extends AbstractFactoryBean<Handlebars> {
 		return handlebars;
 	}
 
-	/**
-	 * Set {@link #startDelimiter}
-	 *
-	 * @param startDelimiter New {@link #startDelimiter}
-	 */
+	/// Set [#startDelimiter]
+	///
+	/// @param startDelimiter New [#startDelimiter]
 	public void setStartDelimiter(String startDelimiter) {
 		this.startDelimiter = startDelimiter;
 	}
 
-	/**
-	 * Set {@link #endDelimiter}
-	 *
-	 * @param endDelimiter New {@link #endDelimiter}
-	 */
+	/// Set [#endDelimiter]
+	///
+	/// @param endDelimiter New [#endDelimiter]
 	public void setEndDelimiter(String endDelimiter) {
 		this.endDelimiter = endDelimiter;
 	}
 
-	/**
-	 * Set {@link #stringParams}
-	 *
-	 * @param stringParams New {@link #stringParams}
-	 */
+	/// Set [#stringParams]
+	///
+	/// @param stringParams New [#stringParams]
 	public void setStringParams(boolean stringParams) {
 		this.stringParams = stringParams;
 	}
 
-	/**
-	 * Set {@link #deletePartialAfterMerge}
-	 *
-	 * @param deletePartialAfterMerge New {@link #deletePartialAfterMerge}
-	 */
+	/// Set [#deletePartialAfterMerge]
+	///
+	/// @param deletePartialAfterMerge New [#deletePartialAfterMerge]
 	public void setDeletePartialAfterMerge(boolean deletePartialAfterMerge) {
 		this.deletePartialAfterMerge = deletePartialAfterMerge;
 	}
 
-	/**
-	 * Set {@link #infiniteLoops}
-	 *
-	 * @param infiniteLoops New {@link #infiniteLoops}
-	 */
+	/// Set [#infiniteLoops]
+	///
+	/// @param infiniteLoops New [#infiniteLoops]
 	public void setInfiniteLoops(boolean infiniteLoops) {
 		this.infiniteLoops = infiniteLoops;
 	}
 
-	/**
-	 * Set {@link #parentScopeResolution}
-	 *
-	 * @param parentScopeResolution New {@link #parentScopeResolution}
-	 */
+	/// Set [#parentScopeResolution]
+	///
+	/// @param parentScopeResolution New [#parentScopeResolution]
 	public void setParentScopeResolution(boolean parentScopeResolution) {
 		this.parentScopeResolution = parentScopeResolution;
 	}
 
-	/**
-	 * Set {@link #prettyPrint}
-	 *
-	 * @param prettyPrint New {@link #prettyPrint}
-	 */
+	/// Set [#prettyPrint]
+	///
+	/// @param prettyPrint New [#prettyPrint]
 	public void setPrettyPrint(boolean prettyPrint) {
 		this.prettyPrint = prettyPrint;
 	}
 
-	/**
-	 * Set {@link #customizers}
-	 *
-	 * @param customizers New {@link #customizers}
-	 */
+	/// Set [#customizers]
+	///
+	/// @param customizers New [#customizers]
 	public void setCustomizers(Collection<HandlebarsCustomizer> customizers) {
 		this.customizers = customizers;
 	}

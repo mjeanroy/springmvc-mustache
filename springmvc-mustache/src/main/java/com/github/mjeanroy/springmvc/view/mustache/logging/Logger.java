@@ -24,203 +24,151 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-/**
- * Logging abstraction.
- */
+/// Logging abstraction.
 public interface Logger {
 
-	/**
-	 * Log message with level {@code TRACE}.
-	 *
-	 * @param message Message to log.
-	 */
+	/// Log message with level `TRACE`.
+	///
+	/// @param message Message to log.
 	void trace(String message);
 
-	/**
-	 * Log message with level {@code TRACE} and with given parameter.
-	 *
-	 * @param message Message to log.
-	 * @param arg Log message parameter.
-	 */
+	/// Log message with level `TRACE` and with given parameter.
+	///
+	/// @param message Message to log.
+	/// @param arg Log message parameter.
 	void trace(String message, Object arg);
 
-	/**
-	 * Log message with level {@code TRACE} and with given parameters.
-	 *
-	 * @param message Message to log.
-	 * @param arg1 First log message parameter.
-	 * @param arg2 Second log message parameter.
-	 */
+	/// Log message with level `TRACE` and with given parameters.
+	///
+	/// @param message Message to log.
+	/// @param arg1 First log message parameter.
+	/// @param arg2 Second log message parameter.
 	void trace(String message, Object arg1, Object arg2);
 
-	/**
-	 * Log message with level {@code TRACE} and log given exception stacktrace.
-	 *
-	 * @param message Message to log.
-	 * @param ex The exception.
-	 */
+	/// Log message with level `TRACE` and log given exception stacktrace.
+	///
+	/// @param message Message to log.
+	/// @param ex The exception.
 	void trace(String message, Throwable ex);
 
-	/**
-	 * Log message with level {@code DEBUG}.
-	 *
-	 * @param message Message to log.
-	 */
+	/// Log message with level `DEBUG`.
+	///
+	/// @param message Message to log.
 	void debug(String message);
 
-	/**
-	 * Log message with level {@code DEBUG} and with given parameter.
-	 *
-	 * @param message Message to log.
-	 * @param arg Log message parameter.
-	 */
+	/// Log message with level `DEBUG` and with given parameter.
+	///
+	/// @param message Message to log.
+	/// @param arg Log message parameter.
 	void debug(String message, Object arg);
 
-	/**
-	 * Log message with level {@code DEBUG} and with given parameters.
-	 *
-	 * @param message Message to log.
-	 * @param arg1 First log message parameter.
-	 * @param arg2 Second log message parameter.
-	 */
+	/// Log message with level `DEBUG` and with given parameters.
+	///
+	/// @param message Message to log.
+	/// @param arg1 First log message parameter.
+	/// @param arg2 Second log message parameter.
 	void debug(String message, Object arg1, Object arg2);
 
-	/**
-	 * Log message with level {@code DEBUG} and log given exception stacktrace.
-	 *
-	 * @param message Message to log.
-	 * @param ex The exception.
-	 */
+	/// Log message with level `DEBUG` and log given exception stacktrace.
+	///
+	/// @param message Message to log.
+	/// @param ex The exception.
 	void debug(String message, Throwable ex);
 
-	/**
-	 * Log message with level {@code INFO}.
-	 *
-	 * @param message Message to log.
-	 */
+	/// Log message with level `INFO`.
+	///
+	/// @param message Message to log.
 	void info(String message);
 
-	/**
-	 * Log message with level {@code INFO} and with given parameter.
-	 *
-	 * @param message Message to log.
-	 * @param arg Log message parameter.
-	 */
+	/// Log message with level `INFO` and with given parameter.
+	///
+	/// @param message Message to log.
+	/// @param arg Log message parameter.
 	void info(String message, Object arg);
 
-	/**
-	 * Log message with level {@code INFO} and with given parameters.
-	 *
-	 * @param message Message to log.
-	 * @param arg1 First log message parameter.
-	 * @param arg2 Second log message parameter.
-	 */
+	/// Log message with level `INFO` and with given parameters.
+	///
+	/// @param message Message to log.
+	/// @param arg1 First log message parameter.
+	/// @param arg2 Second log message parameter.
 	void info(String message, Object arg1, Object arg2);
 
-	/**
-	 * Log message with level {@code INFO} and log given exception stacktrace.
-	 *
-	 * @param message Message to log.
-	 * @param ex The exception.
-	 */
+	/// Log message with level `INFO` and log given exception stacktrace.
+	///
+	/// @param message Message to log.
+	/// @param ex The exception.
 	void info(String message, Throwable ex);
 
-	/**
-	 * Log message with level {@code WARN}.
-	 *
-	 * @param message Message to log.
-	 */
+	/// Log message with level `WARN`.
+	///
+	/// @param message Message to log.
 	void warn(String message);
 
-	/**
-	 * Log message with level {@code WARN} and with given parameter.
-	 *
-	 * @param message Message to log.
-	 * @param arg Log message parameter.
-	 */
+	/// Log message with level `WARN` and with given parameter.
+	///
+	/// @param message Message to log.
+	/// @param arg Log message parameter.
 	void warn(String message, Object arg);
 
-	/**
-	 * Log message with level {@code WARN} and with given parameters.
-	 *
-	 * @param message Message to log.
-	 * @param arg1 First log message parameter.
-	 * @param arg2 Second log message parameter.
-	 */
+	/// Log message with level `WARN` and with given parameters.
+	///
+	/// @param message Message to log.
+	/// @param arg1 First log message parameter.
+	/// @param arg2 Second log message parameter.
 	void warn(String message, Object arg1, Object arg2);
 
-	/**
-	 * Log message with level {@code WARN} and log given exception stacktrace.
-	 *
-	 * @param message Message to log.
-	 * @param ex The exception.
-	 */
+	/// Log message with level `WARN` and log given exception stacktrace.
+	///
+	/// @param message Message to log.
+	/// @param ex The exception.
 	void warn(String message, Throwable ex);
 
-	/**
-	 * Log message with level {@code ERROR}.
-	 *
-	 * @param message Message to log.
-	 */
+	/// Log message with level `ERROR`.
+	///
+	/// @param message Message to log.
 	void error(String message);
 
-	/**
-	 * Log message with level {@code ERROR} and with given parameter.
-	 *
-	 * @param message Message to log.
-	 * @param arg Log message parameter.
-	 */
+	/// Log message with level `ERROR` and with given parameter.
+	///
+	/// @param message Message to log.
+	/// @param arg Log message parameter.
 	void error(String message, Object arg);
 
-	/**
-	 * Log message with level {@code ERROR} and with given parameters.
-	 *
-	 * @param message Message to log.
-	 * @param arg1 First log message parameter.
-	 * @param arg2 Second log message parameter.
-	 */
+	/// Log message with level `ERROR` and with given parameters.
+	///
+	/// @param message Message to log.
+	/// @param arg1 First log message parameter.
+	/// @param arg2 Second log message parameter.
 	void error(String message, Object arg1, Object arg2);
 
-	/**
-	 * Log message with level {@code ERROR} and log given exception stacktrace.
-	 *
-	 * @param message Message to log.
-	 * @param ex The exception.
-	 */
+	/// Log message with level `ERROR` and log given exception stacktrace.
+	///
+	/// @param message Message to log.
+	/// @param ex The exception.
 	void error(String message, Throwable ex);
 
-	/**
-	 * Check if {@code TRACE} is enabled.
-	 *
-	 * @return {@code true} if {@code TRACE} level is enabled, {@code false} otherwise.
-	 */
+	/// Check if `TRACE` is enabled.
+	///
+	/// @return `true` if `TRACE` level is enabled, `false` otherwise.
 	boolean isTraceEnabled();
 
-	/**
-	 * Check if {@code DEBUG} is enabled.
-	 *
-	 * @return {@code true} if {@code DEBUG} level is enabled, {@code false} otherwise.
-	 */
+	/// Check if `DEBUG` is enabled.
+	///
+	/// @return `true` if `DEBUG` level is enabled, `false` otherwise.
 	boolean isDebugEnabled();
 
-	/**
-	 * Check if {@code INFO} is enabled.
-	 *
-	 * @return {@code true} if {@code INFO} level is enabled, {@code false} otherwise.
-	 */
+	/// Check if `INFO` is enabled.
+	///
+	/// @return `true` if `INFO` level is enabled, `false` otherwise.
 	boolean isInfoEnabled();
 
-	/**
-	 * Check if {@code WARN} is enabled.
-	 *
-	 * @return {@code true} if {@code WARN} level is enabled, {@code false} otherwise.
-	 */
+	/// Check if `WARN` is enabled.
+	///
+	/// @return `true` if `WARN` level is enabled, `false` otherwise.
 	boolean isWarnEnabled();
 
-	/**
-	 * Check if {@code ERROR} is enabled.
-	 *
-	 * @return {@code true} if {@code ERROR} level is enabled, {@code false} otherwise.
-	 */
+	/// Check if `ERROR` is enabled.
+	///
+	/// @return `true` if `ERROR` level is enabled, `false` otherwise.
 	boolean isErrorEnabled();
 }

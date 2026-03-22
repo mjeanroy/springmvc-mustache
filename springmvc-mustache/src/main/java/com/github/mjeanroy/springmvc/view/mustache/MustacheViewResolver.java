@@ -35,51 +35,41 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Mustache View Resolver.
- */
+/// Mustache View Resolver.
 public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 	private static final Logger log = LoggerFactory.getLogger(MustacheViewResolver.class);
 
-	/**
-	 * Mustache compiler.
-	 */
+	/// Mustache compiler.
 	private final MustacheCompiler compiler;
 
-	/**
-	 * Main layout that can be used to define view layouts.
-	 * This layout will be used by default for each views if it has been set.
-	 */
+	/// Main layout that can be used to define view layouts.
+	/// This layout will be used by default for each views if it has been set.
 	// Volatile because it can be accessed from more than one thread
 	private volatile String defaultLayout;
 
-	/**
-	 * Key to use to define layout content.
-	 * For example, with a layout template defined as (using a key equal to 'content'):
-	 *
-	 * <div>
-	 *   Header
-	 *   {{> content}}
-	 *   Footer
-	 * </div>
-	 *
-	 * Each view will replace 'content' partials.
-	 */
+	/// Key to use to define layout content.
+	/// For example, with a layout template defined as (using a key equal to 'content'):
+	///
+	/// ```
+	/// <div>
+	///   Header
+	///   {{> content}}
+	///   Footer
+	/// </div>
+	/// ```
+	///
+	/// Each view will replace 'content' partials.
 	// Volatile because it can be accessed from more than one thread
 	private volatile String layoutKey;
 
-	/**
-	 * Layout mappings that can be used to map different layout for different views.
-	 * If mapping is not found and a default layout is defined, default layout will be used.
-	 */
+	/// Layout mappings that can be used to map different layout for different views.
+	/// If mapping is not found and a default layout is defined, default layout will be used.
 	private final Map<String, String> layoutMappings;
 
-	/**
-	 * Build new mustache resolver using compiler
-	 *
-	 * @param compiler Mustache compiler.
-	 */
+	/// Build new mustache resolver using compiler
+	///
+	/// @param compiler Mustache compiler.
 	public MustacheViewResolver(MustacheCompiler compiler) {
 		setViewClass(requiredViewClass());
 
@@ -109,31 +99,25 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		compiler.setSuffix(suffix);
 	}
 
-	/**
-	 * Update default layout view.
-	 *
-	 * @param defaultLayout Default layout.
-	 */
+	/// Update default layout view.
+	///
+	/// @param defaultLayout Default layout.
 	public void setDefaultLayout(String defaultLayout) {
 		log.trace("Set view resolver default layout: '{}'", defaultLayout);
 		this.defaultLayout = hasText(defaultLayout, "Default layout must not be empty");
 	}
 
-	/**
-	 * Update view layout key.
-	 *
-	 * @param layoutKey New view layout key.
-	 */
+	/// Update view layout key.
+	///
+	/// @param layoutKey New view layout key.
 	public void setLayoutKey(String layoutKey) {
 		log.trace("Set view resolver layout key: '{}'", layoutKey);
 		this.layoutKey = hasText(layoutKey, "Layout key must not be empty");
 	}
 
-	/**
-	 * Replace current layout mappings by new mappings.
-	 *
-	 * @param layoutMappings New mappings.
-	 */
+	/// Replace current layout mappings by new mappings.
+	///
+	/// @param layoutMappings New mappings.
 	public void setLayoutMappings(Map<String, String> layoutMappings) {
 		notNull(layoutMappings, "Layout mappings must not be null");
 
@@ -145,12 +129,10 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 		}
 	}
 
-	/**
-	 * Replace current layout mappings by new mappings.
-	 *
-	 * @param viewName View name to map.
-	 * @param layoutName Layout name to use for given view.
-	 */
+	/// Replace current layout mappings by new mappings.
+	///
+	/// @param viewName View name to map.
+	/// @param layoutName Layout name to use for given view.
 	public void addLayoutMapping(String viewName, String layoutName) {
 		log.debug("Add new layout mapping");
 		log.trace("  => {} -> {}", viewName, layoutName);

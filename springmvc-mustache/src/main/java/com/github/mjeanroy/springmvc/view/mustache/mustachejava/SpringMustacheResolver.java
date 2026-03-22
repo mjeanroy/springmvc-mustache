@@ -33,26 +33,21 @@ import com.github.mustachejava.resolver.DefaultResolver;
 
 import java.io.Reader;
 
-/**
- * Resolver for mustache templates.
- */
+/// Resolver for mustache templates.
 public final class SpringMustacheResolver extends DefaultResolver {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringMustacheResolver.class);
 
-	/**
-	 * Mustache template loader that will load
-	 * templates and partials.
-	 * This template loader will also be used to resolve template
-	 * location from name.
-	 */
+	/// Mustache template loader that will load
+	/// templates and partials.
+	///
+	/// This template loader will also be used to resolve template
+	/// location from name.
 	private final MustacheTemplateLoader templateLoader;
 
-	/**
-	 * Build new mustache resolver.
-	 *
-	 * @param templateLoader Template loader to use.
-	 */
+	/// Build new mustache resolver.
+	///
+	/// @param templateLoader Template loader to use.
 	public SpringMustacheResolver(MustacheTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
 	}

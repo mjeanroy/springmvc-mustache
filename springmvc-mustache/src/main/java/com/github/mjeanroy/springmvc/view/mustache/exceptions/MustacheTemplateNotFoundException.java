@@ -26,16 +26,12 @@ package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
 import static java.lang.String.format;
 
-/**
- * Exception thrown when template mustache is not found.
- */
+/// Exception thrown when template mustache is not found.
 public final class MustacheTemplateNotFoundException extends RuntimeException {
 
-	/**
-	 * Build new exception using template name.
-	 *
-	 * @param name Template name.
-	 */
+	/// Build new exception using template name.
+	///
+	/// @param name Template name.
 	public MustacheTemplateNotFoundException(String name) {
 		super(format("Mustache template %s does not exist", name));
 	}

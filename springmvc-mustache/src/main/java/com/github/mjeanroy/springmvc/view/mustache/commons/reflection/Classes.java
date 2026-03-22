@@ -30,21 +30,17 @@ import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
 
-/**
- * Commons static class utilities.
- */
+/// Commons static class utilities.
 public final class Classes {
 
 	private Classes() {
 	}
 
-	/**
-	 * Check that a given class is available on
-	 * classpath.
-	 *
-	 * @param klass Class name.
-	 * @return True if class is available, false otherwise.
-	 */
+	/// Check that a given class is available on
+	/// classpath.
+	///
+	/// @param klass Class name.
+	/// @return True if class is available, false otherwise.
 	public static boolean isPresent(String klass) {
 		hasText(klass, "Class name must not be empty");
 		try {
@@ -56,16 +52,14 @@ public final class Classes {
 		}
 	}
 
-	/**
-	 * Get annotation method value.
-	 *
-	 * @param importingClassMetadata Metadata.
-	 * @param annotationClass        Annotation class to look for.
-	 * @param name                   Name of method.
-	 * @param defaultValue           Default value if original value is null.
-	 * @param <T>                    Type of returned value.
-	 * @return Annotation value, or default value if original value is null.
-	 */
+	/// Get annotation method value.
+	///
+	/// @param importingClassMetadata Metadata.
+	/// @param annotationClass        Annotation class to look for.
+	/// @param name                   Name of method.
+	/// @param defaultValue           Default value if original value is null.
+	/// @param <T>                    Type of returned value.
+	/// @return Annotation value, or default value if original value is null.
 	@SuppressWarnings("unchecked")
 	public static <T> T getAnnotationValue(AnnotationMetadata importingClassMetadata, Class<?> annotationClass, String name, T defaultValue) {
 		Map<String, Object> attributes = importingClassMetadata.getAnnotationAttributes(annotationClass.getName());

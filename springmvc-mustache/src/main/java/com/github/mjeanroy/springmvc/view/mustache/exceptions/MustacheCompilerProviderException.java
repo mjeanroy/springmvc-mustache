@@ -24,16 +24,12 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
-/**
- * Exception thrown when template compilation failed.
- */
+/// Exception thrown when template compilation failed.
 public final class MustacheCompilerProviderException extends RuntimeException {
 
-	/**
-	 * Build new exception using origin exception.
-	 *
-	 * @param message Original exception.
-	 */
+	/// Build new exception using origin exception.
+	///
+	/// @param message Original exception.
 	public MustacheCompilerProviderException(String message) {
 		super(message);
 	}

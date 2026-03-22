@@ -27,9 +27,7 @@ package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Utility to write {@code toString} methods easily.
- */
+/// Utility to write `toString` methods easily.
 public class ToStringBuilder {
 
 	private static final char IDENTITY_SEPARATOR = '@';
@@ -38,36 +36,25 @@ public class ToStringBuilder {
 	private static final char FIELD_VALUE_SEPARATOR = '=';
 	private static final String FIELD_SEPARATOR = ", ";
 
-	/**
-	 * Create new builder.
-	 *
-	 * @param instance The instance to serialize as a string.
-	 * @return The builder.
-	 */
+	/// Create new builder.
+	///
+	/// @param instance The instance to serialize as a string.
+	/// @return The builder.
 	public static ToStringBuilder builder(Object instance) {
 		return new ToStringBuilder(instance);
 	}
 
-	/**
-	 * The name of the class.
-	 */
+	/// The name of the class.
 	private final String name;
 
-	/**
-	 * The identity instance.
-	 */
+	/// The identity instance.
 	private final String identity;
 
-	/**
-	 * The list of fields to output.
-	 */
+	/// The list of fields to output.
 	private final Map<String, String> fields;
 
-	/**
-	 * Size of the string output being builded.
-	 *
-	 * This is used to instantiate {@link StringBuilder} with the correct initial capacity.
-	 */
+	/// Size of the string output being builded.
+	/// This is used to instantiate [StringBuilder] with the correct initial capacity.
 	private int size;
 
 	private ToStringBuilder(Object object) {
@@ -77,46 +64,38 @@ public class ToStringBuilder {
 		this.size = name.length() + identity.length() + 1;
 	}
 
-	/**
-	 * Append field to the final output.
-	 *
-	 * @param name  Field name.
-	 * @param value Field value.
-	 * @return The builder.
-	 */
+	/// Append field to the final output.
+	///
+	/// @param name  Field name.
+	/// @param value Field value.
+	/// @return The builder.
 	public ToStringBuilder append(String name, String value) {
 		return doAppend(name, formatValue(value));
 	}
 
-	/**
-	 * Append field to the final output.
-	 *
-	 * @param name  Field name.
-	 * @param value Field value.
-	 * @return The builder.
-	 */
+	/// Append field to the final output.
+	///
+	/// @param name  Field name.
+	/// @param value Field value.
+	/// @return The builder.
 	public ToStringBuilder append(String name, boolean value) {
 		return doAppend(name, Boolean.toString(value));
 	}
 
-	/**
-	 * Append field to the final output.
-	 *
-	 * @param name  Field name.
-	 * @param value Field value.
-	 * @return The builder.
-	 */
+	/// Append field to the final output.
+	///
+	/// @param name  Field name.
+	/// @param value Field value.
+	/// @return The builder.
 	public ToStringBuilder append(String name, Object value) {
 		return doAppend(name, value == null ? "null" : value.toString());
 	}
 
-	/**
-	 * Append field to the final output and update internal state.
-	 *
-	 * @param name           Field name.
-	 * @param formattedValue The (already formatted) field value.
-	 * @return The builder.
-	 */
+	/// Append field to the final output and update internal state.
+	///
+	/// @param name           Field name.
+	/// @param formattedValue The (already formatted) field value.
+	/// @return The builder.
 	private ToStringBuilder doAppend(String name, String formattedValue) {
 		this.fields.put(name, formattedValue);
 		this.size += name.length();
@@ -124,11 +103,9 @@ public class ToStringBuilder {
 		return this;
 	}
 
-	/**
-	 * Build the final string output.
-	 *
-	 * @return The final output.
-	 */
+	/// Build the final string output.
+	///
+	/// @return The final output.
 	public String build() {
 		int nbFields = fields.size();
 		int fullSize = this.size

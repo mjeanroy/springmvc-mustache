@@ -30,15 +30,10 @@ import com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheExecutionE
 import java.io.Writer;
 import java.util.Map;
 
-/**
- * Abstract that define commons code to
- * template implementation.
- */
+/// Abstract that define commons code to template implementation.
 public abstract class AbstractMustacheTemplate implements MustacheTemplate {
 
-	/**
-	 * Create template.
-	 */
+	/// Create template.
 	protected AbstractMustacheTemplate() {
 	}
 
@@ -52,15 +47,14 @@ public abstract class AbstractMustacheTemplate implements MustacheTemplate {
 		}
 	}
 
-	/**
-	 * Process template execution.
-	 * This methods should rethrows exception since it will be
-	 * catches later (and a new {@link com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheExecutionException} will
-	 * be thrown).
-	 *
-	 * @param model Data model.
-	 * @param writer Target writer.
-	 * @throws Exception If something bad happens (will be catched an rethrows).
-	 */
+	/// Process template execution.
+	///
+	/// This methods should rethrows exception since it will be
+	/// catches later (and a new [com.github.mjeanroy.springmvc.view.mustache.exceptions.MustacheExecutionException] will
+	/// be thrown).
+	///
+	/// @param model Data model.
+	/// @param writer Target writer.
+	/// @throws Exception If something bad happens (will be catched an rethrows).
 	protected abstract void doExecute(Map<String, Object> model, Writer writer) throws Exception;
 }

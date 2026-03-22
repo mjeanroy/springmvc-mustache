@@ -26,16 +26,12 @@ package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
 import java.io.IOException;
 
-/**
- * Exception thrown when an IO exception is thrown during template content extraction.
- */
+/// Exception thrown when an IO exception is thrown during template content extraction.
 public final class MustacheIOException extends RuntimeException {
 
-	/**
-	 * Build new exception using original IO Exception.
-	 *
-	 * @param ex Original Exception.
-	 */
+	/// Build new exception using original IO Exception.
+	///
+	/// @param ex Original Exception.
 	public MustacheIOException(IOException ex) {
 		super(ex);
 	}

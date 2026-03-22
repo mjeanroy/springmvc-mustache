@@ -34,32 +34,22 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * A JSP tag that can be used to render a mustache template.
- */
+/// A JSP tag that can be used to render a mustache template.
 public class MustacheRenderTag extends TagSupport {
 
-	/**
-	 * Mustache compiler to use.
-	 *
-	 * If not specified, the compiler registered in current spring application context
-	 * will be used.
-	 */
+	/// Mustache compiler to use.
+	///
+	/// If not specified, the compiler registered in current spring application context
+	/// will be used.
 	private MustacheCompiler compiler;
 
-	/**
-	 * Mustache template to render.
-	 */
+	/// Mustache template to render.
 	private String template;
 
-	/**
-	 * Template parameters.
-	 */
+	/// Template parameters.
 	private Map<String, Object> parameters;
 
-	/**
-	 * Create JSP tag.
-	 */
+	/// Create JSP tag.
 	public MustacheRenderTag() {
 		super();
 	}
@@ -92,30 +82,24 @@ public class MustacheRenderTag extends TagSupport {
 		reset();
 	}
 
-	/**
-	 * Set {@link #compiler}
-	 *
-	 * @param compiler New {@link #compiler}
-	 */
+	/// Set [#compiler]
+	///
+	/// @param compiler New [#compiler]
 	public void setCompiler(MustacheCompiler compiler) {
 		this.compiler = compiler;
 	}
 
-	/**
-	 * Set {@link #template}
-	 *
-	 * @param template New {@link #template}
-	 */
+	/// Set [#template]
+	///
+	/// @param template New [#template]
 	public void setTemplate(String template) {
 		this.template = template;
 	}
 
-	/**
-	 * Add new mustache parameter.
-	 *
-	 * @param name Parameter name.
-	 * @param value Parameter value.
-	 */
+	/// Add new mustache parameter.
+	///
+	/// @param name Parameter name.
+	/// @param value Parameter value.
 	void addParameter(String name, Object value) {
 		parameters.put(name, value);
 	}

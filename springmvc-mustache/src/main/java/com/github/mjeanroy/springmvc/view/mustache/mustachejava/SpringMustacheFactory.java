@@ -31,32 +31,26 @@ import com.github.mjeanroy.springmvc.view.mustache.logging.LoggerFactory;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheResolver;
 
-/**
- * Implementation of mustache factory that use a template loader
- * internally.
- *
- * Future release of mustache.java will support custom template resolver, this
- * implementation will be useless.
- * See: https://github.com/spullara/mustache.java/pull/105
- */
+/// Implementation of mustache factory that use a template loader
+/// internally.
+///
+/// Future release of mustache.java will support custom template resolver, this
+/// implementation will be useless ([GitHub](https://github.com/spullara/mustache.java/pull/105)).
 public final class SpringMustacheFactory extends DefaultMustacheFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringMustacheFactory.class);
 
-	/**
-	 * Mustache template loader that will load
-	 * templates and partials.
-	 * This template loader will also be used to resolve template
-	 * location from name.
-	 */
+	/// Mustache template loader that will load
+	/// templates and partials.
+	///
+	/// This template loader will also be used to resolve template
+	/// location from name.
 	private final MustacheTemplateLoader templateLoader;
 
-	/**
-	 * Build new mustache factory.
-	 *
-	 * @param mustacheResolver The mustache template resolver.
-	 * @param templateLoader Template loader to use.
-	 */
+	/// Build new mustache factory.
+	///
+	/// @param mustacheResolver The mustache template resolver.
+	/// @param templateLoader Template loader to use.
 	public SpringMustacheFactory(MustacheResolver mustacheResolver, MustacheTemplateLoader templateLoader) {
 		super(mustacheResolver);
 		this.templateLoader = templateLoader;

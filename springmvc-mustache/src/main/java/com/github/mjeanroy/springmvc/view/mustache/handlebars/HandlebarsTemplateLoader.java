@@ -41,27 +41,22 @@ import java.util.Objects;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.io.Ios.read;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Implement template loader for use with java handlebar
- * implementation.
- */
+/// Implement template loader for use with java handlebar
+/// implementation.
 final class HandlebarsTemplateLoader implements TemplateLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(HandlebarsTemplateLoader.class);
 
-	/**
-	 * Template loader implementation.
-	 * Template resolution will be delegated to this implementation.
-	 */
+	/// Template loader implementation.
+	/// Template resolution will be delegated to this implementation.
 	private final MustacheTemplateLoader loader;
 
-	/**
-	 * Build new handlebar template loader.
-	 * This template loader will delegate implementation to an
-	 * instance of {@link MustacheTemplateLoader} class.
-	 *
-	 * @param loader Instance of mustache template loader.
-	 */
+	/// Build new handlebar template loader.
+	///
+	/// This template loader will delegate implementation to an
+	/// instance of [MustacheTemplateLoader] class.
+	///
+	/// @param loader Instance of mustache template loader.
 	public HandlebarsTemplateLoader(MustacheTemplateLoader loader) {
 		this.loader = notNull(loader, "Loader must not be null");
 	}

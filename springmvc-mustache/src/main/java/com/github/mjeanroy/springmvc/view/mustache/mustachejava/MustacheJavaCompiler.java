@@ -33,25 +33,19 @@ import com.github.mustachejava.MustacheFactory;
 
 import java.util.Objects;
 
-/**
- * Mustache compiler.
- * This compiler use internally mustache.java as real implementation.
- */
+/// Mustache compiler.
+/// This compiler use internally mustache.java as real implementation.
 public final class MustacheJavaCompiler extends AbstractMustacheCompiler {
 
-	/**
-	 * Implementation of {@link MustacheFactory} used internally
-	 * to compile mustache templates.
-	 */
+	/// Implementation of [MustacheFactory] used internally
+	/// to compile mustache templates.
 	private final MustacheFactory mustacheFactory;
 
-	/**
-	 * Build new compiler based on mustache.java.
-	 * An instance of {@link SpringMustacheFactory} that used template loader is automatically created.
-	 *
-	 * @param mustacheFactory The Mustache Factory implementation.
-	 * @param templateLoader Template loader.
-	 */
+	/// Build new compiler based on mustache.java.
+	/// An instance of [SpringMustacheFactory] that used template loader is automatically created.
+	///
+	/// @param mustacheFactory The Mustache Factory implementation.
+	/// @param templateLoader Template loader.
 	public MustacheJavaCompiler(MustacheFactory mustacheFactory, MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 		this.mustacheFactory = mustacheFactory;

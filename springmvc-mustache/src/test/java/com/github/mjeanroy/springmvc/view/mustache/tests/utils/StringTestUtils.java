@@ -26,27 +26,21 @@ package com.github.mjeanroy.springmvc.view.mustache.tests.utils;
 
 import java.util.Collection;
 
-/**
- * Static String Utilities, to use in unit test only.
- */
+/// Static String Utilities, to use in unit test only.
 public final class StringTestUtils {
 
-	/**
-	 * The OS dependant line separator.
-	 */
+	/// The OS dependant line separator.
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	// Ensure non instantiation.
 	private StringTestUtils() {
 	}
 
-	/**
-	 * Join given lines to a single string using the line separator character as
-	 * join character.
-	 *
-	 * @param lines Lines to join.
-	 * @return The entire text.
-	 */
+	/// Join given lines to a single string using the line separator character as
+	/// join character.
+	///
+	/// @param lines Lines to join.
+	/// @return The entire text.
 	public static String joinLines(Collection<String> lines) {
 		StringBuilder sb = new StringBuilder();
 		boolean firstLine = true;

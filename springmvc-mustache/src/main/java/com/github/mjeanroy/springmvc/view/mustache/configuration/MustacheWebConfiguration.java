@@ -46,12 +46,10 @@ import static java.lang.String.valueOf;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
 
-/**
- * Spring Web configuration for mustache engine.
- *
- * This configuration will automatically load {@code mustache.properties} file if
- * available on the classpath to configure the engine.
- */
+/// Spring Web configuration for mustache engine.
+///
+/// This configuration will automatically load `mustache.properties` file if
+/// available on the classpath to configure the engine.
 @Configuration
 @PropertySource(
 		value = "classpath:mustache.properties",
@@ -64,26 +62,22 @@ public class MustacheWebConfiguration {
 	private final Environment environment;
 	private final MustacheCompiler mustacheCompiler;
 
-	/**
-	 * Create configuration.
-	 *
-	 * @param environment The environment, automatically injected by Spring.
-	 * @param mustacheCompiler The mustache compiler, automatically injected by Spring.
-	 */
+	/// Create configuration.
+	///
+	/// @param environment The environment, automatically injected by Spring.
+	/// @param mustacheCompiler The mustache compiler, automatically injected by Spring.
 	@Autowired
 	public MustacheWebConfiguration(Environment environment, MustacheCompiler mustacheCompiler) {
 		this.environment = environment;
 		this.mustacheCompiler = mustacheCompiler;
 	}
 
-	/**
-	 * Build mustache view resolver.
-	 *
-	 * This view resolver needs an instance of {@link com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler}
-	 * to be created.
-	 *
-	 * @return Mustache view resolver instance.
-	 */
+	/// Build mustache view resolver.
+	///
+	/// This view resolver needs an instance of [com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler]
+	/// to be created.
+	///
+	/// @return Mustache view resolver instance.
 	@Bean
 	@Conditional(MustacheViewResolverCondition.class)
 	public MustacheViewResolver mustacheViewResolver() {
@@ -128,77 +122,69 @@ public class MustacheWebConfiguration {
 		return resolver;
 	}
 
-	/**
-	 * Resolve views prefix value.
-	 * Default is to look for "mustache.prefix" property or use {@link com.github.mjeanroy.springmvc.view.mustache.MustacheSettings#PREFIX} if
-	 * property cannot be resolved.
-	 *
-	 * @return Prefix value.
-	 */
+	/// Resolve views prefix value.
+	///
+	/// Default is to look for "mustache.prefix" property or use [com.github.mjeanroy.springmvc.view.mustache.MustacheSettings#PREFIX] if
+	/// property cannot be resolved.
+	///
+	/// @return Prefix value.
 	public String getPrefix() {
 		return environment.getProperty("mustache.prefix", MustacheSettings.PREFIX).trim();
 	}
 
-	/**
-	 * Resolve views suffix value.
-	 * Default is to look for "mustache.suffix" property or use {@link MustacheSettings#SUFFIX} if
-	 * property cannot be resolved.
-	 *
-	 * @return Suffix value.
-	 */
+	/// Resolve views suffix value.
+	///
+	/// Default is to look for "mustache.suffix" property or use [MustacheSettings#SUFFIX] if
+	/// property cannot be resolved.
+	///
+	/// @return Suffix value.
 	public String getSuffix() {
 		return environment.getProperty("mustache.suffix", MustacheSettings.SUFFIX).trim();
 	}
 
-	/**
-	 * Resolve mustache view resolver order.
-	 * Default is to look for "mustache.order" property or use {@link MustacheSettings#ORDER} if
-	 * property cannot be resolved.
-	 *
-	 * @return Order value.
-	 */
+	/// Resolve mustache view resolver order.
+	///
+	/// Default is to look for "mustache.order" property or use [MustacheSettings#ORDER] if
+	/// property cannot be resolved.
+	///
+	/// @return Order value.
 	public int getOrder() {
 		return Integer.parseInt(environment.getProperty("mustache.order", valueOf(MustacheSettings.ORDER)).trim());
 	}
 
-	/**
-	 * Resolve mustache view resolver cache settings.
-	 * Default is to look for "mustache.cache" property or use {@link MustacheSettings#CACHE} if
-	 * property cannot be resolved.
-	 *
-	 * @return Cache settings.
-	 */
+	/// Resolve mustache view resolver cache settings.
+	///
+	/// Default is to look for "mustache.cache" property or use [MustacheSettings#CACHE] if
+	/// property cannot be resolved.
+	///
+	/// @return Cache settings.
 	public boolean getCache() {
 		return Boolean.parseBoolean(environment.getProperty("mustache.cache", valueOf(MustacheSettings.CACHE)).trim());
 	}
 
-	/**
-	 * Resolve default layout to use.
-	 * This layout can be used to define template to be used as main layout and render
-	 * view within this layout.
-	 *
-	 * @return Layout name.
-	 */
+	/// Resolve default layout to use.
+	///
+	/// This layout can be used to define template to be used as main layout and render
+	/// view within this layout.
+	///
+	/// @return Layout name.
 	public String getDefaultLayout() {
 		return environment.getProperty("mustache.defaultLayout", MustacheSettings.DEFAULT_LAYOUT).trim();
 	}
 
-	/**
-	 * Resolve default key to use as partials alias in default view layout.
-	 *
-	 * @return Partial key in layout.
-	 */
+	/// Resolve default key to use as partials alias in default view layout.
+	///
+	/// @return Partial key in layout.
 	public String getLayoutKey() {
 		return environment.getProperty("mustache.layoutKey", MustacheSettings.LAYOUT_KEY).trim();
 	}
 
-	/**
-	 * Resolve view names matchers of mustache view resolver.
-	 * Default is to look for "mustache.viewNames" property or use {@link MustacheSettings#VIEW_NAMES} if
-	 * property cannot be resolved.
-	 *
-	 * @return View names patterns.
-	 */
+	/// Resolve view names matchers of mustache view resolver.
+	///
+	/// Default is to look for "mustache.viewNames" property or use [MustacheSettings#VIEW_NAMES] if
+	/// property cannot be resolved.
+	///
+	/// @return View names patterns.
 	public String[] getViewNames() {
 		String viewNames = environment.getProperty("mustache.viewNames", MustacheSettings.VIEW_NAMES).trim();
 		String[] names = viewNames.split(",");
@@ -208,11 +194,9 @@ public class MustacheWebConfiguration {
 		return names;
 	}
 
-	/**
-	 * Get mappings to use with resolvers.
-	 *
-	 * @return Layouts mappings
-	 */
+	/// Get mappings to use with resolvers.
+	///
+	/// @return Layouts mappings
 	public Map<String, String> getLayoutMappings() {
 		String mappingsValues = environment.getProperty("mustache.layoutMappings", MustacheSettings.LAYOUT_MAPPINGS).trim();
 

@@ -26,15 +26,11 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.handlebars;
 
 import com.github.jknack.handlebars.Handlebars;
 
-/**
- * A customizer for {@link Handlebars} instance.
- */
+/// A customizer for [Handlebars] instance.
 public interface HandlebarsCustomizer {
 
-	/**
-	 * Customize {@link Handlebars} instance.
-	 *
-	 * @param handlebars Handlebars instance.
-	 */
+	/// Customize [Handlebars] instance.
+	///
+	/// @param handlebars Handlebars instance.
 	void customize(Handlebars handlebars);
 }

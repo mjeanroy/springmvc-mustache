@@ -34,18 +34,12 @@ import java.lang.annotation.Target;
 
 import static com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvider.AUTO;
 
-/**
- * Automatically enable Mustache template rendering.
- *
- * <br/>
- *
- * This is the equivalent of enabling:
- * <ul>
- *   <li>{@link MustacheTemplateLoaderConfiguration}</li>
- *   <li>{@link MustacheEngineConfiguration}</li>
- *   <li>{@link MustacheWebConfiguration}</li>
- * </ul>
- */
+/// Automatically enable Mustache template rendering.
+///
+/// This is the equivalent of enabling:
+/// - [MustacheTemplateLoaderConfiguration]
+/// - [MustacheEngineConfiguration]
+/// - [MustacheWebConfiguration]
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
@@ -56,12 +50,11 @@ import static com.github.mjeanroy.springmvc.view.mustache.configuration.Mustache
 })
 public @interface EnableMustache {
 
-	/**
-	 * Set mustache provider implementation to import.
-	 * Default is provider that detect class available on classpath and
-	 * select best implementation.
-	 *
-	 * @return Mustache provider mode.
-	 */
+	/// Set mustache provider implementation to import.
+	///
+	/// Default is provider that detect class available on classpath and
+	/// select best implementation.
+	///
+	/// @return Mustache provider mode.
 	MustacheProvider provider() default AUTO;
 }

@@ -28,21 +28,17 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.reflect.Constructor;
 
-/**
- * Static Reflection Utilities, to use in unit test only.
- */
+/// Static Reflection Utilities, to use in unit test only.
 public final class ReflectionTestUtils {
 
 	// Ensure non instantiation.
 	private ReflectionTestUtils() {
 	}
 
-	/**
-	 * Get identity id of given instance as an hexadecimal string.
-	 *
-	 * @param object The object instance.
-	 * @return The identity.
-	 */
+	/// Get identity id of given instance as an hexadecimal string.
+	///
+	/// @param object The object instance.
+	/// @return The identity.
 	public static String hexIdentity(Object object) {
 		return Integer.toHexString(
 				System.identityHashCode(object)
@@ -61,13 +57,12 @@ public final class ReflectionTestUtils {
 		}
 	}
 
-	/**
-	 * Read field from given object instance.
-	 * @param instance Object instance.
-	 * @param fieldName Field name.
-	 * @param <T> Type of given field.
-	 * @return The field, may be {@code null}.
-	 */
+	/// Read field from given object instance.
+	///
+	/// @param instance Object instance.
+	/// @param fieldName Field name.
+	/// @param <T> Type of given field.
+	/// @return The field, may be `null`.
 	@SuppressWarnings("unchecked")
 	public static <T> T readField(Object instance, String fieldName) {
 		try {
@@ -78,26 +73,23 @@ public final class ReflectionTestUtils {
 		}
 	}
 
-	/**
-	 * Read field from given object instance.
-	 * @param instance Object instance.
-	 * @param fieldName Field name.
-	 * @param klass The class name.
-	 * @param <T> Type of given field.
-	 * @return The field, may be {@code null}.
-	 */
+	/// Read field from given object instance.
+	///
+	/// @param instance Object instance.
+	/// @param fieldName Field name.
+	/// @param klass The class name.
+	/// @param <T> Type of given field.
+	/// @return The field, may be `null`.
 	@SuppressWarnings("unchecked")
 	public static <T> T readField(Object instance, String fieldName, Class<T> klass) {
 		return (T) readField(instance, fieldName);
 	}
 
-	/**
-	 * Read static field from given class.
-	 * @param klass Class.
-	 * @param fieldName Field name.
-	 * @param <T> Type of given field.
-	 * @return The field, may be {@code null}.
-	 */
+	/// Read static field from given class.
+	/// @param klass Class.
+	/// @param fieldName Field name.
+	/// @param <T> Type of given field.
+	/// @return The field, may be `null`.
 	@SuppressWarnings("unchecked")
 	public static <T> T readStaticField(Class<?> klass, String fieldName) {
 		try {

@@ -35,25 +35,20 @@ import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Mustache compiler using Java Handlebar as real implementation.
- */
+/// Mustache compiler using Java Handlebar as real implementation.
 public final class HandlebarsCompiler extends AbstractMustacheCompiler {
 
-	/**
-	 * Handlebar compiler.
-	 * This compiler will be used internally to compile template.
-	 */
+	/// Handlebar compiler.
+	/// This compiler will be used internally to compile template.
 	private final Handlebars handlebars;
 
-	/**
-	 * Build new mustache compiler using Handlebars API.
-	 * This compiler need a {@link Handlebars} to produce compiled template
-	 * and a {@link MustacheTemplateLoader} to load partials defined in templates.
-	 *
-	 * @param handlebars     Handlebars Compiler (must not be null).
-	 * @param templateLoader Template Loader (must not be null).
-	 */
+	/// Build new mustache compiler using Handlebars API.
+	///
+	/// This compiler need a [Handlebars] to produce compiled template
+	/// and a [MustacheTemplateLoader] to load partials defined in templates.
+	///
+	/// @param handlebars     Handlebars Compiler (must not be null).
+	/// @param templateLoader Template Loader (must not be null).
 	public HandlebarsCompiler(Handlebars handlebars, MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 

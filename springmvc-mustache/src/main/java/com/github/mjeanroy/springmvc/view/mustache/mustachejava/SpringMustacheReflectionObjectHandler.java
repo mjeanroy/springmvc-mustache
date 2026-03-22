@@ -30,10 +30,8 @@ import com.github.mustachejava.reflect.ReflectionObjectHandler;
 import java.io.Writer;
 import java.util.List;
 
-/**
- * Reflection Handler that treat number zero as a falsey value.
- * See: https://github.com/spullara/mustache.java/pull/111
- */
+/// Reflection Handler that treat number zero as a falsey value.
+/// See: [GitHub](https://github.com/spullara/mustache.java/pull/111).
 class SpringMustacheReflectionObjectHandler extends ReflectionObjectHandler {
 
 	@Override

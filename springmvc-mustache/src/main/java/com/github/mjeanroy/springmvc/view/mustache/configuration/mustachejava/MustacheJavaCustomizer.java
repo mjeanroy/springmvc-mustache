@@ -26,15 +26,11 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.mustachejava;
 
 import com.github.mustachejava.MustacheFactory;
 
-/**
- * A customizer for {@link MustacheFactory} instance.
- */
+/// A customizer for [MustacheFactory] instance.
 public interface MustacheJavaCustomizer {
 
-	/**
-	 * Customize MustacheJava factory.
-	 *
-	 * @param mustacheFactory The initial mustache factory.
-	 */
+	/// Customize MustacheJava factory.
+	///
+	/// @param mustacheFactory The initial mustache factory.
 	void customize(MustacheFactory mustacheFactory);
 }

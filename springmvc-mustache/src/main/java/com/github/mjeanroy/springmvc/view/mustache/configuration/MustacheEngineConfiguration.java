@@ -29,14 +29,10 @@ import org.springframework.core.type.AnnotationMetadata;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.getAnnotationValue;
 
-/**
- * Select mustache configuration to use.
- */
+/// Select mustache configuration to use.
 public class MustacheEngineConfiguration implements ImportSelector {
 
-	/**
-	 * Create auto-configuration.
-	 */
+	/// Create auto-configuration.
 	public MustacheEngineConfiguration() {
 	}
 

@@ -34,23 +34,17 @@ import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Implementation of {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate} using
- * mustache.java as real template implementation.
- */
+/// Implementation of [com.github.mjeanroy.springmvc.view.mustache.MustacheTemplate] using
+/// mustache.java as real template implementation.
 final class MustacheJavaTemplate extends AbstractMustacheTemplate {
 
-	/**
-	 * Mustache.java template.
-	 * This template will be rendered using mustache.java api.
-	 */
+	/// Mustache.java template.
+	/// This template will be rendered using mustache.java api.
 	private final Mustache mustache;
 
-	/**
-	 * Build new template.
-	 *
-	 * @param mustache Mustache template.
-	 */
+	/// Build new template.
+	///
+	/// @param mustache Mustache template.
 	public MustacheJavaTemplate(Mustache mustache) {
 		this.mustache = notNull(mustache, "Mustache template must not be null");
 	}

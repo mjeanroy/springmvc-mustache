@@ -36,31 +36,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-/**
- * Configuration that will autoload mustache compiler from the Java SPI
- * interface ({@link ServiceLoader}).
- */
+/// Configuration that will autoload mustache compiler from the Java SPI
+/// interface ([ServiceLoader]).
 @Configuration
 public class SpiConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(SpiConfiguration.class);
 
-	/**
-	 * Create configuration.
-	 */
+	/// Create configuration.
 	public SpiConfiguration() {
 	}
 
-	/**
-	 * Create mustache compiler by loading available implementation from the SPI
-	 * interface ({@link ServiceLoader}).
-	 *
-	 * The first detected configuration is automatically used.
-	 *
-	 * @param templateLoader Template loader.
-	 * @return The mustache compiler.
-	 * @throws MustacheCompilerProviderException If not providers have been detected.
-	 */
+	/// Create mustache compiler by loading available implementation from the SPI
+	/// interface ([ServiceLoader]).
+	///
+	/// The first detected configuration is automatically used.
+	///
+	/// @param templateLoader Template loader.
+	/// @return The mustache compiler.
+	/// @throws MustacheCompilerProviderException If not providers have been detected.
 	@Bean
 	public MustacheCompiler mustacheCompiler(MustacheTemplateLoader templateLoader) {
 		List<MustacheCompilerProvider> providers = new ArrayList<>();

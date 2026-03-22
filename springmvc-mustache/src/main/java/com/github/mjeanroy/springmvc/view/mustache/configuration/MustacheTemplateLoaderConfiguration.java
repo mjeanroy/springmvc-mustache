@@ -32,10 +32,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-/**
- * Abstraction that create basic beans to use with
- * mustache template engine.
- */
+/// Abstraction that create basic beans to use with
+/// mustache template engine.
 @Configuration
 public class MustacheTemplateLoaderConfiguration {
 
@@ -43,23 +41,19 @@ public class MustacheTemplateLoaderConfiguration {
 
 	private final Environment environment;
 
-	/**
-	 * Create configuration with given environment.
-	 *
-	 * @param environment Environment, typically automatically injected by Spring.
-	 */
+	/// Create configuration with given environment.
+	///
+	/// @param environment Environment, typically automatically injected by Spring.
 	@Autowired
 	public MustacheTemplateLoaderConfiguration(Environment environment) {
 		this.environment = environment;
 	}
 
-	/**
-	 * Build mustache template loader.
-	 * This compiler use an instance of {@link org.springframework.core.io.DefaultResourceLoader}
-	 * under the hood.
-	 *
-	 * @return Mustache template loader implementation.
-	 */
+	/// Build mustache template loader.
+	/// This compiler use an instance of [org.springframework.core.io.DefaultResourceLoader]
+	/// under the hood.
+	///
+	/// @return Mustache template loader implementation.
 	@Bean
 	public MustacheTemplateLoaderFactoryBean mustacheTemplateLoader() {
 		log.info("Create default mustache template loader");
@@ -69,24 +63,20 @@ public class MustacheTemplateLoaderConfiguration {
 		return factoryBean;
 	}
 
-	/**
-	 * Resolve views prefix value.
-	 * Default is to look for "mustache.prefix" property or use {@link com.github.mjeanroy.springmvc.view.mustache.MustacheSettings#PREFIX} if
-	 * property cannot be resolved.
-	 *
-	 * @return Prefix value.
-	 */
+	/// Resolve views prefix value.
+	/// Default is to look for "mustache.prefix" property or use [com.github.mjeanroy.springmvc.view.mustache.MustacheSettings#PREFIX] if
+	/// property cannot be resolved.
+	///
+	/// @return Prefix value.
 	public String getPrefix() {
 		return environment.getProperty("mustache.prefix", MustacheSettings.PREFIX).trim();
 	}
 
-	/**
-	 * Resolve views suffix value.
-	 * Default is to look for "mustache.suffix" property or use {@link MustacheSettings#SUFFIX} if
-	 * property cannot be resolved.
-	 *
-	 * @return Suffix value.
-	 */
+	/// Resolve views suffix value.
+	/// Default is to look for "mustache.suffix" property or use [MustacheSettings#SUFFIX] if
+	/// property cannot be resolved.
+	///
+	/// @return Suffix value.
 	public String getSuffix() {
 		return environment.getProperty("mustache.suffix", MustacheSettings.SUFFIX).trim();
 	}

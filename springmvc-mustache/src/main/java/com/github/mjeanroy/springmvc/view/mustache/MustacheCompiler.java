@@ -26,62 +26,49 @@ package com.github.mjeanroy.springmvc.view.mustache;
 
 import java.util.Map;
 
-/**
- * Mustache compiler that can be used to compile mustache
- * templates with optional partials.
- */
+/// Mustache compiler that can be used to compile mustache
+/// templates with optional partials.
 public interface MustacheCompiler {
 
-	/**
-	 * Compile template.
-	 *
-	 * @param name Template name.
-	 * @return Compiled template.
-	 */
+	/// Compile template.
+	///
+	/// @param name Template name.
+	/// @return Compiled template.
 	MustacheTemplate compile(String name);
 
-	/**
-	 * Set prefix to prepend to template names before it is compiled.
-	 *
-	 * @param prefix New prefix value.
-	 */
+	/// Set prefix to prepend to template names before it is compiled.
+	///
+	/// @param prefix New prefix value.
 	void setPrefix(String prefix);
 
-	/**
-	 * Set suffix to append to template names before it is compiled.
-	 *
-	 * @param suffix New suffix value.
-	 */
+	/// Set suffix to append to template names before it is compiled.
+	///
+	/// @param suffix New suffix value.
 	void setSuffix(String suffix);
 
-	/**
-	 * Get prefix prepended to template names.
-	 *
-	 * @return Prefix.
-	 */
+	/// Get prefix prepended to template names.
+	///
+	/// @return Prefix.
 	String getPrefix();
 
-	/**
-	 * Get suffix appended to template names.
-	 *
-	 * @return Suffix.
-	 */
+	/// Get suffix appended to template names.
+	///
+	/// @return Suffix.
 	String getSuffix();
 
-	/**
-	 * Add temporary partials aliases.
-	 * These partials can be removed later with {@link #removeTemporaryPartialAliases()}
-	 * method.
-	 * Implementation should be thread safe.
-	 *
-	 * @param partialAliases Partials aliases to add.
-	 */
+	/// Add temporary partials aliases.
+	///
+	/// These partials can be removed later with [#removeTemporaryPartialAliases()]
+	/// method.
+	///
+	/// Implementation should be thread safe.
+	///
+	/// @param partialAliases Partials aliases to add.
 	void addTemporaryPartialAliases(Map<String, String> partialAliases);
 
-	/**
-	 * Remove temporary partial aliases previously added
-	 * with {@link #addTemporaryPartialAliases(java.util.Map)} method.
-	 * Implementation should be thread safe.
-	 */
+	/// Remove temporary partial aliases previously added
+	/// with [#addTemporaryPartialAliases(java.util.Map)] method.
+	///
+	/// Implementation should be thread safe.
 	void removeTemporaryPartialAliases();
 }

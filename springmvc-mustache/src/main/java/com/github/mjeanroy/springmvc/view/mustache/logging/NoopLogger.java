@@ -24,9 +24,7 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-/**
- * Implementation of {@link Logger} that does nothing.
- */
+/// Implementation of [Logger] that does nothing.
 class NoopLogger implements Logger {
 
 	private static final NoopLogger INSTANCE = new NoopLogger();

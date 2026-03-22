@@ -29,14 +29,10 @@ import com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-/**
- * Factory for {@link Logger}.
- */
+/// Factory for [Logger].
 public final class LoggerFactory {
 
-	/**
-	 * The custom logger provider provided using the Service Provider Interface.
-	 */
+	/// The custom logger provider provided using the Service Provider Interface.
 	private static final LoggerProvider loggerProvider;
 
 	static {
@@ -50,12 +46,10 @@ public final class LoggerFactory {
 	private LoggerFactory() {
 	}
 
-	/**
-	 * Create logger from given class name as logger name.
-	 *
-	 * @param klass Class name.
-	 * @return Logger.
-	 */
+	/// Create logger from given class name as logger name.
+	///
+	/// @param klass Class name.
+	/// @return Logger.
 	public static Logger getLogger(Class<?> klass) {
 		// First, discover using the ServiceProvider API.
 		if (loggerProvider != null) {

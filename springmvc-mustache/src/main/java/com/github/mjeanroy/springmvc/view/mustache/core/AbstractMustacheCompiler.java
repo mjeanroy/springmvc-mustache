@@ -35,25 +35,19 @@ import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Abstraction that define commons code to all mustache
- * compilers.
- */
+/// Abstraction that define commons code to all mustache
+/// compilers.
 public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractMustacheCompiler.class);
 
-	/**
-	 * Mustache template loader that will be used to load templates
-	 * and partials.
-	 */
+	/// Mustache template loader that will be used to load templates
+	/// and partials.
 	protected final MustacheTemplateLoader templateLoader;
 
-	/**
-	 * Build new compiler.
-	 *
-	 * @param templateLoader Template loader to use.
-	 */
+	/// Build new compiler.
+	///
+	/// @param templateLoader Template loader to use.
 	protected AbstractMustacheCompiler(MustacheTemplateLoader templateLoader) {
 		this.templateLoader = notNull(templateLoader, "Template loader must not be null");
 	}
@@ -71,16 +65,15 @@ public abstract class AbstractMustacheCompiler implements MustacheCompiler {
 		}
 	}
 
-	/**
-	 * Process template compilation.
-	 * This methods should rethrows exception since it will be
-	 * catches later (and a new {@link MustacheCompilationException} will
-	 * be thrown).
-	 *
-	 * @param name Template name.
-	 * @return Mustache template.
-	 * @throws Exception If something bad happens (will be catched and rethrows).
-	 */
+	/// Process template compilation.
+	///
+	/// This methods should rethrows exception since it will be
+	/// catches later (and a new [MustacheCompilationException] will
+	/// be thrown).
+	///
+	/// @param name Template name.
+	/// @return Mustache template.
+	/// @throws Exception If something bad happens (will be catched and rethrows).
 	protected abstract MustacheTemplate doCompile(String name) throws Exception;
 
 	@Override

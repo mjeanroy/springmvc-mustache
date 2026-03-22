@@ -42,9 +42,7 @@ import java.util.Collection;
 
 import static java.util.Collections.emptyList;
 
-/**
- * Spring configuration for {@link MustacheJavaCompiler} engine.
- */
+/// Spring configuration for [MustacheJavaCompiler] engine.
 @Configuration
 public class MustacheJavaConfiguration {
 
@@ -54,58 +52,48 @@ public class MustacheJavaConfiguration {
 
 	private Collection<MustacheJavaCustomizer> customizers;
 
-	/**
-	 * Create configuration with given environment.
-	 *
-	 * @param environment Environment, typically automatically injected by Spring.
-	 */
+	/// Create configuration with given environment.
+	///
+	/// @param environment Environment, typically automatically injected by Spring.
 	@Autowired
 	public MustacheJavaConfiguration(Environment environment) {
 		this.environment = environment;
 		this.customizers = emptyList();
 	}
 
-	/**
-	 * Set customizers.
-	 *
-	 * @param customizers Customizers, typically automatically injected by Spring.
-	 */
+	/// Set customizers.
+	///
+	/// @param customizers Customizers, typically automatically injected by Spring.
 	@Autowired(required = false)
 	public void setCustomizers(Collection<MustacheJavaCustomizer> customizers) {
 		this.customizers = customizers;
 	}
 
-	/**
-	 * Build mustache compiler.
-	 *
-	 * @param mustacheFactory The mustache factory to use.
-	 * @param templateLoader Template loader.
-	 * @return Mustache compiler implementation.
-	 */
+	/// Build mustache compiler.
+	///
+	/// @param mustacheFactory The mustache factory to use.
+	/// @param templateLoader Template loader.
+	/// @return Mustache compiler implementation.
 	@Bean
 	public MustacheCompiler mustacheCompiler(MustacheFactory mustacheFactory, MustacheTemplateLoader templateLoader) {
 		log.info("Create mustache.java compiler");
 		return new MustacheJavaCompiler(mustacheFactory, templateLoader);
 	}
 
-	/**
-	 * The mustache template resolver, use {@link MustacheTemplateLoader}.
-	 *
-	 * @param templateLoader Template loader.
-	 * @return The template resolver.
-	 */
+	/// The mustache template resolver, use [MustacheTemplateLoader].
+	///
+	/// @param templateLoader Template loader.
+	/// @return The template resolver.
 	@Bean
 	public MustacheResolver mustacheResolver(MustacheTemplateLoader templateLoader) {
 		return new SpringMustacheResolver(templateLoader);
 	}
 
-	/**
-	 * The mustache factory used to render mustache templates.
-	 *
-	 * @param mustacheResolver Template resolver.
-	 * @param templateLoader Template loader.
-	 * @return The mustache factory.
-	 */
+	/// The mustache factory used to render mustache templates.
+	///
+	/// @param mustacheResolver Template resolver.
+	/// @param templateLoader Template loader.
+	/// @return The mustache factory.
 	@Bean
 	public MustacheFactory mustacheFactory(MustacheResolver mustacheResolver, MustacheTemplateLoader templateLoader) {
 		Integer recursionLimit = getRecursionLimit();

@@ -50,18 +50,13 @@ import java.util.ServiceLoader;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Classes.isPresent;
 import static java.util.Arrays.sort;
 
-/**
- * Set of mustache provider.
- *
- * A mustache provider is an implementation that can be used
- * to render mustache templates.
- */
+/// Set of mustache provider.
+/// A mustache provider is an implementation that can be used
+/// to render mustache templates.
 public enum MustacheProvider {
 
-	/**
-	 * Mustache implementation that use implementation registered using the ServiceProvider Interface added
-	 * with jdk 1.6.
-	 */
+	/// Mustache implementation that use implementation registered using the ServiceProvider Interface added
+	/// with jdk 1.6.
 	SPI {
 		@Override
 		public boolean isAvailable() {
@@ -79,10 +74,8 @@ public enum MustacheProvider {
 		}
 	},
 
-	/**
-	 * Mustache implementation that use jmustache as
-	 * internal compiler.
-	 */
+	/// Mustache implementation that use jmustache as
+	/// internal compiler.
 	JMUSTACHE {
 		@Override
 		public boolean isAvailable() {
@@ -100,13 +93,11 @@ public enum MustacheProvider {
 			return new JMustacheConfiguration(environment).mustacheCompiler(compiler, templateLoader);
 		}
 
-		/**
-		 * The JMustache compiler.
-		 *
-		 * @param applicationContext The application context.
-		 * @param environment Application context environment.
-		 * @return The compiler.
-		 */
+		/// The JMustache compiler.
+		///
+		/// @param applicationContext The application context.
+		/// @param environment Application context environment.
+		/// @return The compiler.
 		private Mustache.Compiler compiler(ApplicationContext applicationContext, Environment environment) throws Exception {
 			try {
 				return applicationContext.getBean(Mustache.Compiler.class);
@@ -121,10 +112,8 @@ public enum MustacheProvider {
 		}
 	},
 
-	/**
-	 * Mustache implementation that use handlebar java as
-	 * internal compiler.
-	 */
+	/// Mustache implementation that use handlebar java as
+	/// internal compiler.
 	HANDLEBARS {
 		@Override
 		public boolean isAvailable() {
@@ -150,15 +139,13 @@ public enum MustacheProvider {
 			return applicationContext.getBeansOfType(HandlebarsCustomizer.class).values();
 		}
 
-		/**
-		 * Create handlebars instance.
-		 *
-		 * @param applicationContext Application context.
-		 * @param environment Application context environment.
-		 * @param customizers Customizers applied on created {@link Handlebars} instance.
-		 * @return Handlebars instance.
-		 * @throws Exception If an error occurred while creating {@link Handlebars} bean.
-		 */
+		/// Create handlebars instance.
+		///
+		/// @param applicationContext Application context.
+		/// @param environment Application context environment.
+		/// @param customizers Customizers applied on created [Handlebars] instance.
+		/// @return Handlebars instance.
+		/// @throws Exception If an error occurred while creating [Handlebars] bean.
 		private Handlebars handlebars(ApplicationContext applicationContext, Environment environment, Collection<HandlebarsCustomizer> customizers) throws Exception {
 			try {
 				return applicationContext.getBean(Handlebars.class);
@@ -176,10 +163,8 @@ public enum MustacheProvider {
 		}
 	},
 
-	/**
-	 * Mustache implementation that use mustache.java java as
-	 * internal compiler.
-	 */
+	/// Mustache implementation that use mustache.java java as
+	/// internal compiler.
 	MUSTACHE_JAVA {
 		@Override
 		public boolean isAvailable() {
@@ -209,10 +194,8 @@ public enum MustacheProvider {
 		}
 	},
 
-	/**
-	 * Option that detect class available on classpath
-	 * and select the best implementation.
-	 */
+	/// Option that detect class available on classpath
+	/// and select the best implementation.
 	AUTO {
 		@Override
 		public boolean isAvailable() {
@@ -236,65 +219,51 @@ public enum MustacheProvider {
 		}
 	};
 
-	/**
-	 * Get configuration class to import.
-	 *
-	 * @return Configuration class.
-	 */
+	/// Get configuration class to import.
+	///
+	/// @return Configuration class.
 	public abstract String configurationClass();
 
-	/**
-	 * Instantiate compiler using appropriate implementation.
-	 *
-	 * @param applicationContext Application to retrieve dependent beans.
-	 * @return Mustache compiler.
-	 * @throws Exception If an error occurred while instantiating bean.
-	 */
+	/// Instantiate compiler using appropriate implementation.
+	///
+	/// @param applicationContext Application to retrieve dependent beans.
+	/// @return Mustache compiler.
+	/// @throws Exception If an error occurred while instantiating bean.
 	public MustacheCompiler instantiate(ApplicationContext applicationContext) throws Exception {
 		MustacheTemplateLoader templateLoader = mustacheTemplateLoader(applicationContext);
 		Environment environment = applicationContext.getBean(Environment.class);
 		return doInstantiate(applicationContext, environment, templateLoader);
 	}
 
-	/**
-	 * Create mustache compiler to use application context.
-	 *
-	 * @param applicationContext The application context, used to retrieve dependencies.
-	 * @param environment Application Context environment.
-	 * @param templateLoader Template loader.
-	 * @return The mustache compiler.
-	 * @throws Exception If an error occurred while instantiating compiler.
-	 */
+	/// Create mustache compiler to use application context.
+	///
+	/// @param applicationContext The application context, used to retrieve dependencies.
+	/// @param environment Application Context environment.
+	/// @param templateLoader Template loader.
+	/// @return The mustache compiler.
+	/// @throws Exception If an error occurred while instantiating compiler.
 	abstract MustacheCompiler doInstantiate(ApplicationContext applicationContext, Environment environment, MustacheTemplateLoader templateLoader) throws Exception;
 
-	/**
-	 * Get mustache template loader from given application context.
-	 *
-	 * @param applicationContext The application context.
-	 * @return The template loader implementation.
-	 */
+	/// Get mustache template loader from given application context.
+	///
+	/// @param applicationContext The application context.
+	/// @return The template loader implementation.
 	MustacheTemplateLoader mustacheTemplateLoader(ApplicationContext applicationContext) {
 		return applicationContext.getBean(MustacheTemplateLoader.class);
 	}
 
-	/**
-	 * Check if implementation is available.
-	 *
-	 * @return True if implementation can safely be used, false otherwise.
-	 */
+	/// Check if implementation is available.
+	///
+	/// @return True if implementation can safely be used, false otherwise.
 	public abstract boolean isAvailable();
 
-	/**
-	 * Logger.
-	 */
+	/// Logger.
 	private static final Logger log = LoggerFactory.getLogger(MustacheProvider.class);
 
-	/**
-	 * Detect mustache provider.
-	 * Use classpath detection under the hood.
-	 *
-	 * @return Available mustache provider.
-	 */
+	/// Detect mustache provider.
+	/// Use classpath detection under the hood.
+	///
+	/// @return Available mustache provider.
 	private static MustacheProvider detectProvider() {
 		MustacheProvider[] values = MustacheProvider.values();
 

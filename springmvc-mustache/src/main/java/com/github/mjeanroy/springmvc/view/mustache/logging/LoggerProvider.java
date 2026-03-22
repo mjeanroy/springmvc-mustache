@@ -24,19 +24,15 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.logging;
 
-/**
- * A provider that can build valid {@link Logger} implementation and will be discovered
- * using Service Provider Interface.
- *
- * @see java.util.ServiceLoader
- */
+/// A provider that can build valid [Logger] implementation and will be discovered
+/// using Service Provider Interface.
+///
+/// @see java.util.ServiceLoader
 public interface LoggerProvider {
 
-	/**
-	 * Create the logger.
-	 *
-	 * @param klass The logger name.
-	 * @return The logger instance.
-	 */
+	/// Create the logger.
+	///
+	/// @param klass The logger name.
+	/// @return The logger instance.
 	Logger getLogger(Class<?> klass);
 }

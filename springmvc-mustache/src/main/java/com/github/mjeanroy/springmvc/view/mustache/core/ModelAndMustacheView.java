@@ -35,96 +35,80 @@ import java.util.Map;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Extension of {@link org.springframework.web.servlet.ModelAndView} class
- * that provide shortcuts to get and add partial mappings that will be used
- * to render view.
- */
+/// Extension of [org.springframework.web.servlet.ModelAndView] class
+/// that provide shortcuts to get and add partial mappings that will be used
+/// to render view.
 public class ModelAndMustacheView extends ModelAndView {
 
-	/**
-	 * Default constructor for bean-style usage: populating bean
-	 * properties instead of passing in constructor arguments.
-	 * @see #setView(org.springframework.web.servlet.View)
-	 * @see #setViewName(String)
-	 */
+	/// Default constructor for bean-style usage: populating bean
+	/// properties instead of passing in constructor arguments.
+	///
+	/// @see #setView(org.springframework.web.servlet.View)
+	/// @see #setViewName(String)
 	public ModelAndMustacheView() {
 		super();
 	}
 
-	/**
-	 * Convenient constructor when there is no model data to expose.
-	 * Can also be used in conjunction with {@code addObject}.
-	 * @param viewName name of the View to render, to be resolved
-	 * by the DispatcherServlet's ViewResolver
-	 * @see #addObject
-	 */
+	/// Convenient constructor when there is no model data to expose.
+	/// Can also be used in conjunction with `addObject`.
+	///
+	/// @param viewName name of the View to render, to be resolved by the DispatcherServlet's ViewResolver
+	/// @see #addObject
 	public ModelAndMustacheView(String viewName) {
 		super(viewName);
 	}
 
-	/**
-	 * Convenient constructor when there is no model data to expose.
-	 * Can also be used in conjunction with {@code addObject}.
-	 * @param view View object to render
-	 * @see #addObject
-	 */
+	/// Convenient constructor when there is no model data to expose.
+	/// Can also be used in conjunction with `addObject`.
+	///
+	/// @param view View object to render
+	/// @see #addObject
 	public ModelAndMustacheView(MustacheView view) {
 		super(view);
 	}
 
-	/**
-	 * Creates new ModelAndView given a view name and a model.
-	 * @param viewName name of the View to render, to be resolved
-	 * by the DispatcherServlet's ViewResolver
-	 * @param model Map of model names (Strings) to model objects
-	 * (Objects). Model entries may not be {@code null}, but the
-	 * model Map may be {@code null} if there is no model data.
-	 */
+	/// Creates new ModelAndView given a view name and a model.
+	///
+	/// @param viewName name of the View to render, to be resolved by the DispatcherServlet's ViewResolver
+	/// @param model Map of model names (Strings) to model objects (Objects).
+	///              Model entries may not be `null`, but the model Map may be `null` if there is no model data.
 	public ModelAndMustacheView(String viewName, Map<String, ?> model) {
 		super(viewName, model);
 	}
 
-	/**
-	 * Creates new ModelAndView given a View object and a model.
-	 * Note: the supplied model data is copied into the internal
-	 * storage of this class. You should not consider to modify the supplied
-	 * Map after supplying it to this class
-	 * @param view View object to render
-	 * @param model Map of model names (Strings) to model objects
-	 * (Objects). Model entries may not be {@code null}, but the
-	 * model Map may be {@code null} if there is no model data.
-	 */
+	/// Creates new ModelAndView given a View object and a model.
+	/// Note: the supplied model data is copied into the internal
+	/// storage of this class. You should not consider to modify the supplied
+	/// Map after supplying it to this class
+	///
+	/// @param view View object to render
+	/// @param model Map of model names (Strings) to model objects (Objects).
+	///              Model entries may not be `null`, but the model Map may be `null` if there is no model data.
 	public ModelAndMustacheView(MustacheView view, Map<String, ?> model) {
 		super(view, model);
 	}
 
-	/**
-	 * Convenient constructor to take a single model object.
-	 * @param viewName name of the View to render, to be resolved
-	 * by the DispatcherServlet's ViewResolver
-	 * @param modelName name of the single entry in the model
-	 * @param modelObject the single model object
-	 */
+	/// Convenient constructor to take a single model object.
+	///
+	/// @param viewName name of the View to render, to be resolved by the DispatcherServlet's ViewResolver
+	/// @param modelName name of the single entry in the model
+	/// @param modelObject the single model object
 	public ModelAndMustacheView(String viewName, String modelName, Object modelObject) {
 		super(viewName, modelName, modelObject);
 	}
 
-	/**
-	 * Convenient constructor to take a single model object.
-	 * @param view View object to render
-	 * @param modelName name of the single entry in the model
-	 * @param modelObject the single model object
-	 */
+	/// Convenient constructor to take a single model object.
+	///
+	/// @param view View object to render
+	/// @param modelName name of the single entry in the model
+	/// @param modelObject the single model object
 	public ModelAndMustacheView(MustacheView view, String modelName, Object modelObject) {
 		super(view, modelName, modelObject);
 	}
 
-	/**
-	 * Get current partials stored in view.
-	 *
-	 * @return Current partials.
-	 */
+	/// Get current partials stored in view.
+	///
+	/// @return Current partials.
 	@SuppressWarnings("unchecked")
 	public Map<String, String> getPartials() {
 		final View view = this.getView();
@@ -152,12 +136,10 @@ public class ModelAndMustacheView extends ModelAndView {
 		}
 	}
 
-	/**
-	 * Add new partials mapping to the view.
-	 *
-	 * @param key Partial name.
-	 * @param name Partial path.
-	 */
+	/// Add new partials mapping to the view.
+	///
+	/// @param key Partial name.
+	/// @param name Partial path.
 	public void addPartial(final String key, final String name) {
 		notNull(key, "Partial key must be defined");
 		notNull(name, "Partials path must be defined");
@@ -176,11 +158,9 @@ public class ModelAndMustacheView extends ModelAndView {
 		}
 	}
 
-	/**
-	 * Add new partials mapping to the view.
-	 *
-	 * @param partials Partials.
-	 */
+	/// Add new partials mapping to the view.
+	///
+	/// @param partials Partials.
 	public void addPartials(final Map<String, String> partials) {
 		notNull(partials, "Partials mappings must not be null");
 

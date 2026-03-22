@@ -26,26 +26,24 @@ package com.github.mjeanroy.springmvc.view.mustache.commons.lang;
 
 import java.util.Collection;
 
-/**
- * Commons static pre-conditions utilities.
- */
+/// Commons static pre-conditions utilities.
 public final class PreConditions {
 
 	private PreConditions() {
 	}
 
-	/**
-	 * Check that a given object is not null.
-	 * If object is null, a {@link java.lang.NullPointerException} is thrown
-	 * with given message.
-	 * If object is not null, it is automatically returns.
-	 *
-	 * @param object  Object to check.
-	 * @param message Exception message.
-	 * @param <T>     Object Generic Type.
-	 * @return Non null object.
-	 * @throws java.lang.NullPointerException if object is null.
-	 */
+	/// Check that a given object is not null.
+	///
+	/// If object is null, a [java.lang.NullPointerException] is thrown
+	/// with given message.
+	///
+	/// If object is not null, it is automatically returns.
+	///
+	/// @param object  Object to check.
+	/// @param message Exception message.
+	/// @param <T>     Object Generic Type.
+	/// @return Non null object.
+	/// @throws java.lang.NullPointerException if object is null.
 	public static <T> T notNull(T object, String message) {
 		if (object == null) {
 			throw new NullPointerException(message);
@@ -53,16 +51,14 @@ public final class PreConditions {
 		return object;
 	}
 
-	/**
-	 * Check if an array is not null and not empty.
-	 * If array is null or empty, an {@link java.lang.IllegalArgumentException} is thrown.
-	 * If array is not null and not empty, it will be automatically returned.
-	 *
-	 * @param array Array to check.
-	 * @param message Exception message.
-	 * @param <T> Type of array elements.
-	 * @return Original array.
-	 */
+	/// Check if an array is not null and not empty:
+	/// - If array is null or empty, an [java.lang.IllegalArgumentException] is thrown.
+	/// - If array is not null and not empty, it will be automatically returned.
+	///
+	/// @param array Array to check.
+	/// @param message Exception message.
+	/// @param <T> Type of array elements.
+	/// @return Original array.
 	public static <T> T[] notEmpty(T[] array, String message) {
 		if (array == null || array.length == 0) {
 			throw new IllegalArgumentException(message);
@@ -70,16 +66,14 @@ public final class PreConditions {
 		return array;
 	}
 
-	/**
-	 * Check if a collection is not null and not empty.
-	 * If collection is null or empty, an {@link java.lang.IllegalArgumentException} is thrown.
-	 * If collection is not null and not empty, it will be automatically returned.
-	 *
-	 * @param array Collection to check.
-	 * @param message Exception message.
-	 * @param <T> Type of array elements.
-	 * @return Original collection.
-	 */
+	/// Check if a collection is not null and not empty:
+	/// - If collection is null or empty, an [java.lang.IllegalArgumentException] is thrown.
+	/// - If collection is not null and not empty, it will be automatically returned.
+	///
+	/// @param array Collection to check.
+	/// @param message Exception message.
+	/// @param <T> Type of array elements.
+	/// @return Original collection.
 	public static <T> Collection<T> notEmpty(Collection<T> array, String message) {
 		if (array == null || array.size() == 0) {
 			throw new IllegalArgumentException(message);
@@ -87,18 +81,15 @@ public final class PreConditions {
 		return array;
 	}
 
-	/**
-	 * Check that a given string value is not blank (i.e. not null,
-	 * not empty and does not contain only whitespaces).
-	 * If value is blank, an {@link java.lang.IllegalArgumentException} is
-	 * thrown.
-	 * If value is not blank, original string value is automatically returned.
-	 *
-	 * @param value String value.
-	 * @param message Error message given to exception.
-	 * @return Original string value.
-	 * @throws java.lang.IllegalArgumentException if value is blank.
-	 */
+	/// Check that a given string value is not blank (i.e. not null,
+	/// not empty and does not contain only whitespaces):
+	/// - If value is blank, an [java.lang.IllegalArgumentException] is thrown.
+	/// - If value is not blank, original string value is automatically returned.
+	///
+	/// @param value String value.
+	/// @param message Error message given to exception.
+	/// @return Original string value.
+	/// @throws java.lang.IllegalArgumentException if value is blank.
 	public static String hasText(String value, String message) {
 		if (value == null) {
 			throw new IllegalArgumentException(message);

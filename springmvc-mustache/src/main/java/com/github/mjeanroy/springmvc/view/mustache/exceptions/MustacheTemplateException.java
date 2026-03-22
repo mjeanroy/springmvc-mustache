@@ -24,16 +24,12 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
-/**
- * Exception thrown when template mustache throws an IO Exception.
- */
+/// Exception thrown when template mustache throws an IO Exception.
 public final class MustacheTemplateException extends RuntimeException {
 
-	/**
-	 * Build new exception using origin exception.
-	 *
-	 * @param ex Original exception.
-	 */
+	/// Build new exception using origin exception.
+	///
+	/// @param ex Original exception.
 	public MustacheTemplateException(Exception ex) {
 		super(ex);
 	}

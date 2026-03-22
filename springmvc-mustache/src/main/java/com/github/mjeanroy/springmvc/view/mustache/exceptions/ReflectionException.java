@@ -26,52 +26,40 @@ package com.github.mjeanroy.springmvc.view.mustache.exceptions;
 
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * Throwed when a problem occurs during reflection access.
- */
+/// Thrown when a problem occurs during reflection access.
 public class ReflectionException extends RuntimeException {
 
-	/**
-	 * Create exception.
-	 *
-	 * @param ex Original exception.
-	 */
+	/// Create exception.
+	///
+	/// @param ex Original exception.
 	public ReflectionException(ClassNotFoundException ex) {
 		super(ex);
 	}
 
-	/**
-	 * Create exception.
-	 *
-	 * @param ex Original exception.
-	 */
+	/// Create exception.
+	///
+	/// @param ex Original exception.
 	public ReflectionException(NoSuchMethodException ex) {
 		super(ex);
 	}
 
-	/**
-	 * Create exception.
-	 *
-	 * @param ex Original exception.
-	 */
+	/// Create exception.
+	///
+	/// @param ex Original exception.
 	public ReflectionException(InstantiationException ex) {
 		super(ex);
 	}
 
-	/**
-	 * Create exception.
-	 *
-	 * @param ex Original exception.
-	 */
+	/// Create exception.
+	///
+	/// @param ex Original exception.
 	public ReflectionException(IllegalAccessException ex) {
 		super(ex);
 	}
 
-	/**
-	 * Create exception.
-	 *
-	 * @param ex Original exception.
-	 */
+	/// Create exception.
+	///
+	/// @param ex Original exception.
 	public ReflectionException(InvocationTargetException ex) {
 		super(ex);
 	}

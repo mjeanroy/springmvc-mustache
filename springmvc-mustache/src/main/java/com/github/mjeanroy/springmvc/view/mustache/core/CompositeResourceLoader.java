@@ -38,30 +38,24 @@ import java.util.List;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notEmpty;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Implementation of spring {@link org.springframework.core.io.ResourceLoader}
- * that will use internally a set of resource loaders.
- * When a resource is requested, each resources loaders will be queried until one find
- * an existing resources.
- * If no one find an existing resource, the last computed resource is returned.
- */
+/// Implementation of spring [org.springframework.core.io.ResourceLoader]
+/// that will use internally a set of resource loaders.
+///
+/// When a resource is requested, each resources loaders will be queried until one find
+/// an existing resources.
+///
+/// If no one find an existing resource, the last computed resource is returned.
 public class CompositeResourceLoader implements ResourceLoader {
 
-	/**
-	 * Class logger.
-	 */
+	/// Class logger.
 	private static final Logger log = LoggerFactory.getLogger(CompositeResourceLoader.class);
 
-	/**
-	 * Set of resource loaders that will be used internally.
-	 */
+	/// Set of resource loaders that will be used internally.
 	private final List<ResourceLoader> resourceLoaders;
 
-	/**
-	 * Create new composite resource loader.
-	 *
-	 * @param resourceLoaders Collection of resource loaders.
-	 */
+	/// Create new composite resource loader.
+	///
+	/// @param resourceLoaders Collection of resource loaders.
 	public CompositeResourceLoader(Collection<ResourceLoader> resourceLoaders) {
 		notNull(resourceLoaders, "Resource loaders must not be null");
 		notEmpty(resourceLoaders, "Resource loaders must not be empty");

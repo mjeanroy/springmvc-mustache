@@ -27,17 +27,13 @@ package com.github.mjeanroy.springmvc.view.mustache.configuration.spi;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheCompiler;
 import com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader;
 
-/**
- * Provider a mustache compiler, need to be registered using the Service Provider Interface
- * available since java 6 (see: https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html).
- */
+/// Provider a mustache compiler, need to be registered using the Service Provider Interface
+/// available since java 6 (see: [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html)).
 public interface MustacheCompilerProvider {
 
-	/**
-	 * Create mustache compiler, returned value will be added to the application context.
-	 *
-	 * @param templateLoader Template loader to use.
-	 * @return The mustache compiler.
-	 */
+	/// Create mustache compiler, returned value will be added to the application context.
+	///
+	/// @param templateLoader Template loader to use.
+	/// @return The mustache compiler.
 	MustacheCompiler mustacheCompiler(MustacheTemplateLoader templateLoader);
 }

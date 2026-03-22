@@ -45,60 +45,44 @@ import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Default template loader implementation.
- *
- * This class can be considered as thread safe if internal state is not
- * modified (if prefix and suffix are not modified, or if aliases are not added).
- */
+/// Default template loader implementation.
+///
+/// This class can be considered as thread safe if internal state is not
+/// modified (if prefix and suffix are not modified, or if aliases are not added).
 public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 
 	private static final Logger log = LoggerFactory.getLogger(DefaultTemplateLoader.class);
 
-	/**
-	 * Resource loader that will be used to retrieve mustache template
-	 * from template name.
-	 */
+	/// Resource loader that will be used to retrieve mustache template
+	/// from template name.
 	private final ResourceLoader resourceLoader;
 
-	/**
-	 * Prefix to prepend to resource before retrieving template name.
-	 */
+	/// Prefix to prepend to resource before retrieving template name.
 	// Volatile because it can be accessed by more than one thread
 	private volatile String prefix;
 
-	/**
-	 * Suffix to append to resource before retrieving template name.
-	 */
+	/// Suffix to append to resource before retrieving template name.
 	// Volatile because it can be accessed by more than one thread
 	private volatile String suffix;
 
-	/**
-	 * The charset to use.
-	 */
+	/// The charset to use.
 	// Volatile because it can be accessed by more than one thread
 	private volatile Charset charset;
 
-	/**
-	 * Partial aliases.
-	 */
+	/// Partial aliases.
 	private final Map<String, String> partialAliases = new HashMap<>();
 
-	/**
-	 * Temporary partial aliases: i.e. aliases that can be added
-	 * before compilation with {@link #addPartialAliases(java.util.Map)} method and
-	 * removed after compilation with {@link #removeTemporaryPartialAliases()} method.
-	 * This implementation use a thread local object to be thread safe.
-	 */
+	/// Temporary partial aliases: i.e. aliases that can be added
+	/// before compilation with [#addPartialAliases(java.util.Map)] method and
+	/// removed after compilation with [#removeTemporaryPartialAliases()] method.
+	/// This implementation use a thread local object to be thread safe.
 	private final ThreadLocal<Map<String, String>> temporaryPartialAliases = ThreadLocal.withInitial(
 			HashMap::new
 	);
 
-	/**
-	 * Build new template loader.
-	 *
-	 * @param resourceLoader Resource loader implementation to use.
-	 */
+	/// Build new template loader.
+	///
+	/// @param resourceLoader Resource loader implementation to use.
 	public DefaultTemplateLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = notNull(resourceLoader, "Resource loader must not be null");
 		this.charset = StandardCharsets.UTF_8;
@@ -106,13 +90,11 @@ public final class DefaultTemplateLoader implements MustacheTemplateLoader {
 		this.suffix = null;
 	}
 
-	/**
-	 * Build new template loader.
-	 *
-	 * @param resourceLoader Resource loader implementation to use.
-	 * @param prefix         Prefix to prepend to template name before loading it using resource loader.
-	 * @param suffix         Suffix to append to template before loading it using resource loader.
-	 */
+	/// Build new template loader.
+	///
+	/// @param resourceLoader Resource loader implementation to use.
+	/// @param prefix         Prefix to prepend to template name before loading it using resource loader.
+	/// @param suffix         Suffix to append to template before loading it using resource loader.
 	public DefaultTemplateLoader(ResourceLoader resourceLoader, String prefix, String suffix) {
 		this(resourceLoader);
 		this.prefix = notNull(prefix, "Prefix must not be null");

@@ -40,26 +40,21 @@ import java.util.Objects;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static com.samskivert.mustache.Mustache.Compiler;
 
-/**
- * Mustache Compiler using JMustache as real implementation.
- */
+/// Mustache Compiler using JMustache as real implementation.
 public final class JMustacheCompiler extends AbstractMustacheCompiler {
 
 	private static final Logger log = LoggerFactory.getLogger(JMustacheCompiler.class);
 
-	/**
-	 * Original JMustache compiler.
-	 */
+	/// Original JMustache compiler.
 	private final Compiler compiler;
 
-	/**
-	 * Build new mustache compiler using JMustache API.
-	 * This compiler need a {@link Compiler} to produce compiled template
-	 * and a {@link MustacheTemplateLoader} to load partials defined in templates.
-	 *
-	 * @param compiler JMustache Compiler.
-	 * @param templateLoader Template Loader.
-	 */
+	/// Build new mustache compiler using JMustache API.
+	///
+	/// This compiler need a [Compiler] to produce compiled template
+	/// and a [MustacheTemplateLoader] to load partials defined in templates.
+	///
+	/// @param compiler JMustache Compiler.
+	/// @param templateLoader Template Loader.
 	public JMustacheCompiler(Compiler compiler, MustacheTemplateLoader templateLoader) {
 		super(templateLoader);
 		this.compiler = notNull(compiler, "Compiler must not be null");
@@ -77,13 +72,11 @@ public final class JMustacheCompiler extends AbstractMustacheCompiler {
 		}
 	}
 
-	/**
-	 * Load template.
-	 *
-	 * @param template Template to load.
-	 * @param templateLoader Template loader to use.
-	 * @return The template.
-	 */
+	/// Load template.
+	///
+	/// @param template Template to load.
+	/// @param templateLoader Template loader to use.
+	/// @return The template.
 	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
 		return compiler.withLoader(new JMustacheTemplateLoader(templateLoader)).compile(template);
 	}

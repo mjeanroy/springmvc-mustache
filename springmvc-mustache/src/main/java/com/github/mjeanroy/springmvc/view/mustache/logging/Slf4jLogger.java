@@ -26,14 +26,10 @@ package com.github.mjeanroy.springmvc.view.mustache.logging;
 
 import org.slf4j.LoggerFactory;
 
-/**
- * Implementation of {@link Logger} backed by SLF4J.
- */
+/// Implementation of [Logger] backed by SLF4J.
 class Slf4jLogger implements Logger {
 
-	/**
-	 * Internal SLF4J logger.
-	 */
+	/// Internal SLF4J logger.
 	private final org.slf4j.Logger log;
 
 	Slf4jLogger(Class<?> klass) {

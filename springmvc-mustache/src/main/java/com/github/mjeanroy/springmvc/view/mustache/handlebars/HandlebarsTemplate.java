@@ -35,23 +35,17 @@ import java.util.Objects;
 
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Implementation of {@link MustacheTemplate} using Java Handlebar
- * as real template implementation.
- */
+/// Implementation of [MustacheTemplate] using Java Handlebar
+/// as real template implementation.
 final class HandlebarsTemplate extends AbstractMustacheTemplate {
 
-	/**
-	 * Original handlebar template that will be used to render
-	 * mustache template.
-	 */
+	/// Original handlebar template that will be used to render
+	/// mustache template.
 	private final Template template;
 
-	/**
-	 * Build new handlebar template.
-	 *
-	 * @param template Original handlebar template.
-	 */
+	/// Build new handlebar template.
+	///
+	/// @param template Original handlebar template.
 	public HandlebarsTemplate(Template template) {
 		this.template = notNull(template, "Template must not be null");
 	}

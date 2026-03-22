@@ -28,109 +28,86 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-/**
- * Mustache template loader.
- *
- * Resource are retrieved using {@link org.springframework.core.io.DefaultResourceLoader} by default unless a
- * specific resource loader is used during construction.
- *
- * Prefix and Suffix can be set, these will be used to retrieve template by its name (if given
- * does not already starts with prefix and does not already ends with suffix).
- *
- * For example:
- * - If prefix and suffix are null:
- *
- *   getTemplate("foo"); // Call internally resourceLoader.getResource("foo");
- *
- * - If prefix or suffix are not null:
- *
- *   getTemplate("foo"); // Call internally resourceLoader.getResource({prefix} + "foo" + {suffix});
- */
+/// Mustache template loader.
+///
+/// Resource are retrieved using [org.springframework.core.io.DefaultResourceLoader] by default unless a
+/// specific resource loader is used during construction.
+///
+/// Prefix and Suffix can be set, these will be used to retrieve template by its name (if given
+/// does not already starts with prefix and does not already ends with suffix).
+///
+/// For example:
+/// - If prefix and suffix are null:
+///   getTemplate("foo"); // Call internally resourceLoader.getResource("foo");
+/// - If prefix or suffix are not null:
+///   getTemplate("foo"); // Call internally resourceLoader.getResource({prefix} + "foo" + {suffix});
 public interface MustacheTemplateLoader {
 
-	/**
-	 * Get template from name.
-	 *
-	 * @param name Name of template.
-	 * @return Template reader.
-	 */
+	/// Get template from name.
+	///
+	/// @param name Name of template.
+	/// @return Template reader.
 	Reader getTemplate(String name);
 
-	/**
-	 * Resolve template location from template name.
-	 * This location must include prefix and suffix of template location.
-	 *
-	 * @param name Template name.
-	 * @return Full template location.
-	 */
+	/// Resolve template location from template name.
+	/// This location must include prefix and suffix of template location.
+	///
+	/// @param name Template name.
+	/// @return Full template location.
 	String resolve(String name);
 
-	/**
-	 * Set prefix on template names.
-	 *
-	 * @param prefix New prefix.
-	 */
+	/// Set prefix on template names.
+	///
+	/// @param prefix New prefix.
 	void setPrefix(String prefix);
 
-	/**
-	 * Set suffix on template names.
-	 *
-	 * @param suffix New suffix.
-	 */
+	/// Set suffix on template names.
+	///
+	/// @param suffix New suffix.
 	void setSuffix(String suffix);
 
-	/**
-	 * The charset that will be used to read templates.
-	 *
-	 * @return Charset.
-	 */
+	/// The charset that will be used to read templates.
+	///
+	/// @return Charset.
 	Charset getCharset();
 
-	/**
-	 * Set the charset to use to read templates.
-	 *
-	 * @param charset New charset.
-	 */
+	/// Set the charset to use to read templates.
+	///
+	/// @param charset New charset.
 	void setCharset(Charset charset);
 
-	/**
-	 * Get prefix used on template names.
-	 *
-	 * @return Prefix.
-	 */
+	/// Get prefix used on template names.
+	///
+	/// @return Prefix.
 	String getPrefix();
 
-	/**
-	 * Get suffix used on template names.
-	 *
-	 * @return Prefix.
-	 */
+	/// Get suffix used on template names.
+	///
+	/// @return Prefix.
 	String getSuffix();
 
-	/**
-	 * Add partials mapping.
-	 * These partials cannot be removed.
-	 * If you need partials aliases and remove them after compilation,
-	 * use {@link #addTemporaryPartialAliases(java.util.Map)} method.
-	 *
-	 * @param partialAliases Partials aliases.
-	 */
+	/// Add partials mapping.
+	///
+	/// These partials cannot be removed.
+	///
+	/// If you need partials aliases and remove them after compilation,
+	/// use [#addTemporaryPartialAliases(java.util.Map)] method.
+	///
+	/// @param partialAliases Partials aliases.
 	void addPartialAliases(Map<String, String> partialAliases);
 
-	/**
-	 * Add temporary partials aliases.
-	 * These partials can be removed later with {@link #removeTemporaryPartialAliases()}
-	 * method.
-	 * Implementation should be thread safe.
-	 *
-	 * @param partialAliases Partials aliases to add.
-	 */
+	/// Add temporary partials aliases.
+	///
+	/// These partials can be removed later with [#removeTemporaryPartialAliases()]
+	/// method.
+	///
+	/// Implementation should be thread safe.
+	///
+	/// @param partialAliases Partials aliases to add.
 	void addTemporaryPartialAliases(Map<String, String> partialAliases);
 
-	/**
-	 * Remove temporary partial aliases previously added
-	 * with {@link #addTemporaryPartialAliases(java.util.Map)} method.
-	 * Implementation should be thread safe.
-	 */
+	/// Remove temporary partial aliases previously added
+	/// with [#addTemporaryPartialAliases(java.util.Map)] method.
+	/// Implementation should be thread safe.
 	void removeTemporaryPartialAliases();
 }

@@ -41,9 +41,7 @@ import static com.samskivert.mustache.Mustache.Compiler;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableCollection;
 
-/**
- * Spring Configuration for mustache using {@link Mustache} engine.
- */
+/// Spring Configuration for mustache using [Mustache] engine.
 @Configuration
 public class JMustacheConfiguration {
 
@@ -53,48 +51,40 @@ public class JMustacheConfiguration {
 
 	private Collection<JMustacheCustomizer> customizers;
 
-	/**
-	 * Create configuration with given environment.
-	 *
-	 * @param environment Environment, typically automatically injected by Spring.
-	 */
+	/// Create configuration with given environment.
+	///
+	/// @param environment Environment, typically automatically injected by Spring.
 	@Autowired
 	public JMustacheConfiguration(Environment environment) {
 		this.environment = environment;
 		this.customizers = emptyList();
 	}
 
-	/**
-	 * Set mustache customizers.
-	 *
-	 * @param customizers Customizers, typically automatically injected by Spring.
-	 */
+	/// Set mustache customizers.
+	///
+	/// @param customizers Customizers, typically automatically injected by Spring.
 	@Autowired(required = false)
 	public void setCustomizers(Collection<JMustacheCustomizer> customizers) {
 		this.customizers = customizers;
 	}
 
-	/**
-	 * Build mustache compiler.
-	 * This compiler use an instance of {@link com.samskivert.mustache.Mustache.Compiler}
-	 * under the hood.
-	 *
-	 * @param compiler JMustache compiler.
-	 * @param templateLoader Template loader.
-	 * @return Mustache compiler implementation.
-	 */
+	/// Build mustache compiler.
+	/// This compiler use an instance of [com.samskivert.mustache.Mustache.Compiler]
+	/// under the hood.
+	///
+	/// @param compiler JMustache compiler.
+	/// @param templateLoader Template loader.
+	/// @return Mustache compiler implementation.
 	@Bean
 	public MustacheCompiler mustacheCompiler(Mustache.Compiler compiler, MustacheTemplateLoader templateLoader) {
 		log.info("Create JMustache compiler");
 		return new JMustacheCompiler(compiler, templateLoader);
 	}
 
-	/**
-	 * Build original jmustache {@link Compiler} that will be used
-	 * internally to compile and render templates.
-	 *
-	 * @return JMustache compiler.
-	 */
+	/// Build original jmustache [Compiler] that will be used
+	/// internally to compile and render templates.
+	///
+	/// @return JMustache compiler.
 	@Bean
 	public JMustacheCompilerFactoryBean jMustacheCompiler() {
 		JMustacheCompilerFactoryBean factoryBean = new JMustacheCompilerFactoryBean();

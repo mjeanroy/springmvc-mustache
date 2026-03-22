@@ -28,24 +28,16 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
 
-/**
- * A JSP tag that can be used to specify a mustache parameter.
- */
+/// A JSP tag that can be used to specify a mustache parameter.
 public class MustacheParamTag extends BodyTagSupport {
 
-	/**
-	 * Parameter name.
-	 */
+	/// Parameter name.
 	private String name;
 
-	/**
-	 * Parameter value.
-	 */
+	/// Parameter value.
 	private Object value;
 
-	/**
-	 * Create JSP tag.
-	 */
+	/// Create JSP tag.
 	public MustacheParamTag() {
 		super();
 	}
@@ -81,20 +73,16 @@ public class MustacheParamTag extends BodyTagSupport {
 		this.value = null;
 	}
 
-	/**
-	 * Set {@link #name}
-	 *
-	 * @param name New {@link #name}
-	 */
+	/// Set [#name]
+	///
+	/// @param name New [#name]
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Set {@link #value}
-	 *
-	 * @param value New {@link #value}
-	 */
+	/// Set [#value]
+	///
+	/// @param value New [#value]
 	public void setValue(Object value) {
 		this.value = value;
 	}

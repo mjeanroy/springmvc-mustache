@@ -26,29 +26,21 @@ package com.github.mjeanroy.springmvc.view.mustache.tests.junit;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * A wrapper around out stream, that allow to retrieve it as a string.
- */
+/// A wrapper around out stream, that allow to retrieve it as a string.
 public class CaptureSystemOut {
-	/**
-	 * The out stream.
-	 */
+	/// The out stream.
 	private final ByteArrayOutputStream out;
 
-	/**
-	 * Create the out stream wrapper.
-	 *
-	 * @param out The out stream.
-	 */
+	/// Create the out stream wrapper.
+	///
+	/// @param out The out stream.
 	CaptureSystemOut(ByteArrayOutputStream out) {
 		this.out = out;
 	}
 
-	/**
-	 * Get out stream as a string.
-	 *
-	 * @return The out string.
-	 */
+	/// Get out stream as a string.
+	///
+	/// @return The out string.
 	public String getOut() {
 		return out.toString();
 	}

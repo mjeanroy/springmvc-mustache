@@ -24,21 +24,17 @@
 
 package com.github.mjeanroy.springmvc.view.mustache.tests.utils;
 
-/**
- * Static Test Utilities.
- */
+/// Static Test Utilities.
 public final class TestUtils {
 
 	// Ensure non instantiation.
 	private TestUtils() {
 	}
 
-	/**
-	 * Return hashcode identity as an hexadecimal string.
-	 *
-	 * @param instance Object instance.
-	 * @return Identity hashcode.
-	 */
+	/// Return hashcode identity as an hexadecimal string.
+	///
+	/// @param instance Object instance.
+	/// @return Identity hashcode.
 	public static String hexIdentity(Object instance) {
 		return Integer.toHexString(
 				System.identityHashCode(instance)

@@ -39,54 +39,42 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static java.util.Collections.unmodifiableMap;
 
-/**
- * Implementation of mustache view.
- * Use jmustache internally as template compiler.
- */
+/// Implementation of mustache view.
+/// Use jmustache internally as template compiler.
 public class MustacheView extends AbstractTemplateView {
 
 	private static final Logger log = LoggerFactory.getLogger(MustacheView.class);
 
-	/**
-	 * Mustache compiler.
-	 */
+	/// Mustache compiler.
 	private MustacheCompiler compiler;
 
-	/** List of aliases that map alias name to partial path. */
+	/// List of aliases that map alias name to partial path.
 	private final Map<String, String> aliases;
 
-	/**
-	 * Build new view.
-	 */
+	/// Build new view.
 	public MustacheView() {
 		setContentType("text/html; charset=utf-8");
 		this.aliases = new HashMap<>();
 	}
 
-	/**
-	 * Set new mustache compiler that can be used to compile view.
-	 *
-	 * @param compiler Mustache compiler.
-	 */
+	/// Set new mustache compiler that can be used to compile view.
+	///
+	/// @param compiler Mustache compiler.
 	public void setCompiler(MustacheCompiler compiler) {
 		notNull(compiler, "Compiler must not be null");
 		this.compiler = compiler;
 	}
 
-	/**
-	 * Get compiler that will be used to compile view.
-	 *
-	 * @return Mustache compiler.
-	 */
+	/// Get compiler that will be used to compile view.
+	///
+	/// @return Mustache compiler.
 	public MustacheCompiler getCompiler() {
 		return compiler;
 	}
 
-	/**
-	 * Add partials mapping.
-	 *
-	 * @param aliases New aliases.
-	 */
+	/// Add partials mapping.
+	///
+	/// @param aliases New aliases.
 	public void addAliases(Map<String, String> aliases) {
 		notNull(aliases, "Aliases must not be null");
 		for (Map.Entry<String, String> entry : aliases.entrySet()) {
@@ -94,12 +82,10 @@ public class MustacheView extends AbstractTemplateView {
 		}
 	}
 
-	/**
-	 * Add alias mapping.
-	 *
-	 * @param key Partial key.
-	 * @param value Partial name.
-	 */
+	/// Add alias mapping.
+	///
+	/// @param key Partial key.
+	/// @param value Partial name.
 	public void addAlias(String key, String value) {
 		this.aliases.put(
 				notNull(key, "Key must not be null"),
@@ -107,11 +93,9 @@ public class MustacheView extends AbstractTemplateView {
 		);
 	}
 
-	/**
-	 * Get list of aliases that map alias name to partial path.
-	 *
-	 * @return Aliases.
-	 */
+	/// Get list of aliases that map alias name to partial path.
+	///
+	/// @return Aliases.
 	public Map<String, String> getAliases() {
 		return unmodifiableMap(aliases);
 	}

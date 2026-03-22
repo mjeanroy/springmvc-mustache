@@ -30,32 +30,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-/**
- * Common static IO Utilities.
- */
+/// Common static IO Utilities.
 public final class Ios {
 
-	/**
-	 * Buffer size to read files.
-	 */
+	/// Buffer size to read files.
 	private static final int BUFFER_SIZE = 1024;
 
-	/**
-	 * Line separator, system dependent.
-	 */
+	/// Line separator, system dependent.
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	private Ios() {
 	}
 
-	/**
-	 * Read input reader: extract content and return it as
-	 * a String.
-	 *
-	 * @param reader Reader input.
-	 * @return String content.
-	 * @throws MustacheIOException If an IO exception occurs during reading operation.
-	 */
+	/// Read input reader: extract content and return it as
+	/// a String.
+	///
+	/// @param reader Reader input.
+	/// @return String content.
+	/// @throws MustacheIOException If an IO exception occurs during reading operation.
 	public static String read(final Reader reader) {
 		try (BufferedReader buffer = new BufferedReader(reader, BUFFER_SIZE)) {
 			StringBuilder sb = new StringBuilder();

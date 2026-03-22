@@ -30,21 +30,16 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-/**
- * Create mustache compiler.
- * Use classpath detection to instantiate appropriate implementation.
- * Beans are retrieved using application context.
- */
+/// Create mustache compiler.
+///
+/// Use classpath detection to instantiate appropriate implementation.
+/// Beans are retrieved using application context.
 public class MustacheCompilerFactoryBean extends AbstractFactoryBean<MustacheCompiler> implements ApplicationContextAware {
 
-	/**
-	 * Current application context.
-	 */
+	/// Current application context.
 	private ApplicationContext applicationContext;
 
-	/**
-	 * Create instance.
-	 */
+	/// Create instance.
 	public MustacheCompilerFactoryBean() {
 		super();
 	}

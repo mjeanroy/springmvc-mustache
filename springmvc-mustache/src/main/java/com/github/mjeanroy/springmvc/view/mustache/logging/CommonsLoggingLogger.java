@@ -32,14 +32,10 @@ import java.util.Collection;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 
-/**
- * Implementation of {@link Logger} backed by SLF4J.
- */
+/// Implementation of [Logger] backed by SLF4J.
 class CommonsLoggingLogger implements Logger {
 
-	/**
-	 * Internal logger from commons-logging.
-	 */
+	/// Internal logger from commons-logging.
 	private final Log log;
 
 	CommonsLoggingLogger(Class<?> klass) {

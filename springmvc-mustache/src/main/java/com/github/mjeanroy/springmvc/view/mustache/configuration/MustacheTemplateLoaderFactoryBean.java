@@ -50,46 +50,30 @@ import java.util.Map;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.hasText;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 
-/**
- * Factory bean for {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader} instance.
- */
+/// Factory bean for [com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader] instance.
 public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<MustacheTemplateLoader> implements ApplicationContextAware, ResourceLoaderAware {
 
 	private static final Logger log = LoggerFactory.getLogger(MustacheTemplateLoaderFactoryBean.class);
 
-	/**
-	 * Classpath resource loader, implemented as a singleton.
-	 */
+	/// Classpath resource loader, implemented as a singleton.
 	private static final ClasspathResourceLoader CLASSPATH_RESOURCE_LOADER = new ClasspathResourceLoader();
 
-	/**
-	 * Current application context.
-	 */
+	/// Current application context.
 	private ApplicationContext applicationContext;
 
-	/**
-	 * Current resource loader.
-	 */
+	/// Current resource loader.
 	private ResourceLoader resourceLoader;
 
-	/**
-	 * @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getPrefix()
-	 */
+	/// @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getPrefix()
 	private String prefix;
 
-	/**
-	 * @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getSuffix()
-	 */
+	/// @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#getSuffix()
 	private String suffix;
 
-	/**
-	 * @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#addPartialAliases(java.util.Map)
-	 */
+	/// @see com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader#addPartialAliases(java.util.Map)
 	private final Map<String, String> partialAliases;
 
-	/**
-	 * Default constructor.
-	 */
+	/// Default constructor.
 	public MustacheTemplateLoaderFactoryBean() {
 		super();
 		this.partialAliases = new HashMap<>();
@@ -120,19 +104,14 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 		this.resourceLoader = resourceLoader;
 	}
 
-	/**
-	 * Build a composite resource loader that will automatically delegate to:
-	 *
-	 * <ul>
-	 *   <li>{@link #resourceLoader}.</li>
-	 *   <li>Spring application context.</li>
-	 *   <li>{@link ClassPathXmlApplicationContext}</li>
-	 *   <li>{@link FileSystemXmlApplicationContext}</li>
-	 *   <li>{@link ClasspathResourceLoader}</li>
-	 * </ul>
-	 *
-	 * @return Resource loader.
-	 */
+	/// Build a composite resource loader that will automatically delegate to:
+	/// - [#resourceLoader].
+	/// - Spring application context.
+	/// - [ClassPathXmlApplicationContext]
+	/// - [FileSystemXmlApplicationContext]
+	/// - [ClasspathResourceLoader]
+	///
+	/// @return Resource loader.
 	protected ResourceLoader computeResourceLoader() {
 		log.debug("Build composite resource loader");
 		Collection<ResourceLoader> resourceLoaders = new LinkedHashSet<>();
@@ -163,51 +142,39 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 		return new CompositeResourceLoader(resourceLoaders);
 	}
 
-	/**
-	 * Set {@link #prefix}
-	 *
-	 * @param prefix New {@link #prefix}
-	 */
+	/// Set [#prefix]
+	///
+	/// @param prefix New [#prefix]
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
 
-	/**
-	 * Set {@link #suffix}
-	 *
-	 * @param suffix New {@link #suffix}
-	 */
+	/// Set [#suffix]
+	///
+	/// @param suffix New [#suffix]
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
 	}
 
-	/**
-	 * Set {@link #partialAliases}
-	 *
-	 * @param partialAliases New {@link #partialAliases}
-	 */
+	/// Set [#partialAliases]
+	///
+	/// @param partialAliases New [#partialAliases]
 	public void setPartialAliases(Map<String, String> partialAliases) {
 		this.partialAliases.putAll(partialAliases);
 	}
 
-	/**
-	 * Implementation of spring {@link org.springframework.core.io.ResourceLoader}
-	 * that will always check for resources in the classpath (not the root of the application
-	 * context).
-	 *
-	 * This class does not guarantee that resource patterns such as "file:/" or "http:" will
-	 * work, that's why this class should remain private and should not be used outside.
-	 */
+	/// Implementation of spring [org.springframework.core.io.ResourceLoader]
+	/// that will always check for resources in the classpath (not the root of the application
+	/// context).
+	///
+	/// This class does not guarantee that resource patterns such as "file:/" or "http:" will
+	/// work, that's why this class should remain private and should not be used outside.
 	private static final class ClasspathResourceLoader implements ResourceLoader {
 
-		/**
-		 * Classpath prefix.
-		 */
+		/// Classpath prefix.
 		private static final String CLASSPATH_PREFIX = "classpath:";
 
-		/**
-		 * Create new resource loader.
-		 */
+		/// Create new resource loader.
 		private ClasspathResourceLoader() {
 		}
 

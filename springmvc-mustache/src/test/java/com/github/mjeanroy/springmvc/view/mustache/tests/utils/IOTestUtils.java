@@ -28,21 +28,17 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.Reader;
 
-/**
- * Static IO Utilities, to use in unit test.
- */
+/// Static IO Utilities, to use in unit test.
 public final class IOTestUtils {
 
 	// Ensure non instantiation.
 	private IOTestUtils() {
 	}
 
-	/**
-	 * Read given reader.
-	 *
-	 * @param reader Reader.
-	 * @return String content.
-	 */
+	/// Read given reader.
+	///
+	/// @param reader Reader.
+	/// @return String content.
 	public static String read(Reader reader) {
 		try {
 			return IOUtils.toString(reader);

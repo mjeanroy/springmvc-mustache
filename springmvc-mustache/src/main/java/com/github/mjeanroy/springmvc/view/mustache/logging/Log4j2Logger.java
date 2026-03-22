@@ -26,14 +26,10 @@ package com.github.mjeanroy.springmvc.view.mustache.logging;
 
 import org.apache.logging.log4j.LogManager;
 
-/**
- * Implementation of {@link Logger} backed by LOG4J2.
- */
+/// Implementation of [Logger] backed by LOG4J2.
 class Log4j2Logger implements Logger {
 
-	/**
-	 * Internal logger.
-	 */
+	/// Internal logger.
 	private final org.apache.logging.log4j.Logger log;
 
 	Log4j2Logger(Class<?> klass) {

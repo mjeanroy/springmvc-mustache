@@ -33,24 +33,19 @@ import java.util.Objects;
 import static com.github.mjeanroy.springmvc.view.mustache.commons.lang.PreConditions.notNull;
 import static com.samskivert.mustache.Mustache.TemplateLoader;
 
-/**
- * Implementation of jmustache template loader.
- * Template resolution is delegated to {@link com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader}
- * implementation.
- */
+/// Implementation of jmustache template loader.
+///
+/// Template resolution is delegated to [com.github.mjeanroy.springmvc.view.mustache.MustacheTemplateLoader]
+/// implementation.
 final class JMustacheTemplateLoader implements TemplateLoader {
 
-	/**
-	 * Template loader implementation.
-	 * Template resolution will be delegated to this implementation.
-	 */
+	/// Template loader implementation.
+	/// Template resolution will be delegated to this implementation.
 	private final MustacheTemplateLoader loader;
 
-	/**
-	 * Build new template loader.
-	 *
-	 * @param loader Loader.
-	 */
+	/// Build new template loader.
+	///
+	/// @param loader Loader.
 	public JMustacheTemplateLoader(MustacheTemplateLoader loader) {
 		this.loader = notNull(loader, "Template loader must not be null");
 	}
