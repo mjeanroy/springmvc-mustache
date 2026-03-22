@@ -77,6 +77,13 @@ public final class JMustacheCompiler extends AbstractMustacheCompiler {
 		}
 	}
 
+	/**
+	 * Load template.
+	 *
+	 * @param template Template to load.
+	 * @param templateLoader Template loader to use.
+	 * @return The template.
+	 */
 	protected Template getTemplate(Reader template, MustacheTemplateLoader templateLoader) {
 		return compiler.withLoader(new JMustacheTemplateLoader(templateLoader)).compile(template);
 	}

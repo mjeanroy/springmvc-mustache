@@ -34,6 +34,12 @@ import static com.github.mjeanroy.springmvc.view.mustache.commons.reflection.Cla
  */
 public class MustacheEngineConfiguration implements ImportSelector {
 
+	/**
+	 * Create auto-configuration.
+	 */
+	public MustacheEngineConfiguration() {
+	}
+
 	@Override
 	public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 		MustacheProvider provider = getAnnotationValue(importingClassMetadata, EnableMustache.class, "provider", MustacheProvider.AUTO);

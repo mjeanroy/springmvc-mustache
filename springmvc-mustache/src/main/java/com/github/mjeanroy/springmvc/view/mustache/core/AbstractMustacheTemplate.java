@@ -36,6 +36,12 @@ import java.util.Map;
  */
 public abstract class AbstractMustacheTemplate implements MustacheTemplate {
 
+	/**
+	 * Create template.
+	 */
+	protected AbstractMustacheTemplate() {
+	}
+
 	@Override
 	public void execute(Map<String, Object> model, Writer writer) {
 		try {

@@ -57,6 +57,13 @@ public class MustacheRenderTag extends TagSupport {
 	 */
 	private Map<String, Object> parameters;
 
+	/**
+	 * Create JSP tag.
+	 */
+	public MustacheRenderTag() {
+		super();
+	}
+
 	@Override
 	public int doStartTag() {
 		reset();

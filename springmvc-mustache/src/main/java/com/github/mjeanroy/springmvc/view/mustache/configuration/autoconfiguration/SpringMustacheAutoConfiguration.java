@@ -37,29 +37,67 @@ import org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ * Spring configuration for Mustache that will auto-configure:
+ * <ul>
+ *   <li>Template loader.</li>
+ *   <li>Mustache engine (auto detected).</li>
+ *   <li>Spring View Resolver.</li>
+ * </ul>
+ */
 @Configuration
 @AutoConfigureBefore(MustacheAutoConfiguration.class)
 public class SpringMustacheAutoConfiguration {
 
+	/**
+	 * Create configuration.
+	 */
+	public SpringMustacheAutoConfiguration() {
+	}
+
+	/**
+	 * Auto configuration for mustache template loader.
+	 */
 	@Configuration
 	@AutoConfigureBefore(MustacheAutoConfiguration.class)
 	@ConditionalOnMissingBean(MustacheTemplateLoader.class)
 	@Import(MustacheTemplateLoaderConfiguration.class)
 	public static class MustacheTemplateLoaderAutoConfiguration {
+		/**
+		 * Create configuration.
+		 */
+		public MustacheTemplateLoaderAutoConfiguration() {
+		}
 	}
 
+	/**
+	 * Auto configuration for mustache engine.
+	 */
 	@Configuration
 	@AutoConfigureBefore(MustacheAutoConfiguration.class)
 	@ConditionalOnMissingBean(MustacheCompiler.class)
 	@Import(MustacheEngineConfiguration.class)
 	public static class MustacheEngineAutoConfiguration {
+		/**
+		 * Create configuration.
+		 */
+		public MustacheEngineAutoConfiguration() {
+		}
 	}
 
+	/**
+	 * Auto configuration for spring web.
+	 */
 	@Configuration
 	@AutoConfigureBefore(MustacheAutoConfiguration.class)
 	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean(MustacheViewResolver.class)
 	@Import(MustacheWebConfiguration.class)
 	public static class MustacheWebAutoConfiguration {
+		/**
+		 * Create configuration.
+		 */
+		public MustacheWebAutoConfiguration() {
+		}
 	}
 }

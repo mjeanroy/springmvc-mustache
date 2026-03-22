@@ -42,6 +42,13 @@ public class MustacheCompilerFactoryBean extends AbstractFactoryBean<MustacheCom
 	 */
 	private ApplicationContext applicationContext;
 
+	/**
+	 * Create instance.
+	 */
+	public MustacheCompilerFactoryBean() {
+		super();
+	}
+
 	@Override
 	public Class<?> getObjectType() {
 		return MustacheCompiler.class;

@@ -34,6 +34,18 @@ import java.lang.annotation.Target;
 
 import static com.github.mjeanroy.springmvc.view.mustache.configuration.MustacheProvider.AUTO;
 
+/**
+ * Automatically enable Mustache template rendering.
+ *
+ * <br/>
+ *
+ * This is the equivalent of enabling:
+ * <ul>
+ *   <li>{@link MustacheTemplateLoaderConfiguration}</li>
+ *   <li>{@link MustacheEngineConfiguration}</li>
+ *   <li>{@link MustacheWebConfiguration}</li>
+ * </ul>
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented

@@ -42,6 +42,9 @@ import java.util.Collection;
 
 import static java.util.Collections.emptyList;
 
+/**
+ * Spring configuration for {@link MustacheJavaCompiler} engine.
+ */
 @Configuration
 public class MustacheJavaConfiguration {
 
@@ -51,12 +54,22 @@ public class MustacheJavaConfiguration {
 
 	private Collection<MustacheJavaCustomizer> customizers;
 
+	/**
+	 * Create configuration with given environment.
+	 *
+	 * @param environment Environment, typically automatically injected by Spring.
+	 */
 	@Autowired
 	public MustacheJavaConfiguration(Environment environment) {
 		this.environment = environment;
 		this.customizers = emptyList();
 	}
 
+	/**
+	 * Set customizers.
+	 *
+	 * @param customizers Customizers, typically automatically injected by Spring.
+	 */
 	@Autowired(required = false)
 	public void setCustomizers(Collection<MustacheJavaCustomizer> customizers) {
 		this.customizers = customizers;

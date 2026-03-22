@@ -46,6 +46,12 @@ import static java.lang.String.valueOf;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
 
+/**
+ * Spring Web configuration for mustache engine.
+ *
+ * This configuration will automatically load {@code mustache.properties} file if
+ * available on the classpath to configure the engine.
+ */
 @Configuration
 @PropertySource(
 		value = "classpath:mustache.properties",
@@ -58,6 +64,12 @@ public class MustacheWebConfiguration {
 	private final Environment environment;
 	private final MustacheCompiler mustacheCompiler;
 
+	/**
+	 * Create configuration.
+	 *
+	 * @param environment The environment, automatically injected by Spring.
+	 * @param mustacheCompiler The mustache compiler, automatically injected by Spring.
+	 */
 	@Autowired
 	public MustacheWebConfiguration(Environment environment, MustacheCompiler mustacheCompiler) {
 		this.environment = environment;

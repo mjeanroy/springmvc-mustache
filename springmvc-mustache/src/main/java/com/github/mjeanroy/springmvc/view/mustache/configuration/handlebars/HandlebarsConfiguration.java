@@ -52,12 +52,22 @@ public class HandlebarsConfiguration {
 
 	private Collection<HandlebarsCustomizer> customizers;
 
+	/**
+	 * Create configuration with with given environment.
+	 *
+	 * @param environment Environment, typically automatically injected by Spring.
+	 */
 	@Autowired
 	public HandlebarsConfiguration(Environment environment) {
 		this.environment = environment;
 		this.customizers = emptyList();
 	}
 
+	/**
+	 * Configure customizers, typically automatically injected by Spring.
+	 *
+	 * @param customizers Customizers.
+	 */
 	@Autowired(required = false)
 	public void setCustomizers(Collection<HandlebarsCustomizer> customizers) {
 		this.customizers = customizers;

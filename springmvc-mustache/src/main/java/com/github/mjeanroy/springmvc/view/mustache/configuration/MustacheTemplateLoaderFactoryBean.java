@@ -120,6 +120,19 @@ public class MustacheTemplateLoaderFactoryBean extends AbstractFactoryBean<Musta
 		this.resourceLoader = resourceLoader;
 	}
 
+	/**
+	 * Build a composite resource loader that will automatically delegate to:
+	 *
+	 * <ul>
+	 *   <li>{@link #resourceLoader}.</li>
+	 *   <li>Spring application context.</li>
+	 *   <li>{@link ClassPathXmlApplicationContext}</li>
+	 *   <li>{@link FileSystemXmlApplicationContext}</li>
+	 *   <li>{@link ClasspathResourceLoader}</li>
+	 * </ul>
+	 *
+	 * @return Resource loader.
+	 */
 	protected ResourceLoader computeResourceLoader() {
 		log.debug("Build composite resource loader");
 		Collection<ResourceLoader> resourceLoaders = new LinkedHashSet<>();

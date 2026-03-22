@@ -43,6 +43,13 @@ public class MustacheParamTag extends BodyTagSupport {
 	 */
 	private Object value;
 
+	/**
+	 * Create JSP tag.
+	 */
+	public MustacheParamTag() {
+		super();
+	}
+
 	@Override
 	public int doEndTag() throws JspException {
 		Tag parentTag = getParent();

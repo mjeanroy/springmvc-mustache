@@ -41,6 +41,9 @@ import static com.samskivert.mustache.Mustache.Compiler;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableCollection;
 
+/**
+ * Spring Configuration for mustache using {@link Mustache} engine.
+ */
 @Configuration
 public class JMustacheConfiguration {
 
@@ -50,12 +53,22 @@ public class JMustacheConfiguration {
 
 	private Collection<JMustacheCustomizer> customizers;
 
+	/**
+	 * Create configuration with given environment.
+	 *
+	 * @param environment Environment, typically automatically injected by Spring.
+	 */
 	@Autowired
 	public JMustacheConfiguration(Environment environment) {
 		this.environment = environment;
 		this.customizers = emptyList();
 	}
 
+	/**
+	 * Set mustache customizers.
+	 *
+	 * @param customizers Customizers, typically automatically injected by Spring.
+	 */
 	@Autowired(required = false)
 	public void setCustomizers(Collection<JMustacheCustomizer> customizers) {
 		this.customizers = customizers;

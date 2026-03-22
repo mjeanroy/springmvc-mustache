@@ -64,10 +64,15 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: 25
           cache: 'maven'
+
       - name: Build
         run: |
           ./mvnw -version
           ./mvnw -B --color always install -DskipTests
+
+      # Releasing a new version requires valid javadoc.
+      - name: Javadoc
+        run: ./mvnw -B --color always javadoc:javadoc
 
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0

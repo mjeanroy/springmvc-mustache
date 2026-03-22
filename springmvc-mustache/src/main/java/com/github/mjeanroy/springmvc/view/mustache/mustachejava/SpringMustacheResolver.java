@@ -33,6 +33,9 @@ import com.github.mustachejava.resolver.DefaultResolver;
 
 import java.io.Reader;
 
+/**
+ * Resolver for mustache templates.
+ */
 public final class SpringMustacheResolver extends DefaultResolver {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringMustacheResolver.class);

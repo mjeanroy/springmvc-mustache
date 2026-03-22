@@ -43,6 +43,11 @@ public class MustacheTemplateLoaderConfiguration {
 
 	private final Environment environment;
 
+	/**
+	 * Create configuration with given environment.
+	 *
+	 * @param environment Environment, typically automatically injected by Spring.
+	 */
 	@Autowired
 	public MustacheTemplateLoaderConfiguration(Environment environment) {
 		this.environment = environment;
