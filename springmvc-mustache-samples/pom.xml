@@ -84,8 +84,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.source.version>1.8</java.source.version>
-		<java.target.version>1.8</java.target.version>
+		<java.version>8</java.version>
 
 		<!-- Default plugin version -->
 		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
@@ -231,9 +230,9 @@
 					<version>${maven-compiler-plugin.version}</version>
 					<configuration>
 						<encoding>${project.build.sourceEncoding}</encoding>
-						<compilerVersion>${java.version}</compilerVersion>
-						<source>${java.source.version}</source>
-						<target>${java.target.version}</target>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<release>${java.version}</release>
 					</configuration>
 				</plugin>
 
