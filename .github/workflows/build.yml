@@ -28,8 +28,6 @@ on:
   push:
     branches-ignore:
       - gh-pages
-    tags:
-      - '*'
 
 permissions: {}
 
