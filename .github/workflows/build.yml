@@ -31,6 +31,8 @@ on:
     tags:
       - '*'
 
+permissions: {}
+
 jobs:
   build:
 
