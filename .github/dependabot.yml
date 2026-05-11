@@ -40,3 +40,6 @@ updates:
     # mockito-core >= 5.0.0 requires Java 11
     - dependency-name: org.mockito:mockito-core
       update-types: ["version-update:semver-major"]
+    # handlebars >= 4.4.0 requires Java 17
+    - dependency-name: com.github.jknack:handlebars
+      update-types: ["version-update:semver-major", "version-update:semver-minor"]
