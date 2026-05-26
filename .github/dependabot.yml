@@ -43,3 +43,6 @@ updates:
     # handlebars >= 4.4.0 requires Java 17
     - dependency-name: com.github.jknack:handlebars
       update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    # junit-jupiter >= 6.0.0 requires Java 17
+    - dependency-name: org.junit.jupiter:junit-jupiter
+      update-types: [ "version-update:semver-major" ]
