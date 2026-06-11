@@ -102,10 +102,6 @@
 		<handlebars.version>4.3.1</handlebars.version>
 		<mustache.java.version>0.9.14</mustache.java.version>
 		<spring.version>5.3.31</spring.version>
-		<spring-context.version>${spring.version}</spring-context.version>
-		<spring-web.version>${spring.version}</spring-web.version>
-		<spring-webmvc.version>${spring.version}</spring-webmvc.version>
-		<spring-test.version>${spring.version}</spring-test.version>
 		<spring-boot.version>2.7.18</spring-boot.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
@@ -148,17 +144,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring-context.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${spring-web.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring-webmvc.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -259,7 +255,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring-test.version}</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 
