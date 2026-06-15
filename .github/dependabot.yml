@@ -55,3 +55,14 @@ updates:
       update-types: [ "version-update:semver-major" ]
     - dependency-name: org.springframework:spring-webmvc
       update-types: [ "version-update:semver-major" ]
+    # spring-boot >= 3.0.0 requires Java 17
+    - dependency-name: org.springframework.boot:spring-boot-autoconfigure
+      update-types: [ "version-update:semver-major" ]
+    - dependency-name: org.springframework.boot:spring-boot-starter-web
+      update-types: [ "version-update:semver-major" ]
+    - dependency-name: org.springframework.boot:spring-boot-starter-parent
+      update-types: [ "version-update:semver-major" ]
+    - dependency-name: org.springframework.boot:spring-boot-starter-test
+      update-types: [ "version-update:semver-major" ]
+    - dependency-name: org.springframework.boot:spring-boot-maven-plugin
+      update-types: [ "version-update:semver-major" ]
