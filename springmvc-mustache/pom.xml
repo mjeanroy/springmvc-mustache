@@ -102,7 +102,7 @@
 		<handlebars.version>4.3.1</handlebars.version>
 		<mustache.java.version>0.9.14</mustache.java.version>
 		<spring.version>5.3.39</spring.version>
-		<spring-boot.version>2.7.18</spring-boot.version>
+		<spring-boot.version>4.1.0</spring-boot.version>
 		<javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
 
