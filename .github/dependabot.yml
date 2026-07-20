@@ -34,8 +34,10 @@ updates:
   cooldown:
     default-days: 2
   ignore:
-    # logback-classic >= 1.4.0 requires Java 11
+    # logback-classic/logback-core >= 1.4.0 requires Java 11
     - dependency-name: ch.qos.logback:logback-classic
+      update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    - dependency-name: ch.qos.logback:logback-core
       update-types: ["version-update:semver-major", "version-update:semver-minor"]
     # mockito-core >= 5.0.0 requires Java 11
     - dependency-name: org.mockito:mockito-core
