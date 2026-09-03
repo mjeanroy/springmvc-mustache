@@ -68,3 +68,6 @@ updates:
       update-types: [ "version-update:semver-major" ]
     - dependency-name: org.springframework.boot:spring-boot-maven-plugin
       update-types: [ "version-update:semver-major" ]
+    # equalsverifier >= 4 requires Java 11
+    - dependency-name: nl.jqno.equalsverifier:equalsverifier
+      update-types: [ "version-update:semver-major" ]
